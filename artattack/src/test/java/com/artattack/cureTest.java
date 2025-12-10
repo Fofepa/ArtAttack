@@ -20,7 +20,7 @@ public class cureTest {
     public void setUp() throws Exception{
         c = new MovieDirector();
         assertNotNull(c);
-        i = new Item();
+        i = new Cure();
         assertNotNull(i);
     }
 
@@ -35,7 +35,9 @@ public class cureTest {
 
     @Test
     public void testUse(){
-        assertEquals("Failed cure use", c.getCurrHP() + i.getHealAmount(), c.getItem(i).use());
+        assertEquals("Failed cure use", 
+        c.getCurrHP() + i.getHealAmount(), 
+        c.useItem(i).use()); //use() expects returns from useItem
     }
 
 }

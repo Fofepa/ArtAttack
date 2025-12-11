@@ -30,21 +30,13 @@ public abstract class Characters extends MapElement {
 
     }
     // guys do you remember? you can use the wildcard only in list and such
-    public <T extends Item> void useItem(T item){
+    public abstract  <T extends Item> T getItem(int k);
 
-    }
+    public abstract  void interact(/*InteractableElement dude*/);
 
-    public void interact(){
+    public abstract  void skipTurn();
 
-    }
-
-    public void skipTurn(){
-
-    }
-
-    public void setCoordinates(Coordinates coordinatesSet){
-
-    }
+    public abstract  void setCoordinates(Coordinates coordinatesSet);
 
     //getters
     public int getCurrHP() {

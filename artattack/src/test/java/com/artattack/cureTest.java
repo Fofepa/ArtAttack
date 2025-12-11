@@ -1,20 +1,17 @@
 package com.artattack;
 
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.artattack.Item;
-import com.artattack.Characters;
 
 
 public class cureTest {
     private Item i;
     private Characters c;
+    private static int k;
 
     @Before
     public void setUp() throws Exception{
@@ -22,6 +19,7 @@ public class cureTest {
         assertNotNull(c);
         i = new Cure();
         assertNotNull(i);
+        k = 0;
     }
 
     @After
@@ -37,7 +35,7 @@ public class cureTest {
     public void testUse(){
         assertEquals("Failed cure use", 
         c.getCurrHP() + i.getHealAmount(), 
-        c.useItem(i).use()); //use() expects returns from useItem
+        c.getItem(k).use()); //use() expects returns from useItem
     }
 
 }

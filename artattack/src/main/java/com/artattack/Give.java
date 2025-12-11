@@ -11,6 +11,7 @@ public class Give implements Interaction {
     }
 
     //Primitive method
+    @Override
     public void interact(){
 
     }

@@ -11,6 +11,7 @@ public class Talk implements Interaction {
     }
 
     //Primitive method
+    @Override
     public void interact(){
 
     }

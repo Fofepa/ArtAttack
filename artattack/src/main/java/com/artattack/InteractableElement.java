@@ -31,7 +31,7 @@ public class InteractableElement extends MapElement {
         return this.interactions;
     }
 
-    public void interact(){
+    public void interact(Player p){
 
     }
 }

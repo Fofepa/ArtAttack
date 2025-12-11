@@ -1,5 +1,5 @@
 package com.artattack;
 
 public interface Interaction {
-    public void interact();
+    public void doAction(Player p);
 }

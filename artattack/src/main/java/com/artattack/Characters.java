@@ -5,6 +5,7 @@ import java.util.List;
 public abstract class Characters extends MapElement {
     
     //Attributes
+    private String name;
     private int currHP;
     private int maxHP;
     private int currXP;
@@ -16,6 +17,23 @@ public abstract class Characters extends MapElement {
     private int actionPoints;
     private List<Coordinates> actionArea;
     private List<Coordinates> moveArea;
+
+    public Characters(String name,int currHP,int maxHP,int currXP, int maxXP, 
+        int level, int maxWeapons, int speed, int actionPoints, List<Coordinates> actionArea,
+         List<Coordinates> moveArea, List<? extends Item> inventory){
+            this.name = name;
+            this.maxHP = maxHP;
+            this.currHP = currHP;
+            this.maxXP = maxXP;
+            this.currXP = currXP;
+            this.level = level;
+            this.maxWeapons = maxWeapons;
+            this.speed = speed;
+            this.actionPoints = actionPoints;
+            this.actionArea = actionArea;
+            this.moveArea = moveArea;
+            this.inventory = inventory;
+        }
 
     //primitive methods
     public void move(){

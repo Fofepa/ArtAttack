@@ -5,13 +5,20 @@ public class AttackBuff extends Item {
     private int ID;
     private int buffAmount;
 
+    //Constructor
+    public AttackBuff(String name, String description, int ID, int buffAmount) {
+        super(name, description);
+        this.ID = ID;
+        this.buffAmount = buffAmount;
+    }
+
     //Getters
     public int getID() {
-        return ID;
+        return this.ID;
     }
 
     public int getBuffAmount() {
-        return buffAmount;
+        return this.buffAmount;
     }
 
     //Methods

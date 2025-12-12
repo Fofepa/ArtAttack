@@ -21,5 +21,4 @@ public abstract class Item {
         return healAmount;
     }
 
-
 }

@@ -2,7 +2,7 @@ package com.artattack;
 
 import java.util.*;
 
-public abstract class Characters extends MapElement {
+public abstract class Player extends MapElement {
     
     //Attributes
     private int currHP;
@@ -18,7 +18,7 @@ public abstract class Characters extends MapElement {
     private List<Coordinates> actionArea;
     private List<Coordinates> moveArea;
 
-    public Characters(int ID, char mapSymbol, String name, Coordinates coordinates,int currHP,int maxHP,int currXP, int maxXP, 
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,int currHP,int maxHP,int currXP, int maxXP, 
         int level, int maxWeapons, List<Weapon> weapons, int speed, int actionPoints, List<Coordinates> actionArea,
          List<Coordinates> moveArea, List<? extends Item> inventory){
             super(ID,mapSymbol,name,coordinates);

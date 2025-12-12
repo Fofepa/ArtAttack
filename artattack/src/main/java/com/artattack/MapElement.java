@@ -1,6 +1,6 @@
 package com.artattack;
 
-public class MapElement {
+public abstract class MapElement {
 
     //Attributes
     private int ID;
@@ -30,7 +30,7 @@ public class MapElement {
         return this.coordinates;
     }
 
-    public setCoordinates(Coordinates coordinates){
+    public void setCoordinates(Coordinates coordinates){
         this.coordinates = coordinates;
     }
 }

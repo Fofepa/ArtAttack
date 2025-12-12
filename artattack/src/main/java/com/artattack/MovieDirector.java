@@ -2,7 +2,7 @@ package com.artattack;
 
 import java.util.*;
 
-public class MovieDirector extends Characters {
+public class MovieDirector extends Player {
 
     public MovieDirector(int ID, char mapSymbol, String name, Coordinates coordinates,int currHP,int maxHP,int currXP, int maxXP, 
         int level, int maxWeapons, List<Weapon> weapons ,int speed, int actionPoints, List<Coordinates> actionArea,

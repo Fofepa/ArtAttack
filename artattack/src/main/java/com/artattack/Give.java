@@ -13,8 +13,9 @@ public class Give implements Interaction {
 
     //Primitive method
     @Override
-    public void doActiion(Player p){
-
+    public void doAction(Player player){
+        //Need to add print on right panel
+        player.getInventory().add(this.item);
     }
 
     //Getter

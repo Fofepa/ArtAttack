@@ -26,7 +26,7 @@ public class giveTest {
     public void testDoAction(){
         interaction.doAction(player)
 
-        assertTrue("Give testDo faild. Item not in Player's inventory.",
+        assertTrue("Give testDoAsction faild. Item not in Player's inventory.",
                     player.getInventory.contains(item));
         assertEquals("Give testDoAction faild. Number of items in Player's inventory not as expected.",
                     1,

@@ -8,11 +8,15 @@ public class InteractableElement extends MapElement {
     private String name;
     private Coordinates coordinates;
     private List<Interaction> interactions;
+    private int nMaxInteractions;
+    private int currInteraction;
 
     //Contructor
     public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, List<Interaction> interactions){
         super(ID,mapSymbol,name,coordinates);
         this.interactions = interactions;
+        this.nMaxInteractions = interactions.size();
+        this.currInteraction = 0;
     }
     
     //getters
@@ -37,8 +41,12 @@ public class InteractableElement extends MapElement {
         this.interactions.add(interaction);
     }
 
-    public void interact(Player p){
-
+    public void interact(Player player){
+        if(this.currInteraction < this.nMaxInteractions){
+            this.interactions.get(currInteraction).doAction(player);
+            currInteraction++;
+        }
+        else this.interactions.get(nMaxInteractions - 1).doAction(player);
     }
     
 }

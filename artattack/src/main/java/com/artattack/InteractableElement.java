@@ -10,8 +10,9 @@ public class InteractableElement extends MapElement {
     private List<Interaction> interactions;
 
     //Contructor
-    public InteractableElement(){
-        
+    public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, List<Interaction> interactions){
+        super(ID,mapSymbol,name,coordinates);
+        this.interactions = interactions;
     }
     
     //getters
@@ -31,7 +32,13 @@ public class InteractableElement extends MapElement {
         return this.interactions;
     }
 
+    //setter
+    public void setInteraction(Interaction interaction){
+        this.interactions.add(interaction);
+    }
+
     public void interact(Player p){
 
     }
+    
 }

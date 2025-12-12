@@ -1,9 +1,13 @@
 package com.artattack;
 
+import com.googlecode.lanterna.gui2.TextBox;
+
 public class TalkFactory implements InteractionFactory {
     //Primitive method
     @Override
-    public Interaction createInteraction(){
-        return new Talk();
+    public Interaction createInteraction(Object... args){
+        TextBox dialogBox = (TextBox) args[0];
+        String dialog = (String) args[1];
+        return new Talk(dialogBox, dialog);
     }
 }

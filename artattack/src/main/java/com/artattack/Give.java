@@ -11,15 +11,16 @@ public class Give extends Interaction {
 
     //Constructor
     public Give(TextBox dialogBox, String dialog, Item item){
-        super(dialogBox, dialog);
+        this.dialogBox = dialogBox;
+        this.dialog = dialog;
         this.item = item;
     }
 
     //Primitive method
     @Override
     public void doAction(Player player){
-        this.dialogBox.addLine(dialog);
-        player.getInventory().add(this.item); //usare List<? super Item> in player e fare il cast in un metodo useItem del player
+        /*this.dialogBox.addLine(dialog);
+        player.getInventory().add(this.item);*/ //usare List<? super Item> in player e fare il cast in un metodo useItem del player
     }
 
     //Getter

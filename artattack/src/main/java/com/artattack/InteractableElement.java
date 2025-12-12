@@ -36,17 +36,12 @@ public class InteractableElement extends MapElement {
         return this.interactions;
     }
 
-    //setter
-    public void setInteraction(Interaction interaction){
-        this.interactions.add(interaction);
-    }
-
     public void interact(Player player){
         if(this.currInteraction < this.nMaxInteractions){
-            this.interactions.get(currInteraction).doAction(player);
-            currInteraction++;
+            this.interactions.get(this.currInteraction).doAction(player);
+            this.currInteraction++;
         }
-        else this.interactions.get(nMaxInteractions - 1).doAction(player);
+        else this.interactions.get(this.nMaxInteractions - 1).doAction(player);
     }
     
 }

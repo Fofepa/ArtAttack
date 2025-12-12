@@ -4,8 +4,11 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.*;
 
 public class interactableElementTest {
     private InteractableElement npc;
@@ -15,19 +18,18 @@ public class interactableElementTest {
 
     @Before
     public void setUp(){
-        this.player = new MovieDirector();
+        this.player = new MovieDirector(0, '*',null,null,0,0,0,0,0,0,null,0,0,0,null,new ArrayList<Item>());
         this.item = new Cure();
-        this.interaction = new Give("Test interaction", this.item);
-        this.npc = new InteractableElement(0,'*',"npcTest",new Coordinates(0,0), new ArrayList<Interaction>());
-        this.npc.setInteraction(this.interaction);
+        this.interaction = new Give(null, "", this.item);
+        this.npc = new InteractableElement(0,'*',null,null, new ArrayList<Interaction>().add(this.interaction));
     }
 
     @Test
     public void testInteract(){
         this.npc.interact(this.player);
         assertTrue("interactableElementTest faild. Item not in player inventory.", 
-            this.player.getInventory().contains(this.item);
-        )
+            this.player.getInventory().contains(this.item)
+        );
     }
 
     @After
@@ -39,7 +41,7 @@ public class interactableElementTest {
 
         assertNull(item);
         assertNull(npc);
-        asserNull(player);
+        assertNull(player);
         assertNull(interaction);
     }
 

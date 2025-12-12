@@ -10,7 +10,8 @@ public class Talk extends Interaction {
     
     //Constructor
     public Talk(TextBox dialogBox, String dialog){
-        super(dialogBox, dialog);
+        this.dialogBox = dialogBox;
+        this.dialog = dialog;
     }
 
     //Primitive method

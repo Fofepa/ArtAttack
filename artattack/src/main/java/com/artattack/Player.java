@@ -13,14 +13,14 @@ public abstract class Player extends MapElement {
     private int maxWeapons;
     private List<Weapon> weapons;
     private int speed;
-    private List<? extends Item> inventory;
+    private List<? super Item> inventory;
     private int actionPoints;
     private List<Coordinates> actionArea;
     private List<Coordinates> moveArea;
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,int currHP,int maxHP,int currXP, int maxXP, 
         int level, int maxWeapons, List<Weapon> weapons, int speed, int actionPoints, List<Coordinates> actionArea,
-         List<Coordinates> moveArea, List<? extends Item> inventory){
+         List<Coordinates> moveArea, List<? super Item> inventory){
             super(ID,mapSymbol,name,coordinates);
             this.maxHP = maxHP;
             this.currHP = currHP;
@@ -90,7 +90,7 @@ public abstract class Player extends MapElement {
         return this.speed;
     }
 
-    public List<? extends Item> getInventory() {
+    public List<? super Item> getInventory() {
         return this.inventory;
     }
 

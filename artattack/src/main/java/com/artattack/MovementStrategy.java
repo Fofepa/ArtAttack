@@ -29,8 +29,8 @@ public class MovementStrategy {
 
         if (Math.abs(new_c.getX() - player.getCoordinates().getX()) <= 1 &&
             Math.abs(new_c.getY() - player.getCoordinates().getY()) <= 1 &&
-            new_c.getX() >= 0 && new_c.getX() < this.map.getColumn() &&
-            new_c.getY() >= 0 && new_c.getY() < this.map.getRow() &&
+            new_c.getX() >= 0 && new_c.getX() < this.map.getcolumns() &&
+            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() &&
             player.getActionArea().contains(new_c)){
             cursore = new_c;
         }

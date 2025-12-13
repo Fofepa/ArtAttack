@@ -21,7 +21,7 @@ public class Maps {
         return this.dictionaire;
     }
 
-    public int getRow(){
+    public int getRows(){
         return this.rows;
     }
 

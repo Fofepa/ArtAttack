@@ -1,11 +1,15 @@
 package com.artattack.view;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import java.awt.*;
 
-class PannelloMappa extends JPanel {
+class MapPanel extends JPanel {
     private char[][] mappa;
     private int righe = 20;
     private int colonne = 40;
@@ -17,7 +21,7 @@ class PannelloMappa extends JPanel {
     private boolean mostraCursore = true;
     private Timer timerBlink;
     
-    public PannelloMappa() {
+    public MapPanel() {
         setBackground(Color.BLACK);
         setFocusable(true);
         inizializzaMappa();

@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class cureTest {
+public class cureTest{
     private Item i;
     private Characters c;
     private static int k;

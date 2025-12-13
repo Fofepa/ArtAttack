@@ -7,7 +7,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-public class weaponTest extends TestCase {
+public class weaponTest{
 
     private Weapon w;
 

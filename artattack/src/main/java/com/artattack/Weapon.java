@@ -1,31 +1,42 @@
 package com.artattack;
 
-import java.util.List;
-
-public class Weapon extends Item {
+public class Weapon{
     //Attributes
-    private List<Move> moves;
-    private Characters characterClass;
+    //private List<Move> moves;
+    private final String name;
+    private final String description;
+    private Player characterClass;
+
 
     //Constructor
-    public Weapon(String name, String description, List<Move> moves, Characters characterClass) {
-        super(name, description);
-        this.moves = moves;
+    public Weapon(String name, String description, /*List<Move> moves,*/ Player characterClass) {
+        this.name = name;
+        this.description = description;
+        //this.moves = moves;
         this.characterClass = characterClass;
     }
 
     //Getters
-    public List<Move> getMoves() {
+   /*  public List<Move> getMoves() {
         return moves;
-    }
+    } */
 
-    public Characters getCharacterClass() {
+    public Player getCharacterClass() {
         return characterClass;
     }
 
-    //Methods
+    public String getName() {
+        return this.name;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+   /*  //Methods
     @Override
     public int use() {
         return 0;
     }
+} */
 }

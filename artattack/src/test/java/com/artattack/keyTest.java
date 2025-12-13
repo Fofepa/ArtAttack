@@ -7,7 +7,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-public class keyTest extends TestCase {
+public class keyTest{
 
     private Key k;
 

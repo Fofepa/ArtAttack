@@ -1,6 +1,6 @@
 package com.artattack;
 
-import java.util.*;
+import java.util.List;
 
 public abstract class Player extends MapElement {
     
@@ -13,7 +13,8 @@ public abstract class Player extends MapElement {
     private int maxWeapons;
     private List<Weapon> weapons;
     private int speed;
-    private List<? extends Item> inventory;
+    private List<Item> inventory;
+    private List<Key> keys;
     private int actionPoints;
     private List<Coordinates> actionArea;
     private List<Coordinates> moveArea;
@@ -35,7 +36,7 @@ public abstract class Player extends MapElement {
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates, 
         int currHP, int maxHP, int currXP, int maxXP, int level, int speed,
-        int maxWeapons, List<Weapon> weapons , int actionPoints, List<? extends Item> inventory,
+        int maxWeapons, List<Weapon> weapons , int actionPoints, List<Item> inventory,
           List<Coordinates> actionArea, List<Coordinates> moveArea){
             this(ID,mapSymbol,name,coordinates,currHP, maxHP, currXP, maxXP,level, speed);
             this.maxWeapons = maxWeapons;
@@ -107,6 +108,18 @@ public abstract class Player extends MapElement {
 
     public List<Coordinates> getMoveArea() {
         return this.moveArea;
+    }
+
+    public void addItem(Item item){
+        this.inventory.add(item);
+    }
+
+    public void addKey(Key key){
+        this.keys.add(key);
+    }
+
+    public void addWeapon(Weapon weapon){
+        this.weapons.add(weapon);
     }
 
 

@@ -5,9 +5,9 @@ public class Cure extends Item {
     private int healAmount;
 
     //Constructor
-    public SpeedBuff(String name, String description, int healAmount) {
+    public Cure(String name, String description, int healAmount) {
         super(name, description);
-        this.healAmount = buffAmount;
+        this.healAmount = healAmount;
     }
 
     //Getters

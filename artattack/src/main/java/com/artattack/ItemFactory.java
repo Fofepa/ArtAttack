@@ -1,5 +1,5 @@
 package com.artattack;
 
-public interface Item {
-    Item createItem();
+public interface ItemFactory{
+    Item createItem(String name, String description, int amount);
 }

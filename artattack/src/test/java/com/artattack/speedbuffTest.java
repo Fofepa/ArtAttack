@@ -7,7 +7,7 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-public class speedbuffTest extends TestCase {
+public class speedbuffTest{
 
     private SpeedBuff sb;
 

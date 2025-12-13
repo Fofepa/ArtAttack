@@ -55,8 +55,6 @@ public abstract class Player extends MapElement {
 
     public abstract  void skipTurn();
 
-    public abstract  void setCoordinates(Coordinates coordinatesSet);
-
     //getters
     public int getCurrHP() {
         return this.currHP;

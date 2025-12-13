@@ -5,7 +5,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import junit.framework.TestCase;
-import com.artattack.MovieDirector;
 
 public class moviedirectorTest extends TestCase {
 

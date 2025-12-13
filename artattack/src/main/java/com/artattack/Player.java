@@ -18,42 +18,47 @@ public abstract class Player extends MapElement {
     private List<Coordinates> actionArea;
     private List<Coordinates> moveArea;
 
-    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,int currHP,int maxHP,int currXP, int maxXP, 
-        int level, int maxWeapons, List<Weapon> weapons, int speed, int actionPoints, List<Coordinates> actionArea,
-         List<Coordinates> moveArea, List<? extends Item> inventory){
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates){
             super(ID,mapSymbol,name,coordinates);
-            this.maxHP = maxHP;
-            this.currHP = currHP;
-            this.maxXP = maxXP;
-            this.currXP = currXP;
-            this.level = level;
+        }
+
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates, 
+        int currHP, int maxHP, int currXP, int maxXP, int level, int speed){
+        this(ID,mapSymbol,name,coordinates);
+        this.currHP = currHP;
+        this.maxHP = maxHP;
+        this.currXP = currXP;
+        this.maxXP = maxXP;
+        this.level = level;
+        this.speed = speed;
+    }
+
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates, 
+        int currHP, int maxHP, int currXP, int maxXP, int level, int speed,
+        int maxWeapons, List<Weapon> weapons , int actionPoints, List<? extends Item> inventory,
+          List<Coordinates> actionArea, List<Coordinates> moveArea){
+            this(ID,mapSymbol,name,coordinates,currHP, maxHP, currXP, maxXP,level, speed);
             this.maxWeapons = maxWeapons;
             this.weapons = weapons;
-            this.speed = speed;
             this.actionPoints = actionPoints;
-            this.actionArea = actionArea;
-            this.moveArea = moveArea;
             this.inventory = inventory;
+            this.actionArea = actionArea;
+            this.moveArea  = moveArea;
+
         }
 
     //primitive methods
-    public void move(){
+    //public void move(){;
 
-    }
+   // public void attack();
 
-    public void attack(){
-
-    }
-
-    public void openInventory(){
-
-    }
+    //public void openInventory();
     // guys do you remember? you can use the wildcard only in list and such
-    public abstract  <T extends Item> T getItem(int k);
+    //public abstract  <T extends Item> T getItem(int k);
 
-    public abstract  void interact(/*InteractableElement dude*/);
+    //public abstract  void interact(/*InteractableElement dude*/);
 
-    public abstract  void skipTurn();
+    //public abstract  void skipTurn();
 
     //getters
     public int getCurrHP() {

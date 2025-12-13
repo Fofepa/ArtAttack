@@ -3,53 +3,61 @@ package com.artattack;
 public class MovementStrategy {
     private Maps map;
     private Player player;
-    private Coordinates cursore;
-    private boolean modalitaSelezione = false;
+    private Coordinates cursor;
+    private boolean isSelected = false;
     
      public MovementStrategy(Maps map,Player player){
         this.map = map;
         this.player = player;
-        this.cursore = player.getCoordinates();
+        this.cursor = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY());
     } 
 
-    public void execute(int dx, int dy, boolean conferma){
+    public void execute(int dx, int dy){
         if (dx != 0 || dy != 0) {
-            if (!modalitaSelezione)
-                modalitaSelezione = true;
-            movePlayer(dx, dy); 
+            if (!isSelected)
+                isSelected = true;
+            moveCursor(dx, dy); 
         }
     }
 
 
 
-    private void movePlayer(int dx, int dy){
-        int x = cursore.getX();
-        int y = cursore.getY();
+    private void moveCursor(int dx, int dy){
+        int x = cursor.getX();
+        int y = cursor.getY();
         Coordinates new_c = new Coordinates(dx + x,dy + y);
 
         if (Math.abs(new_c.getX() - player.getCoordinates().getX()) <= 1 &&
             Math.abs(new_c.getY() - player.getCoordinates().getY()) <= 1 &&
-            new_c.getX() >= 0 && new_c.getX() < this.map.getcolumns() &&
-            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() &&
-            player.getActionArea().contains(new_c)){
-            cursore = new_c;
+            new_c.getX() >= 0 && new_c.getX() < this.map.getColumns() &&
+            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() /*&&
+            player.getActionArea().contains(new_c)*/){
+            cursor = new_c;
         }
     }
 
-    public void confermaMovimento() {
-        if (this.map.getMapMatrix()[cursore.getY()][cursore.getX()] != '#') {
+    public void acceptMovement() {
+        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '#') {
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
-            player.setCoordinates(cursore);
+            player.setCoordinates(cursor);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
         }
-        modalitaSelezione = false;
+        isSelected = false;
     }
 
-    public Coordinates getCursore(){
-        return this.cursore;
+    public Coordinates getCursor(){
+        return this.cursor;
     }
 
-    public boolean isModalitaSelezione() {
-        return modalitaSelezione;
+    public boolean getSelectedState() {
+        return this.isSelected;
+    }
+
+    public Player getPlayer() {
+        return this.player;
+    }
+
+    public Maps getMap() {
+        return this.map;
     }
 }

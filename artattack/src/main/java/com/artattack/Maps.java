@@ -8,10 +8,13 @@ public class Maps {
     private int rows;
     private int columns;
     
-   /* public Maps(Map<Coordinates, ? extends MapElement> dictionaire, char[][] mapMatrix){
-        this.dictionaire = dictionaire;
-        this.mapMatrix = mapMatrix;
-    }*/
+    public Maps(/*Map<Coordinates, ? extends MapElement> dictionaire,*/){
+        //this.dictionaire = dictionaire;
+        this.rows = 20;
+        this.columns = 40;
+        this.mapMatrix = startMap();
+        
+    }
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;
@@ -25,7 +28,7 @@ public class Maps {
         return this.rows;
     }
 
-    public int getcolumns(){
+    public int getColumns(){
         return this.columns;
     }
 
@@ -51,6 +54,41 @@ public class Maps {
         else
             return false;
     } */
+
+    private char[][] startMap(){
+        char[][] charMatrix = new char[this.rows][this.columns];
+        
+        for (int i = 0; i < this.rows; i++) {
+            for (int j = 0; j < this.columns; j++) {
+                charMatrix[i][j] = '.';
+            }
+        }
+        
+        for (int i = 0; i < this.columns; i++) {
+            charMatrix[0][i] = '#';
+            charMatrix[this.rows - 1][i] = '#';
+        }
+        for (int i = 0; i < this.rows; i++) {
+            charMatrix[i][0] = '#';
+            charMatrix[i][this.columns - 1] = '#';
+        }
+        
+        for (int i = 5; i < 15; i++) {
+            charMatrix[10][i] = '#';
+        }
+        
+        int playerX = 5;
+        int playerY = 5;
+        charMatrix[playerY][playerX] = '@';
+        
+        charMatrix[8][15] = 'E';
+        charMatrix[12][20] = 'E';
+        
+        charMatrix[3][30] = '$';
+        charMatrix[15][25] = '$';
+
+        return charMatrix;
+    }
 
     
 }

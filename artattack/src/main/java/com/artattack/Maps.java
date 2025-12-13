@@ -5,6 +5,8 @@ import java.util.Map;
 public class Maps {
     private Map<Coordinates, ? extends MapElement> dictionaire;
     private char[][] mapMatrix;
+    private int row;
+    private int column;
     
    /* public Maps(Map<Coordinates, ? extends MapElement> dictionaire, char[][] mapMatrix){
         this.dictionaire = dictionaire;
@@ -17,6 +19,14 @@ public class Maps {
 
     public Map<Coordinates, ? extends MapElement> getDict(){
         return this.dictionaire;
+    }
+
+    public int getRow(){
+        return this.row;
+    }
+
+    public int getColumn(){
+        return this.column;
     }
 
     public boolean updateMovement(Coordinates curr_pos, Coordinates new_pos){

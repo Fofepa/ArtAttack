@@ -1,24 +1,27 @@
 package com.artattack;
 
 public abstract class Item {
+    //Attributes
     private String name;
     private String description;
-    private int healAmount;
 
-    public int use(){
-        return 0;
+    //Constructor
+    public Item(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
+    //Getters
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getDescription() {
-        return description;
+        return this.description;
     }
 
-    public int getHealAmount() {
-        return healAmount;
+    //Methods
+    public int use(){
+        return 0;
     }
-
 }

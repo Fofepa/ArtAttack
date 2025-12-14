@@ -122,5 +122,35 @@ public abstract class Player extends MapElement {
         this.weapons.add(weapon);
     }
 
+    public void setMaxHP(int maxHP){
+        this.maxHP = maxHP;
+        this.currHP = maxHP;        
+    }
 
+    public void setMaxXP(int maxXP){
+        this.maxXP = maxXP;
+    }
+
+    public void setLevel(){
+        this.level += 1;
+    }
+
+    public void setMaxWeapons(){
+        this.maxWeapons += 1;
+    }
+
+    public void setSpeed(int speed){
+        this.speed = speed;
+    }
+
+    public void setMoveArea(List<Coordinates> moveArea){
+        this.moveArea = moveArea;
+    }
+
+    public void updateHP(int amount){
+        if(this.currHP + amount > this.maxHP)
+            this.currHP = this.maxHP;
+        else
+            this.currHP += amount;
+    }
 }

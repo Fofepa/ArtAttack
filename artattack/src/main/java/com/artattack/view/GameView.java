@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 public class GameView extends JFrame {
     
     private double mainVerticalProportion = 0.3;
-    private double inventorysVerticalProportion = 0.8;
+    private double inventoriesVerticalProportion = 0.8;
     private double mapHorizontalProportion = 0.7;
     
     // Proporzioni per le divisioni interne
@@ -41,7 +41,7 @@ public class GameView extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         
         // Pannello alto sinistra diviso in 2 parti uguali
-        JPanel inventoryPanel = createBlackPanel("Inventary");
+        JPanel inventoryPanel = createBlackPanel("Inventory");
         JPanel movesPanel = createBlackPanel("Moves");
         
         JSplitPane movesInventorySplit = new JSplitPane(
@@ -66,9 +66,9 @@ public class GameView extends JFrame {
             movesInventorySplit,
             legendPanel
         );
-        downLeftSplit.setResizeWeight(inventorysVerticalProportion);
+        downLeftSplit.setResizeWeight(inventoriesVerticalProportion);
         downLeftSplit.setDividerSize(2);
-        downLeftSplit.setDividerLocation(inventorysVerticalProportion);
+        downLeftSplit.setDividerLocation(inventoriesVerticalProportion);
         
         // Pannello alto destra (mappa)
         mapPanel = new MapPanel();
@@ -208,7 +208,7 @@ public class GameView extends JFrame {
     
     public void setProportion(double mainVerticalProportion, double inventoryVerticalProportion, double mapHorizontalProportion) {
         this.mainVerticalProportion = mainVerticalProportion;
-        this.inventorysVerticalProportion = inventoryVerticalProportion;
+        this.inventoriesVerticalProportion = inventoryVerticalProportion;
         this.mapHorizontalProportion = mapHorizontalProportion;
     }
     

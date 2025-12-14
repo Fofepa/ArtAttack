@@ -54,28 +54,17 @@ class MapPanel extends JPanel {
                 int dx = 0, dy = 0;
                 
                 switch (e.getKeyCode()) {
-                    case java.awt.event.KeyEvent.VK_UP:
-                    case java.awt.event.KeyEvent.VK_W:
-                        dy = -1;
-                        break;
-                    case java.awt.event.KeyEvent.VK_DOWN:
-                    case java.awt.event.KeyEvent.VK_S:
-                        dy = 1;
-                        break;
-                    case java.awt.event.KeyEvent.VK_LEFT:
-                    case java.awt.event.KeyEvent.VK_A:
-                        dx = -1;
-                        break;
-                    case java.awt.event.KeyEvent.VK_RIGHT:
-                    case java.awt.event.KeyEvent.VK_D:
-                        dx = 1;
-                        break;
-                    case java.awt.event.KeyEvent.VK_ENTER:
+                    case java.awt.event.KeyEvent.VK_UP, java.awt.event.KeyEvent.VK_W -> dy = -1;
+                    case java.awt.event.KeyEvent.VK_DOWN, java.awt.event.KeyEvent.VK_S -> dy = 1;
+                    case java.awt.event.KeyEvent.VK_LEFT, java.awt.event.KeyEvent.VK_A -> dx = -1;
+                    case java.awt.event.KeyEvent.VK_RIGHT, java.awt.event.KeyEvent.VK_D -> dx = 1;
+                    case java.awt.event.KeyEvent.VK_ENTER -> {
                         if (movementStrategy.getSelectedState()) {
                             movementStrategy.acceptMovement();
                             repaint();
                         }
                         return;
+                    }
                 }
                 
                 movementStrategy.execute(dx, dy);
@@ -89,7 +78,7 @@ class MapPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+    
         Font font = new Font("Monospaced", Font.BOLD, 16);
         g.setFont(font);
         FontMetrics fm = g.getFontMetrics();
@@ -97,10 +86,10 @@ class MapPanel extends JPanel {
         int charWidth = fm.charWidth('W');
         int charHeight = fm.getHeight();
         
-        int mapLenght = this.movementStrategy.getMap().getColumns() * charWidth;
+        int mapLength = this.movementStrategy.getMap().getColumns() * charWidth;
         int mapHeight = this.movementStrategy.getMap().getRows() * charHeight;
         
-        int offsetX = (getWidth() - mapLenght) / 2;
+        int offsetX = (getWidth() - mapLength) / 2;
         int offsetY = (getHeight() - mapHeight) / 2;
         
         for (int i = 0; i < this.movementStrategy.getMap().getRows(); i++) {

@@ -34,7 +34,7 @@ public class GameView extends JFrame {
     private MapPanel mapPanel;
     
     public GameView() {
-        setTitle("Gioco con Mappa");
+        setTitle("Map");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

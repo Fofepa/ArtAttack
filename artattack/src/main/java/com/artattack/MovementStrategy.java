@@ -37,7 +37,9 @@ public class MovementStrategy {
     }
 
     public void acceptMovement() {
-        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '#') {
+        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '#' &&
+            this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != 'E' &&
+            this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '$'){
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
             player.setCoordinates(cursor);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';

@@ -10,8 +10,8 @@ public class Maps {
     
     public Maps(/*Map<Coordinates, ? extends MapElement> dictionaire,*/){
         //this.dictionaire = dictionaire;
-        this.rows = 20;
-        this.columns = 40;
+        this.rows = 36;
+        this.columns = 150;
         this.mapMatrix = startMap();
         
     }

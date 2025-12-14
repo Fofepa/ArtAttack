@@ -1,15 +1,20 @@
 package com.artattack;
 
-import com.googlecode.lanterna.gui2.TextBox;
+import java.util.*;
 
 public class GiveFactory implements InteractionFactory {
-    //Primitive method
+
+
     @Override
-    public Interaction createInteraction(Object... args){
-        //Need to add check before casting
-        TextBox dialogBox = (TextBox) args[0];
-        String dialog = (String) args[1];
-        Item item = (Item) args[2];
-        return new Give(dialogBox, dialog, item);
+    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog, Item item){
+        if(dialogPanel == null || dialog == null || item == null)
+            throw new IllegalArgumentException();
+        return new Give(dialogPanel, dialog, item);
     }
+
+    @Override
+    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog){
+        throw new UnsupportedOperationException();
+    }
+
 }

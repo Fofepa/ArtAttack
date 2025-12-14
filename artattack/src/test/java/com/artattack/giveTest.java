@@ -29,7 +29,7 @@ public class giveTest {
 
     @Test
     public void testDoAction(){
-        interaction.doAction(player);
+        interaction.doInteraction(player);
 
         assertTrue("Give testDoAsction faild. Item not in Player's inventory.",
                     player.getInventory().contains(item));

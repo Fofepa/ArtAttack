@@ -1,27 +1,20 @@
 package com.artattack;
 
-import com.googlecode.lanterna.gui2.TextBox;
+import java.util.List;
+
 
 public class Talk extends Interaction {
 
-    //Attribute
-    private TextBox dialogBox;
-    private String dialog;
+    private InteractionPanel dialogPanel;
+    private List<String> dialog;
     
-    //Constructor
-    public Talk(TextBox dialogBox, String dialog){
-        this.dialogBox = dialogBox;
+    public Talk(InteractionPanel dialogPanle, List<String> dialog){
+        this.dialogPanel = dialogPanel;
         this.dialog = dialog;
     }
 
-    //Primitive method
     @Override
-    public void doAction(Player player){
-        this.dialogBox.addLine(dialog);
-    }
-
-    //Setter
-    public void setDialog(String dialog){
-        this.dialog = dialog;
+    public void doInteraction(Player player){
+        this.dialogPanel(dialog);
     }
 }

@@ -1,14 +1,18 @@
 package com.artattack;
 
-import com.googlecode.lanterna.gui2.TextBox;
+import java.util.List;
 
 public class TalkFactory implements InteractionFactory {
-    //Primitive method
+
     @Override
-    public Interaction createInteraction(Object... args){
-        //Need to add check before casting
-        TextBox dialogBox = (TextBox) args[0];
-        String dialog = (String) args[1];
-        return new Talk(dialogBox, dialog);
+    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog, Item item){
+        if(dialogPanel == null || dialog == null ||  item != null)
+            throw new IllegalArgumentException();
+        return new Talk(dialogPanel, dialog);
+    }
+    
+    @Override
+    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog){
+        return this.createInteraction(dialogPanel, dialog, null);
     }
 }

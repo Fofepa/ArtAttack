@@ -2,5 +2,5 @@ package com.artattack;
 
 
 public abstract class Interaction {
-    public abstract void doAction(Player player);
+    public abstract void doInteraction(Player player);
 }

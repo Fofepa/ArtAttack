@@ -1,5 +1,7 @@
 package com.artattack;
 
+import java.util.*;
+
 public class Coordinates {
     private int x;
     private int y;
@@ -25,5 +27,21 @@ public class Coordinates {
 
     public void setY(int y){
         this.y = y;
+    }
+    
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(this.getClass() != obj.getClass()) return false;
+        Coordinates other = (Coordinates) obj;
+        if(this.getX() == other.getX() && this.getY() == other.getY()) 
+            return true;
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
     }
 }

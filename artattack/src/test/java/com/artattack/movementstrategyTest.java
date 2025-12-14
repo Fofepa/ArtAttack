@@ -2,12 +2,13 @@ package com.artattack;
 
 
 import org.junit.After;
+
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.googlecode.lanterna.input.KeyStroke;
 
 public class movementstrategyTest {
     private Maps map;
@@ -19,7 +20,7 @@ public class movementstrategyTest {
     public void setUp() throws Exception{
         map = new Maps();
         assertNotNull(map);
-        move = new MovementStrategy();
+        move = new MovementStrategy(new Maps(), new Musician(0,'M',"Frank Zappa",new Coordinates(1,1)));
         assertNotNull(move);
         //player = new MovieDirector();
 
@@ -34,7 +35,15 @@ public class movementstrategyTest {
     }
 
     @Test
-    public void executeTest(KeyStroke k){
-        coord = new Coordinates(1,1);
+    public void executeTest(){
+        Coordinates t = new Coordinates(move.getCursor().getX(),move.getCursor().getY());
+        move.execute(0,1);
+        assertEquals(new Coordinates(t.getX(),t.getY()+1),move.getCursor());
+    }
+
+    @Test
+    public void acceptmovementTest(){
+        move.acceptMovement();
+        assertEquals(move.getCursor(),move.getPlayer().getCoordinates());
     }
 }

@@ -4,15 +4,18 @@ import java.util.List;
 
 public class TalkFactory implements InteractionFactory {
 
-    @Override
-    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog, Item item){
-        if(dialogPanel == null || dialog == null ||  item != null)
+    private InteractionPanel dialogPanel;
+    private List<String> dialog;
+
+    public TalkFactory(InteractionPanel dialogPanel, List<String> dialog){
+        if(dialogPanel == null || dialog == null)
             throw new IllegalArgumentException();
-        return new Talk(dialogPanel, dialog);
+        this.dialogPanel = dialogPanel;
+        this.dialog = dialog;
     }
     
     @Override
-    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog){
-        return this.createInteraction(dialogPanel, dialog, null);
+    public Interaction createInteraction(){
+        return this.createInteraction(this.dialogPanel, this.dialog);
     }
 }

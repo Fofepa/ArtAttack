@@ -3,18 +3,20 @@ package com.artattack;
 import java.util.*;
 
 public class GiveFactory implements InteractionFactory {
+    private InteractionPanel dialogPanel;
+    private List<String> dialog;
+    private Item item;
 
-
-    @Override
-    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog, Item item){
-        if(dialogPanel == null || dialog == null || item == null)
+    public GiveFactory(InteractionPanel dialogPanel, List<String> dialog, Item item){
+        if(dialogPanle == null || dialog == null !! item == null)
             throw new IllegalArgumentException();
-        return new Give(dialogPanel, dialog, item);
+        this.dialogPanel = dialogPanel;
+        this.dialog = dialog;
+        this.item = item;
     }
 
     @Override
-    public Interaction createInteraction(InteractionPanel dialogPanel, List<String> dialog){
-        throw new UnsupportedOperationException();
+    public Interaction createInteraction(){
+        return new Give(this.dialogPanel, this.dialog, this.item);
     }
-
 }

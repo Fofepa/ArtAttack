@@ -1,23 +1,17 @@
 package com.artattack;
 
 public class Cure extends Item {
-    //Attributes
-    private int healAmount;
 
     //Constructor
-    public Cure(String name, String description, int healAmount) {
-        super(name, description);
-        this.healAmount = healAmount;
-    }
-
-    //Getters
-    public int getHealAmount() {
-        return this.healAmount;
+    public Cure(String name, String description, int amount) {
+        super(name, description, amount);
     }
 
     //Methods
     @Override
-    public int use() {
-        return 0;
+    public int use(Player player) {
+        int realCure = (player.getCurrHP() + this.getAmount() > player.getMaxHP()) ? player.getMaxHP() - player.getCurrHP() : this.getAmount();
+        player.updateHP(this.getAmount());
+        return realCure;
     }  
 }

@@ -1,23 +1,16 @@
 package com.artattack;
 
 public class SpeedBuff extends Item {
-    //Attributes
-    private int buffAmount;
 
     //Constructor
-    public SpeedBuff(String name, String description, int buffAmount) {
-        super(name, description);
-        this.buffAmount = buffAmount;
-    }
-    //Getters
-
-    public int getBuffAmount() {
-        return this.buffAmount;
+    public SpeedBuff(String name, String description, int amount) {
+        super(name, description, amount);
     }
 
     //Methods
     @Override
-    public int use() {
-        return 0;
+    public int use(Player player) {
+        player.setSpeed(player.getSpeed() + this.getAmount());
+        return this.getAmount();
     }
 }

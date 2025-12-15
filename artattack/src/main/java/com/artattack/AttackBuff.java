@@ -1,22 +1,16 @@
 package com.artattack;
 
 public class AttackBuff extends Item {
-    //Attributes
-    private int buffAmount;
 
     //Constructor
-    public AttackBuff(String name, String description, int buffAmount) {
-        super(name, description);
-        this.buffAmount = buffAmount;
-    }
-
-    public int getBuffAmount() {
-        return this.buffAmount;
+    public AttackBuff(String name, String description, int amount) {
+        super(name, description, amount);
     }
 
     //Methods
     @Override
-    public int use() {
+    public int use(Player player) {
         return 0;
+        //player.setAttack(player.getAttack() + buffAmount);  va aggiunta una variabile attack al player
     }
 }

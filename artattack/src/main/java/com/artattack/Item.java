@@ -2,8 +2,8 @@ package com.artattack;
 
 public abstract class Item {
     //Attributes
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
 
     //Constructor
     public Item(String name, String description) {

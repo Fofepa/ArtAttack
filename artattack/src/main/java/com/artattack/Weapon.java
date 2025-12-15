@@ -5,15 +5,15 @@ public class Weapon{
     //private List<Move> moves;
     private final String name;
     private final String description;
-    private Player characterClass;
+    private int compatibility;
 
 
     //Constructor
-    public Weapon(String name, String description, /*List<Move> moves,*/ Player characterClass) {
+    public Weapon(String name, String description, /*List<Move> moves,*/ int compatibility) {
         this.name = name;
         this.description = description;
         //this.moves = moves;
-        this.characterClass = characterClass;
+        this.compatibility = compatibility;
     }
 
     //Getters
@@ -21,8 +21,8 @@ public class Weapon{
         return moves;
     } */
 
-    public Player getCharacterClass() {
-        return characterClass;
+    public int getCharacterClass() {
+        return this.compatibility;
     }
 
     public String getName() {

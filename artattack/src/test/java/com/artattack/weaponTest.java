@@ -1,11 +1,9 @@
 package com.artattack;
 
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
-import org.junit.Test;
 
 public class weaponTest{
 
@@ -13,7 +11,7 @@ public class weaponTest{
 
     @Before
     public void setUp() throws Exception {
-        w = new Weapon();
+        w = new Weapon("TestWeapon", "TestDescription", 0);
         assertNotNull(w);
     }
 
@@ -23,9 +21,9 @@ public class weaponTest{
         assertNull(w);
     }
 
-    @Test
+    /*@Test
     public void testUse() {
         assertEquals(0, 0);
-    }
+    }*/
 
 }

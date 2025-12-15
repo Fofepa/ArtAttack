@@ -10,22 +10,29 @@ import org.junit.Test;
 public class attackbuffTest{
 
     private AttackBuff ab;
+    private Player p;
 
     @Before
     public void setUp() throws Exception {
-        ab = new AttackBuff();
+        ab = new AttackBuff("Test", "Test", 1);
+        p = new MovieDirector(0, 'i', "TestPlayer", new Coordinates(0, 0));
+
         assertNotNull(ab);
+        assertNotNull(p);
     }
 
     @After
     public void tearDown() throws Exception {
         ab = null;
+        p = null;
+
         assertNull(ab);
+        assertNull(p);
     }
 
     @Test
     public void testUse() {
-        assertEquals(0, 0);
+        assertEquals("Function use has failed", 0, ab.use(p));
     }
 
 }

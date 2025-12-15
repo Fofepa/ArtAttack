@@ -1,8 +1,11 @@
 package com.artattack;
 
-import static org.junit.Assert.*;
-
-import org.junit.*;
+import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.Test;
 
 public class mapTest {
     private Maps map;

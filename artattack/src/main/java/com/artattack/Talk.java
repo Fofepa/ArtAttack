@@ -15,6 +15,6 @@ public class Talk extends Interaction {
 
     @Override
     public void doInteraction(Player player){
-        this.dialogPanel(dialog);
+        this.dialogPanel.showDialog(dialog);
     }
 }

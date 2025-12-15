@@ -1,6 +1,8 @@
 package com.artattack;
 
-import java.util.*;
+import java.util.List;
+
+import com.artattack.view.InteractionPanel;
 
 public class GiveFactory implements InteractionFactory {
     private InteractionPanel dialogPanel;
@@ -8,7 +10,7 @@ public class GiveFactory implements InteractionFactory {
     private Item item;
 
     public GiveFactory(InteractionPanel dialogPanel, List<String> dialog, Item item){
-        if(dialogPanle == null || dialog == null !! item == null)
+        if(dialogPanel == null || dialog == null || item == null)
             throw new IllegalArgumentException();
         this.dialogPanel = dialogPanel;
         this.dialog = dialog;

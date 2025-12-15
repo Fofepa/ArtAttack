@@ -2,15 +2,17 @@ package com.artattack;
 
 import java.util.List;
 
-public class Ask extends Interaction {
+import com.artattack.view.InteractionPanel;
+
+public class Ask implements Interaction {
 
     private InteractionPanel dialogPanel;
 	private String question;
 	private List<String> options;
-	private List<String> answers;
+	private List<List<String>> answers;
 	private List<Item> items;
 	
-	public Ask(InteractionPanel dialogPanel, String question, List<String> options, List<String> answers, List<Item> items){
+	public Ask(InteractionPanel dialogPanel, String question, List<String> options, List<List<String>> answers, List<Item> items){
 		this.dialogPanel = dialogPanel;
 		this.question = question;
 		this.options = options;
@@ -30,6 +32,6 @@ public class Ask extends Interaction {
 	private void handleChoice(int choice, Player player){
 		this.dialogPanel.showDialog(this.answers.get(choice));
 		if(this.items != null)
-			player.getInventory().add(this.items.get(choice));
+			player.addItem(this.items.get(choice));;
 	}
 }

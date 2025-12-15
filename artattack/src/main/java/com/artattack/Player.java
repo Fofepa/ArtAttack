@@ -94,7 +94,7 @@ public abstract class Player extends MapElement {
         return this.speed;
     }
 
-    public List<? extends Item> getInventory() {
+    public List<Item> getInventory() {
         return this.inventory;
     }
 

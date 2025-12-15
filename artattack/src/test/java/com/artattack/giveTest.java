@@ -21,10 +21,9 @@ public class giveTest {
     @Before
     public void setUp(){
         inventory = new ArrayList<Item>();
-        item = new Cure();
-        player = new MovieDirector(0, ' ', null, null, 0, 0, 0, 0, 0, 0, null, 0, 0, null, null, inventory);
-        interaction = new GiveFactory()
-                        .createInteraction(null, null, item);
+        item = new Cure("","",0);
+        player = new MovieDirector(0, '',"", new Coordinates(0, 0));
+        interaction = new GiveFactory(null,null, item).createInteraction();
     }
 
     @Test

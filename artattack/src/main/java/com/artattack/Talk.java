@@ -2,8 +2,10 @@ package com.artattack;
 
 import java.util.List;
 
+import com.artattack.view.InteractionPanel;
 
-public class Talk extends Interaction {
+
+public class Talk implements  Interaction {
 
     private InteractionPanel dialogPanel;
     private List<String> dialog;

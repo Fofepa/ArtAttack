@@ -2,7 +2,9 @@ package com.artattack;
 
 import java.util.List;
 
-public class Give extends Interaction {
+import com.artattack.view.InteractionPanel;
+
+public class Give implements Interaction {
 
     private InteractionPanel dialogPanel;
     private List<String> dialog;
@@ -17,7 +19,7 @@ public class Give extends Interaction {
     @Override
     public void doInteraction(Player player){
         this.dialogPanel.showDialog(dialog);
-        player.getInventory().add(this.item);
+        player.addItem(item);
     }
 
     public Item item(){

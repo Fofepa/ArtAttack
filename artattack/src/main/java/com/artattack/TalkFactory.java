@@ -2,6 +2,8 @@ package com.artattack;
 
 import java.util.List;
 
+import com.artattack.view.InteractionPanel;
+
 public class TalkFactory implements InteractionFactory {
 
     private InteractionPanel dialogPanel;
@@ -16,6 +18,6 @@ public class TalkFactory implements InteractionFactory {
     
     @Override
     public Interaction createInteraction(){
-        return this.createInteraction(this.dialogPanel, this.dialog);
+        return new Talk(this.dialogPanel, this.dialog);
     }
 }

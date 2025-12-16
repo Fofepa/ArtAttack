@@ -1,6 +1,6 @@
 package com.artattack;
 
-import java.util.*;
+import java.util.Objects;
 
 public class Coordinates {
     private int x;
@@ -38,6 +38,14 @@ public class Coordinates {
         if(this.getX() == other.getX() && this.getY() == other.getY()) 
             return true;
         return false;
+    }
+
+    public static Coordinates sum(Coordinates... args) {
+        Coordinates sum = new Coordinates(0, 0);
+        for (Coordinates c : args) {
+            sum = new Coordinates(sum.getX() + c.getX(), sum.getY() + c.getY());
+        }
+        return sum;
     }
 
     @Override

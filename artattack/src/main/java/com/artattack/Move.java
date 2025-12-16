@@ -59,6 +59,6 @@ public class Move {
                 }
             }
         }
-        return power;
+        return this.power;
     }
 }

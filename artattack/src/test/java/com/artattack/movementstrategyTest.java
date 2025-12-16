@@ -1,6 +1,8 @@
 package com.artattack;
 
 
+import java.util.List;
+
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -17,9 +19,16 @@ public class movementstrategyTest {
 
     @Before
     public void setUp() throws Exception{
-        map = new Maps();
+        map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
+         new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null)
+         )/*, List.of(
+            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
+            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
+         )*/);
         assertNotNull(map);
-        move = new MovementStrategy(new Maps(), new Musician(0,'M',"Frank Zappa",new Coordinates(1,1)));
+        move = new MovementStrategy(map, new Musician(0,'M',"Frank Zappa",new Coordinates(1,1)));
         assertNotNull(move);
         //player = new MovieDirector();
 

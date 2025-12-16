@@ -62,4 +62,8 @@ public class MovementStrategy {
     public Maps getMap() {
         return this.map;
     }
+
+    public void setIsSelected(boolean isSelected){
+        this.isSelected = isSelected;
+    }
 }

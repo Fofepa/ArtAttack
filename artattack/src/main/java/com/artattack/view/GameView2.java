@@ -26,7 +26,7 @@ public class GameView2 extends JFrame {
     
     private double mainVerticalProportion = 0.3;
     private double inventoriesVerticalProportion = 0.8;
-    private double mapHorizontalProportion = 0.7;
+    private double mapHorizontalProportion = 0.75;
     
     // Proporzioni per le divisioni interne
     private double inventorySubDivision = 0.5;
@@ -306,6 +306,8 @@ public class GameView2 extends JFrame {
         
         // Initial focus on map
         SwingUtilities.invokeLater(() -> {
+            game.mapPanel.revalidate();
+            game.mapPanel.repaint();
             game.mapPanel.requestFocusInWindow();
         });
     });

@@ -11,39 +11,47 @@ import org.junit.Test;
 
 public class moveTest {
 
-    private Move m;
-    private Player p;
+    private Move m1, m2;
+    private Player p1, p2;
     private Enemy e;
-    private Maps s;
+    private Maps maps;
 
     @Before
     public void setUp() throws Exception {
-        m = new Move("TestMove", "TestDescription", 1, List.of(new Coordinates(0, 1)));
-        p = new MovieDirector(0, 'i', "TestPlayer", new Coordinates(0, 0));
-        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1));
-        s = new Maps();
+        m1 = new Move("TestMove", "TestDescription", 1, List.of(new Coordinates(0, 1)));
+        m2 = new Move("TestMove", "TestDescription", 1, List.of(new Coordinates(1, 0)));
+        p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 10, 10, 0, 1, 1, 1);
+        p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1), 10, 10, 0, 1, 1, 1);
+        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), 10, 10);
+        maps = new Maps(p1, p2, null, List.of(e));
 
-        assertNotNull(m);
-        assertNotNull(p);
+        assertNotNull(m1);
+        assertNotNull(p1);
+        assertNotNull(p2);
         assertNotNull(e);
-        assertNotNull(s);
+        assertNotNull(maps);
     }
 
     @After
     public void tearDown() throws Exception {
-        m = null;
-        p = null;
+        m1 = null;
+        p1 = null;
+        p2 = null;
         e = null;
-        s = null;
+        maps = null;
 
-        assertNull(m);
-        assertNull(p);
+        assertNull(m1);
+        assertNull(p1);
+        assertNull(p2);
         assertNull(e);
-        assertNull(s);
+        assertNull(maps);
     }
 
     @Test
     public void testAttack() {
-        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 0, 0);
+        m1.attack(p1, maps);
+        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 9, e.getCurrHP()); //Player attacks Enemy
+        m2.attack(e, maps);
+        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*/
     }
 }

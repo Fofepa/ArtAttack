@@ -15,22 +15,23 @@ public class Maps {
         this.rows = 36;
         this.columns = 150;
         this.dictionaire = new HashMap<>();
-        if (playerOne.getCoordinates() != null)
+        if (playerOne.getCoordinates() != null && playerOne != null)
             dictionaire.put(playerOne.getCoordinates(), playerOne);
 
-        if (playerTwo.getCoordinates() != null)
+        if (playerTwo.getCoordinates() != null && playerTwo != null)
             dictionaire.put(playerTwo.getCoordinates(), playerTwo);
-
-        for (InteractableElement i : interactableElements) {
-            if (i.getCoordinates() != null)
-                dictionaire.put(i.getCoordinates(), i);
-}
-
-        for (Enemy e : enemies) {
-            if (e.getCoordinates() != null)
-                dictionaire.put(e.getCoordinates(), e);
+        if (interactableElements != null){
+            for (InteractableElement i : interactableElements) {
+                if (i.getCoordinates() != null)
+                    dictionaire.put(i.getCoordinates(), i);
         }
-
+}
+        if(enemies != null){
+            for (Enemy e : enemies) {
+                if (e.getCoordinates() != null)
+                    dictionaire.put(e.getCoordinates(), e);
+            }
+        }
            this.mapMatrix = startMap();
     }
 

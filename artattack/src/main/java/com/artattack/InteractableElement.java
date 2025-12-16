@@ -4,10 +4,6 @@ import java.util.List;
 
 public class InteractableElement extends MapElement {
 
-    private int ID;
-    private char mapSymbol;
-    private String name;
-    private Coordinates coordinates;
     private List<Interaction> interactions;
     private int maxInteractions;
     private int lastInteraction;
@@ -23,25 +19,6 @@ public class InteractableElement extends MapElement {
         this.currInteraction = 0;
     }
     
-    @Override
-    public int getID() {
-        return this.ID;
-    }
-
-    @Override
-    public char getMapSymbol() {
-        return this.mapSymbol;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public Coordinates getCoordinates() {
-        return this.coordinates;
-    }
 
     public List<Interaction> getInteractions(){
         return this.interactions;

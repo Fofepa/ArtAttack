@@ -10,12 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.artattack.Coordinates;
+import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
 import com.artattack.MovieDirector;
+import com.artattack.Player;
 
 class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;
+    private InteractionStrategy interactionStrategy;
     /* private boolean isSelected = false; */
     private boolean showCursor = true;
     private Timer timerBlink;
@@ -24,7 +27,10 @@ class MapPanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
         addKeyboardInputs(); //è execute di MovementStrategy
-        movementStrategy = new MovementStrategy(new Maps(),new MovieDirector(0,'@',"Lynch", new Coordinates(5,5)));
+        Maps maps = new Maps();
+        Player player = new MovieDirector(0,'@',"Lynch", new Coordinates(5,5));
+        movementStrategy = new MovementStrategy(maps, player);
+        interactionStrategy = new InteractionStrategy(movementStrategy);
 
         addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -65,6 +71,13 @@ class MapPanel extends JPanel {
                         }
                         return;
                     }
+                    case java.awt.event.KeyEvent.VK_E -> {
+                        if (movementStrategy.getSelectedState()){
+                            interactionStrategy.acceptInteraction();
+                            return;
+                        }
+                    }
+
                 }
                 
                 movementStrategy.execute(dx, dy);

@@ -287,14 +287,27 @@ public class GameView2 extends JFrame {
     }
     
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            GameView2 game = new GameView2();
-            game.setVisible(true);
-            
-            // Initial focus on map
-            SwingUtilities.invokeLater(() -> {
-                game.mapPanel.requestFocusInWindow();
-            });
-        });
+    // Aggiungere questo blocco per impostare un Look and Feel uniforme
+    try {
+        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+            if ("Nimbus".equals(info.getName())) { // Scegli Nimbus, Metal o altro
+                javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                break;
+            }
+        }
+    } catch (Exception e) {
+        // Se Nimbus non è disponibile, usa il default
+        System.err.println("Could not set Nimbus L&F.");
     }
+
+    SwingUtilities.invokeLater(() -> {
+        GameView2 game = new GameView2();
+        game.setVisible(true);
+        
+        // Initial focus on map
+        SwingUtilities.invokeLater(() -> {
+            game.mapPanel.requestFocusInWindow();
+        });
+    });
+}
 }

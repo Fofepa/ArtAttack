@@ -40,9 +40,10 @@ public class Move {
         List<MapElement> victims = new ArrayList<MapElement>();
         for (Coordinates attackCell : this.attackArea) {
             MapElement check = map.getDict().get(Coordinates.sum(attacker.getCoordinates(), attackCell));
-            if (attacker instanceof Player)
+            if (attacker instanceof Player){
                 if (check instanceof Enemy enemy)
                     victims.add(enemy);
+            }
             else if (attacker instanceof Enemy)
                 if (check instanceof Player player)
                     victims.add(player);

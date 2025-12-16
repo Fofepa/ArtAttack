@@ -1,5 +1,6 @@
 package com.artattack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Move {
@@ -7,10 +8,10 @@ public class Move {
     private String name;
     private String description;
     private int power;
-    private Coordinates[] attackArea;
+    private List<Coordinates> attackArea;
 
     //Constructor
-    public Move(String name, String description, int power, Coordinates[] attackArea) {
+    public Move(String name, String description, int power, List<Coordinates> attackArea) {
         this.name = name;
         this.description = description;
         this.power = power;
@@ -30,21 +31,33 @@ public class Move {
         return this.power;
     }
 
-    public Coordinates[] getAttackArea() {
+    public List<Coordinates> getAttackArea() {
         return this.attackArea;
     }
 
     //Methods
-    public int attack(Player player, Maps map) {
-        List<Enemy> victims = null;
+    public int attack(MapElement attacker, Maps map) {
+        List<MapElement> victims = new ArrayList<MapElement>();
         for (Coordinates attackCell : this.attackArea) {
-            MapElement check = map.getDict().get(Coordinates.sum(player.getCoordinates(), attackCell));
-            if (check instanceof Enemy enemy)
-                victims.add(enemy);
+            MapElement check = map.getDict().get(Coordinates.sum(attacker.getCoordinates(), attackCell));
+            if (attacker instanceof Player)
+                if (check instanceof Enemy enemy)
+                    victims.add(enemy);
+            else if (attacker instanceof Enemy)
+                if (check instanceof Player player)
+                    victims.add(player);
         }
-        for (Enemy enemy : victims) {
-            int realDamage = (enemy.getCurrHP() - this.power /*-variabile globale*/ < 0) ? enemy.getCurrHP() : this.power;
-            enemy.updateHP(- power /*-variabile globale*/);
+        for (MapElement element : victims) {
+            switch (element) {
+                case Enemy e -> {
+                    e.updateHP(- power /*-variabile globale*/);
+                }
+                case Player p -> {  
+                    p.updateHP(- power /*-variabile globale*/);
+                }
+                default -> {
+                }
+            }
         }
         return power;
     }

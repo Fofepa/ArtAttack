@@ -1,33 +1,37 @@
 package com.artattack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import com.artattack.view.InteractionPanel;
 
 public class interactableElementTest {
     private InteractableElement npc;
     private Player player;
     private Item item;
     private List<Interaction> interactions;
+    private InteractionPanel panel;
 
     @Before
     public void setUp(){
-        this.player = new MovieDirector(0, '*',null,null,0,0,0,0,0,0,null,0,0,0,null,new ArrayList<Item>());
-        this.item = new Cure();
+        this.player = new MovieDirector(0,'+'," ", new Coordinates(0, 0), 0, 0, 0, 0, 0, 0, 0, null, 0, new ArrayList<Item>(), null, null);
+        this.item = new Cure(" ", " ", 0);
         this.interactions = new ArrayList<Interaction>();
-        this.interactions.add(new Give(null, new ArrayList<String>(), this.item));
-        this.interactions.add(new Talk(null, new ArrayList<String>()));
+        this.panel = new InteractionPanel();
+        this.interactions.add(new Give(this.panel, List.of(" "), this.item));
+        this.interactions.add(new Talk(this.panel, List.of(" ")));
         this.npc = new InteractableElement(0,'*',null,null, interactions);
     }
 
     @Test
-    public void testInteract(){
+    public void interactTest(){
         this.npc.interact(this.player);
         assertTrue("interactableElementTest faild. Item not in player inventory.", 
             this.player.getInventory().contains(this.item)
@@ -45,11 +49,13 @@ public class interactableElementTest {
         this.player = null;
         this.item = null;
         this.interactions = null;
+        this.panel = null;
 
-        assertNull(item);
-        assertNull(npc);
-        assertNull(player);
-        assertNull(interactions);
+        assertNull(this.item);
+        assertNull(this.npc);
+        assertNull(this.player);
+        assertNull(this.interactions);
+        assertNull(this.panel);
     }
 
 }

@@ -32,6 +32,6 @@ public class Ask implements Interaction {
 	private void handleChoice(int choice, Player player){
 		this.dialogPanel.showDialog(this.answers.get(choice));
 		if(this.items != null)
-			player.addItem(this.items.get(choice));;
+			player.addItem(this.items.get(choice));
 	}
 }

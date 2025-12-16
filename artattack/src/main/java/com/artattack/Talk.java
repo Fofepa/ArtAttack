@@ -10,7 +10,7 @@ public class Talk implements  Interaction {
     private InteractionPanel dialogPanel;
     private List<String> dialog;
     
-    public Talk(InteractionPanel dialogPanle, List<String> dialog){
+    public Talk(InteractionPanel dialogPanel, List<String> dialog){
         this.dialogPanel = dialogPanel;
         this.dialog = dialog;
     }

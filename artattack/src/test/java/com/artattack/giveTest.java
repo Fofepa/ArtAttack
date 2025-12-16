@@ -1,15 +1,16 @@
 package com.artattack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
+import com.artattack.view.InteractionPanel;
 
 public class giveTest {
     
@@ -22,17 +23,17 @@ public class giveTest {
     public void setUp(){
         inventory = new ArrayList<Item>();
         item = new Cure("","",0);
-        player = new MovieDirector(0, '',"", new Coordinates(0, 0));
-        interaction = new GiveFactory(null,null, item).createInteraction();
+        player = new MovieDirector(0, ' ',"", new Coordinates(0, 0), 0, 0, 0, 0, 0, 0, 0, null, 0, inventory, null, null);
+        interaction = new GiveFactory(new InteractionPanel(),List.of(" "), item).createInteraction();
     }
 
     @Test
-    public void testDoAction(){
+    public void dointeractionTest(){
         interaction.doInteraction(player);
 
-        assertTrue("Give testDoAsction faild. Item not in Player's inventory.",
+        assertTrue("Give dointeractionTest faild. Item not in Player's inventory.",
                     player.getInventory().contains(item));
-        assertEquals("Give testDoAction faild. Number of items in Player's inventory not as expected.",
+        assertEquals("Give diinteractionTest faild. Number of items in Player's inventory not as expected.",
                     1,
                     player.getInventory().size());
     }

@@ -157,6 +157,7 @@ public class InteractionPanel extends JPanel {
             } else {
                 textFullyRevealed = true;
                 textTimer.stop();
+                repaint();
             }
         });
         textTimer.start();

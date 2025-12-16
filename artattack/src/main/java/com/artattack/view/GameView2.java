@@ -301,8 +301,8 @@ public class GameView2 extends JFrame {
             new Musician(1, '@', "Zappa", new Coordinates(10, 5)),
             new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)),
             List.of(
-                new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("")))),
-                new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15), List.of(new Talk(interactionPanel, List.of(""))))
+                new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("ciaooo")))),
+                new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15), List.of(new Talk(interactionPanel, List.of("ciaoneee"))))
             ),
             List.of(
                 new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), 0, 0),

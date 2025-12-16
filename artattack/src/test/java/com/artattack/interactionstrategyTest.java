@@ -27,9 +27,7 @@ public class interactionstrategyTest {
             new InteractableElement(0, 'I', "Chitarra", new Coordinates(2, 2),List.of(new Give(new InteractionPanel(), List.of(""), new Cure(" ", " ", 0)), new Talk(new InteractionPanel(), List.of("")))),
             new InteractableElement(1, 'I', "Batteria", new Coordinates(15, 15), List.of(new Talk(new InteractionPanel(), List.of(""))))
          ),
-         List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))));
+        null);
         this.movementStrategy = new MovementStrategy(this.map, this.player);
         this.interactionStrategy = new InteractionStrategy(this.movementStrategy);
     }

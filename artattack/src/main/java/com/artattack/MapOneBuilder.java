@@ -6,7 +6,7 @@ public class MapOneBuilder implements MapBuilder {
     private Player playerOne;
     private Player playerTwo;
     private List<InteractableElement> interactableElements;
-    // private List<Enemy> enemies;
+     private List<Enemy> enemies;
     
     /* @Override
     public void setDict(Map<Coordinates, ? extends MapElement> dictionaire) {
@@ -29,11 +29,11 @@ public class MapOneBuilder implements MapBuilder {
     }
 
     @Override
-    public void setEnemies(/*List<Enemy> enemies*/) {
-        // Implementation for setting the enemies
+    public void setEnemies(List<Enemy> enemies) {
+        this.enemies = enemies;
     }
 
     public void getResult() {
-        new Maps(this.playerOne, this.playerTwo, this.interactableElements);
+        new Maps(this.playerOne, this.playerTwo, this.interactableElements, this.enemies);
     }
 }

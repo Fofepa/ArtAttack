@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.artattack.Coordinates;
+import com.artattack.Enemy;
 import com.artattack.InteractableElement;
 import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
@@ -33,10 +34,10 @@ class MapPanel extends JPanel {
         new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null),
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null)
-        )/*, List.of(
+        ), List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
             new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
-        )*/);
+        ));
         movementStrategy = new MovementStrategy(t,(MovieDirector)t.getDict().get(new Coordinates(5,5)));
         interactionStrategy = new InteractionStrategy(movementStrategy);
 

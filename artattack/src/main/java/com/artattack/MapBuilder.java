@@ -7,5 +7,5 @@ public interface MapBuilder {
     public void setPlayerOne(Player player);
     public void setPlayerTwo(Player player);
     public void setInteractableElements(List<InteractableElement> element);
-    public void setEnemies(/*List<Enemy> enemy*/);
+    public void setEnemies(List<Enemy> enemies);
 }

@@ -1,5 +1,6 @@
 package com.artattack;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,20 +10,29 @@ public class Maps {
     private int rows;
     private int columns;
     
-    public Maps(Player playerOne, Player playerTwo, List<InteractableElement> interactableElements/*, List<Enemy> enemies */) {
+    public Maps(Player playerOne, Player playerTwo, List<InteractableElement> interactableElements, List<Enemy> enemies ) {
         //this.dictionaire = dictionaire;
         this.rows = 36;
         this.columns = 150;
-        dictionaire.put(playerOne.getCoordinates(), playerOne);
-        dictionaire.put(playerTwo.getCoordinates(), playerTwo);
+        this.dictionaire = new HashMap<>();
+        if (playerOne.getCoordinates() != null)
+            dictionaire.put(playerOne.getCoordinates(), playerOne);
+
+        if (playerTwo.getCoordinates() != null)
+            dictionaire.put(playerTwo.getCoordinates(), playerTwo);
+
         for (InteractableElement i : interactableElements) {
-            dictionaire.put(i.getCoordinates(), i);
+            if (i.getCoordinates() != null)
+                dictionaire.put(i.getCoordinates(), i);
+}
+
+        for (Enemy e : enemies) {
+            if (e.getCoordinates() != null)
+                dictionaire.put(e.getCoordinates(), e);
         }
-        /* for (Enemy e : enemies) {
-            dictionaire.put(e.getCoordinates(), e);
-            } */
+
            this.mapMatrix = startMap();
-        }
+    }
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;

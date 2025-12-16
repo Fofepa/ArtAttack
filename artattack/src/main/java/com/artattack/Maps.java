@@ -1,26 +1,34 @@
 package com.artattack;
 
+import java.util.List;
 import java.util.Map;
 
 public class Maps {
-    private Map<Coordinates, ? extends MapElement> dictionaire; // for now we leave it here
+    private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
     private int rows;
     private int columns;
     
-    public Maps(/*Map<Coordinates, ? extends MapElement> dictionaire,*/){
+    public Maps(Player playerOne, Player playerTwo, List<InteractableElement> interactableElements/*, List<Enemy> enemies */) {
         //this.dictionaire = dictionaire;
         this.rows = 36;
         this.columns = 150;
-        this.mapMatrix = startMap();
-        
-    }
+        dictionaire.put(playerOne.getCoordinates(), playerOne);
+        dictionaire.put(playerTwo.getCoordinates(), playerTwo);
+        for (InteractableElement i : interactableElements) {
+            dictionaire.put(i.getCoordinates(), i);
+        }
+        /* for (Enemy e : enemies) {
+            dictionaire.put(e.getCoordinates(), e);
+            } */
+           this.mapMatrix = startMap();
+        }
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;
     } 
 
-    public Map<Coordinates, ? extends MapElement> getDict(){
+    public Map<Coordinates,MapElement> getDict(){
         return this.dictionaire;
     }
 
@@ -77,15 +85,11 @@ public class Maps {
             charMatrix[10][i] = '#';
         }
         
-        int playerX = 5;
-        int playerY = 5;
-        charMatrix[playerY][playerX] = '@';
+        for (Coordinates key : dictionaire.keySet()){
+            MapElement element = dictionaire.get(key);
+            charMatrix[key.getY()][key.getX()] = element.getMapSymbol();
+        }
         
-        charMatrix[8][15] = 'E';
-        charMatrix[12][20] = 'E';
-        
-        charMatrix[3][30] = '$';
-        charMatrix[15][25] = '$';
 
         return charMatrix;
     }

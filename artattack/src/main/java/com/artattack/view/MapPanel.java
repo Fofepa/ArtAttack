@@ -4,17 +4,19 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import com.artattack.Coordinates;
+import com.artattack.InteractableElement;
 import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
 import com.artattack.MovieDirector;
-import com.artattack.Player;
+import com.artattack.Musician;
 
 class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;
@@ -27,9 +29,15 @@ class MapPanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
         addKeyboardInputs(); //è execute di MovementStrategy
-        Maps maps = new Maps();
-        Player player = new MovieDirector(0,'@',"Lynch", new Coordinates(5,5));
-        movementStrategy = new MovementStrategy(maps, player);
+        Maps t = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
+        new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null)
+        )/*, List.of(
+            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
+            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
+        )*/);
+        movementStrategy = new MovementStrategy(t,(MovieDirector)t.getDict().get(new Coordinates(5,5)));
         interactionStrategy = new InteractionStrategy(movementStrategy);
 
         addFocusListener(new java.awt.event.FocusAdapter() {

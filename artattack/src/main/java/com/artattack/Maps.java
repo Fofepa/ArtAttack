@@ -9,6 +9,7 @@ public class Maps {
     private char[][] mapMatrix;
     private int rows;
     private int columns;
+
     
     public Maps(Player playerOne, Player playerTwo, List<InteractableElement> interactableElements, List<Enemy> enemies ) {
         //this.dictionaire = dictionaire;
@@ -34,6 +35,32 @@ public class Maps {
         }
            this.mapMatrix = startMap();
     }
+
+    public Maps(Player playerOne, List<InteractableElement> interactableElements, List<Enemy> enemies ) {
+        //this.dictionaire = dictionaire;
+        this.rows = 36;
+        this.columns = 150;
+        this.dictionaire = new HashMap<>();
+        if (playerOne.getCoordinates() != null && playerOne != null)
+            dictionaire.put(playerOne.getCoordinates(), playerOne);
+
+        
+        if (interactableElements != null){
+            for (InteractableElement i : interactableElements) {
+                if (i.getCoordinates() != null)
+                    dictionaire.put(i.getCoordinates(), i);
+        }
+}
+        if(enemies != null){
+            for (Enemy e : enemies) {
+                if (e.getCoordinates() != null)
+                    dictionaire.put(e.getCoordinates(), e);
+            }
+        }
+           this.mapMatrix = startMap();
+    }
+
+
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;

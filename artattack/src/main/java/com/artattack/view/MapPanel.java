@@ -4,20 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import com.artattack.Coordinates;
-import com.artattack.Enemy;
-import com.artattack.InteractableElement;
 import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
 import com.artattack.MovieDirector;
-import com.artattack.Musician;
 
 class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;
@@ -29,50 +24,62 @@ class MapPanel extends JPanel {
     public MapPanel() {
         setBackground(Color.BLACK);
         setFocusable(true);
-        addKeyboardInputs(); //è execute di MovementStrategy
-        Maps t = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
-        new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null)
-        ), List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
-        ));
-        movementStrategy = new MovementStrategy(t,(MovieDirector)t.getDict().get(new Coordinates(5,5)));
-        interactionStrategy = new InteractionStrategy(movementStrategy);
+        addKeyboardInputs();
+        addFocusBorder();
+        initCursorTimer();
+    }
 
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent e) {
-                setBorder(BorderFactory.createLineBorder(Color.CYAN, 3));
-            }
-        
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                setBorder(null);
-            }
-        });
-        
+    public void setMap(Maps map, MovieDirector player) {
+        this.movementStrategy = new MovementStrategy(map, player);
+        this.interactionStrategy = new InteractionStrategy(movementStrategy);
+
+        // reset cursore se necessario
+        showCursor = true;
+
+        repaint();
+        requestFocusInWindow();
+    }
+    
+    private void initCursorTimer() {
         timerBlink = new Timer(500, e -> {
-            if (movementStrategy.getSelectedState()) {
+            if (movementStrategy != null && movementStrategy.getSelectedState()) {
                 showCursor = !showCursor;
                 repaint();
             }
         });
         timerBlink.start();
     }
-    
+
+    private void addFocusBorder() {
+        addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                setBorder(BorderFactory.createLineBorder(Color.CYAN, 3));
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                setBorder(null);
+            }
+        });
+    }
+
+
+
     private void addKeyboardInputs() {
         addKeyListener(new java.awt.event.KeyAdapter() {
             @Override
             public void keyPressed(java.awt.event.KeyEvent e) {
+                if (movementStrategy == null) return;
+
                 int dx = 0, dy = 0;
-                
+
                 switch (e.getKeyCode()) {
                     case java.awt.event.KeyEvent.VK_UP, java.awt.event.KeyEvent.VK_W -> dy = -1;
                     case java.awt.event.KeyEvent.VK_DOWN, java.awt.event.KeyEvent.VK_S -> dy = 1;
                     case java.awt.event.KeyEvent.VK_LEFT, java.awt.event.KeyEvent.VK_A -> dx = -1;
                     case java.awt.event.KeyEvent.VK_RIGHT, java.awt.event.KeyEvent.VK_D -> dx = 1;
+
                     case java.awt.event.KeyEvent.VK_ENTER -> {
                         if (movementStrategy.getSelectedState()) {
                             movementStrategy.acceptMovement();
@@ -80,26 +87,41 @@ class MapPanel extends JPanel {
                         }
                         return;
                     }
-                    case java.awt.event.KeyEvent.VK_E -> {
-                        if (movementStrategy.getSelectedState()){
-                            interactionStrategy.acceptInteraction();
-                            return;
-                        }
-                    }
 
+                    case java.awt.event.KeyEvent.VK_E -> {
+                        if (movementStrategy.getSelectedState()) {
+                            interactionStrategy.acceptInteraction();
+                        }
+                        return;
+                    }
                 }
-                
+
                 movementStrategy.execute(dx, dy);
                 repaint();
             }
         });
     }
+
     
     
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        System.out.println("paintComponent called! Size: " + getWidth() + "x" + getHeight());
+
+    if (movementStrategy == null) {
+        System.out.println("movementStrategy is null!");
+        return;
+    }
+    
+    System.out.println("Drawing map: " + movementStrategy.getMap().getRows() + "x" + movementStrategy.getMap().getColumns());
+    
+
+        if (movementStrategy == null) {
+            return;
+        }
 
         // --- 1. Definizione della dimensione base del font ---
         // Usiamo una dimensione base per calcolare le dimensioni necessarie della mappa.

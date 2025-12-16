@@ -22,6 +22,14 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import com.artattack.Coordinates;
+import com.artattack.Enemy;
+import com.artattack.InteractableElement;
+import com.artattack.Maps;
+import com.artattack.MovieDirector;
+import com.artattack.Musician;
+import com.artattack.Talk;
+
 public class GameView2 extends JFrame {
     
     private double mainVerticalProportion = 0.3;
@@ -286,17 +294,40 @@ public class GameView2 extends JFrame {
         this.dialogueSubDivision = dialogueSubDivision;
     }
     
-    public static void main(String[] args) {
-    // Aggiungere questo blocco per impostare un Look and Feel uniforme
+
+    private void loadInitialMap() {
+
+        Maps map = new Maps(
+            new Musician(1, '@', "Zappa", new Coordinates(10, 5)),
+            new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)),
+            List.of(
+                new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("")))),
+                new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15), List.of(new Talk(interactionPanel, List.of(""))))
+            ),
+            List.of(
+                new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), 0, 0),
+                new Enemy(1, 'E', "Orco", new Coordinates(25, 25),0,0)
+            )
+        );
+
+        MovieDirector player =
+            (MovieDirector) map.getDict().get(new Coordinates(5, 5));
+
+        mapPanel.setMap(map, player);
+
+        mapPanel.revalidate();
+        mapPanel.repaint();
+            System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
+    }
+        public static void main(String[] args) {
     try {
         for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) { // Scegli Nimbus, Metal o altro
+            if ("Nimbus".equals(info.getName())) {
                 javax.swing.UIManager.setLookAndFeel(info.getClassName());
                 break;
             }
         }
     } catch (Exception e) {
-        // Se Nimbus non è disponibile, usa il default
         System.err.println("Could not set Nimbus L&F.");
     }
 
@@ -304,11 +335,8 @@ public class GameView2 extends JFrame {
         GameView2 game = new GameView2();
         game.setVisible(true);
         
-        // Initial focus on map
         SwingUtilities.invokeLater(() -> {
-            game.mapPanel.revalidate();
-            game.mapPanel.repaint();
-            game.mapPanel.requestFocusInWindow();
+            game.loadInitialMap();
         });
     });
 }

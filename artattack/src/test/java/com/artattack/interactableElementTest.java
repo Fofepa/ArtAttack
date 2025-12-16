@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import com.artattack.view.InteractionPanel;
 
-public class interactableElementTest {
+public class interactableelementTest {
     private InteractableElement npc;
     private Player player;
     private Item item;

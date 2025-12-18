@@ -27,7 +27,7 @@ public class interactableelementTest {
         this.panel = new InteractionPanel();
         this.interactions.add(new Give(this.panel, List.of(" "), this.item));
         this.interactions.add(new Talk(this.panel, List.of(" ")));
-        this.npc = new InteractableElement(0,'*',null,null, interactions);
+        this.npc = new InteractableElement(0,'*',null,null, interactions, "", null,null);
     }
 
     @Test

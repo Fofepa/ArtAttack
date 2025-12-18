@@ -12,7 +12,6 @@ import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -141,82 +140,20 @@ public class GameView2 extends JFrame {
     
     // Test panel with buttons to trigger dialogs
     private JPanel createTestPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.BLACK);
-        panel.setLayout(new BorderLayout());
-        
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.BLACK);
-        
-        // Button for simple dialog
-        JButton simpleDialogBtn = new JButton("Simple Dialog");
-        simpleDialogBtn.addActionListener(e -> {
-            List<String> phrases = Arrays.asList(
-                "Hello adventurer!",
-                "Welcome to my humble shop.",
-                "I have many fine wares to sell.",
-                "Take a look around!"
-            );
-            interactionPanel.showDialog(phrases);
-            interactionPanel.requestFocusInWindow();
-        });
-        
-        // Button for choice dialog
-        JButton choiceDialogBtn = new JButton("Choice Dialog");
-        choiceDialogBtn.addActionListener(e -> {
-            List<String> options = Arrays.asList(
-                "I want to buy something",
-                "I want to sell my items",
-                "Tell me about this place",
-                "Goodbye"
-            );
-            
-            interactionPanel.showDialogWithChoice(
-                "How can I help you today, traveler?", 
-                options, 
-                (index) -> {
-                    System.out.println("User chose option: " + index);
-                    // You can trigger another dialog based on choice
-                    switch(index) {
-                        case 0:
-                            interactionPanel.showDialog(Arrays.asList("Here are my wares!", "Take your pick."));
-                            break;
-                        case 1:
-                            interactionPanel.showDialog(Arrays.asList("Let me see what you have.", "Hmm, interesting items..."));
-                            break;
-                        case 2:
-                            interactionPanel.showDialog(Arrays.asList("This is the town of Eldoria.", "A peaceful place for traders."));
-                            break;
-                        case 3:
-                            interactionPanel.showDialog(Arrays.asList("Farewell, friend!", "Come back anytime."));
-                            break;
-                    }
-                    interactionPanel.requestFocusInWindow();
-                }
-            );
-            interactionPanel.requestFocusInWindow();
-        });
+    JPanel panel = new JPanel();
+    panel.setBackground(Color.BLACK);
+    panel.setLayout(new BorderLayout());
 
-                // Button to load sprite
-        JButton loadSpriteBtn = new JButton("Load Sprite");
-        loadSpriteBtn.addActionListener(e -> {
-            // Replace with your image path
-            spritePanel.loadImage("/home/jacoalf/Scrivania/universita/TerzoAnno/ISS/Codici/Iss-Gruppo-7-ArtAttack/artattack/src/main/java/com/artattack/view/assets/photo_2025-12-14_18-32-01.jpg");
-        });
-        buttonPanel.add(loadSpriteBtn);
-        
-        buttonPanel.add(simpleDialogBtn);
-        buttonPanel.add(choiceDialogBtn);
-        
-        JLabel label = new JLabel("Test Dialogs", SwingConstants.CENTER);
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("Monospaced", Font.PLAIN, 14));
-        
-        panel.add(label, BorderLayout.NORTH);
-        panel.add(buttonPanel, BorderLayout.CENTER);
-        
-        return panel;
-    }
+    JLabel label = new JLabel("STATS", SwingConstants.CENTER);
+    label.setForeground(Color.WHITE);
+    label.setFont(new Font("Monospaced", Font.BOLD, 18));
+
+    panel.add(label, BorderLayout.CENTER);
+
+
+    return panel;
+}
+
     
     private void nextFocus(List<JComponent> order) {
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -301,8 +238,8 @@ public class GameView2 extends JFrame {
             new Musician(1, '@', "Zappa", new Coordinates(10, 5)),
             new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)),
             List.of(
-                new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("ciaooo")))),
-                new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15), List.of(new Talk(interactionPanel, List.of("ciaoneee"))))
+                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("Sono Gurlukovich", "Puoi trovare mia figlia Olga"))),
+                "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png" , spritePanel, interactionPanel)
             ),
             List.of(
                 new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), 0, 0),

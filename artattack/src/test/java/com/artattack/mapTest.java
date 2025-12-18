@@ -17,8 +17,8 @@ public class mapTest {
     public void setUp() throws Exception{
         map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
          new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null)
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null, "",null,null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null, "",null,null)
          ), List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(20, 20),0,0),
             new Enemy(1, 'E', "Orco", new Coordinates(25, 25),0,0)

@@ -23,8 +23,8 @@ public class movementstrategyTest {
     public void setUp() throws Exception{
         map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
          new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Ciao!")))),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!")))
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Ciao!"))), "",null,null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
          )),
          List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(20, 20),0,0),

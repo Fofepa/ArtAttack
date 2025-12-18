@@ -42,6 +42,7 @@ public class InteractionPanel extends JPanel {
     // Rendering variables
     private static final int PADDING = 20;
     private static final int LINE_HEIGHT = 25;
+    
 
     private Runnable onDialogFinished;
 
@@ -121,6 +122,7 @@ public class InteractionPanel extends JPanel {
      * Start a simple dialog with a list of phrases
      */
     public void showDialog(List<String> phrases) {
+        
         this.currentDialog = phrases;
         this.currentPhraseIndex = 0;
         this.dialogActive = true;
@@ -342,5 +344,10 @@ public class InteractionPanel extends JPanel {
     public void setOnDialogFinished(Runnable r) {
         this.onDialogFinished = r;
     }
+
+    public void activateAndFocus() {
+        requestFocusInWindow();
+    }
+
 
 }

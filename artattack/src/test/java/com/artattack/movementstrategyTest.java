@@ -47,9 +47,19 @@ public class movementstrategyTest {
 
     @Test
     public void executeTest(){
-        Coordinates t = new Coordinates(move.getCursor().getX(),move.getCursor().getY());
+        Coordinates t = move.getCursor();
         move.execute(0,1);
         assertEquals(new Coordinates(t.getX(),t.getY()+1),move.getCursor());
+
+        t = move.getCursor();
+        move.execute(1,2);
+        assertEquals(new Coordinates(t.getX()+1,t.getY()+2),move.getCursor());
+
+        t = move.getCursor();
+        move.execute(3,3);
+        assertEquals(new Coordinates(t.getX()+3,t.getY()+3),move.getCursor());
+
+
     }
 
     @Test

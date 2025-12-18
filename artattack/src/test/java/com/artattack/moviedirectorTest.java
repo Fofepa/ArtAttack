@@ -43,6 +43,9 @@ public class moviedirectorTest{
         assertEquals("Pozza",m.getInventory().get(0).getName());
         assertEquals("This one heals a lot",m.getInventory().get(0).getDescription());
         assertEquals(50,(m.getInventory().get(0)).getAmount());
+        m.getInventory().clear();
+        m.addItem(new Cure("Pozza","This one heals a lot", 60)); 
+         assertEquals(60,(m.getInventory().get(0)).getAmount());
 
     }
 

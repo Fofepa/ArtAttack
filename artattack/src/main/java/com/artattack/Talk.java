@@ -19,4 +19,8 @@ public class Talk implements  Interaction {
     public void doInteraction(Player player){
         this.dialogPanel.showDialog(dialog);
     }
+
+    public List<String> getDialog() {
+        return dialog;
+    }
 }

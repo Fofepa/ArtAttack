@@ -33,7 +33,7 @@ public class MapOneBuilder implements MapBuilder {
         this.enemies = enemies;
     }
 
-    public void getResult() {
-        new Maps(this.playerOne, this.playerTwo, this.interactableElements, this.enemies);
+    public Maps getResult() {
+        return new Maps(this.playerOne, this.playerTwo, this.interactableElements, this.enemies);
     }
 }

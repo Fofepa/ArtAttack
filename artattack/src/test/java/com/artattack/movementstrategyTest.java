@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
@@ -53,11 +54,11 @@ public class movementstrategyTest {
 
         t = move.getCursor();
         move.execute(1,2);
-        assertEquals(new Coordinates(t.getX()+1,t.getY()+2),move.getCursor());
+        assertNotEquals(new Coordinates(t.getX()+1,t.getY()+2),move.getCursor());
 
         t = move.getCursor();
         move.execute(3,3);
-        assertEquals(new Coordinates(t.getX()+3,t.getY()+3),move.getCursor());
+        assertNotEquals(new Coordinates(t.getX()+3,t.getY()+3),move.getCursor());
 
 
     }

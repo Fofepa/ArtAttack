@@ -238,7 +238,7 @@ public class GameView extends JFrame {
             new Musician(1, '@', "Zappa", new Coordinates(10, 5)),
             new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)),
             List.of(
-                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("Sono Gurlukovich", "Puoi trovare mia figlia Olga"))),
+                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("HELP ME!!", "...","I'M STUCK BETWEEN THE WALLS!!!"))),
                 "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png" , spritePanel, interactionPanel)
             ),
             List.of(

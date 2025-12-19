@@ -1,7 +1,7 @@
 package com.artattack;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artattack.view.InteractionPanel;
+import com.artattack.view.SpritePanel;
 
 public class interactionstrategyTest {
     private Player player;
@@ -24,8 +25,8 @@ public class interactionstrategyTest {
         this.map = new Maps(this.player,
          new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), 
          List.of(
-            new InteractableElement(0, 'I', "Chitarra", new Coordinates(2, 2),List.of(new Give(new InteractionPanel(), List.of(""), new Cure(" ", " ", 0)), new Talk(new InteractionPanel(), List.of(""))), "", null,null),
-            new InteractableElement(1, 'I', "Batteria", new Coordinates(15, 15), List.of(new Talk(new InteractionPanel(), List.of(""))), "",null,null)
+            new InteractableElement(0, 'I', "Chitarra", new Coordinates(2, 2),List.of(new Give(new InteractionPanel(), List.of(""), new Cure(" ", " ", 0)), new Talk(new InteractionPanel(), List.of(""))), "", new SpritePanel(),new InteractionPanel()),
+            new InteractableElement(1, 'I', "Batteria", new Coordinates(15, 15), List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel())
          ),
         null);
         this.movementStrategy = new MovementStrategy(this.map, this.player);

@@ -1,5 +1,6 @@
 package com.artattack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Weapon{
@@ -10,27 +11,38 @@ public class Weapon{
     private int compatibility;
 
     //Constructor
-    public Weapon(String name, String description, List<Move> moves, int compatibility) {
+    public Weapon(String name, String description, int compatibility) {
         this.name = name;
         this.description = description;
-        this.moves = moves;
+        this.moves = new ArrayList<>();
         this.compatibility = compatibility;
     }
 
     //Getters
     public List<Move> getMoves() {
-        return moves;
-    }
-
-    public int getCharacterClass() {
-        return this.compatibility;
+        return this.moves;
     }
 
     public String getName() {
         return this.name;
     }
-
+    
     public String getDescription() {
         return this.description;
+    }
+
+    public int getCompatibility() {
+        return this.compatibility;
+    }
+
+    //Methods
+    public boolean addMove(Move move) {
+        for (Move m : this.moves) {
+            if (move == m) {
+                return false;
+            }
+        }
+        moves.add(move);
+        return true;
     }
 }

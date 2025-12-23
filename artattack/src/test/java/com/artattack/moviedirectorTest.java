@@ -1,12 +1,13 @@
 package com.artattack;
 
+import java.util.ArrayList;
+
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.*;
 
 
 
@@ -16,8 +17,10 @@ public class moviedirectorTest{
 
     @Before
     public void setUp() throws Exception{
-        m = new MovieDirector(0,'M', "David Lynch", new Coordinates(0,0), 20, 20, 0, 20, 1, 5, 2, new ArrayList<Weapon>(),
-        25, new ArrayList<Item>(), new ArrayList<Coordinates>(), new ArrayList<Coordinates>());
+        m = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
+            new ArrayList<Coordinates>());
+        /* m = new MovieDirector(0,'M', "David Lynch", new Coordinates(0,0), 20, 20, 0, 20, 1, 5, 2, new ArrayList<Weapon>(),
+        25, new ArrayList<Item>(), new ArrayList<Coordinates>(), new ArrayList<Coordinates>()); */
         assertNotNull(m);
     }
     
@@ -48,7 +51,4 @@ public class moviedirectorTest{
          assertEquals(60,(m.getInventory().get(0)).getAmount());
 
     }
-
-    
-
 }

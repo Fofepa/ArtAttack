@@ -23,7 +23,8 @@ public class giveTest {
     public void setUp(){
         inventory = new ArrayList<Item>();
         item = new Cure("","",0);
-        player = new MovieDirector(0, ' ',"", new Coordinates(0, 0), 0, 0, 0, 0, 0, 0, 0, null, 0, inventory, null, null);
+        player = new MovieDirector(0, ' ', "", new Coordinates(0, 0),
+            null, 0, null, 0, 0, 0, 0, 0, 0, 0, inventory,null,null);
         interaction = new GiveFactory(new InteractionPanel(),List.of(" "), item).createInteraction();
     }
 

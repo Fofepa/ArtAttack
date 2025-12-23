@@ -23,8 +23,8 @@ public class mapTest {
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel()),
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel())
          ), List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20),0,0),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25),0,0)
+            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
+            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
          ));
         assertNotNull(map);
     }

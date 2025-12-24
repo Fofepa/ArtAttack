@@ -28,10 +28,14 @@ public class ConcreteTurnHandler implements TurnHandler {
 
     @Override
     public ActiveElement current(){
-        return turnQueue.getTurnQueue().get(index);
+        return turnQueue.getTurnQueue().get(index-1);
     }
 
     public void resetIndex(){
         this.index = 0;
+    }
+
+    public int getIndex(){
+        return this.index;
     }
 }

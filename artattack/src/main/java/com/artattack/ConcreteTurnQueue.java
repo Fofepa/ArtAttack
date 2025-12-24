@@ -7,6 +7,10 @@ public class ConcreteTurnQueue implements TurnQueue {
 
     private List<ActiveElement> turnQueue;
 
+    public ConcreteTurnQueue(List<ActiveElement> turnQueue){
+        this.turnQueue = turnQueue;
+    }
+
     @Override
     public TurnHandler createTurnHandler() {
         return new ConcreteTurnHandler(this);

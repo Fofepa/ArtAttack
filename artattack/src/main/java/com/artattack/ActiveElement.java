@@ -2,7 +2,7 @@ package com.artattack;
 
 import java.util.List;
 
-public class ActiveElement extends MapElement {
+public class ActiveElement extends MapElement implements Comparable<ActiveElement> {
 
     private int currHP;
     private int maxHP;
@@ -63,5 +63,10 @@ public class ActiveElement extends MapElement {
             this.currHP = this.maxHP;
         else
             this.currHP += amount;
+    }
+
+    @Override
+    public int compareTo(ActiveElement other) {
+        return Integer.compare(other.getSpeed(), this.getSpeed());
     }
 }

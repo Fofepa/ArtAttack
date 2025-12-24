@@ -1,0 +1,38 @@
+package com.artattack;
+
+import java.util.Collections;
+import java.util.List;
+
+public class ConcreteTurnQueue implements TurnQueue {
+
+    private List<ActiveElement> turnQueue;
+
+    @Override
+    public TurnHandler createTurnHandler() {
+        return new ConcreteTurnHandler(this);
+    }
+
+    public void add(ActiveElement element){
+        this.turnQueue.add(element);
+    }
+
+    public boolean remove(ActiveElement element){
+        if (turnQueue.contains(element)){
+            turnQueue.remove(element);
+            return true;
+        }
+        return false;
+    }
+
+    /* public boolean endTurn(){
+
+    } */
+
+    public List<ActiveElement> getTurnQueue(){
+        return this.turnQueue;
+    }
+
+    public void reorder(){
+        Collections.sort(this.turnQueue);
+    }
+}

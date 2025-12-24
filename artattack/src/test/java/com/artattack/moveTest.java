@@ -20,9 +20,11 @@ public class moveTest {
     public void setUp() throws Exception {
         m1 = new Move("TestMove", "TestDescription", 1, List.of(new Coordinates(0, 1)));
         m2 = new Move("TestMove", "TestDescription", 1, List.of(new Coordinates(1, 0)));
-        p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 10, 10, 0, 1, 1, 1);
-        p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1), 10, 10, 0, 1, 1, 1);
-        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), 10, 10);
+        p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0),
+            null, 0, null, 10, 10, 0, 0, 0, 0, 0, null,null,null);
+        p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
+            null, 0, null, 10, 10, 0, 0, 0, 0, 0, null,null,null);
+        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), 10, 10, 0, null, 0, null);
         maps = new Maps(p1, p2, null, List.of(e));
 
         assertNotNull(m1);

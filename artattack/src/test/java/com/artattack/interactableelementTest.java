@@ -22,7 +22,8 @@ public class interactableelementTest {
 
     @Before
     public void setUp(){
-        this.player = new MovieDirector(0,'+'," ", new Coordinates(0, 0), 0, 0, 0, 0, 0, 0, 0, null, 0, new ArrayList<Item>(), null, null);
+        player = new MovieDirector(0, '+', "", new Coordinates(0, 0),
+            null, 0, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<Item>(), null, null);
         this.item = new Cure(" ", " ", 0);
         this.interactions = new ArrayList<Interaction>();
         this.panel = new InteractionPanel();

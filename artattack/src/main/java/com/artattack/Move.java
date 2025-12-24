@@ -92,10 +92,10 @@ public class Move {
         return false;
     }
 
-    public int attack(MapElement attacker, Maps map) {
-        List<MapElement> victims = new ArrayList<>();
+    public int attack(ActiveElement attacker, Maps map) {
+        List<ActiveElement> victims = new ArrayList<>();
         for (Coordinates attackCell : this.attackArea) {
-            MapElement check = map.getDict().get(Coordinates.sum(attacker.getCoordinates(), attackCell));
+            ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(attacker.getCoordinates(), attackCell));
             if (attacker instanceof Player){
                 if (check instanceof Enemy enemy)
                     victims.add(enemy);
@@ -104,7 +104,7 @@ public class Move {
                 if (check instanceof Player player)
                     victims.add(player);
         }
-        for (MapElement element : victims) {
+        for (ActiveElement element : victims) {
             switch (element) {
                 case Enemy e -> {
                     e.updateHP(- this.power /*-variabile globale*/);

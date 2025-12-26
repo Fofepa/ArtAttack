@@ -64,4 +64,8 @@ public class ActiveElement extends MapElement {
         else
             this.currHP += amount;
     }
+
+    public boolean isAlive(){
+        return this.currHP > 0; 
+    }
 }

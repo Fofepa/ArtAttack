@@ -108,6 +108,13 @@ public class Move {
             switch (element) {
                 case Enemy e -> {
                     e.updateHP(- this.power /*-variabile globale*/);
+                    if(attacker instanceof  MovieDirector)
+                        e.updateMovieDirectorDemage(this.power);
+                    else e.updateMusicianDemage(this.power);
+                    if(!e.isAlive()){
+                        map.getPlayerOne().updateCurrXP(e.calculateDroppedXP(map.getPlayerOne()));
+                        map.getPlayerTwo().updateCurrXP(e.calculateDroppedXP(map.getPlayerTwo()));
+                    }
                 }
                 case Player p -> {  
                     p.updateHP(- this.power /*-variabile globale*/);

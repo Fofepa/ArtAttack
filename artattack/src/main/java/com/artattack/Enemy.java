@@ -7,6 +7,8 @@ public class Enemy extends ActiveElement {
     private List<Coordinates> visionArea;
     private List<Item> drops;
     private int droppedXP;
+    private float movieDirectorDemage;
+    private float musicianDemage;
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates){
         super(ID,mapSymbol,name,coordinates);
@@ -24,6 +26,8 @@ public class Enemy extends ActiveElement {
             this.visionArea = visionArea;
             this.drops = drops;
             this.droppedXP = droppedXP;
+            this.movieDirectorDemage = 0.0f;
+            this.musicianDemage = 0.0f;
     }
 
     public List<Coordinates> getVisionArea() {
@@ -37,5 +41,30 @@ public class Enemy extends ActiveElement {
     public int getDroppedXP() {
         return this.droppedXP;
     }
+
+    public float getMovieDirectorDemage(){
+        return this.movieDirectorDemage;
+    }
+
+    public float getMusicianDemage(){
+        return this.musicianDemage;
+    }
+
+    public void updateMovieDirectorDemage(float demage){
+        this.movieDirectorDemage += demage;
+    }
+
+    public void updateMusicianDemage(float demage){
+        this.musicianDemage += demage;
+    }
+
+    public int calculateDroppedXP(Player player){
+        float percentDemage;
+        if(player instanceof MovieDirector)
+            percentDemage = this.movieDirectorDemage / this.getMaxHP();
+        else percentDemage = this.musicianDemage / this.getMaxHP();
+        return Math.round(percentDemage * this.droppedXP);
+    }
+
 
 }

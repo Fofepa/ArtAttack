@@ -94,4 +94,8 @@ public abstract class Player extends ActiveElement {
     public void setMaxWeapons(){
         this.maxWeapons += 1;
     }
+
+    public void updateCurrXP(int amount){
+        this.currXP += amount;
+    }
 }

@@ -71,6 +71,10 @@ public abstract class Player extends ActiveElement {
         return this.inventory;
     }
 
+    public List<Key> getKeys(){
+        return this.keys;
+    }
+
     public List<Coordinates> getActionArea() {
         return this.actionArea;
     }

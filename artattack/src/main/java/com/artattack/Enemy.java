@@ -7,8 +7,8 @@ public class Enemy extends ActiveElement {
     private List<Coordinates> visionArea;
     private List<Item> drops;
     private int droppedXP;
-    private int movieDirectorDemage;
-    private int musicianDemage;
+    private int playerOneDemage;
+    private int playerTwoDemage;
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates){
         super(ID,mapSymbol,name,coordinates);
@@ -26,8 +26,8 @@ public class Enemy extends ActiveElement {
             this.visionArea = visionArea;
             this.drops = drops;
             this.droppedXP = droppedXP;
-            this.movieDirectorDemage = 0;
-            this.musicianDemage = 0;
+            this.playerOneDemage = 0;
+            this.playerTwoDemage = 0;
     }
 
     public List<Coordinates> getVisionArea() {
@@ -42,28 +42,30 @@ public class Enemy extends ActiveElement {
         return this.droppedXP;
     }
 
-    public int getMovieDirectorDemage(){
-        return this.movieDirectorDemage;
+    public int getPlayerOneDemage(){
+        return this.playerOneDemage;
     }
 
-    public int getMusicianDemage(){
-        return this.musicianDemage;
+    public int getPlayerTwoDemage(){
+        return this.playerTwoDemage;
     }
 
-    public void updateMovieDirectorDemage(float demage){
-        this.movieDirectorDemage += demage;
+    public void updatePlayerOneDemage(int demage){
+        this.playerOneDemage += demage;
     }
 
-    public void updateMusicianDemage(float demage){
-        this.musicianDemage += demage;
+    public void updatePlayerTwoDemage(int demage){
+        this.playerTwoDemage += demage;
     }
 
-    public int calculateDroppedXP(Player player){
-        float percentDemage;
-        if(player instanceof MovieDirector)
-            percentDemage = ((float)this.movieDirectorDemage) / this.getMaxHP();
-        else percentDemage = ((float)this.musicianDemage) / this.getMaxHP();
+    private int calculateDroppedXP(int demage){
+        float percentDemage = ((float) demage) / this.getMaxHP();
         return Math.round(percentDemage * this.droppedXP);
+    }
+
+    public void dropXP(Player playerOne, Player playerTwo){
+        playerOne.updateCurrXP(this.calculateDroppedXP(this.playerOneDemage));
+        playerTwo.updateCurrXP(this.calculateDroppedXP(this.playerTwoDemage));
     }
 
 

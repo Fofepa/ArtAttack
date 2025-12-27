@@ -1,6 +1,7 @@
 package com.artattack;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
@@ -23,8 +24,8 @@ public class moveTest {
         p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0),
             null, 0, null, 10, 10, 0, 10, 0, 0, 0, null,null,null);
         p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-            null, 0, null, 10, 10, 0, 10, 0, 0, 0, null,null,null);
-        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), 10, 10, 0, null, 0, null,null,null,10);
+            null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<Item>(), null,null);
+        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), 10, 10, 0, null, 0, null,null,List.of(new Cure("cure", " ", 10)),10);
         maps = new Maps(p1, p2, null, List.of(e));
 
         m3 = new Move("TestMove", "TestDescription", 8, List.of(new Coordinates(0, 1)));
@@ -69,5 +70,6 @@ public class moveTest {
         assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 0, e.getCurrHP());
         assertEquals("testAttack faild. p1 currXP not as expected.", 8, p1.getCurrXP());
         assertEquals("testAttack faild. p2 currXP not as expected.", 2, p2.getCurrXP());
+        assertEquals("testAttack faild. p2 inventory not as expected.", 1, p2.getInventory().size());
     }
 }

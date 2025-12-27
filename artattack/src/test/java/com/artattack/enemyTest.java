@@ -35,12 +35,13 @@ public class enemyTest {
 
 
     @Test
-    public void calculatedroppedxpTest(){
-        enemy.updateMovieDirectorDemage(25);
-        enemy.updateMusicianDemage(10);
-        assertEquals("calculatedroppedxpTest faild. Wrong droppedXP.", 7, enemy.calculateDroppedXP(player1));
-        assertEquals("calculatedroppedxpTest faild. Wrong droppedXP.", 3, 10 - enemy.calculateDroppedXP(player1));
-        assertEquals("calculatedroppedxpTest faild. Wrong droppedXP.", 3, enemy.calculateDroppedXP(player2));
+    public void dropxpTest(){
+        enemy.updatePlayerOneDemage(25);
+        enemy.updatePlayerTwoDemage(10);
+        enemy.dropXP(player1, player2);
+        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 7, player1.getCurrXP());
+        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 3, player2.getCurrXP());
+    
     
     }
 }

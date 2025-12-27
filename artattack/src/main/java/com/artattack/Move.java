@@ -116,16 +116,24 @@ public class Move {
                     else e.updatePlayerTwoDemage(this.power);
                     if(!e.isAlive()){
                         e.dropXP(map.getPlayerOne(), map.getPlayerTwo());
-                        if(e.getDrops() != null){
+                        if(e.getDrops() != null && !e.getDrops().isEmpty()){
                             List<Item> drops = e.getDrops();
                             Player p = (Player) attacker;
                             for(Item item : drops)
                                 p.addItem(item);
                         }
+                        if(e.getKeys() != null && !e.getKeys().isEmpty()){
+                            List<Key> keys = e.getKeys();
+                            Player p = (Player) attacker;
+                            for(Key key : keys)
+                                p.addKey(key);
+                        }
+                        e.remove(map);
                     }
                 }
                 case Player p -> {  
                     p.updateHP(- this.power /*-variabile globale*/);
+                    //Need to add GameOver logic
                 }
                 default -> {
                 }

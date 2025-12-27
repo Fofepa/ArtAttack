@@ -8,7 +8,7 @@ public class Move {
     private String name;
     private String description;
     private int power;
-    private int actionPoints_temp;
+    private int actionPoints;
     private List<Coordinates> attackArea;
 
     //Constructors
@@ -37,7 +37,7 @@ public class Move {
     }
 
     public int getActionPoints() {
-        return this.actionPoints_temp;
+        return this.actionPoints;
     }
 
     public List<Coordinates> getAttackArea() {
@@ -58,7 +58,7 @@ public class Move {
     }
 
     public void setActionPoints(int actionPoints) {
-        this.actionPoints_temp = actionPoints;
+        this.actionPoints = actionPoints;
     }
 
     public void setAttackArea(List<Coordinates> attackArea) {
@@ -93,6 +93,9 @@ public class Move {
     }
 
     public int attack(ActiveElement attacker, Maps map) {
+        if (attacker.getActionPoints() < this.getActionPoints()) {
+            return 0;
+        }
         List<ActiveElement> victims = new ArrayList<>();
         for (Coordinates attackCell : this.attackArea) {
             ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(attacker.getCoordinates(), attackCell));
@@ -108,6 +111,18 @@ public class Move {
             switch (element) {
                 case Enemy e -> {
                     e.updateHP(- this.power /*-variabile globale*/);
+                    if(attacker.equals(map.getPlayerOne()))
+                        e.updatePlayerOneDemage(this.power);
+                    else e.updatePlayerTwoDemage(this.power);
+                    if(!e.isAlive()){
+                        e.dropXP(map.getPlayerOne(), map.getPlayerTwo());
+                        if(e.getDrops() != null){
+                            List<Item> drops = e.getDrops();
+                            Player p = (Player) attacker;
+                            for(Item item : drops)
+                                p.addItem(item);
+                        }
+                    }
                 }
                 case Player p -> {  
                     p.updateHP(- this.power /*-variabile globale*/);
@@ -116,6 +131,7 @@ public class Move {
                 }
             }
         }
+        attacker.setActionPoints(attacker.getActionPoints() - this.getActionPoints());
         return this.power;
     }
 }

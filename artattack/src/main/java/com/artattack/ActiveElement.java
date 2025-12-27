@@ -69,4 +69,8 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
     public int compareTo(ActiveElement other) {
         return Integer.compare(other.getSpeed(), this.getSpeed());
     }
+    
+    public boolean isAlive(){
+        return this.currHP > 0; 
+    }
 }

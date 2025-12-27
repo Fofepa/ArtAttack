@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 public class Maps {
+    private Player playerOne;
+    private Player playerTwo;
     private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
     private int rows;
@@ -16,11 +18,15 @@ public class Maps {
         this.rows = 36;
         this.columns = 150;
         this.dictionaire = new HashMap<>();
-        if (playerOne.getCoordinates() != null && playerOne != null)
+        if (playerOne.getCoordinates() != null && playerOne != null){
+            this.playerOne = playerOne;
             dictionaire.put(playerOne.getCoordinates(), playerOne);
+        }
 
-        if (playerTwo.getCoordinates() != null && playerTwo != null)
+        if (playerTwo.getCoordinates() != null && playerTwo != null){
+            this.playerTwo = playerTwo;
             dictionaire.put(playerTwo.getCoordinates(), playerTwo);
+        }
         if (interactableElements != null){
             for (InteractableElement i : interactableElements) {
                 if (i.getCoordinates() != null)
@@ -41,8 +47,10 @@ public class Maps {
         this.rows = 36;
         this.columns = 150;
         this.dictionaire = new HashMap<>();
-        if (playerOne.getCoordinates() != null && playerOne != null)
+        if (playerOne.getCoordinates() != null && playerOne != null){
+            this.playerOne = playerOne;
             dictionaire.put(playerOne.getCoordinates(), playerOne);
+        }
 
         
         if (interactableElements != null){
@@ -76,6 +84,14 @@ public class Maps {
 
     public int getColumns(){
         return this.columns;
+    }
+
+    public Player getPlayerOne(){
+        return this.playerOne;
+    }
+
+    public Player getPlayerTwo(){
+        return this.playerTwo;
     }
 
     public void setCell(int row, int column, char character){

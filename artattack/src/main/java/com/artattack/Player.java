@@ -8,6 +8,7 @@ public abstract class Player extends ActiveElement {
     private int currXP;
     private int maxXP;
     private int level;
+    private boolean leveledUp;
     private int maxWeapons;
     private List<Item> inventory;
     private List<Key> keys;
@@ -24,6 +25,7 @@ public abstract class Player extends ActiveElement {
         this.currXP = currXP;
         this.maxXP = maxXP;
         this.level = level;
+        this.leveledUp = false;
     }
 
      public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
@@ -63,12 +65,20 @@ public abstract class Player extends ActiveElement {
         return this.level;
     }
 
+    public boolean getLeveledUp(){
+        return this.leveledUp;
+    }
+
     public int getMaxWeapons() {
         return this.maxWeapons;
     }
 
     public List<Item> getInventory() {
         return this.inventory;
+    }
+
+    public List<Key> getKeys(){
+        return this.keys;
     }
 
     public List<Coordinates> getActionArea() {
@@ -89,9 +99,34 @@ public abstract class Player extends ActiveElement {
 
     public void setLevel(){
         this.level += 1;
+        this.leveledUp = true;
     }
 
     public void setMaxWeapons(){
         this.maxWeapons += 1;
+    }
+
+    public void updateCurrXP(int amount){
+        if(this.currXP + amount < this.maxXP)
+            this.currXP += amount;
+        else{
+            amount = amount - (this.maxXP - this.currXP);
+            this.setLevel();
+            this.currXP = amount;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(this.getClass() != obj.getClass()) return false;
+        Player other = (Player) obj;
+        if(this.getID() != other.getID()) return false;
+        if(this.getMapSymbol() != other.getMapSymbol()) return false;
+        if(!this.getName().equals(other.getName())) return false;
+        if(!this.getCoordinates().equals(other.getCoordinates())) return false;
+        //Aggiungi altri check
+        return true;
     }
 }

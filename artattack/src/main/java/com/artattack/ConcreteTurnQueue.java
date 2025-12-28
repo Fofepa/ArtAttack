@@ -18,6 +18,7 @@ public class ConcreteTurnQueue implements TurnQueue {
 
     public void add(ActiveElement element){
         this.turnQueue.add(element);
+        this.reorder();
     }
 
     public boolean remove(ActiveElement element){

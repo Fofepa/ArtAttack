@@ -16,7 +16,7 @@ public class ConcreteTurnHandler implements TurnHandler {
     }
 
     @Override
-    public ActiveElement next(){
+    public ActiveElement next(){    // add the isActive control
         if(hasNext()){
             return turnQueue.getTurnQueue().get(index++);
         }

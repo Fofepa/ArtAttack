@@ -44,6 +44,9 @@ public class MovementStrategy {
             player.setCoordinates(cursor);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
         }
+        if(map.checkAggro(cursor) != null){
+            map.getConcreteTurnQueue().add(map.checkAggro(cursor));
+        }
         isSelected = false;
     }
 

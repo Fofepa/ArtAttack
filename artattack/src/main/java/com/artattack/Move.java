@@ -78,7 +78,7 @@ public class Move {
             if (!m.getName().equals(this.getName())) {
                 return false;
             }
-            if (!m.getDescription().equals(this.getName())) {
+            if (!m.getDescription().equals(this.getDescription())) {
                 return false;
             }
             if (m.getPower() != this.getPower()) {

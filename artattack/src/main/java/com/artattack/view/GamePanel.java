@@ -30,7 +30,7 @@ import com.artattack.Talk;
 
 public class GamePanel extends JPanel {
     
-    private double mainVerticalProportion = 0.3;
+    private double mainVerticalProportion = 0.2;
     private double inventoriesVerticalProportion = 0.8;
     private double mapHorizontalProportion = 0.75;
     
@@ -48,12 +48,12 @@ public class GamePanel extends JPanel {
         setFocusable(true);
         
         // Aggiungi listener per ESC
-        addKeyListener(new java.awt.event.KeyAdapter() {
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke("ESCAPE"), "showMenu");
+        getActionMap().put("showMenu", new AbstractAction() {
             @Override
-            public void keyPressed(java.awt.event.KeyEvent e) {
-                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
-                    mainFrame.showMenu();
-                }
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.showMenu();
             }
         });
         
@@ -69,6 +69,7 @@ public class GamePanel extends JPanel {
         
         movesInventorySplit.setResizeWeight(inventorySubDivision);
         movesInventorySplit.setDividerSize(2);
+        movesInventorySplit.setDividerLocation(inventorySubDivision);
         whiteLineDivider(movesInventorySplit);
         
         // Pannello basso sinistra
@@ -82,7 +83,8 @@ public class GamePanel extends JPanel {
         );
         downLeftSplit.setResizeWeight(inventoriesVerticalProportion);
         downLeftSplit.setDividerSize(2);
-        whiteLineDivider(downLeftSplit);
+        downLeftSplit.setDividerLocation(inventoriesVerticalProportion);
+        
         
         // Pannello alto destra (mappa)
         mapPanel = new MapPanel();
@@ -98,6 +100,7 @@ public class GamePanel extends JPanel {
         );
         downRightSplit.setResizeWeight(dialogueSubDivision);
         downRightSplit.setDividerSize(2);
+        downRightSplit.setDividerLocation(dialogueSubDivision);
         whiteLineDivider(downRightSplit);
         
         // Split verticale per la parte destra
@@ -108,7 +111,8 @@ public class GamePanel extends JPanel {
         );
         rightSplit.setResizeWeight(mapHorizontalProportion);
         rightSplit.setDividerSize(2);
-        whiteLineDivider(rightSplit);
+        rightSplit.setDividerLocation(mapHorizontalProportion);
+        
         
         // Split principale
         JSplitPane mainVerticalSplit = new JSplitPane(
@@ -118,18 +122,30 @@ public class GamePanel extends JPanel {
         );
         mainVerticalSplit.setResizeWeight(mainVerticalProportion);
         mainVerticalSplit.setDividerSize(2);
+        
+        
+        whiteLineDivider(downLeftSplit);
+        whiteLineDivider(rightSplit);
         whiteLineDivider(mainVerticalSplit);
         
         add(mainVerticalSplit);
+
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            private boolean firstTime = true;
         
-        // Imposta le posizioni dei divider dopo che il pannello è visibile
-        SwingUtilities.invokeLater(() -> {
-            forceDivider(movesInventorySplit, inventorySubDivision);
-            forceDivider(downLeftSplit, inventoriesVerticalProportion);
-            forceDivider(downRightSplit, dialogueSubDivision);
-            forceDivider(rightSplit, mapHorizontalProportion);
-            forceDivider(mainVerticalSplit, mainVerticalProportion);
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                if (firstTime) {
+                    firstTime = false;
+                    SwingUtilities.invokeLater(() -> {
+                        mapPanel.requestFocusInWindow();
+                    });
+                }
+            }
         });
+        
+       
         
         // Gestione del focus con Tab
         mapPanel.setFocusable(true);
@@ -249,6 +265,7 @@ public class GamePanel extends JPanel {
         mapPanel.revalidate();
         mapPanel.repaint();
         mapPanel.requestFocusInWindow();
+        
         
         System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
     }

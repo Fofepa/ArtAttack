@@ -1,38 +1,38 @@
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MovieDirector.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Move.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapOneBuilder.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Talk.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Key.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\GiveFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractionStrategy.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\WeaponFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Player.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\TalkFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Weapon.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\CureFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\SpeedBuff.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\GameView2.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\SpritePanel.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Musician.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Ask.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AttackBuff.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AttackBuffFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractionFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\SpeedBuffFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\InteractionPanel.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Coordinates.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Give.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AskFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractableElement.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Cure.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\KeyFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapElement.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\GameView.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Item.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Maps.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\MapPanel.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Interaction.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Enemy.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\ItemFactory.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapBuilder.java
-C:\Users\expert\Desktop\Università\Ingegneria_software\progetto\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MovementStrategy.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapBuilder.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Ask.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MovieDirector.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MovementStrategy.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\WeaponFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Give.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AttackBuffFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractionFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapElement.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\InteractionPanel.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\CureFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Item.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\SpeedBuff.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Maps.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\TalkFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Cure.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Coordinates.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AttackBuff.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\MapOneBuilder.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractionStrategy.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Move.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Player.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\ItemFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\SpritePanel.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Musician.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\AskFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\MapPanel.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Talk.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Interaction.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\MenuView.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\InteractableElement.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\view\GameView.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\KeyFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\SpeedBuffFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\GiveFactory.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Key.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Weapon.java
+C:\Users\jacoa\OneDrive\Desktop\Universita\Terzo anno\Iss\Codicez\Iss-Gruppo-7-ArtAttack\artattack\src\main\java\com\artattack\Enemy.java

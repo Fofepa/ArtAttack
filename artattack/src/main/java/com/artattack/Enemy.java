@@ -6,6 +6,7 @@ public class Enemy extends ActiveElement {
     //Attributes
     private List<Coordinates> visionArea;
     private List<Item> drops;
+    private List<Key> keys;
     private int droppedXP;
     private int playerOneDemage;
     private int playerTwoDemage;
@@ -22,10 +23,11 @@ public class Enemy extends ActiveElement {
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, 
         int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea,
-        List<Coordinates> visionArea, List<Item> drops, int droppedXP){
+        List<Coordinates> visionArea, List<Item> drops, List<Key> keys, int droppedXP){
             this(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints, moveArea);
             this.visionArea = visionArea;
             this.drops = drops;
+            this.keys = keys;
             this.droppedXP = droppedXP;
             this.playerOneDemage = 0;
             this.playerTwoDemage = 0;
@@ -37,6 +39,10 @@ public class Enemy extends ActiveElement {
 
     public List<Item> getDrops() {
         return this.drops;
+    }
+
+    public List<Key> getKeys(){
+        return this.keys;
     }
 
     public int getDroppedXP() {
@@ -80,4 +86,10 @@ public class Enemy extends ActiveElement {
         playerOne.updateCurrXP(this.calculateDroppedXP(this.playerOneDemage));
         playerTwo.updateCurrXP(this.calculateDroppedXP(this.playerTwoDemage));
     }
+
+    public void remove(Maps map){
+        map.getMapMatrix()[this.getCoordinates().getX()][this.getCoordinates().getY()] = '.';
+        map.getDict().remove(this.getCoordinates());
+    }
+
 }

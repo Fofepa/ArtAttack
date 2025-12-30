@@ -13,6 +13,7 @@ import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
 import com.artattack.MovieDirector;
+import com.artattack.Musician;
 
 class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;
@@ -29,8 +30,8 @@ class MapPanel extends JPanel {
         initCursorTimer();
     }
 
-    public void setMap(Maps map, MovieDirector player) {
-        this.movementStrategy = new MovementStrategy(map, player);
+    public void setMap(Maps map, MovieDirector director, Musician musician) {
+        this.movementStrategy = new MovementStrategy(map, director);
         this.interactionStrategy = new InteractionStrategy(movementStrategy);
 
         // reset cursore se necessario

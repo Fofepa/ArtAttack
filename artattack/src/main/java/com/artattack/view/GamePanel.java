@@ -30,16 +30,18 @@ import com.artattack.Talk;
 
 public class GamePanel extends JPanel {
     
-    private double mainVerticalProportion = 0.2;
-    private double inventoriesVerticalProportion = 0.8;
-    private double mapHorizontalProportion = 0.75;
+    private final double mainVerticalProportion = 0.2;
+    private final double inventoriesVerticalProportion = 0.8;
+    private final double mapHorizontalProportion = 0.75;
     
-    private double inventorySubDivision = 0.5;
-    private double dialogueSubDivision = 0.8;
+    private final double inventorySubDivision = 0.5;
+    private final double dialogueSubDivision = 0.8;
     
     private MapPanel mapPanel;
-    private InteractionPanel interactionPanel;
-    private SpritePanel spritePanel;
+    private final InteractionPanel interactionPanel;
+    private final SpritePanel spritePanel;
+    private final TurnPanel turnPanel;
+    private final StatsPanel statsPanel;
     private MainFrame mainFrame;
     
     public GamePanel(MainFrame mainFrame) {
@@ -74,6 +76,10 @@ public class GamePanel extends JPanel {
         
         // Pannello basso sinistra
         JPanel legendPanel = createTestPanel();
+
+        statsPanel = new StatsPanel();
+        turnPanel = new TurnPanel();
+
         
         // Split verticale per la parte sinistra
         JSplitPane downLeftSplit = new JSplitPane(
@@ -278,6 +284,12 @@ public class GamePanel extends JPanel {
         
         if (size > 0) {
             split.setDividerLocation((int) (size * ratio));
+        }
+    }
+
+    private static class StatsPanel {
+
+        public StatsPanel() {
         }
     }
 }

@@ -8,9 +8,12 @@ public class MovementStrategy {
     
      public MovementStrategy(Maps map,Player player){
         this.map = map;
-        this.player = player;
-        this.cursor = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY());
-    } 
+        setPlayer(player);
+    }
+
+    public MovementStrategy (Maps map){
+        this.map =map;
+    }
 
     public void execute(int dx, int dy){
         if (dx != 0 || dy != 0) {
@@ -69,4 +72,15 @@ public class MovementStrategy {
     public void setIsSelected(boolean isSelected){
         this.isSelected = isSelected;
     }
+
+    public void setMap(Maps map) {
+        this.map = map;
+    }
+
+    public final void setPlayer(Player player) {
+        this.player = player;
+        this.cursor = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY());
+    }
+
+
 }

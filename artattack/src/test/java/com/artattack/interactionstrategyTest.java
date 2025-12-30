@@ -21,7 +21,8 @@ public class interactionstrategyTest {
 
     @Before
     public void setUp(){
-        this.player = new Musician(0, '@', " ", new Coordinates(1,1), 0, 0, 0, 0, 0, 0, 0, null, 0, new ArrayList<Item>(), null, null);
+        player = new MovieDirector(0, '@', "", new Coordinates(0, 0),
+            null, 0, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<Item>(), null, null);
         this.map = new Maps(this.player,
          new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), 
          List.of(

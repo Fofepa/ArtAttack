@@ -254,8 +254,8 @@ public class GamePanel extends JPanel {
                     spritePanel, interactionPanel)
             ),
             List.of(
-                new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), 0, 0),
-                new Enemy(1, 'E', "Orco", new Coordinates(25, 25), 0, 0)
+                new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
+                new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
             )
         );
 

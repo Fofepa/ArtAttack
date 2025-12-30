@@ -2,50 +2,40 @@ package com.artattack;
 
 import java.util.List;
 
-public abstract class Player extends MapElement {
+public abstract class Player extends ActiveElement {
     
     //Attributes
-    private int currHP;
-    private int maxHP;
     private int currXP;
     private int maxXP;
     private int level;
+    private boolean leveledUp;
     private int maxWeapons;
-    private List<Weapon> weapons;
-    private int speed;
     private List<Item> inventory;
     private List<Key> keys;
-    private int actionPoints;
     private List<Coordinates> actionArea;
-    private List<Coordinates> moveArea;
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates){
-            super(ID,mapSymbol,name,coordinates);
-        }
+        super(ID,mapSymbol,name,coordinates);
+    } 
 
-    public Player(int ID, char mapSymbol, String name, Coordinates coordinates, 
-        int currHP, int maxHP, int currXP, int maxXP, int level, int speed){
-        this(ID,mapSymbol,name,coordinates);
-        this.currHP = currHP;
-        this.maxHP = maxHP;
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+        List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea,
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed){
+        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints, moveArea);
         this.currXP = currXP;
         this.maxXP = maxXP;
         this.level = level;
-        this.speed = speed;
+        this.leveledUp = false;
     }
 
-    public Player(int ID, char mapSymbol, String name, Coordinates coordinates, 
-        int currHP, int maxHP, int currXP, int maxXP, int level, int speed,
-        int maxWeapons, List<Weapon> weapons , int actionPoints, List<Item> inventory,
-          List<Coordinates> actionArea, List<Coordinates> moveArea){
-            this(ID,mapSymbol,name,coordinates,currHP, maxHP, currXP, maxXP,level, speed);
+     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+        List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea,
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea){
+            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed);
             this.maxWeapons = maxWeapons;
-            this.weapons = weapons;
-            this.actionPoints = actionPoints;
             this.inventory = inventory;
+            this.keys = keys;
             this.actionArea = actionArea;
-            this.moveArea  = moveArea;
-
         }
 
     //primitive methods
@@ -62,13 +52,6 @@ public abstract class Player extends MapElement {
     //public abstract  void skipTurn();
 
     //getters
-    public int getCurrHP() {
-        return this.currHP;
-    }
-
-    public int getMaxHP() {
-        return this.maxHP;
-    }
 
     public int getCurrXP() {
         return this.currXP;
@@ -82,32 +65,24 @@ public abstract class Player extends MapElement {
         return this.level;
     }
 
+    public boolean getLeveledUp(){
+        return this.leveledUp;
+    }
+
     public int getMaxWeapons() {
         return this.maxWeapons;
-    }
-
-    public List<Weapon> getWeapons(){
-        return this.weapons;
-    }
-
-    public int getSpeed() {
-        return this.speed;
     }
 
     public List<Item> getInventory() {
         return this.inventory;
     }
 
-    public int getActionPoints() {
-        return this.actionPoints;
+    public List<Key> getKeys(){
+        return this.keys;
     }
 
     public List<Coordinates> getActionArea() {
         return this.actionArea;
-    }
-
-    public List<Coordinates> getMoveArea() {
-        return this.moveArea;
     }
 
     public void addItem(Item item){
@@ -118,39 +93,40 @@ public abstract class Player extends MapElement {
         this.keys.add(key);
     }
 
-    public void addWeapon(Weapon weapon){
-        this.weapons.add(weapon);
-    }
-
-    public void setMaxHP(int maxHP){
-        this.maxHP = maxHP;
-        this.currHP = maxHP;        
-    }
-
     public void setMaxXP(int maxXP){
         this.maxXP = maxXP;
     }
 
     public void setLevel(){
         this.level += 1;
+        this.leveledUp = true;
     }
 
     public void setMaxWeapons(){
         this.maxWeapons += 1;
     }
 
-    public void setSpeed(int speed){
-        this.speed = speed;
+    public void updateCurrXP(int amount){
+        if(this.currXP + amount < this.maxXP)
+            this.currXP += amount;
+        else{
+            amount = amount - (this.maxXP - this.currXP);
+            this.setLevel();
+            this.currXP = amount;
+        }
     }
 
-    public void setMoveArea(List<Coordinates> moveArea){
-        this.moveArea = moveArea;
-    }
-
-    public void updateHP(int amount){
-        if(this.currHP + amount > this.maxHP)
-            this.currHP = this.maxHP;
-        else
-            this.currHP += amount;
+    @Override
+    public boolean equals(Object obj){
+        if(this == obj) return true;
+        if(obj == null) return false;
+        if(this.getClass() != obj.getClass()) return false;
+        Player other = (Player) obj;
+        if(this.getID() != other.getID()) return false;
+        if(this.getMapSymbol() != other.getMapSymbol()) return false;
+        if(!this.getName().equals(other.getName())) return false;
+        if(!this.getCoordinates().equals(other.getCoordinates())) return false;
+        //Aggiungi altri check
+        return true;
     }
 }

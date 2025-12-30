@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class moveTest {
-    private Move m1, m2, m3, m4;
+    private Move m1, m2, m3, m4, m5;
     private MoveBuilder1 mb1;
     private Player p1, p2;
     private Enemy e;
@@ -51,6 +51,13 @@ public class moveTest {
         mb1.setActionPoints(1);
         mb1.setAttackArea(List.of(new Coordinates(-1, 0)));
         m4 = mb1.getResult();
+        //Creating m5
+        mb1.setName("TestMove");
+        mb1.setDescription("TestDescription");
+        mb1.setHealAmount(1);
+        mb1.setActionPoints(1);
+        mb1.setHealArea(List.of(new Coordinates(1, 1)));
+        m5 = mb1.getResult();
 
         p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0),
             null, 0, null, 10, 10, 0, 10, 0, 0, 0, null,null,null);
@@ -91,19 +98,19 @@ public class moveTest {
     }
 
     @Test
-    public void testAttack() {
-        //m1.attack(p1, maps);
-        //assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 9, e.getCurrHP()); //Player attacks Enemy
+    public void testUseMove() {
+        //m1.useMove(p1, maps);
+        //assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, e.getCurrHP()); //Player attacks Enemy
         e.setActionPoints(m2.getActionPoints());
-        m2.attack(e, maps);
-        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*/
+        m2.useMove(e, maps);
+        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*/
         p1.setActionPoints(m3.getActionPoints());
-        m3.attack(p1,maps);
+        m3.useMove(p1,maps);
         p2.setActionPoints(m4.getActionPoints());
-        m4.attack(p2,maps);
+        m4.useMove(p2,maps);
 
         //Testing droppedXP
-        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 0, e.getCurrHP());
+        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 0, e.getCurrHP());
         assertEquals("testAttack faild. p1 currXP not as expected.", 8, p1.getCurrXP());
         assertEquals("testAttack faild. p2 currXP not as expected.", 2, p2.getCurrXP());
         //Testing dropped Items and Keys
@@ -116,6 +123,12 @@ public class moveTest {
 
         //Testing insufficient ActionPoints
         p1.setActionPoints(0);
-        assertEquals("Move.attack(MapElement attacker, Maps map) has failed", 0, m1.attack(p1, maps));
+        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 0, m1.useMove(p1, maps));
+
+        //Testing healing
+        p1.setActionPoints(m5.getActionPoints());
+        p2.updateHP(-p2.getCurrHP() + 1);
+        m5.useMove(p1, maps);
+        assertEquals(2, p2.getCurrHP());
     }
 }

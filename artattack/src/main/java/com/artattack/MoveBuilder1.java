@@ -29,6 +29,11 @@ public class MoveBuilder1 implements MoveBuilder {
     }
 
     @Override
+    public void setHealAmount(int healAmount) {
+        this.move.setHealAmount(healAmount);
+    }
+
+    @Override
     public void setActionPoints(int actionPoints) {
         this.move.setActionPoints(actionPoints);
     }
@@ -38,6 +43,11 @@ public class MoveBuilder1 implements MoveBuilder {
         this.move.setAttackArea(attackArea);
     }
     
+    @Override
+    public void setHealArea(List<Coordinates> healArea) {
+        this.move.setHealArea(healArea);
+    }
+
     public Move getResult() {
         Move product = this.move;
         this.reset();

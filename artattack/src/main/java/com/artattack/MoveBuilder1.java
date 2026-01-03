@@ -48,6 +48,16 @@ public class MoveBuilder1 implements MoveBuilder {
         this.move.setHealArea(healArea);
     }
 
+    @Override
+    public void setAreaAttack(boolean areaAttack) {
+        this.move.setAreaAttack(areaAttack);
+    }
+
+    @Override
+    public void setAreaHeal(boolean areaHeal) {
+        this.move.setAreaHeal(areaHeal);
+    }
+
     public Move getResult() {
         Move product = this.move;
         this.reset();

@@ -12,6 +12,8 @@ public class Move {
     private int actionPoints;
     private List<Coordinates> attackArea;
     private List<Coordinates> healArea;
+    private boolean areaAttack;
+    private boolean areaHeal;
 
     //Constructors
     public Move() {
@@ -47,6 +49,14 @@ public class Move {
         return this.healArea;
     }
 
+    public boolean getAreaAttack() {
+        return this.areaAttack;
+    }
+
+    public boolean getAreaHeal() {
+        return this.areaHeal;
+    }
+
     //Setters
     public void setName(String name) {
         this.name = name;
@@ -74,6 +84,14 @@ public class Move {
 
     public void setHealArea(List<Coordinates> healArea) {
         this.healArea = healArea;
+    }
+
+    public void setAreaAttack(boolean areaAttack) {
+        this.areaAttack = areaAttack;
+    }
+
+    public void setAreaHeal(boolean areaHeal) {
+        this.areaHeal = areaHeal;
     }
 
     //Methods
@@ -104,6 +122,7 @@ public class Move {
     }
 
     public int useMove(ActiveElement user, Maps map) {
+        //Checks if user has enough ActionPoints
         if (user.getActionPoints() < this.getActionPoints()) {
             return 0;
         }
@@ -112,13 +131,20 @@ public class Move {
             List<ActiveElement> victims = new ArrayList<>();
             for (Coordinates attackCell : this.attackArea) {
                 ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
-                if (user instanceof Player){
-                    if (check instanceof Enemy enemy)
+                //if user is player, add enemy victims; if user is enemy, add player to victims;
+                if (user instanceof Player) {
+                    if (check instanceof Enemy enemy) {
                         victims.add(enemy);
+                    }
                 }
-                else if (user instanceof Enemy)
-                    if (check instanceof Player player)
+                else if (user instanceof Enemy) {
+                    if (check instanceof Player player) {
                         victims.add(player);
+                    }
+                }
+                if (!this.areaAttack && !victims.isEmpty()) {
+                    break;
+                }
             }
             for (ActiveElement element : victims) {
                 switch (element) {
@@ -158,13 +184,19 @@ public class Move {
             List<ActiveElement> benefactors = new ArrayList<>();
             for (Coordinates healCell : this.healArea) {
                 ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));
-                if (user instanceof Player){
-                    if (check instanceof Player player)
+                if (user instanceof Player) {
+                    if (check instanceof Player player) {
                         benefactors.add(player);
+                    }
                 }
-                else if (user instanceof Enemy)
-                    if (check instanceof Enemy enemy)
+                else if (user instanceof Enemy) {
+                    if (check instanceof Enemy enemy) {
                         benefactors.add(enemy);
+                    }
+                }
+                if (!this.areaHeal && !benefactors.isEmpty()) {
+                    break;
+                }
             }
             for (ActiveElement element : benefactors) {
                 element.updateHP(this.healAmount);

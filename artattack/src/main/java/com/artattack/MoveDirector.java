@@ -22,5 +22,6 @@ public class MoveDirector {
         this.builder.setPower(1);
         this.builder.setActionPoints(1);
         this.builder.setAttackArea(List.of(new Coordinates(0, 1)));
+        this.builder.setAreaAttack(false);
     }
 }

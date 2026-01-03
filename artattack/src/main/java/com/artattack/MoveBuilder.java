@@ -10,4 +10,6 @@ public interface MoveBuilder {
     void setActionPoints(int actionPoints);
     void setAttackArea(List<Coordinates> attackArea);
     void setHealArea(List<Coordinates> healArea);
+    void setAreaAttack(boolean areaAttack);
+    void setAreaHeal(boolean areaHeal);
 }

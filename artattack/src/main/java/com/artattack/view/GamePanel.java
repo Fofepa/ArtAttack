@@ -13,7 +13,6 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -29,26 +28,34 @@ import com.artattack.MovieDirector;
 import com.artattack.Musician;
 import com.artattack.Talk;
 
-public class GameView extends JFrame {
+public class GamePanel extends JPanel {
     
-    private double mainVerticalProportion = 0.3;
+    private double mainVerticalProportion = 0.2;
     private double inventoriesVerticalProportion = 0.8;
     private double mapHorizontalProportion = 0.75;
     
-    // Proporzioni per le divisioni interne
     private double inventorySubDivision = 0.5;
     private double dialogueSubDivision = 0.8;
     
     private MapPanel mapPanel;
     private InteractionPanel interactionPanel;
     private SpritePanel spritePanel;
+    private MainFrame mainFrame;
     
-    public GameView() {
-        setTitle("Map");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
+    public GamePanel(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+        setLayout(new BorderLayout());
+        setFocusable(true);
+        
+        // Aggiungi listener per ESC
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(
+            KeyStroke.getKeyStroke("ESCAPE"), "showMenu");
+        getActionMap().put("showMenu", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainFrame.showMenu();
+            }
+        });
         
         // Pannello alto sinistra diviso in 2 parti uguali
         JPanel inventoryPanel = createBlackPanel("Inventory");
@@ -65,8 +72,8 @@ public class GameView extends JFrame {
         movesInventorySplit.setDividerLocation(inventorySubDivision);
         whiteLineDivider(movesInventorySplit);
         
-        // Pannello basso sinistra (singolo)
-        JPanel legendPanel = createTestPanel();  // Changed to test panel
+        // Pannello basso sinistra
+        JPanel legendPanel = createTestPanel();
         
         // Split verticale per la parte sinistra
         JSplitPane downLeftSplit = new JSplitPane(
@@ -78,11 +85,12 @@ public class GameView extends JFrame {
         downLeftSplit.setDividerSize(2);
         downLeftSplit.setDividerLocation(inventoriesVerticalProportion);
         
+        
         // Pannello alto destra (mappa)
         mapPanel = new MapPanel();
         
         // Pannello basso destra diviso in modo proporzionale
-        interactionPanel = new InteractionPanel();  // Changed to InteractionPanel
+        interactionPanel = new InteractionPanel();
         spritePanel = new SpritePanel();
         
         JSplitPane downRightSplit = new JSplitPane(
@@ -105,7 +113,8 @@ public class GameView extends JFrame {
         rightSplit.setDividerSize(2);
         rightSplit.setDividerLocation(mapHorizontalProportion);
         
-        // Split mainVerticalProportion principale
+        
+        // Split principale
         JSplitPane mainVerticalSplit = new JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT,
             downLeftSplit,
@@ -113,13 +122,30 @@ public class GameView extends JFrame {
         );
         mainVerticalSplit.setResizeWeight(mainVerticalProportion);
         mainVerticalSplit.setDividerSize(2);
-        mainVerticalSplit.setDividerLocation(mainVerticalProportion);
+        
         
         whiteLineDivider(downLeftSplit);
         whiteLineDivider(rightSplit);
         whiteLineDivider(mainVerticalSplit);
         
         add(mainVerticalSplit);
+
+
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            private boolean firstTime = true;
+        
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                if (firstTime) {
+                    firstTime = false;
+                    SwingUtilities.invokeLater(() -> {
+                        mapPanel.requestFocusInWindow();
+                    });
+                }
+            }
+        });
+        
+       
         
         // Gestione del focus con Tab
         mapPanel.setFocusable(true);
@@ -138,22 +164,19 @@ public class GameView extends JFrame {
         }
     }
     
-    // Test panel with buttons to trigger dialogs
     private JPanel createTestPanel() {
-    JPanel panel = new JPanel();
-    panel.setBackground(Color.BLACK);
-    panel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.BLACK);
+        panel.setLayout(new BorderLayout());
 
-    JLabel label = new JLabel("STATS", SwingConstants.CENTER);
-    label.setForeground(Color.WHITE);
-    label.setFont(new Font("Monospaced", Font.BOLD, 18));
+        JLabel label = new JLabel("STATS", SwingConstants.CENTER);
+        label.setForeground(Color.WHITE);
+        label.setFont(new Font("Monospaced", Font.BOLD, 18));
 
-    panel.add(label, BorderLayout.CENTER);
+        panel.add(label, BorderLayout.CENTER);
 
-
-    return panel;
-}
-
+        return panel;
+    }
     
     private void nextFocus(List<JComponent> order) {
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
@@ -220,26 +243,15 @@ public class GameView extends JFrame {
         });
     }
     
-    public void setProportion(double mainVerticalProportion, double inventoryVerticalProportion, double mapHorizontalProportion) {
-        this.mainVerticalProportion = mainVerticalProportion;
-        this.inventoriesVerticalProportion = inventoryVerticalProportion;
-        this.mapHorizontalProportion = mapHorizontalProportion;
-    }
-    
-    public void setInternalProportion(double inventorySubDivision, double dialogueSubDivision) {
-        this.inventorySubDivision = inventorySubDivision;
-        this.dialogueSubDivision = dialogueSubDivision;
-    }
-    
-
-    private void loadInitialMap() {
-
+    public void loadInitialMap() {
         Maps map = new Maps(
             new Musician(1, '@', "Zappa", new Coordinates(10, 5)),
             new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)),
             List.of(
-                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), List.of(new Talk(interactionPanel, List.of("HELP ME!!", "...","I'M STUCK BETWEEN THE WALLS!!!"))),
-                "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png" , spritePanel, interactionPanel)
+                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), 
+                    List.of(new Talk(interactionPanel, List.of("HELP ME!!", "...","I'M STUCK BETWEEN THE WALLS!!!"))),
+                    "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png", 
+                    spritePanel, interactionPanel)
             ),
             List.of(
                 new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
@@ -247,34 +259,25 @@ public class GameView extends JFrame {
             )
         );
 
-        MovieDirector player =
-            (MovieDirector) map.getDict().get(new Coordinates(5, 5));
+        MovieDirector player = (MovieDirector) map.getDict().get(new Coordinates(5, 5));
 
         mapPanel.setMap(map, player);
-
         mapPanel.revalidate();
         mapPanel.repaint();
-            System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
-    }
-        public static void main(String[] args) {
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-    } catch (Exception e) {
-        System.err.println("Could not set Nimbus L&F.");
+        mapPanel.requestFocusInWindow();
+        
+        
+        System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
     }
 
-    SwingUtilities.invokeLater(() -> {
-        GameView game = new GameView();
-        game.setVisible(true);
+
+    private void forceDivider(JSplitPane split, double ratio) {
+        int size = split.getOrientation() == JSplitPane.HORIZONTAL_SPLIT
+                ? split.getWidth()
+                : split.getHeight();
         
-        SwingUtilities.invokeLater(() -> {
-            game.loadInitialMap();
-        });
-    });
-}
+        if (size > 0) {
+            split.setDividerLocation((int) (size * ratio));
+        }
+    }
 }

@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.artattack.view.InteractionPanel;
 
 
+
 public class movementstrategyTest {
     private Maps map;
     private MovementStrategy move;

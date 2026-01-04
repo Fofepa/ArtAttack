@@ -10,11 +10,18 @@ public class Weapon{
     private List<Move> moves;
     private int compatibility;
 
-    //Constructor
+    //Constructors
     public Weapon(String name, String description, int compatibility) {
         this.name = name;
         this.description = description;
         this.moves = new ArrayList<>();
+        this.compatibility = compatibility;
+    }
+
+    public Weapon(String name, String description, List<Move> moves, int compatibility) {
+        this.name = name;
+        this.description = description;
+        this.moves = moves;
         this.compatibility = compatibility;
     }
 
@@ -37,10 +44,8 @@ public class Weapon{
 
     //Methods
     public boolean addMove(Move move) {
-        for (Move m : this.moves) {
-            if (move == m) {
-                return false;
-            }
+        if (this.moves.contains(move)) {
+            return false;
         }
         moves.add(move);
         return true;

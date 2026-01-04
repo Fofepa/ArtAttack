@@ -137,7 +137,7 @@ public class Move {
                         victims.add(enemy);
                     }
                 }
-                else if (user instanceof Enemy) {
+                else if (user instanceof Enemy) {//https://prod.liveshare.vsengsaas.visualstudio.com/join?A83DCD542B47D9DEDD2CBD6D53607F4EF48A
                     if (check instanceof Player player) {
                         victims.add(player);
                     }

@@ -28,10 +28,10 @@ public class combatstrategyTest {
             new Enemy(1, 'E', "Orco", new Coordinates(1, 2))
          ));
         assertNotNull(map);
-        map.getPlayerOne().getWeapons().get(0).addMove(new Move("Kick", "", 3, List.of(new Coordinates(1, 0))));
-        map.getPlayerOne().getWeapons().get(0).addMove(new Move("Bump", "", 5, List.of(new Coordinates(1, 1))));
-        map.getPlayerOne().getWeapons().get(0).getMoves().get(0).setActionPoints(3);
-        map.getPlayerOne().getWeapons().get(0).getMoves().get(1).setActionPoints(4);
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(List.of(new Coordinates(1, 0))); m1.setActionPoints(3);
+        Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(List.of(new Coordinates(1, 1))); m2.setActionPoints(4);
+        map.getPlayerOne().getWeapons().get(0).addMove(m1);
+        map.getPlayerOne().getWeapons().get(0).addMove(m2);
         combatStrategy = new CombatStrategy(map);
         combatStrategy.setCurrentPlayer(map.getPlayerOne());
         assertNotNull(combatStrategy);

@@ -30,7 +30,7 @@ public class CombatStrategy{
     }
 
     public int acceptMove(){
-        int value = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex).attack(player, map);
+        int value = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex).useMove(player, map);
         
         if(value != 0){
             isSelected = false;

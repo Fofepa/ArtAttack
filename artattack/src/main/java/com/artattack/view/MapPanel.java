@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -12,12 +14,11 @@ import javax.swing.Timer;
 import com.artattack.ActiveElement;
 import com.artattack.ConcreteTurnHandler;
 import com.artattack.ConcreteTurnQueue;
+import com.artattack.Coordinates;
 import com.artattack.Enemy;
 import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
-import com.artattack.MovieDirector;
-import com.artattack.Musician;
 import com.artattack.Player;
 
 class MapPanel extends JPanel {
@@ -28,6 +29,8 @@ class MapPanel extends JPanel {
     private ConcreteTurnQueue turnQueue;
     private ConcreteTurnHandler turnHandler;
     private TurnPanel turnPanel;
+    private List<Coordinates> attackArea = new ArrayList<>();
+    private MovesPanel movesPanel;
     
     public MapPanel() {
         setBackground(Color.BLACK);
@@ -37,13 +40,15 @@ class MapPanel extends JPanel {
         initCursorTimer();
     }
 
-    public void setMap(Maps map, MovieDirector director, Musician musician) {
-        this.movementStrategy = new MovementStrategy(map, director);
+    public void setMap(Maps map, Player p1, Player p2) {
+        this.movementStrategy = new MovementStrategy(map, p1);
         this.interactionStrategy = new InteractionStrategy(movementStrategy);
         showCursor = true;
         repaint();
         requestFocusInWindow();
     }
+
+    
     
     public void setTurnSystem(ConcreteTurnQueue queue, ConcreteTurnHandler handler, 
                              TurnPanel turnPanel) {
@@ -83,42 +88,47 @@ class MapPanel extends JPanel {
     }
     
     private void endTurn() {
-    if (turnHandler == null || turnQueue == null) {
-        System.out.println("No turn system to end turn");
-        return;
-    }
-    
-    System.out.println("=== Ending Turn ===");
-    
-    // Passa al prossimo turno
-    if (turnHandler.hasNext()) {
-        ActiveElement next = turnHandler.next();
-        System.out.println("Next turn: " + next.getName());
-        
-        // Aggiorna il TurnPanel
-        if (turnPanel != null) {
-            turnPanel.updateTurnDisplay();
+        if (turnHandler == null || turnQueue == null) {
+            System.out.println("No turn system to end turn");
+            return;
         }
-        
-        // Se il prossimo è un nemico, esegui la sua IA
-        if (next instanceof Enemy) {
-            handleEnemyTurn((Enemy) next);
-        } else if (next instanceof Player) {
-            // IMPORTANTE: Aggiorna il giocatore attivo nel MovementStrategy
-            movementStrategy.setPlayer((Player) next);
-            System.out.println("✓ Switched control to: " + next.getName());
-            
-            // Richiedi il focus per permettere l'input
-            requestFocusInWindow();
+
+        System.out.println("=== Ending Turn ===");
+
+        // Passa al prossimo turno
+        if (turnHandler.hasNext()) {
+            ActiveElement next = turnHandler.next();
+            System.out.println("Next turn: " + next.getName());
+
+            // Aggiorna il TurnPanel
+            if (turnPanel != null) {
+                turnPanel.updateTurnDisplay();
+            }
+
+            // Se il prossimo è un nemico, esegui la sua IA
+            if (next instanceof Enemy) {
+                handleEnemyTurn((Enemy) next);
+            } else if (next instanceof Player) {
+                // IMPORTANTE: Aggiorna il giocatore attivo nel MovementStrategy
+                movementStrategy.setPlayer((Player) next);
+                
+                if (movesPanel != null) {
+                    movesPanel.setCurrentPlayer((Player) next);
+                }
+
+                System.out.println("✓ Switched control to: " + next.getName());
+
+                // Richiedi il focus per permettere l'input
+                requestFocusInWindow();
+            }
+
+            repaint();
+        } else {
+            System.out.println("No more turns, resetting");
+            turnHandler.resetIndex();
+            endTurn(); 
         }
-        
-        repaint();
-    } else {
-        System.out.println("No more turns, resetting");
-        turnHandler.resetIndex();
-        endTurn(); 
     }
-}
     
     private void handleEnemyTurn(Enemy enemy) {
         System.out.println("Enemy turn: " + enemy.getName());
@@ -138,6 +148,23 @@ class MapPanel extends JPanel {
         });
         enemyTimer.setRepeats(false);
         enemyTimer.start();
+    }
+
+    public void showAttackArea(List<Coordinates> area) {
+        this.attackArea = area != null ? area : new ArrayList<>();
+        repaint();
+    }
+
+    public void clearAttackArea() {
+        this.attackArea.clear();
+        repaint();
+    }
+
+    public Coordinates getCursorPosition() {
+        if (movementStrategy != null) {
+            return movementStrategy.getCursor();
+        }
+        return null;
     }
     
     private void initCursorTimer() {
@@ -203,7 +230,14 @@ class MapPanel extends JPanel {
                         System.out.println("ENTER pressed - Confirming movement");
                         if (movementStrategy.getSelectedState()) {
                             movementStrategy.acceptMovement();
-                            endTurn(); 
+
+                            // ✓ AGGIORNA L'AREA DI ATTACCO DOPO IL MOVIMENTO
+                            // perché il giocatore si è spostato
+                            if (movesPanel != null) {
+                                movesPanel.refreshAttackArea();
+                            }
+
+                            endTurn();
                             repaint();
                         }
                         return;
@@ -296,6 +330,34 @@ class MapPanel extends JPanel {
             }
         }
 
+        if (!attackArea.isEmpty()) {
+            g.setColor(new Color(255, 0, 0, 100)); // Rosso semi-trasparente
+            
+            for (Coordinates coord : attackArea) {
+                int x = coord.getX();
+                int y = coord.getY();
+                
+                // Disegna un rettangolo semi-trasparente sulla cella
+                g.fillRect(
+                    x * charWidth + offsetX,
+                    y * charHeight + offsetY,
+                    charWidth,
+                    charHeight
+                );
+                
+                // Bordo rosso
+                g.setColor(Color.RED);
+                g.drawRect(
+                    x * charWidth + offsetX,
+                    y * charHeight + offsetY,
+                    charWidth - 1,
+                    charHeight - 1
+                );
+                
+                g.setColor(new Color(255, 0, 0, 100));
+            }
+        }
+
         // Disegno del cursore
         int cursorX = movementStrategy.getCursor().getX();
         int cursorY = movementStrategy.getCursor().getY();
@@ -316,5 +378,23 @@ class MapPanel extends JPanel {
             movementStrategy.setPlayer(player);
             System.out.println("Current player changed to: " + player.getName());
         }
+    }
+
+    public void setMovesPanel(MovesPanel movesPanel) {
+        this.movesPanel = movesPanel;
+    }
+
+    public int getMapRows() {
+        if (movementStrategy != null && movementStrategy.getMap() != null) {
+            return movementStrategy.getMap().getRows();
+        }
+        return 0;
+    }
+
+    public int getMapColumns() {
+        if (movementStrategy != null && movementStrategy.getMap() != null) {
+            return movementStrategy.getMap().getColumns();
+        }
+        return 0;
     }
 }

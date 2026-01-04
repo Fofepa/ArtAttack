@@ -20,8 +20,8 @@ public class EnemyChoice{   // Our Context class
         
         // checks if there are any player to be hit and what move can hit them
         for(Move move : enemy.getWeapons().get(0).getMoves()){
-            if(move.getTargets() != null){
-                for(ActiveElement element : move.getTargets()){
+            if(move.getAttackTargets(this.enemy, this.map) != null){
+                for(ActiveElement element : move.getAttackTargets(this.enemy, this.map)){
                     if(element instanceof Player) usable.add(move);
                 }
             }

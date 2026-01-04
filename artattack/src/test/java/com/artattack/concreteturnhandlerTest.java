@@ -18,7 +18,7 @@ public class concreteturnhandlerTest {
 
     @Before
     public void setUp(){
-        queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null), 
+        queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
                 new MovieDirector(1, '2', "o", null))));
         turn = new ConcreteTurnHandler(queue);
         assertNotNull(queue);

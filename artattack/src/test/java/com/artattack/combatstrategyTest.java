@@ -1,17 +1,17 @@
 package com.artattack;
 
+import java.util.List;
+
+import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.*;
-import org.junit.*;
-import org.junit.Assert.*;
-
-import com.artattack.*;
-import com.artattack.view.*;
+import com.artattack.view.InteractionPanel;
 
 public class combatstrategyTest {
     private CombatStrategy combatStrategy;
@@ -24,8 +24,8 @@ public class combatstrategyTest {
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
          )),
          List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(1, 1)),
-            new Enemy(1, 'E', "Orco", new Coordinates(1, 2))
+            new Enemy(0, 'E', "Goblin", new Coordinates(1, 1),EnemyType.EMPLOYEE),
+            new Enemy(1, 'E', "Orco", new Coordinates(1, 2),EnemyType.EMPLOYEE)
          ));
         assertNotNull(map);
         Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(List.of(new Coordinates(1, 0))); m1.setActionPoints(3);

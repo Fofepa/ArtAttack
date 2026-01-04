@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 
 import com.artattack.Coordinates;
 import com.artattack.Enemy;
+import com.artattack.EnemyType;
 import com.artattack.InteractableElement;
 import com.artattack.Maps;
 import com.artattack.MovieDirector;
@@ -254,8 +255,8 @@ public class GamePanel extends JPanel {
                     spritePanel, interactionPanel)
             ),
             List.of(
-                new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
-                new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
+                new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), EnemyType.EMPLOYEE),
+                new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE)
             )
         );
 

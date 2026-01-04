@@ -10,21 +10,24 @@ public class Enemy extends ActiveElement {
     private int droppedXP;
     private int playerOneDemage;
     private int playerTwoDemage;
+    private EnemyType enemyType;
     //private boolean isActive = false;     unused for now
 
-    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates){
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType){
         super(ID,mapSymbol,name,coordinates);
+        this.enemyType = enemyType;
     }
 
-    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, 
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
         int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea){
         super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints, moveArea);
+        this.enemyType = enemyType;
     }
 
-    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, 
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
         int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea,
         List<Coordinates> visionArea, List<Item> drops, List<Key> keys, int droppedXP){
-            this(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints, moveArea);
+            this(ID,mapSymbol,name,coordinates, enemyType, currHP,maxHP,speed,weapons,actionPoints, moveArea);
             this.visionArea = visionArea;
             this.drops = drops;
             this.keys = keys;
@@ -55,6 +58,10 @@ public class Enemy extends ActiveElement {
 
     public int getPlayerTwoDemage(){
         return this.playerTwoDemage;
+    }
+
+    public EnemyType getEnemyType(){
+        return this.enemyType;
     }
 
     public void updatePlayerOneDemage(int demage){

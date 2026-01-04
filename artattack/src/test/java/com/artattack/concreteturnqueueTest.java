@@ -12,15 +12,15 @@ public class concreteturnqueueTest {
 
     @Before
     public void setUp(){
-        queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null), 
+        queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
                 new MovieDirector(1, '2', "o", new Coordinates(5,5)))));
         assertNotNull(queue);
     }
 
     @Test
     public void addTest(){
-        queue.add(new Enemy(3, '3', "Davide", new Coordinates(1,0)));
-        assertEquals(new Enemy(3, '3', "Davide", new Coordinates(1,0)), queue.getTurnQueue().get(2));
+        queue.add(new Enemy(3, '3', "Davide", new Coordinates(1,0), EnemyType.EMPLOYEE));
+        assertEquals(new Enemy(3, '3', "Davide", new Coordinates(1,0), EnemyType.EMPLOYEE), queue.getTurnQueue().get(2));
     }
 
     @Test

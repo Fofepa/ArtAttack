@@ -14,6 +14,7 @@ public class Move {
     private List<Coordinates> healArea;
     private boolean areaAttack;
     private boolean areaHeal;
+    private boolean range; //Ranged := true; Melee := false
 
     //Constructors
     public Move() {
@@ -55,6 +56,18 @@ public class Move {
 
     public boolean getAreaHeal() {
         return this.areaHeal;
+    }
+
+    public boolean getRange() {
+        this.range = !(this.attackArea.contains(new Coordinates(-1, 1)) || 
+                        this.attackArea.contains(new Coordinates(0, 1)) ||
+                        this.attackArea.contains(new Coordinates(1, 1)) ||
+                        this.attackArea.contains(new Coordinates(-1, 0)) ||
+                        this.attackArea.contains(new Coordinates(1, 0)) ||
+                        this.attackArea.contains(new Coordinates(-1, -1)) ||
+                        this.attackArea.contains(new Coordinates(0, -1)) ||
+                        this.attackArea.contains(new Coordinates(1, -1)));
+        return this.range;
     }
 
     //Setters
@@ -121,6 +134,44 @@ public class Move {
         return false;
     }
 
+    public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
+        List<ActiveElement> targets = new ArrayList<>();
+        for (Coordinates attackCell : this.attackArea) {
+            ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
+            //If user is Player, attack Enemies; If user is Enemy, attack Players
+            if (user instanceof Player) {
+                if (check instanceof Enemy enemy) {
+                    targets.add(enemy);
+                }
+            }
+            else if (user instanceof Enemy) {
+                if (check instanceof Player player) {
+                    targets.add(player);
+                }
+            }
+        }
+        return (targets.isEmpty()) ? null : targets;
+    }
+
+    public List<ActiveElement> getHealTargets(ActiveElement user, Maps map) {
+        List<ActiveElement> targets = new ArrayList<>();
+        for (Coordinates healCell : this.healArea) {
+            ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));
+            //If user is Player, heal Players; If user is Enemy, heal Enemies
+            if (user instanceof Player) {
+                if (check instanceof Player player) {
+                    targets.add(player);
+                }
+            }
+            else if (user instanceof Enemy) {
+                if (check instanceof Enemy enemy) {
+                    targets.add(enemy);
+                }
+            }
+        }
+        return (targets.isEmpty()) ? null : targets;
+    }
+
     public int useMove(ActiveElement user, Maps map) {
         //Checks if user has enough ActionPoints
         if (user.getActionPoints() < this.getActionPoints()) {
@@ -128,25 +179,7 @@ public class Move {
         }
         //Damage Logic
         if (this.power != 0 && !this.attackArea.isEmpty()) {
-            List<ActiveElement> victims = new ArrayList<>();
-            for (Coordinates attackCell : this.attackArea) {
-                ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
-                //if user is player, add enemy victims; if user is enemy, add player to victims;
-                if (user instanceof Player) {
-                    if (check instanceof Enemy enemy) {
-                        victims.add(enemy);
-                    }
-                }
-                else if (user instanceof Enemy) {//https://prod.liveshare.vsengsaas.visualstudio.com/join?A83DCD542B47D9DEDD2CBD6D53607F4EF48A
-                    if (check instanceof Player player) {
-                        victims.add(player);
-                    }
-                }
-                if (!this.areaAttack && !victims.isEmpty()) {
-                    break;
-                }
-            }
-            for (ActiveElement element : victims) {
+            for (ActiveElement element : this.getAttackTargets(user, map)) {
                 switch (element) {
                     case Enemy e -> {
                         e.updateHP(- this.power /*-variabile globale*/);
@@ -177,29 +210,18 @@ public class Move {
                     default -> {
                     }
                 }
+                if (!this.areaAttack) {
+                    break;
+                }
             }
         }
         //Healing Logic
         if (this.healAmount != 0 && !this.healArea.isEmpty()) {
-            List<ActiveElement> benefactors = new ArrayList<>();
-            for (Coordinates healCell : this.healArea) {
-                ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));
-                if (user instanceof Player) {
-                    if (check instanceof Player player) {
-                        benefactors.add(player);
-                    }
-                }
-                else if (user instanceof Enemy) {
-                    if (check instanceof Enemy enemy) {
-                        benefactors.add(enemy);
-                    }
-                }
-                if (!this.areaHeal && !benefactors.isEmpty()) {
+            for (ActiveElement element : this.getHealTargets(user, map)) {
+                element.updateHP(this.healAmount);
+                if (!this.areaHeal) {
                     break;
                 }
-            }
-            for (ActiveElement element : benefactors) {
-                element.updateHP(this.healAmount);
             }
         }
         user.setActionPoints(user.getActionPoints() - this.getActionPoints());

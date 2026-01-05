@@ -17,6 +17,7 @@ public class DumbAttackStrategy extends DecisionStrategy {
         enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
         /*this.mainframe.showDialog) */
     }
+    
     private Move chooseWeighted(List<Move> moves) { // function that defines the pb distribution of the usable moves
         if (moves.isEmpty()) return null;
         

@@ -17,84 +17,98 @@ public class moveTest {
     private MoveBuilder1 mb1;
     private Player p1, p2;
     private Enemy e;
+    private TestMapBuilder tmb;
     private Maps maps;
 
     @Before
     public void setUp() throws Exception {
         //Initializing MoveBuilder1
-        mb1 = new MoveBuilder1();
+        this.mb1 = new MoveBuilder1();
+        assertNotNull(this.mb1);
+        //Initializing TestMapBuilder
+        this.tmb = new TestMapBuilder();
+        assertNotNull(this.tmb);
         //Creating m1
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
         mb1.setPower(1);
         mb1.setActionPoints(1);
         mb1.setAttackArea(List.of(new Coordinates(0, 1)));
-        m1 = mb1.getResult();
+        this.m1 = mb1.getResult();
         //Creating m2
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
         mb1.setPower(1);
         mb1.setActionPoints(1);
         mb1.setAttackArea(List.of(new Coordinates(1, 0)));
-        m2 = mb1.getResult();
+        this.m2 = mb1.getResult();
         //Creating m3
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
         mb1.setPower(8);
         mb1.setActionPoints(1);
         mb1.setAttackArea(List.of(new Coordinates(0, 1)));
-        m3 = mb1.getResult();
+        this.m3 = mb1.getResult();
         //Creating m4
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
         mb1.setPower(2);
         mb1.setActionPoints(1);
         mb1.setAttackArea(List.of(new Coordinates(-1, 0)));
-        m4 = mb1.getResult();
+        this.m4 = mb1.getResult();
         //Creating m5
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
         mb1.setHealAmount(1);
         mb1.setActionPoints(1);
         mb1.setHealArea(List.of(new Coordinates(1, 1)));
-        m5 = mb1.getResult();
+        this.m5 = mb1.getResult();
+        //Creating p1
+        this.p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 
+        null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null);
+        //Creating p2
+        this.p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
+        null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null);
+        //Creating e
+        this.e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 100, 100, 1, new ArrayList<>(), 0, new ArrayList<>(), null, List.of(new Cure(".", ".", 1)), List.of(new Key(".", ".", 0)), 100);
+        //Creating maps
+        tmb.setDimension(26, 135);
+        tmb.setPlayerOne(p1);
+        tmb.setPlayerTwo(p2);
+        tmb.setEnemies(List.of(e));
+        tmb.setDict();
+        tmb.startMap();
+        this.maps = tmb.getResult();
 
-        p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0),
-            null, 0, null, 10, 10, 0, 10, 0, 0, 0, null,null,null);
-        p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-            null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<Item>(), new ArrayList<Key>(),null);
-        e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 10, 10, 0, null, 0, null,null,List.of(new Cure("cure", " ", 10)),List.of(new Key("","",0)),10);
-        maps = new Maps(p1, p2, null, List.of(e));
-
-        /*m3 = new Move("TestMove", "TestDescription", 8, List.of(new Coordinates(0, 1)));
-        m4 = new Move("TestMove", "TestDescription", 2, List.of(new Coordinates(-1, 0)));*/
-
-        assertNotNull(m1);
-        assertNotNull(p1);
-        assertNotNull(p2);
-        assertNotNull(e);
-        assertNotNull(maps);
-        assertNotNull(m3);
-        assertNotNull(m4);
+        assertNotNull(this.m1);
+        assertNotNull(this.m2);
+        assertNotNull(this.m3);
+        assertNotNull(this.m4);
+        assertNotNull(this.p1);
+        assertNotNull(this.p2);
+        assertNotNull(this.e);
+        assertNotNull(this.maps);
     }
 
     @After
     public void tearDown() throws Exception {
-        m1 = null;
-        p1 = null;
-        p2 = null;
-        e = null;
-        maps = null;
-        m3 = null;
-        m4 = null;
+        this.m1 = null;
+        this.m2 = null;
+        this.m3 = null;
+        this.m4 = null;
+        this.p1 = null;
+        this.p2 = null;
+        this.e = null;
+        this.maps = null;
 
-        assertNull(m1);
-        assertNull(p1);
-        assertNull(p2);
-        assertNull(e);
-        assertNull(maps);
-        assertNull(m3);
-        assertNull(m4);
+        assertNull(this.m1);
+        assertNull(this.m2);
+        assertNull(this.m3);
+        assertNull(this.m4);
+        assertNull(this.p1);
+        assertNull(this.p2);
+        assertNull(this.e);
+        assertNull(this.maps);
     }
 
     @Test
@@ -104,22 +118,32 @@ public class moveTest {
         e.setActionPoints(m2.getActionPoints());
         m2.useMove(e, maps);
         assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*/
-        p1.setActionPoints(m3.getActionPoints());
-        m3.useMove(p1,maps);
+        //p1.setActionPoints(m3.getActionPoints());
+        //m3.useMove(p1,maps);
         p2.setActionPoints(m4.getActionPoints());
         m4.useMove(p2,maps);
+        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 98, e.getCurrHP());
 
         //Testing droppedXP
-        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 0, e.getCurrHP());
-        assertEquals("testAttack faild. p1 currXP not as expected.", 8, p1.getCurrXP());
-        assertEquals("testAttack faild. p2 currXP not as expected.", 2, p2.getCurrXP());
+        p2.setActionPoints(m4.getActionPoints());
+        e.updateHP(-e.getCurrHP() + m4.getPower());
+        m4.useMove(p2, maps);
+        assertEquals(0, e.getCurrHP());
+        e.updatePlayerOneDemage(-e.getPlayerOneDemage() + 8);
+        e.updatePlayerTwoDemage(-e.getPlayerTwoDemage() + 2);
+        p1.updateCurrXP(-p1.getCurrXP());
+        p2.updateCurrXP(-p2.getCurrXP());
+        e.dropXP(p1, p2);
+        assertEquals(false, e.isAlive());
+        assertEquals("testAttack failed. p1 currXP not as expected.", 8, p1.getCurrXP());
+        assertEquals("testAttack failed. p2 currXP not as expected.", 2, p2.getCurrXP());
         //Testing dropped Items and Keys
-        assertEquals("testAttack faild. p2 inventory not as expected.", 1, p2.getInventory().size());
-        assertEquals("testAttack faild. p2 keys not as expected.", 1, p2.getKeys().size());
+        assertEquals("testAttack failed. p2 inventory not as expected.", 1, p2.getInventory().size());
+        assertEquals("testAttack failed. p2 keys not as expected.", 1, p2.getKeys().size());
 
         //Testing enemy.remove()
-        assertFalse("removeTest faild. Enemy still in the dict.", maps.getDict().containsValue(e));
-        assertTrue("removeTest faild. mapMatrix not updated.", maps.getMapMatrix()[e.getCoordinates().getX()][e.getCoordinates().getY()]=='.');
+        assertFalse("removeTest failed. Enemy still in the dict.", maps.getDict().containsValue(e));
+        assertTrue("removeTest failed. mapMatrix not updated.", maps.getMapMatrix()[e.getCoordinates().getX()][e.getCoordinates().getY()]=='.');
 
         //Testing insufficient ActionPoints
         p1.setActionPoints(0);

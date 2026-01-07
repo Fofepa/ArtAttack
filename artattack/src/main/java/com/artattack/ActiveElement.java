@@ -73,4 +73,17 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
     public boolean isAlive(){
         return this.currHP > 0; 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        ActiveElement other = (ActiveElement) obj;
+        return this.getID() == other.getID();
+    }
+    
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(getID());
+    }
 }

@@ -14,6 +14,7 @@ public class InteractionStrategy {
 
     public void acceptInteraction(){
         Coordinates cursor = this.movementStrategy.getCursor();
+        player = movementStrategy.getPlayer();
 
 
         if(Math.abs(cursor.getX() - this.player.getCoordinates().getX()) <= 1 &&

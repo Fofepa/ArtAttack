@@ -7,8 +7,8 @@ public class CombatStrategy{
     private int weaponIndex = 0;
     private int moveIndex = 0;
 
-    public CombatStrategy(MapBuilder mapBuilder){
-        this.map = mapBuilder.getResult();
+    public CombatStrategy(Maps map){
+        this.map = map;
     }
 
     public void execute(int dx, int dy){    // in this case dx is the weapon index and dy is the move index

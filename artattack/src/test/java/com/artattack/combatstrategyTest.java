@@ -18,15 +18,22 @@ public class combatstrategyTest {
 
     @Before
     public void setUp(){
-        Maps map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null),
-         new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
+        MapBuilder mapBuilder = new TestMapBuilder(); 
+        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
+        mapBuilder.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Ciao!"))), "",null,null),
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
-         )),
-         List.of(
+         )));
+        mapBuilder.setEnemies(List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(1, 1),EnemyType.EMPLOYEE),
             new Enemy(1, 'E', "Orco", new Coordinates(1, 2),EnemyType.EMPLOYEE)
          ));
+        mapBuilder.setDimension(26, 153);
+        mapBuilder.setDict();
+        mapBuilder.startMap();
+        assertNotNull(mapBuilder);
+        Maps map = mapBuilder.getResult();
         assertNotNull(map);
         Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(List.of(new Coordinates(1, 0))); m1.setActionPoints(3);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(List.of(new Coordinates(1, 1))); m2.setActionPoints(4);

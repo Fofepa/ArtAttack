@@ -25,7 +25,7 @@ public class Maps {
     }
 
     public void setPlayerTwo(Player player){
-        this.playerOne = player;
+        this.playerTwo = player;
     }
 
     public void setEnemies(List<Enemy> enemies){
@@ -44,23 +44,23 @@ public class Maps {
 
     public void setDict(){
          this.dictionaire = new HashMap<>();
-        if (this.playerOne.getCoordinates() != null && playerOne != null) {
-            dictionaire.put(playerOne.getCoordinates(), playerOne);
+        if (this.playerOne.getCoordinates() != null && this.playerOne != null) {
+            this.dictionaire.put(this.playerOne.getCoordinates(), this.playerOne);
         }
 
-        if (this.playerTwo.getCoordinates() != null && playerTwo != null) {
-            dictionaire.put(playerTwo.getCoordinates(), playerTwo);
+        if (this.playerTwo.getCoordinates() != null && this.playerTwo != null) {
+            this.dictionaire.put(this.playerTwo.getCoordinates(), this.playerTwo);
         }
         if (this.interactableElements != null) {
             for (InteractableElement i : this.interactableElements) {
                 if (i.getCoordinates() != null)
-                    dictionaire.put(i.getCoordinates(), i);
+                    this.dictionaire.put(i.getCoordinates(), i);
             }
         }
         if (this.enemies != null) {
             for (Enemy e : this.enemies) {
                 if (e.getCoordinates() != null)
-                    dictionaire.put(e.getCoordinates(), e);
+                    this.dictionaire.put(e.getCoordinates(), e);
             }
         }
     }

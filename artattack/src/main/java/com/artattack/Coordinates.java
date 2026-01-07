@@ -50,6 +50,10 @@ public class Coordinates {
         return sum;
     }
 
+    public static double getDistance(Coordinates c1, Coordinates c2){
+        return Math.hypot(c2.getX() - c1.getX(), c2.getY() - c1.getY());
+    }
+
     @Override
     public int hashCode() {
         return Objects.hash(x, y);

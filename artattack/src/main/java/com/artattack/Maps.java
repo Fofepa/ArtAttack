@@ -15,7 +15,7 @@ public class Maps {
     private char[][] mapMatrix;
     private int rows;
     private int columns;
-    private ConcreteTurnQueue turnQueue;
+    private ConcreteTurnHandler turnHandler;
 
     
     public Maps(){} // now Maps is an empty builder because of the Builder design pattern
@@ -69,7 +69,9 @@ public class Maps {
         List<ActiveElement>list = new LinkedList<ActiveElement>();
         list.add(this.playerOne);
         list.add(this.playerTwo);
-        this.turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
+        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
+        this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+        
     }
 
 
@@ -101,18 +103,18 @@ public class Maps {
         return this.enemies;
     }
 
-    public ConcreteTurnQueue getConcreteTurnQueue(){
-        return this.turnQueue;
+    public ConcreteTurnHandler getConcreteTurnHandler(){
+        return this.turnHandler;
     }
 
-    public void setCell(int row, int column, char character){
-        if(row >= 0 && row < rows && column >= 0 && column < columns)
-            this.mapMatrix[row][column] = character;
+    public void setCell(Coordinates coord, char character){
+        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
+            this.mapMatrix[coord.getX() ][coord.getY() ] = character;
     }
 
-    public char getCell(int row, int column){
-        if(row >= 0 && row < rows && column >= 0 && column < columns)
-            return this.mapMatrix[row][column];
+    public char getCell(Coordinates coord){
+        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
+            return this.mapMatrix[coord.getX()][coord.getY()];
         else
             return ' ';
     }

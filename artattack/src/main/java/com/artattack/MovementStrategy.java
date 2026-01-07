@@ -48,7 +48,7 @@ public class MovementStrategy {
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
         }
         if(map.checkAggro(cursor) != null){
-            map.getConcreteTurnQueue().add(map.checkAggro(cursor));
+            map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));
         }
         isSelected = false;
     }

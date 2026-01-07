@@ -38,7 +38,7 @@ public class EnemyChoice{   // Our Context class
         for(Move move : enemy.getWeapons().get(0).getMoves()){
             if(move.getAttackTargets(this.enemy, this.map) != null){
                 for(ActiveElement element : move.getAttackTargets(this.enemy, this.map)){
-                    if(element instanceof Player) usable.add(move); 
+                    if(element instanceof Player && enemy.getActionPoints() >= move.getActionPoints()) usable.add(move); 
                 }
             }
         }
@@ -67,7 +67,7 @@ public class EnemyChoice{   // Our Context class
                         setStrategy(new ApproachStrategy(this.mainFrame));
                     }
                 }
-            break;
+                break;
 
             case GUARD:
                 if(hasTarget){ setStrategy(new ApproachStrategy(this.mainFrame));
@@ -86,7 +86,7 @@ public class EnemyChoice{   // Our Context class
                         setStrategy(new StallStrategy(this.mainFrame));
                     }
                 }
-            break;
+                break;
 
             case ROBOT:
                 if(hasTarget){
@@ -105,7 +105,9 @@ public class EnemyChoice{   // Our Context class
                         setStrategy(new StallStrategy(this.mainFrame));
                     }
                 }
-            break;
+                break;
+            default:
+                map.getConcreteTurnHandler().next();
         }
     }
 

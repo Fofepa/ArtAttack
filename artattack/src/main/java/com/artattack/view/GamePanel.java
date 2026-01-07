@@ -28,11 +28,13 @@ import com.artattack.Coordinates;
 import com.artattack.Enemy;
 import com.artattack.EnemyType;
 import com.artattack.InteractableElement;
+import com.artattack.MapBuilder;
 import com.artattack.Maps;
 import com.artattack.MovieDirector;
 import com.artattack.Musician;
 import com.artattack.Player;
 import com.artattack.Talk;
+import com.artattack.TestMapBuilder;
 import com.artattack.Weapon;
 
 public class GamePanel extends JPanel {
@@ -291,22 +293,26 @@ public class GamePanel extends JPanel {
         director = new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5));
 
         enemies = List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(20, 20)),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25))
+            new Enemy(0, 'E', "Employee", new Coordinates(20, 20), EnemyType.EMPLOYEE),
+            new Enemy(1, 'E', "Guard", new Coordinates(25, 25), EnemyType.GUARD)
         );
 
-
-        currentMap = new Maps(
-            musician,
-            director,
-            List.of(
+        MapBuilder mapBuilder = new TestMapBuilder();
+        mapBuilder.setDimension(36, 150);
+        mapBuilder.setPlayerOne(director);
+        mapBuilder.setPlayerTwo(musician);
+        mapBuilder.setEnemies(enemies);
+        mapBuilder.setInteractableElements(List.of(
                 new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), 
                     List.of(new Talk(interactionPanel, List.of("HELP ME!!", "...","I'M STUCK BETWEEN THE WALLS!!!"))),
                     "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png", 
                     spritePanel, interactionPanel)
-            ),
-            enemies
-        );
+            ));
+        mapBuilder.setDict();
+        mapBuilder.setTurnQueue();
+        mapBuilder.startMap();
+        
+        currentMap = mapBuilder.getResult();
 
         
         mapPanel.setMap(currentMap, director, musician);

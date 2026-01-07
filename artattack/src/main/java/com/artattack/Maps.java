@@ -44,11 +44,11 @@ public class Maps {
 
     public void setDict(){
          this.dictionaire = new HashMap<>();
-        if (this.playerOne.getCoordinates() != null && this.playerOne != null) {
+        if (this.playerOne != null && this.playerOne.getCoordinates() != null) {
             this.dictionaire.put(this.playerOne.getCoordinates(), this.playerOne);
         }
 
-        if (this.playerTwo.getCoordinates() != null && this.playerTwo != null) {
+        if (this.playerTwo != null && this.playerTwo.getCoordinates() != null) {
             this.dictionaire.put(this.playerTwo.getCoordinates(), this.playerTwo);
         }
         if (this.interactableElements != null) {

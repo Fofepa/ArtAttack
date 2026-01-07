@@ -29,7 +29,7 @@ public class combatstrategyTest {
             new Enemy(0, 'E', "Goblin", new Coordinates(1, 1),EnemyType.EMPLOYEE),
             new Enemy(1, 'E', "Orco", new Coordinates(1, 2),EnemyType.EMPLOYEE)
          ));
-        mapBuilder.setDimension(26, 153);
+        mapBuilder.setDimension(36, 150);
         mapBuilder.setDict();
         mapBuilder.startMap();
         assertNotNull(mapBuilder);

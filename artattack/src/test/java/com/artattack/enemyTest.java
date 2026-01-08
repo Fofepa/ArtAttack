@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
@@ -15,16 +16,36 @@ public class enemyTest {
     private Enemy enemy;
     private Player player1;
     private Player player2;
+    private TestMapBuilder tmb;
     private Maps map;
 
     @Before
     public void setUp() throws Exception{
+        //Creating enemy
         this.enemy = new Enemy(0,'+'," ", new Coordinates(0,0),EnemyType.GUARD,0,35,0,null,0,null,null,null,null,10);
+        //Creating player1
         this.player1 = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
+        //Creating player2
         this.player2 = new Musician(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
-        this.map = new Maps(player1, player2, null, List.of(enemy));
+        //Initializing tmb
+        this.tmb = new TestMapBuilder();
+        assertNotNull(this.tmb);
+        //Creating map
+        tmb.setDimension(26, 135);
+        tmb.setPlayerOne(this.player1);
+        tmb.setPlayerTwo(this.player2);
+        tmb.setEnemies(List.of(this.enemy));
+        tmb.setDict();
+        tmb.startMap();
+        this.map = tmb.getResult();
+
+        assertNotNull(this.enemy);
+        assertNotNull(this.player1);
+        assertNotNull(this.player2);
+        assertNotNull(this.map);
+
     }
 
     @After

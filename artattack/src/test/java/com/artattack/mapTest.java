@@ -13,25 +13,35 @@ import com.artattack.view.InteractionPanel;
 import com.artattack.view.SpritePanel;
 
 public class mapTest {
+    private TestMapBuilder tmb;
     private Maps map;
     
     
     @Before
     public void setUp() throws Exception{
-        map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
-         new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
+        //Initializing tmb
+        this.tmb = new TestMapBuilder();
+        assertNotNull(this.tmb);
+        //Creating map
+        tmb.setDimension(26, 135);
+        tmb.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1)));
+        tmb.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
+        tmb.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel()),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel())
-         ), List.of(
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of(""))), "",new SpritePanel(),new InteractionPanel())));
+        tmb.setEnemies(List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), EnemyType.EMPLOYEE),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE)
-         ));
-        assertNotNull(map);
+            new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE)));
+        tmb.setDict();
+        tmb.startMap();
+        this.map = tmb.getResult();
+
+        assertNotNull(this.map);
     }
 
     @After
     public void tearDown() throws Exception{
-        map = null;
+        this.map = null;
         assertNull(map);
     }
 

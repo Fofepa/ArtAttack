@@ -16,6 +16,7 @@ import com.artattack.view.InteractionPanel;
 
 
 public class movementstrategyTest {
+    private TestMapBuilder tmb;
     private Maps map;
     private MovementStrategy move;
     private Coordinates coord;
@@ -23,14 +24,22 @@ public class movementstrategyTest {
 
     @Before
     public void setUp() throws Exception{
-        map = new Maps(new Musician(1, '@', "Zappa", new Coordinates(0, 1)),
-         new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)), List.of(
+        this.tmb = new TestMapBuilder();
+        assertNotNull(this.tmb);
+        tmb.setDimension(26, 135);
+        tmb.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1)));
+        tmb.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
+        tmb.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Ciao!"))), "",null,null),
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
-         )),
-         List.of(
+         )));
+        tmb.setEnemies(List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE, 10, 10, 1, null, 10, null, List.of(new Coordinates(1, 1)), null,null, 0),
             new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE, 20, 20, 2, null, 15, null, List.of(new Coordinates(10, 10)), null,null ,0)));
+        tmb.setTurnQueue();
+        tmb.setDict();
+        tmb.startMap();
+        this.map = tmb.getResult();
         assertNotNull(map);
         move = new MovementStrategy(map, new Musician(0,'M',"Frank Zappa",new Coordinates(1,1)));
         assertNotNull(move);

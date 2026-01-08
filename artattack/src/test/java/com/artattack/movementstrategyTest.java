@@ -79,7 +79,7 @@ public class movementstrategyTest {
 
         move.execute(1,0);
         move.acceptMovement();
-        assertEquals(new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE), map.getConcreteTurnQueue().getTurnQueue().get(0));
+        assertEquals(new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE), map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().get(0));
 
         
     }

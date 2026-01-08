@@ -47,8 +47,8 @@ public class mapTest {
 
     @Test
     public void setcellTest(){
-        map.setCell(1,1,'#');
-        assertEquals('#', map.getCell(1,1));
+        map.setCell(new Coordinates(1,1),'#');
+        assertEquals('#', map.getCell(new Coordinates(1,1)));
 
     }  
 }

@@ -15,7 +15,9 @@ public class AttackStrategy extends DecisionStrategy {
     public void execute(Enemy enemy, Maps map){
         Move move = chooseUniform(this.getMoves());
 
-         enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
+         int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
+         this.getMainFrame().showDialog(List.of(enemy.getName() + " has done " + damage + " dmg to the player"));
+
     }
 
     private Move chooseUniform(List<Move> moves){   // just selects a move accordingly to the uniform distribution

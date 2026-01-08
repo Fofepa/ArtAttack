@@ -38,4 +38,8 @@ public class ConcreteTurnHandler implements TurnHandler {
     public int getIndex(){
         return this.index;
     }
+
+    public ConcreteTurnQueue getConcreteTurnQueue(){
+        return this.turnQueue;
+    }
 }

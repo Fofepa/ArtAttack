@@ -14,8 +14,8 @@ public class DumbAttackStrategy extends DecisionStrategy {
     public void execute(Enemy enemy, Maps map){
         Move move = chooseWeighted(this.getMoves());
         
-        enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
-        /*this.mainframe.showDialog) */
+        int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
+        this.getMainFrame().showDialog(List.of(enemy.getName() + " has done " + damage + " dmg to the player"));
     }
     
     private Move chooseWeighted(List<Move> moves) { // function that defines the pb distribution of the usable moves

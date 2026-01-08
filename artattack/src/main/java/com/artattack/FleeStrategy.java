@@ -11,6 +11,33 @@ public class FleeStrategy extends DecisionStrategy {
 
     @Override
     public void execute(Enemy enemy, Maps map){
-        
+        double max = 0;
+        Coordinates maxCoord;
+        // finds the coordinate that gets the enemy closest to the player (the closest)
+        if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates())){
+            maxCoord = map.getPlayerOne().getCoordinates();
+            for(Coordinates coord : enemy.getMoveArea()){
+                if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
+                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
+                    max = Coordinates.getDistance(coord, map.getPlayerOne().getCoordinates());
+                    maxCoord = coord;
+                }
+            }
+        }
+        else{
+            maxCoord = map.getPlayerTwo().getCoordinates();
+            for(Coordinates coord : enemy.getMoveArea()){
+                if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerTwo().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerTwo().getCoordinates())
+                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
+                    max = Coordinates.getDistance(coord, map.getPlayerTwo().getCoordinates());
+                    maxCoord = coord;
+                }
+            }
+        }
+
+        // sets the new position and decreases the AP
+        enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), maxCoord));
+        enemy.setActionPoints(enemy.getActionPoints()-3);
+        map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());
     }
 }

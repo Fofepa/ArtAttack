@@ -17,7 +17,7 @@ public class ApproachStrategy extends DecisionStrategy {
             for(Coordinates coord : enemy.getMoveArea()){
                 if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
                     && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
-                    min = Coordinates.getDistance(coord, map.getPlayerOne().getCoordinates());
+                    min = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerOne().getCoordinates());
                     minCoord = coord;
                 }
             }
@@ -26,7 +26,7 @@ public class ApproachStrategy extends DecisionStrategy {
             for(Coordinates coord : enemy.getMoveArea()){
                 if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerTwo().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerTwo().getCoordinates())
                     && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
-                    min = Coordinates.getDistance(coord, map.getPlayerTwo().getCoordinates());
+                    min = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerTwo().getCoordinates());
                     minCoord = coord;
                 }
             }

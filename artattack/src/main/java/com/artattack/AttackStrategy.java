@@ -1,6 +1,8 @@
 package com.artattack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.artattack.view.MainFrame;
 
@@ -20,8 +22,9 @@ public class AttackStrategy extends DecisionStrategy {
 
     }
 
-    private Move chooseUniform(List<Move> moves){   // just selects a move accordingly to the uniform distribution
+    private Move chooseUniform(Map<Move, Integer> moves){   // just selects a move accordingly to the uniform distribution
         if (moves.isEmpty()) return null;
-        return moves.get((int)(Math.random() * (moves.size())));
+        List<Move> moveList = new ArrayList<>(moves.keySet());
+        return moveList.get((int)(Math.random() * (moveList.size() - 1)));
     }
 }

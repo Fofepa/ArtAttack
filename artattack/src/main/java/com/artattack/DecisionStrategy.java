@@ -2,12 +2,13 @@ package com.artattack;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import com.artattack.view.MainFrame;
 
 public abstract class DecisionStrategy {
     private MainFrame mainframe;
-    private List<Move> moves;
+    private Map<Move,Integer> moves;
 
     public DecisionStrategy(MainFrame mainframe){
         this.mainframe = mainframe;
@@ -19,12 +20,11 @@ public abstract class DecisionStrategy {
         return this.mainframe;
     }
 
-    public void setMoves(List<Move> moves){
-        moves.sort(Comparator.comparing(Move::getPower).thenComparing(Move::getAreaAttack).thenComparing(m -> m.getAttackArea().size()));
-        this.moves = moves;
+    public void setMoves(Map<Move,Integer> moves){
+        this.moves = moves; 
     }
 
-    public List<Move> getMoves(){
+    public Map<Move, Integer> getMoves(){
         return  this.moves;
     }
 }

@@ -16,12 +16,12 @@ public class StallStrategy extends DecisionStrategy {
         switch (enemy.getEnemyType()){
             case EnemyType.EMPLOYEE: 
                 this.getMainFrame().showDialog(List.of("AAAAHHH!!!"));
-                enemy.setActionPoints(enemy.getActionPoints()-3);
+                enemy.setActionPoints(enemy.getActionPoints()-1);
                 break;
 
             case EnemyType.GUARD:
                 this.getMainFrame().showDialog(List.of("I'm reloading! Watch out!"));
-                enemy.setActionPoints(enemy.getActionPoints()-3);
+                enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
 
             case EnemyType.ROBOT:

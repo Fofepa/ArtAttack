@@ -1,5 +1,6 @@
 package com.artattack;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.lang.model.util.ElementScanner14;
 
@@ -16,12 +17,12 @@ public class EnemyChoice{   // Our Context class
     private Enemy enemy;
     private Maps map;
     private DecisionStrategy strategy;
-     private List<Move> usable; 
+     private Map<Move,Integer> usable; 
     private MainFrame mainFrame;
 
     public EnemyChoice(MainFrame mainFrame){
         this.mainFrame = mainFrame;
-        this.usable = new ArrayList<Move>();
+        this.usable = new HashMap<Move,Integer>();
     }
 
     public void setEnemy(Enemy enemy){
@@ -38,7 +39,14 @@ public class EnemyChoice{   // Our Context class
         for(Move move : enemy.getWeapons().get(0).getMoves()){
             if(move.getAttackTargets(this.enemy, this.map) != null){
                 for(ActiveElement element : move.getAttackTargets(this.enemy, this.map)){
-                    if(element instanceof Player && enemy.getActionPoints() >= move.getActionPoints()) usable.add(move); 
+                    if(element instanceof Player && enemy.getActionPoints() >= move.getActionPoints()){
+                        if(move.getAreaAttack() && usable.containsKey(move)){
+                            usable.put(move, usable.get(move)+1);
+                        }
+                        else{
+                            usable.put(move, 1);
+                        }
+                    } 
                 }
             }
         }
@@ -113,6 +121,17 @@ public class EnemyChoice{   // Our Context class
 
     private void setStrategy(DecisionStrategy strategy){
         this.strategy = strategy;
-        if(!usable.isEmpty()) this.strategy.setMoves(usable);
+        if(!usable.isEmpty()){
+                this.usable = this.usable.entrySet().stream().sorted((a,b) -> {
+                    return (a.getKey().getPower() * a.getValue()) - (b.getKey().getPower() * b.getValue()); 
+                }).
+                collect(Collectors.toMap(
+                    Map.Entry::getKey,
+                    Map.Entry::getValue,
+                    (a,b) -> a,
+                    LinkedHashMap::new
+                ));
+            strategy.setMoves(this.usable);
+        }
     }
 }

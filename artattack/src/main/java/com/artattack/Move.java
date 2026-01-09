@@ -3,7 +3,7 @@ package com.artattack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Move {
+public class Move{
     //Attributes
     private String name;
     private String description;
@@ -227,4 +227,5 @@ public class Move {
         user.setActionPoints(user.getActionPoints() - this.getActionPoints());
         return this.power;
     }
+
 }

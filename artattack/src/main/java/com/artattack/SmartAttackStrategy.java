@@ -1,6 +1,8 @@
 package com.artattack;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.artattack.view.MainFrame;
 
@@ -18,29 +20,38 @@ public SmartAttackStrategy(MainFrame mainFrame){
         this.getMainFrame().showDialog(List.of(enemy.getName() + " has done " + damage + " dmg to the player"));
     }
 
-    private Move chooseWeighted(List<Move> moves) {
+    private Move chooseWeighted(Map<Move, Integer> moves) {
         if (moves.isEmpty()) return null;
 
-        // we have to check if the positive factor works as intended
-        double factor = 1.6;
-        double[] weights = new double[moves.size()];
+        double factor = 6.53;    // factor for the distribution if > 1 the elements on top of the list are more likely to appear 
+
+        List<Move> orderedMoves = new ArrayList<>(moves.keySet());
+
+        // distribution of the weights inside the list
+        int n = orderedMoves.size();
+        double[] weights = new double[n];
+
         weights[0] = 1.0;
 
-        for (int i = 1; i < moves.size(); i++)
-            weights[i] = weights[i-1] * factor;
+    
+        for (int i = 1; i < n; i++) {
+            weights[i] = weights[i - 1] * factor;
+        }
 
         double total = 0;
-        
         for (double w : weights) total += w;
 
+    
+        // extraction of the element
         double r = Math.random() * total;
         double cumulative = 0;
 
-        for (int i = 0; i < moves.size(); i++){
+        for (int i = 0; i < n; i++) {
             cumulative += weights[i];
-            if (r< cumulative) return moves.get(i);
+            if (r < cumulative) {
+                return orderedMoves.get(i);   // 🔥 a little fire to keep us warm
+            }
         }
-
-        return moves.get(moves.size() - 1);
+        return orderedMoves.get(n - 1);
     }
 }

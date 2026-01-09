@@ -55,33 +55,32 @@ public class TestMapBuilder implements MapBuilder {
 
         char[][] charMatrix = new char[rows][columns];
 
-        // 1️⃣ Inizializza tutte le celle a '.'
+        // Sets all the cells with the "." character
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 charMatrix[i][j] = '.';
             }
         }
 
-        // 2️⃣ Bordo superiore e inferiore
+        // Coverage of the border with the # character
         for (int j = 0; j < columns; j++) {
             charMatrix[0][j] = '#';
             charMatrix[rows - 1][j] = '#';
         }
 
-        // 3️⃣ Bordo sinistro e destro
         for (int i = 0; i < rows; i++) {
             charMatrix[i][0] = '#';
             charMatrix[i][columns - 1] = '#';
         }
 
-        // 4️⃣ Ostacolo fisso
+        // putting all the obstacles
         for (int j = 5; j < 15 && j < columns; j++) {
             if (10 < rows) {
                 charMatrix[10][j] = '#';
             }
         }
 
-        // 5️⃣ Posiziona tutti gli elementi della mappa
+        // Putting all the other elements
         for (Coordinates key : this.map.getDict().keySet()) {
             MapElement element = this.map.getDict().get(key);
             int y = key.getY();
@@ -94,7 +93,6 @@ public class TestMapBuilder implements MapBuilder {
             }
         }
 
-        // 6️⃣ Avvia la mappa con la matrice costruita
         this.map.startMap(charMatrix);
 }
 

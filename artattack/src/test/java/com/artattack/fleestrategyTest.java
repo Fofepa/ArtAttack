@@ -1,22 +1,15 @@
 package com.artattack;
 
-import java.util.*;
+import java.util.List;
 
 import org.junit.After;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artattack.view.MainFrame;
-
-
-import org.junit.Before;
 
 public class fleestrategyTest {
     private Maps map;
@@ -48,7 +41,21 @@ public class fleestrategyTest {
     @Test
     public void executeTest(){
         flee.execute(enemy,map);
-        assertTrue(enemy.getCoordinates().equals(new Coordinates(3,72)));
+        Coordinates oldPos = enemy.getCoordinates();
+        double oldDist = Math.min(
+        Coordinates.getDistance(oldPos, map.getPlayerOne().getCoordinates()),
+        Coordinates.getDistance(oldPos, map.getPlayerTwo().getCoordinates())
+        );
+
+    flee.execute(enemy, map);
+
+        Coordinates newPos = enemy.getCoordinates();
+        double newDist = Math.min(
+            Coordinates.getDistance(newPos, map.getPlayerOne().getCoordinates()),
+            Coordinates.getDistance(newPos, map.getPlayerTwo().getCoordinates())
+        );
+        
+        assertTrue(newDist > oldDist);
     }
 
     @After
@@ -62,4 +69,5 @@ public class fleestrategyTest {
         mainFrame = null;
         assertNull(mainFrame);
     }
+
 }

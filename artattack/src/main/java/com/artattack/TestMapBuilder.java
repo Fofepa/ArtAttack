@@ -49,35 +49,55 @@ public class TestMapBuilder implements MapBuilder {
     }
 
     @Override
-    public void startMap(){
-        char[][] charMatrix = new char[this.map.getRows()][this.map.getColumns()];
-        
-        for (int i = 0; i < this.map.getRows(); i++) {
-            for (int j = 0; j < this.map.getColumns(); j++) {
+    public void startMap() {
+        int rows = this.map.getRows();
+        int columns = this.map.getColumns();
+
+        char[][] charMatrix = new char[rows][columns];
+
+        // 1️⃣ Inizializza tutte le celle a '.'
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
                 charMatrix[i][j] = '.';
             }
         }
-        
-        for (int i = 0; i < this.map.getColumns(); i++) {
-            charMatrix[0][i] = '#';
-            charMatrix[this.map.getRows() - 1][i] = '#';
-        }
-        for (int i = 0; i < this.map.getRows(); i++) {
-            charMatrix[i][0] = '#';
-            charMatrix[i][this.map.getColumns() - 1] = '#';
-        }
-        
-        for (int i = 5; i < 15; i++) {
-            charMatrix[10][i] = '#';
-        }
-        
-        for (Coordinates key : this.map.getDict().keySet()){
-            MapElement element = this.map.getDict().get(key);
-            charMatrix[key.getY()][key.getX()] = element.getMapSymbol();
+
+        // 2️⃣ Bordo superiore e inferiore
+        for (int j = 0; j < columns; j++) {
+            charMatrix[0][j] = '#';
+            charMatrix[rows - 1][j] = '#';
         }
 
+        // 3️⃣ Bordo sinistro e destro
+        for (int i = 0; i < rows; i++) {
+            charMatrix[i][0] = '#';
+            charMatrix[i][columns - 1] = '#';
+        }
+
+        // 4️⃣ Ostacolo fisso
+        for (int j = 5; j < 15 && j < columns; j++) {
+            if (10 < rows) {
+                charMatrix[10][j] = '#';
+            }
+        }
+
+        // 5️⃣ Posiziona tutti gli elementi della mappa
+        for (Coordinates key : this.map.getDict().keySet()) {
+            MapElement element = this.map.getDict().get(key);
+            int y = key.getY();
+            int x = key.getX();
+
+            if (y >= 0 && y < rows && x >= 0 && x < columns) {
+                charMatrix[y][x] = element.getMapSymbol();
+            } else {
+                System.out.println("⚠️ Coordinate fuori mappa ignorate: " + key);
+            }
+        }
+
+        // 6️⃣ Avvia la mappa con la matrice costruita
         this.map.startMap(charMatrix);
-    }
+}
+
 
     @Override
     public Maps getResult() {

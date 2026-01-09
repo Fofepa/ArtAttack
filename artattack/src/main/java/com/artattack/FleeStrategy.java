@@ -18,7 +18,9 @@ public class FleeStrategy extends DecisionStrategy {
             maxCoord = map.getPlayerOne().getCoordinates();
             for(Coordinates coord : enemy.getMoveArea()){
                 if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
-                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
+                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'
+                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() < map.getColumns() && Coordinates.sum(enemy.getCoordinates(), coord).getY() < map.getRows()
+                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() >= 0 && Coordinates.sum(enemy.getCoordinates(), coord).getY() >= 0){
                     max = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerOne().getCoordinates());
                     maxCoord = coord;
                 }
@@ -28,7 +30,9 @@ public class FleeStrategy extends DecisionStrategy {
             maxCoord = map.getPlayerTwo().getCoordinates();
             for(Coordinates coord : enemy.getMoveArea()){
                 if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerTwo().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerTwo().getCoordinates())
-                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'){
+                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.' 
+                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() < map.getColumns() && Coordinates.sum(enemy.getCoordinates(), coord).getY() < map.getRows()
+                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() >= 0 && Coordinates.sum(enemy.getCoordinates(), coord).getY() >= 0){
                     max = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerTwo().getCoordinates());
                     maxCoord = coord;
                 }

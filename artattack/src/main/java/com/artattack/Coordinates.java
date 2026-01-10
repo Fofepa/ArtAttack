@@ -1,5 +1,7 @@
 package com.artattack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Coordinates {
@@ -48,6 +50,15 @@ public class Coordinates {
             sum = new Coordinates(sum.getX() + c.getX(), sum.getY() + c.getY());
         }
         return sum;
+    }
+
+    public static List<Coordinates> sum(List<Coordinates> area, Coordinates shift){
+        List<Coordinates> shifted = new ArrayList<>();
+        for(Coordinates coordinates : area){
+            shifted.add(Coordinates.sum(coordinates, shift));
+        }
+
+        return shifted;
     }
 
     public static double getDistance(Coordinates c1, Coordinates c2){

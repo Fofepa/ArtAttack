@@ -202,7 +202,7 @@ class MapPanel extends JPanel {
                 
                 
                 if (!isPlayerTurn()) {
-                    System.out.println("⚠️ Not your turn! Wait...");
+                    System.out.println(" Not your turn! Wait...");
                     return;
                 }
 
@@ -371,6 +371,14 @@ class MapPanel extends JPanel {
                 cursorX * charWidth + offsetX, 
                 cursorY * charHeight + offsetY + charHeight);
         }
+    }
+
+
+    public void onCombatActionCompleted() {
+        System.out.println("Combat action completed - ending turn");
+        
+        // Termina il turno dopo un'azione di combattimento
+        endTurn();
     }
 
     public void setCurrentPlayer(Player player) {

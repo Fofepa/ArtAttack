@@ -23,7 +23,7 @@ public class AreaBuilder {
                         new Coordinates(0, 1)));
             case "8" -> {
                 addShape("4");
-                addShape("x", 1);
+                addShape("x", 1, false);
             }
             case "base" -> {
                 addShape("8");
@@ -36,9 +36,12 @@ public class AreaBuilder {
         }
     }
 
-    public void addShape(String shape, int size) {
+    public void addShape(String shape, int size, boolean fill) {
         switch (shape) {
             case "diamond" -> {
+                if (fill && size > 1) {
+                    addShape("diamond", size - 1, true);
+                }
                 for (int i = size; i > 0; i--) {
                     this.area.addAll(
                             List.of(new Coordinates(i - size, -i), //bottom-left side
@@ -48,6 +51,9 @@ public class AreaBuilder {
                 }
             }
             case "square" -> {
+                if (fill && size > 1) {
+                    addShape("square", size - 1, true);
+                }
                 for (int i = size; i > -size; i--) {
                     this.area.addAll(
                             List.of(new Coordinates(-size, -i), //left side

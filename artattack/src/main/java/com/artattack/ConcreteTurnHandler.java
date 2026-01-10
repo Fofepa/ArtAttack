@@ -17,7 +17,8 @@ public class ConcreteTurnHandler implements TurnHandler {
 
     @Override
     public ActiveElement next(){    // add the isActive control
-        if(hasNext()){
+        this.current().resetActionPoints(); 
+        if(hasNext()){ 
             return turnQueue.getTurnQueue().get(index++);
         }
         else{
@@ -28,7 +29,12 @@ public class ConcreteTurnHandler implements TurnHandler {
 
     @Override
     public ActiveElement current(){
-        return turnQueue.getTurnQueue().get(index-1);
+        if(index-1 < 0){
+            return turnQueue.getTurnQueue().get(turnQueue.getTurnQueue().size() -1);
+        }
+        else{
+            return turnQueue.getTurnQueue().get(index-1);
+        }
     }
 
     public void resetIndex(){

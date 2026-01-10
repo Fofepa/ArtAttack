@@ -63,6 +63,14 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
     public void setActionPoints(int actionPoints){
         this.actionPoints = actionPoints;
     }
+
+    public void setMaxActionPoints(int maxActionPoints){
+        this.maxActionPoints = maxActionPoints;
+    }
+
+    public void resetActionPoints(){
+        this.actionPoints = this.maxActionPoints;
+    }
     
     public void updateHP(int amount){
         if(this.currHP + amount > this.maxHP)

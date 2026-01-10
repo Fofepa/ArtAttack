@@ -267,17 +267,19 @@ public class MainFrame extends JFrame {
         AreaBuilder areaBuilder = new AreaBuilder();
         areaBuilder.addShape("8");
         List<Coordinates> area8 = areaBuilder.getResult();
+        areaBuilder.addShape("diamond", 4, true);
+        List<Coordinates> bigArea = areaBuilder.getResult();
         MapBuilder mapBuilder = new TestMapBuilder();
-        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(3, 3), List.of(new Weapon("Hoe", "", 0)), 5,5, area8, 20, 20, 0, 20, 1, 5, 2, null, null, null));
-        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 0)), 5,5, area8, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(3, 3), List.of(new Weapon("Hoe", "", 0)), 5,5, bigArea, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 0)), 5,5, bigArea, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Guitar", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Hi!"))), "",null,null),
             new InteractableElement(1, '$', "Drums", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null)));
-        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(area8); m1.setActionPoints(3);
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(bigArea); m1.setActionPoints(3);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area8); m2.setActionPoints(4);
         Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2), 0);
         mapBuilder.setEnemies(List.of(
-            new Enemy(0, 'E', "Goblinstein", new Coordinates(10, 10),EnemyType.ROBOT, 20,20,3,List.of(enemyWeapon),15,5,area8, area8,null,null,0)
+            new Enemy(0, 'E', "Goblinstein", new Coordinates(10, 10),EnemyType.ROBOT, 20,20,3,List.of(enemyWeapon),15,5,area8, bigArea,null,null,0)
          ));
         mapBuilder.setDimension(36, 150);
         mapBuilder.setDict();

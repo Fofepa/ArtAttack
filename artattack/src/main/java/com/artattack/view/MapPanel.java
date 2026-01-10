@@ -77,7 +77,7 @@ class MapPanel extends JPanel {
         
         try {
             // Ottieni l'elemento del turno corrente
-            ActiveElement current = turnHandler.current();
+            ActiveElement current = turnHandler.next();
             Player player = movementStrategy.getPlayer();
             
             System.out.println("Checking turn - Current: " + current.getName() + 
@@ -167,7 +167,7 @@ class MapPanel extends JPanel {
             
             enemyChoice.choose();
             try {
-                Thread.sleep(500); 
+                Thread.sleep(1500); 
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

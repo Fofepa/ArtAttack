@@ -17,7 +17,7 @@ public class moviedirectorTest{
 
     @Before
     public void setUp() throws Exception{
-        m = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
+        m = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
         /* m = new MovieDirector(0,'M', "David Lynch", new Coordinates(0,0), 20, 20, 0, 20, 1, 5, 2, new ArrayList<Weapon>(),
         25, new ArrayList<Item>(), new ArrayList<Coordinates>(), new ArrayList<Coordinates>()); */

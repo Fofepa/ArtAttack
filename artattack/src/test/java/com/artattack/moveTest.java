@@ -65,12 +65,14 @@ public class moveTest {
         this.m5 = mb1.getResult();
         //Creating p1
         this.p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 
-        null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null);
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null);
         //Creating p2
         this.p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-        null, 0, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null);
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null);
         //Creating e
-        this.e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 100, 100, 1, new ArrayList<>(), 0, new ArrayList<>(), null, List.of(new Cure(".", ".", 1)), List.of(new Key(".", ".", 0)), 100);
+        this.e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 100, 100, 1, 
+            new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Cure(".", ".", 1)), 
+            List.of(new Key(".", ".", 0)), 100);
         //Creating maps
         tmb.setDimension(26, 135);
         tmb.setPlayerOne(p1);

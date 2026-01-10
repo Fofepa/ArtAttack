@@ -19,15 +19,15 @@ public class Enemy extends ActiveElement {
     }
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
-        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea){
-        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints, moveArea);
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, int maxActionPoints,List<Coordinates> moveArea){
+        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints,maxActionPoints,moveArea);
         this.enemyType = enemyType;
     }
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
-        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea,
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
         List<Coordinates> visionArea, List<Item> drops, List<Key> keys, int droppedXP){
-            this(ID,mapSymbol,name,coordinates, enemyType, currHP,maxHP,speed,weapons,actionPoints, moveArea);
+            this(ID,mapSymbol,name,coordinates, enemyType, currHP,maxHP,speed,weapons,actionPoints,maxActionPoints,moveArea);
             this.visionArea = visionArea;
             this.drops = drops;
             this.keys = keys;

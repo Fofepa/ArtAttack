@@ -34,8 +34,8 @@ public class movementstrategyTest {
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
          )));
         tmb.setEnemies(List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE, 10, 10, 1, null, 10, null, List.of(new Coordinates(1, 1)), null,null, 0),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE, 20, 20, 2, null, 15, null, List.of(new Coordinates(10, 10)), null,null ,0)));
+            new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE, 10, 10, 1, null, 10,10, null, List.of(new Coordinates(1, 1)), null,null, 0),
+            new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE, 20, 20, 2, null, 15,15, null, List.of(new Coordinates(10, 10)), null,null ,0)));
         tmb.setTurnQueue();
         tmb.setDict();
         tmb.startMap();

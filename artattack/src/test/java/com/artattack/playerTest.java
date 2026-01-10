@@ -17,7 +17,7 @@ public class playerTest {
 
     @Before
     public void setUp() throws Exception{
-        this.player = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, 
+        this.player = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
     }
 

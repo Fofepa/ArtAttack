@@ -18,7 +18,7 @@ public class cureTest{
         c = new Cure("TestCure", "TestDescription", 1);
         c_ = new Cure("TestCure", "TestDescription", 11);
         p = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), 
-            null, 10, null, 10, 20, 0, 20, 1, 5);
+            null, 10, 10, null, 10, 20, 0, 20, 1, 5);
         
         assertNotNull(c);
         assertNotNull(c_);

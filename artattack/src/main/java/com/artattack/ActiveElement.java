@@ -9,6 +9,7 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
     private List<Weapon> weapons;
     private int speed;
     private int actionPoints;
+    private int maxActionPoints;
     private List<Coordinates> moveArea;
 
     public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates){
@@ -16,13 +17,14 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
         }
 
     public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
-        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, List<Coordinates> moveArea){
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, int maxActionPoints ,List<Coordinates> moveArea){
         this(ID,mapSymbol,name,coordinates);
         this.currHP = currHP;
         this.maxHP = maxHP;
         this.speed = speed;
         this.weapons = weapons;
         this.actionPoints = actionPoints;
+        this.maxActionPoints = maxActionPoints;
         this.moveArea = moveArea;
     }
     
@@ -44,6 +46,10 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
 
     public int getActionPoints() {
         return this.actionPoints;
+    }
+
+    public int getMaxActionPoints(){
+        return this.maxActionPoints;
     }
 
     public List<Coordinates> getMoveArea() {

@@ -30,9 +30,9 @@ public class attackstrategyTest {
         m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(List.of(new Coordinates(-1, 0), new Coordinates(4, 4))); m3.setAreaAttack(true); m3.setActionPoints(3);
         Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2), 0);
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(1,1),EnemyType.GUARD, 20, 20, 3,
-                                 List.of(enemyWeapon),5,null,null,null,null,0);
+                                 List.of(enemyWeapon),5,5,null,null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
         mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);

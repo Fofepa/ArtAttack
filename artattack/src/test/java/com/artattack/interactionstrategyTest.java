@@ -28,7 +28,7 @@ public class interactionstrategyTest {
         assertNotNull(this.tmb);
         //Creating player
         player = new MovieDirector(0, '@', "", new Coordinates(1, 1),
-            null, 0, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<>(), null, null);
+            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<>(), null, null);
         //Creating map
         tmb.setDimension(26, 150);
         tmb.setPlayerOne(this.player);

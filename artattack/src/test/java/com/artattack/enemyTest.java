@@ -22,12 +22,12 @@ public class enemyTest {
     @Before
     public void setUp() throws Exception{
         //Creating enemy
-        this.enemy = new Enemy(0,'+'," ", new Coordinates(0,0),EnemyType.GUARD,0,35,0,null,0,null,null,null,null,10);
+        this.enemy = new Enemy(0,'+'," ", new Coordinates(0,0),EnemyType.GUARD,0,35,0,null,5,5,null,null,null,null,10);
         //Creating player1
-        this.player1 = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
+        this.player1 = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
         //Creating player2
-        this.player2 = new Musician(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
+        this.player2 = new Musician(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
             new ArrayList<Coordinates>());
         //Initializing tmb
         this.tmb = new TestMapBuilder();

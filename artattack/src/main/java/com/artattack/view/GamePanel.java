@@ -46,10 +46,8 @@ public class GamePanel extends JPanel {
     
     private final double inventorySubDivision = 0.5;
     private final double dialogueSubDivision = 0.8;
-
-    private final double  statsSubDivision = 0.5;
+    private final double statsSubDivision = 0.5;
     
-
     //Panels
     private MapPanel mapPanel;
     private final InteractionPanel interactionPanel;
@@ -94,14 +92,14 @@ public class GamePanel extends JPanel {
         whiteLineDivider(movesInventorySplit);
 
         
-        //Turn and Stats Split
         statsPanel = new StatsPanel();
         turnPanel = new TurnPanel();
 
+        
         JSplitPane legendPanelSplit = new JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT,
             turnPanel,
-            createTestPanel()
+            statsPanel  
         );
 
         legendPanelSplit.setResizeWeight(statsSubDivision);
@@ -119,10 +117,7 @@ public class GamePanel extends JPanel {
         downLeftSplit.setDividerSize(2);
         downLeftSplit.setDividerLocation(inventoriesVerticalProportion);
         
-        
-        
         mapPanel = new MapPanel();
-        
         
         //bottom Split
         interactionPanel = new InteractionPanel();
@@ -138,8 +133,6 @@ public class GamePanel extends JPanel {
         downRightSplit.setDividerLocation(dialogueSubDivision);
         whiteLineDivider(downRightSplit);
         
-        
-
         //split between map and interaction and sprite panel
         JSplitPane rightSplit = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
@@ -150,7 +143,6 @@ public class GamePanel extends JPanel {
         rightSplit.setDividerSize(2);
         rightSplit.setDividerLocation(mapHorizontalProportion);
         
-        
         // Split between map and the leftmost objects
         JSplitPane mainVerticalSplit = new JSplitPane(
             JSplitPane.HORIZONTAL_SPLIT,
@@ -159,7 +151,6 @@ public class GamePanel extends JPanel {
         );
         mainVerticalSplit.setResizeWeight(mainVerticalProportion);
         mainVerticalSplit.setDividerSize(2);
-        
         
         whiteLineDivider(downLeftSplit);
         whiteLineDivider(rightSplit);
@@ -185,7 +176,6 @@ public class GamePanel extends JPanel {
         movesPanel.setMapPanel(mapPanel);
         mapPanel.setMovesPanel(movesPanel);
        
-        
         // Focus manager with TAB
         mapPanel.setFocusable(true);
         inventoryPanel.setFocusable(true);
@@ -203,21 +193,9 @@ public class GamePanel extends JPanel {
         }
     }
     
-    private JPanel createTestPanel() {
-        JPanel panel = new JPanel();
-        panel.setBackground(Color.BLACK);
-        panel.setLayout(new BorderLayout());
-
-        JLabel label = new JLabel("STATS", SwingConstants.CENTER);
-        label.setForeground(Color.WHITE);
-        label.setFont(new Font("Monospaced", Font.BOLD, 18));
-
-        panel.add(label, BorderLayout.CENTER);
-
-        return panel;
-    }
-
-
+    // ✓ PUOI RIMUOVERE createTestPanel() SE NON SERVE PIÙ
+    // O LASCIARLO PER COMPATIBILITÀ
+    
     private JPanel createBlackPanel(String name) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.BLACK);
@@ -243,7 +221,6 @@ public class GamePanel extends JPanel {
         return panel;
     }
     
-
     private void nextFocus(List<JComponent> order) {
         KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
         Component current = kfm.getFocusOwner();
@@ -268,8 +245,6 @@ public class GamePanel extends JPanel {
             }
         });
     }
-    
-    
     
     private void whiteLineDivider(JSplitPane splitPane) {
         splitPane.setUI(new javax.swing.plaf.basic.BasicSplitPaneUI() {
@@ -313,24 +288,19 @@ public class GamePanel extends JPanel {
         mapBuilder.startMap();
         
         currentMap = mapBuilder.getResult();
-
         
         mapPanel.setMap(currentMap, director, musician);
-        
         movesPanel.initializeCombatStrategy(currentMap);
-        
         
         mapPanel.revalidate();
         mapPanel.repaint();
         mapPanel.requestFocusInWindow();
         
-        
         System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
     }
 
     public void loadInitialMapFacade(Maps mapFacade){
-        mapPanel.setMap(mapFacade,mapFacade.getPlayerOne() , mapFacade.getPlayerTwo());
-
+        mapPanel.setMap(mapFacade, mapFacade.getPlayerOne(), mapFacade.getPlayerTwo());
         movesPanel.initializeCombatStrategy(mapFacade);
 
         mapPanel.revalidate();
@@ -338,8 +308,6 @@ public class GamePanel extends JPanel {
         mapPanel.requestFocusInWindow();
         System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
     }
-
-
     
     public List<ActiveElement> getActiveElements() {
         List<ActiveElement> elements = new ArrayList<>();
@@ -362,22 +330,18 @@ public class GamePanel extends JPanel {
         return elements;
     }
 
+    // ✓ AGGIORNA setTurnSystem per includere statsPanel
     public void setTurnSystem(ConcreteTurnQueue queue, ConcreteTurnHandler handler) {
         System.out.println("GamePanel: Setting turn system");
         
-        // Passa il sistema a MapPanel
         mapPanel.setTurnSystem(queue, handler, turnPanel);
-        
-        // Passa il sistema a TurnPanel
         turnPanel.setTurnSystem(queue, handler);
-        
         
         if (handler != null && handler.getIndex() > 0) {
             try {
                 ActiveElement current = handler.current();
                 if (current instanceof Player) {
-                    mapPanel.setCurrentPlayer((Player) current);
-                    movesPanel.setCurrentPlayer((Player) current);
+                    setCurrentPlayer((Player) current);  // ✓ USA IL NUOVO METODO
                     System.out.println("✓ Initial player set to: " + current.getName());
                 }
             } catch (Exception e) {
@@ -385,21 +349,52 @@ public class GamePanel extends JPanel {
             }
         }
 
-        // Aggiorna le visualizzazioni
-        turnPanel.repaint();
+        updateAllPanels();  // ✓ AGGIORNA TUTTI I PANNELLI
+    }
+
+    // ✓ NUOVO METODO: Imposta il giocatore corrente su TUTTI i pannelli
+    public void setCurrentPlayer(Player player) {
+        if (player == null) {
+            System.err.println("⚠️ Attempted to set null player in GamePanel");
+            return;
+        }
+        
+        System.out.println("GamePanel: Setting current player to " + player.getName());
+        
+        // Aggiorna MapPanel
+        mapPanel.setCurrentPlayer(player);
+        
+        // Aggiorna MovesPanel
+        movesPanel.setCurrentPlayer(player);
+        
+        // ✓ AGGIORNA StatsPanel
+        statsPanel.setCurrentPlayer(player);
+        
+        System.out.println("✓ All panels updated with player: " + player.getName());
+    }
+
+    // ✓ NUOVO METODO: Aggiorna tutti i pannelli
+    public void updateAllPanels() {
+        System.out.println("GamePanel: Updating all panels");
+        
         mapPanel.repaint();
+        turnPanel.repaint();
+        movesPanel.repaint();
+        statsPanel.updateStats();  // ✓ AGGIORNA STATS
+        
+        System.out.println("✓ All panels updated");
     }
 
     //Dialog manager
     public void showDialog(List<String> phrases, Runnable onFinished) {
         System.out.println("GamePanel: Showing dialog");
         
-        if(onFinished!= null){
+        if (onFinished != null) {
             interactionPanel.setOnDialogFinished(onFinished);
         }
         interactionPanel.showDialog(phrases);
 
-        SwingUtilities.invokeLater(()->{
+        SwingUtilities.invokeLater(() -> {
             interactionPanel.activateAndFocus();
         });
     }
@@ -419,23 +414,31 @@ public class GamePanel extends JPanel {
         return interactionPanel.isDialogActive();
     }
 
-
     //Sprite manager
-
     public void showSprite(String imagePath) {
-    System.out.println("GamePanel: Showing sprite: " + imagePath);
+        System.out.println("GamePanel: Showing sprite: " + imagePath);
         spritePanel.loadImage(imagePath);
     }
 
     public void clearSprite() {
-    System.out.println("GamePanel: Clearing sprite");
+        System.out.println("GamePanel: Clearing sprite");
         spritePanel.clearImage();
     }
     
-
-    private static class StatsPanel {
-
-        public StatsPanel() {
-        }
+    // ✓ GETTER per i pannelli (utile per debugging o accesso esterno)
+    public StatsPanel getStatsPanel() {
+        return statsPanel;
+    }
+    
+    public MovesPanel getMovesPanel() {
+        return movesPanel;
+    }
+    
+    public MapPanel getMapPanel() {
+        return mapPanel;
+    }
+    
+    public TurnPanel getTurnPanel() {
+        return turnPanel;
     }
 }

@@ -92,33 +92,24 @@ class MapPanel extends JPanel {
             System.out.println("No turn system to end turn");
             return;
         }
-
+    
         System.out.println("=== Ending Turn ===");
-
-        // Passa al prossimo turno
+        
         if (turnHandler.hasNext()) {
             ActiveElement next = turnHandler.next();
             System.out.println("Next turn: " + next.getName());
 
-            // Aggiorna il TurnPanel
             if (turnPanel != null) {
                 turnPanel.updateTurnDisplay();
             }
 
-            // Se il prossimo è un nemico, esegui la sua IA
             if (next instanceof Enemy) {
                 handleEnemyTurn((Enemy) next);
             } else if (next instanceof Player) {
-                // IMPORTANTE: Aggiorna il giocatore attivo nel MovementStrategy
-                movementStrategy.setPlayer((Player) next);
                 
-                if (movesPanel != null) {
-                    movesPanel.setCurrentPlayer((Player) next);
-                }
+                updatePlayerInGamePanel((Player) next);
 
                 System.out.println("✓ Switched control to: " + next.getName());
-
-                // Richiedi il focus per permettere l'input
                 requestFocusInWindow();
             }
 
@@ -126,7 +117,22 @@ class MapPanel extends JPanel {
         } else {
             System.out.println("No more turns, resetting");
             turnHandler.resetIndex();
-            endTurn(); 
+            endTurn();
+        }
+}
+
+
+    private void updatePlayerInGamePanel(Player player) {
+        movementStrategy.setPlayer(player);
+    
+        // Trova il GamePanel parent e aggiorna tutto
+        java.awt.Container parent = getParent();
+        while (parent != null && !(parent instanceof GamePanel)) {
+            parent = parent.getParent();
+        }
+    
+        if (parent instanceof GamePanel) {
+            ((GamePanel) parent).setCurrentPlayer(player);
         }
     }
     

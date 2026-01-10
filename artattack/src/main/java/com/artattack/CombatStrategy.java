@@ -1,11 +1,16 @@
 package com.artattack;
 
+import java.util.List;
+
+import com.artattack.view.MainFrame;
+
 public class CombatStrategy{
     private Maps map;
     private Player player;    
     private boolean isSelected = false;
     private int weaponIndex = 0;
     private int moveIndex = 0;
+    private MainFrame mainFrame;
 
     public CombatStrategy(Maps map){
         this.map = map;
@@ -31,6 +36,7 @@ public class CombatStrategy{
 
     public int acceptMove(){
         int value = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex).useMove(player, map);
+        this.mainFrame.showDialog(List.of(player.getName() + " has done damage " + value));
         
         if(value != 0){
             isSelected = false;
@@ -62,5 +68,9 @@ public class CombatStrategy{
 
     public boolean isSelected(){
         return this.isSelected;
+    }
+
+    public void setMainFrame(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
     }
 }

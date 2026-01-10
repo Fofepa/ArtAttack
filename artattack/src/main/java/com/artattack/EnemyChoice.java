@@ -19,6 +19,7 @@ public class EnemyChoice{   // Our Context class
     private DecisionStrategy strategy;
      private Map<Move,Integer> usable; 
     private MainFrame mainFrame;
+    private boolean hasFinished = false;
 
     public EnemyChoice(MainFrame mainFrame){
         this.mainFrame = mainFrame;
@@ -51,7 +52,12 @@ public class EnemyChoice{   // Our Context class
             }
         }
 
+        // checks if the enemy has still some AP
         boolean hasTarget = !usable.isEmpty(); 
+        if(enemy.getActionPoints() <= 0){
+            setHasFinished();   
+            return;
+        }
 
         double r = Math.random();
         switch(this.enemy.getEnemyType()){
@@ -59,39 +65,48 @@ public class EnemyChoice{   // Our Context class
                 if(hasTarget){
                     if(r < 0.6){
                         setStrategy(new DumbAttackStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 else{
                     if(r > 0.6){
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else if(r > 0.3){
                         setStrategy(new FleeStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 break;
 
             case GUARD:
-                if(hasTarget){ setStrategy(new ApproachStrategy(this.mainFrame));
+                if(hasTarget){ 
                     if(r < 0.7){
                         setStrategy(new AttackStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 else{
                     if(r < 0.6){
                         setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 break;
@@ -100,17 +115,21 @@ public class EnemyChoice{   // Our Context class
                 if(hasTarget){
                     if(r < 0.95){
                         setStrategy(new SmartAttackStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 else{
                     if(r < 0.8){
                         setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                     else{
                         setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
                     }
                 }
                 break;
@@ -133,5 +152,13 @@ public class EnemyChoice{   // Our Context class
                 ));
             strategy.setMoves(this.usable);
         }
+    }
+
+    public void setHasFinished(){
+        this.hasFinished = true;
+    }
+
+    public boolean getHasFinished(){
+        return this.hasFinished;
     }
 }

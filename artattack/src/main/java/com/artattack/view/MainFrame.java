@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.directory.AttributeModificationException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -12,7 +13,9 @@ import javax.swing.Timer;
 import com.artattack.ActiveElement;
 import com.artattack.ConcreteTurnHandler;
 import com.artattack.ConcreteTurnQueue;
-import com.artattack.Maps;
+import com.artattack.MapBuilder;
+import com.artattack.*;
+import com.artattack.TestMapBuilder;
 
 public class MainFrame extends JFrame {
     
@@ -20,6 +23,8 @@ public class MainFrame extends JFrame {
     private JPanel mainPanel;
     private MenuPanel menuPanel;
     private GamePanel gamePanel;
+
+    private Maps initialMap;
     
     
     private ConcreteTurnQueue turnQueue;
@@ -29,6 +34,9 @@ public class MainFrame extends JFrame {
     public static final String GAME_CARD = "GAME";
     
     public MainFrame() {
+
+        this.initialMap = null;
+        
         setTitle("Art Attack");
         setSize(800, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,7 +70,13 @@ public class MainFrame extends JFrame {
         cardLayout.show(mainPanel, GAME_CARD);
         SwingUtilities.invokeLater(() -> {
             
-            gamePanel.loadInitialMap();
+
+            if (initialMap== null) {
+                gamePanel.loadInitialMap();
+            }else{
+                loadInitialMap(initialMap);
+            }
+            
             gamePanel.requestFocusInWindow();
             
             
@@ -151,7 +165,7 @@ public class MainFrame extends JFrame {
 
     private void initializeTurnSystem() {
         
-        List<ActiveElement> activeElements = gamePanel.getActiveElements();
+        List<ActiveElement> activeElements = initialMap.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue();
         
         if (activeElements == null || activeElements.isEmpty()) {
             System.out.println(" No active elements found for turn system");
@@ -166,18 +180,13 @@ public class MainFrame extends JFrame {
                              ", Symbol: " + elem.getMapSymbol() + ")");
         }
         
-        
-        turnQueue = new ConcreteTurnQueue(activeElements);
-        turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
-        
-        
         if (turnHandler.hasNext()) {
             ActiveElement first = turnHandler.next();
             System.out.println("✓ First turn: " + first.getName());
         }
         
         
-        gamePanel.setTurnSystem(turnQueue, turnHandler);
+        gamePanel.setTurnSystem(initialMap.getConcreteTurnHandler().getConcreteTurnQueue(), initialMap.getConcreteTurnHandler());
         
         System.out.println("✓ Turn system initialized successfully");
     }
@@ -237,6 +246,10 @@ public class MainFrame extends JFrame {
         return turnHandler;
     }
 
+
+    public void setInitialMap(Maps initialMap) {
+        this.initialMap = initialMap;
+    }
     
     
     public static void main(String[] args) {
@@ -250,9 +263,37 @@ public class MainFrame extends JFrame {
         } catch (Exception e) {
             System.err.println("Could not set Nimbus L&F.");
         }
+
+        AreaBuilder areaBuilder = new AreaBuilder();
+        areaBuilder.addShape("8");
+        List<Coordinates> area8 = areaBuilder.getResult();
+        MapBuilder mapBuilder = new TestMapBuilder();
+        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(3, 3), List.of(new Weapon("Hoe", "", 0)), 5,5, area8, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 0)), 5,5, area8, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setInteractableElements(List.of(
+            new InteractableElement(0, '$', "Guitar", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Hi!"))), "",null,null),
+            new InteractableElement(1, '$', "Drums", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null)));
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(area8); m1.setActionPoints(3);
+        Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area8); m2.setActionPoints(4);
+        Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2), 0);
+        mapBuilder.setEnemies(List.of(
+            new Enemy(0, 'E', "Goblinstein", new Coordinates(10, 10),EnemyType.ROBOT, 20,20,3,List.of(enemyWeapon),15,5,area8, area8,null,null,0)
+         ));
+        mapBuilder.setDimension(36, 150);
+        mapBuilder.setDict();
+        mapBuilder.setTurnQueue();
+        mapBuilder.startMap();
+        Maps map = mapBuilder.getResult();
+        map.getPlayerOne().getWeapons().get(0).addMove(m1);
+        map.getPlayerOne().getWeapons().get(0).addMove(m2);
+        map.getPlayerTwo().getWeapons().get(0).addMove(m1);
+        map.getPlayerTwo().getWeapons().get(0).addMove(m2);
+        
         
         SwingUtilities.invokeLater(() -> {
             MainFrame frame = new MainFrame();
+            frame.setInitialMap(map);
+            
             frame.setVisible(true);
             
             // menu cursor timer
@@ -260,4 +301,6 @@ public class MainFrame extends JFrame {
             timer.start();
         });
     }
+
+    
 }

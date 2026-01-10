@@ -37,8 +37,9 @@ public class ApproachStrategy extends DecisionStrategy {
         }
 
         // sets the new position and decreases the AP
+        map.setCell(enemy.getCoordinates(), '.');
         enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
-        enemy.setActionPoints(enemy.getActionPoints()-3);
+        enemy.setActionPoints(enemy.getActionPoints()-1);
         map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());
     }
 }

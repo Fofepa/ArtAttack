@@ -25,6 +25,7 @@ import com.artattack.Weapon;
 class MovesPanel extends JPanel {
     private Player currentPlayer;
     private MapPanel mapPanel;
+    private MainFrame mainFrame;
     private CombatStrategy combatStrategy;
     
     private List<Weapon> weapons;
@@ -76,6 +77,7 @@ class MovesPanel extends JPanel {
      */
     public void initializeCombatStrategy(Maps map) {
         this.combatStrategy = new CombatStrategy(map);
+        this.combatStrategy.setMainFrame(this.mainFrame);
         System.out.println("CombatStrategy initialized in MovesPanel");
     }
     
@@ -117,7 +119,7 @@ class MovesPanel extends JPanel {
                     // Scorri armi verso l'alto
                     selectedWeaponIndex = Math.max(0, selectedWeaponIndex - 1);
                     
-                    // ✓ CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
+                    //  CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
                     combatStrategy.execute(selectedWeaponIndex, 0);
                     
                     System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
@@ -126,7 +128,7 @@ class MovesPanel extends JPanel {
                     if (!moves.isEmpty()) {
                         selectedMoveIndex = Math.max(0, selectedMoveIndex - 1);
                         
-                        // ✓ CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
+                        //  CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
                         combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
                         
                         updateAttackArea();
@@ -150,7 +152,7 @@ class MovesPanel extends JPanel {
                     if (!moves.isEmpty()) {
                         selectedMoveIndex = Math.min(moves.size() - 1, selectedMoveIndex + 1);
                         
-                        // ✓ CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
+                        //  CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
                         combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
                         
                         updateAttackArea();
@@ -183,7 +185,7 @@ class MovesPanel extends JPanel {
                 if (isInMoveSelection) {
                     // Torna alla lista delle armi
                     isInMoveSelection = false;
-                    moves.clear();
+                    moves = null;
                     selectedMoveIndex = 0;
                     
                     // Reset della selezione nella strategy
@@ -200,7 +202,7 @@ class MovesPanel extends JPanel {
             
             case KeyEvent.VK_ENTER -> {
                 if (isInMoveSelection && !moves.isEmpty()) {
-                    // ✓ USA LA MOSSA - chiama acceptMove()
+                    //  USA LA MOSSA - chiama acceptMove()
                     System.out.println("=== Using Move ===");
                     System.out.println("Weapon: " + weapons.get(selectedWeaponIndex).getName());
                     System.out.println("Move: " + moves.get(selectedMoveIndex).getName());
@@ -212,7 +214,7 @@ class MovesPanel extends JPanel {
                         
                         // La mossa è stata usata, resetta tutto
                         isInMoveSelection = false;
-                        moves.clear();
+                        moves = null;
                         selectedWeaponIndex = 0;
                         selectedMoveIndex = 0;
                         
@@ -228,7 +230,7 @@ class MovesPanel extends JPanel {
                             mapPanel.onCombatActionCompleted();
                         } */
                     } else {
-                        System.out.println("⚠️ Move failed! (not enough AP or invalid target)");
+                        System.out.println("Move failed! (not enough AP or invalid target)");
                     }
                 }
             }
@@ -355,6 +357,10 @@ class MovesPanel extends JPanel {
                 };
             }
         });
+    }
+
+    public void setMainFrame(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
     }
     
     // ========== PANNELLO LISTA ARMI ==========

@@ -80,6 +80,7 @@ public class GamePanel extends JPanel {
         //Inventory and moves Split
         JPanel inventoryPanel = createBlackPanel("Inventory");
         movesPanel = new MovesPanel(); 
+        movesPanel.setMainFrame(mainFrame);
         JSplitPane movesInventorySplit = new JSplitPane(
             JSplitPane.VERTICAL_SPLIT,
             inventoryPanel,
@@ -175,6 +176,7 @@ public class GamePanel extends JPanel {
         
         movesPanel.setMapPanel(mapPanel);
         mapPanel.setMovesPanel(movesPanel);
+        mapPanel.setStatsPanel(statsPanel);
        
         // Focus manager with TAB
         mapPanel.setFocusable(true);
@@ -300,6 +302,7 @@ public class GamePanel extends JPanel {
     }
 
     public void loadInitialMapFacade(Maps mapFacade){
+        currentMap= mapFacade;
         mapPanel.setMap(mapFacade, mapFacade.getPlayerOne(), mapFacade.getPlayerTwo());
         movesPanel.initializeCombatStrategy(mapFacade);
 
@@ -349,7 +352,7 @@ public class GamePanel extends JPanel {
             }
         }
 
-        updateAllPanels();  // ✓ AGGIORNA TUTTI I PANNELLI
+        updateAllPanels();  //  AGGIORNA TUTTI I PANNELLI
     }
 
     // ✓ NUOVO METODO: Imposta il giocatore corrente su TUTTI i pannelli
@@ -440,5 +443,13 @@ public class GamePanel extends JPanel {
     
     public TurnPanel getTurnPanel() {
         return turnPanel;
+    }
+
+    public Maps getCurrentMap(){
+        return this.currentMap;
+    }
+
+    public MainFrame getMainFrame(){
+        return this.mainFrame;
     }
 }

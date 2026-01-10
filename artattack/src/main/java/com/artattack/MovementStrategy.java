@@ -39,9 +39,10 @@ public class MovementStrategy {
         if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] == '.'){  // it's easier to check if it is a walkable character (Maybe int the future we can change the character)
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
             player.setCoordinates(cursor);
+            player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
         }
-        if(map.checkAggro(cursor) != null){
+        if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));
         }
         isSelected = false;

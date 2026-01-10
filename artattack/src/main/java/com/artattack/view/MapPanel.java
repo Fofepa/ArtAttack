@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.artattack.ConcreteTurnHandler;
 import com.artattack.ConcreteTurnQueue;
 import com.artattack.Coordinates;
 import com.artattack.Enemy;
+import com.artattack.EnemyChoice;
 import com.artattack.InteractionStrategy;
 import com.artattack.Maps;
 import com.artattack.MovementStrategy;
@@ -31,6 +33,9 @@ class MapPanel extends JPanel {
     private TurnPanel turnPanel;
     private List<Coordinates> attackArea = new ArrayList<>();
     private MovesPanel movesPanel;
+    private StatsPanel statsPanel;
+
+    private GamePanel gamePanel;
     
     public MapPanel() {
         setBackground(Color.BLACK);
@@ -139,21 +144,38 @@ class MapPanel extends JPanel {
     private void handleEnemyTurn(Enemy enemy) {
         System.out.println("Enemy turn: " + enemy.getName());
         
-        setFocusable(false);
+        setFocusable(true);
+        requestFocusInWindow();
+        EnemyChoice enemyChoice;
+
+        java.awt.Container parent = getParent();
+        while (parent != null && !(parent instanceof GamePanel)) {
+            parent = parent.getParent();
+        }
+        if (parent instanceof GamePanel) {
+            System.out.println("Is doing the choice");
+            enemyChoice = new EnemyChoice(((GamePanel)parent).getMainFrame());
+            enemyChoice.setMap(((GamePanel)parent).getCurrentMap());
+            enemyChoice.setEnemy(enemy);
+            enemyChoice.choose();
+        }else{
+            return;
+        }
         
-       
-        Timer enemyTimer = new Timer(1500, e -> {
-            System.out.println(enemy.getName() + " finishes turn");
+        
+        while (!enemyChoice.getHasFinished()) {
             
-            
-            setFocusable(true);
-            requestFocusInWindow();
-            
-            
-            endTurn();
-        });
-        enemyTimer.setRepeats(false);
-        enemyTimer.start();
+            enemyChoice.choose();
+            try {
+                Thread.sleep(500); 
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            repaint();
+        }
+        endTurn();
+
+         
     }
 
     public void showAttackArea(List<Coordinates> area) {
@@ -237,13 +259,14 @@ class MapPanel extends JPanel {
                         if (movementStrategy.getSelectedState()) {
                             movementStrategy.acceptMovement();
 
-                            // ✓ AGGIORNA L'AREA DI ATTACCO DOPO IL MOVIMENTO
+                            // AGGIORNA L'AREA DI ATTACCO DOPO IL MOVIMENTO
                             // perché il giocatore si è spostato
                             if (movesPanel != null) {
                                 movesPanel.refreshAttackArea();
                             }
-
-                            endTurn();
+                            statsPanel.repaint();
+                            turnPanel.updateTurnDisplay();
+                            //endTurn();
                             repaint();
                         }
                         return;
@@ -396,6 +419,14 @@ class MapPanel extends JPanel {
 
     public void setMovesPanel(MovesPanel movesPanel) {
         this.movesPanel = movesPanel;
+    }
+
+    public void setStatsPanel(StatsPanel statsPanel){
+        this.statsPanel = statsPanel;
+    }
+
+    public void setGamePanel(GamePanel gamePanel){
+        this.gamePanel = gamePanel;
     }
 
     public int getMapRows() {

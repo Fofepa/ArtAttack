@@ -317,7 +317,7 @@ public class GamePanel extends JPanel {
         
         mapPanel.setMap(currentMap, director, musician);
         
-        
+        movesPanel.initializeCombatStrategy(currentMap);
         
         
         mapPanel.revalidate();
@@ -330,6 +330,9 @@ public class GamePanel extends JPanel {
 
     public void loadInitialMapFacade(Maps mapFacade){
         mapPanel.setMap(mapFacade,mapFacade.getPlayerOne() , mapFacade.getPlayerTwo());
+
+        movesPanel.initializeCombatStrategy(mapFacade);
+
         mapPanel.revalidate();
         mapPanel.repaint();
         mapPanel.requestFocusInWindow();

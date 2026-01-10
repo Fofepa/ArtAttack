@@ -15,7 +15,9 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
+import com.artattack.CombatStrategy;
 import com.artattack.Coordinates;
+import com.artattack.Maps;
 import com.artattack.Move;
 import com.artattack.Player;
 import com.artattack.Weapon;
@@ -23,13 +25,14 @@ import com.artattack.Weapon;
 class MovesPanel extends JPanel {
     private Player currentPlayer;
     private MapPanel mapPanel;
+    private CombatStrategy combatStrategy;
     
     private List<Weapon> weapons;
     private List<Move> moves;
     
     private int selectedWeaponIndex = 0;
     private int selectedMoveIndex = 0;
-    private boolean isInMoveSelection = false; // false = armi, true = mosse
+    private boolean isInMoveSelection = false;
     
     private final Font FONT = new Font("Monospaced", Font.PLAIN, 12);
     private final Font TITLE_FONT = new Font("Monospaced", Font.BOLD, 14);
@@ -46,13 +49,9 @@ class MovesPanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
         
-        // Pannello sinistra (armi)
         weaponListPanel = new WeaponListPanel();
-        
-        // Pannello destra (mosse)
         moveListPanel = new MoveListPanel();
         
-        // Split 50/50
         javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane(
             javax.swing.JSplitPane.HORIZONTAL_SPLIT,
             weaponListPanel,
@@ -72,6 +71,14 @@ class MovesPanel extends JPanel {
         moves = new ArrayList<>();
     }
     
+    /**
+     * Inizializza la CombatStrategy con la mappa
+     */
+    public void initializeCombatStrategy(Maps map) {
+        this.combatStrategy = new CombatStrategy(map);
+        System.out.println("CombatStrategy initialized in MovesPanel");
+    }
+    
     private void addFocusBorder() {
         addFocusListener(new java.awt.event.FocusAdapter() {
             @Override
@@ -82,7 +89,6 @@ class MovesPanel extends JPanel {
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 setBorder(null);
-                // Nascondi l'area di attacco quando perdi il focus
                 if (mapPanel != null) {
                     mapPanel.clearAttackArea();
                 }
@@ -100,8 +106,8 @@ class MovesPanel extends JPanel {
     }
     
     private void handleKeyPress(int keyCode) {
-        if (weapons.isEmpty()) {
-            System.out.println("No weapons available");
+        if (weapons.isEmpty() || combatStrategy == null) {
+            System.out.println("No weapons available or CombatStrategy not initialized");
             return;
         }
         
@@ -110,11 +116,19 @@ class MovesPanel extends JPanel {
                 if (!isInMoveSelection) {
                     // Scorri armi verso l'alto
                     selectedWeaponIndex = Math.max(0, selectedWeaponIndex - 1);
+                    
+                    // ✓ CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
+                    combatStrategy.execute(selectedWeaponIndex, 0);
+                    
                     System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
                 } else {
                     // Scorri mosse verso l'alto
                     if (!moves.isEmpty()) {
                         selectedMoveIndex = Math.max(0, selectedMoveIndex - 1);
+                        
+                        // ✓ CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
+                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
+                        
                         updateAttackArea();
                         System.out.println("Selected move: " + moves.get(selectedMoveIndex).getName());
                     }
@@ -126,11 +140,19 @@ class MovesPanel extends JPanel {
                 if (!isInMoveSelection) {
                     // Scorri armi verso il basso
                     selectedWeaponIndex = Math.min(weapons.size() - 1, selectedWeaponIndex + 1);
+                    
+                    // ✓ CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
+                    combatStrategy.execute(selectedWeaponIndex, 0);
+                    
                     System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
                 } else {
                     // Scorri mosse verso il basso
                     if (!moves.isEmpty()) {
                         selectedMoveIndex = Math.min(moves.size() - 1, selectedMoveIndex + 1);
+                        
+                        // ✓ CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
+                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
+                        
                         updateAttackArea();
                         System.out.println("Selected move: " + moves.get(selectedMoveIndex).getName());
                     }
@@ -140,13 +162,15 @@ class MovesPanel extends JPanel {
             
             case KeyEvent.VK_RIGHT -> {
                 if (!isInMoveSelection && !weapons.isEmpty()) {
-                    // Seleziona l'arma e mostra le mosse
+                    // Entra nella selezione mosse
                     Weapon selectedWeapon = weapons.get(selectedWeaponIndex);
                     moves = selectedWeapon.getMoves();
                     selectedMoveIndex = 0;
                     isInMoveSelection = true;
                     
                     if (!moves.isEmpty()) {
+                        // ✓ INIZIALIZZA con la prima mossa
+                        combatStrategy.execute(selectedWeaponIndex, 1); // dy = 1 per la prima mossa
                         updateAttackArea();
                     }
                     
@@ -162,7 +186,9 @@ class MovesPanel extends JPanel {
                     moves.clear();
                     selectedMoveIndex = 0;
                     
-                    // Nascondi l'area di attacco
+                    // Reset della selezione nella strategy
+                    combatStrategy.execute(selectedWeaponIndex, 0);
+                    
                     if (mapPanel != null) {
                         mapPanel.clearAttackArea();
                     }
@@ -174,15 +200,40 @@ class MovesPanel extends JPanel {
             
             case KeyEvent.VK_ENTER -> {
                 if (isInMoveSelection && !moves.isEmpty()) {
-                    // Seleziona la mossa per l'uso
-                    Move selectedMove = moves.get(selectedMoveIndex);
-                    System.out.println("Move selected for use: " + selectedMove.getName());
+                    // ✓ USA LA MOSSA - chiama acceptMove()
+                    System.out.println("=== Using Move ===");
+                    System.out.println("Weapon: " + weapons.get(selectedWeaponIndex).getName());
+                    System.out.println("Move: " + moves.get(selectedMoveIndex).getName());
                     
+                    int result = combatStrategy.acceptMove();
+                    
+                    if (result != 0) {
+                        System.out.println("✓ Move executed successfully! Damage: " + result);
+                        
+                        // La mossa è stata usata, resetta tutto
+                        isInMoveSelection = false;
+                        moves.clear();
+                        selectedWeaponIndex = 0;
+                        selectedMoveIndex = 0;
+                        
+                        if (mapPanel != null) {
+                            mapPanel.clearAttackArea();
+                            mapPanel.repaint(); // Aggiorna la mappa per mostrare i danni
+                        }
+                        
+                        repaint();
+                        
+                        /* // Notifica che l'azione è completata (potrebbe terminare il turno)
+                        if (mapPanel != null) {
+                            mapPanel.onCombatActionCompleted();
+                        } */
+                    } else {
+                        System.out.println("⚠️ Move failed! (not enough AP or invalid target)");
+                    }
                 }
             }
         }
     }
-    
     
     private void updateAttackArea() {
         if (mapPanel == null || moves.isEmpty() || currentPlayer == null) {
@@ -193,8 +244,6 @@ class MovesPanel extends JPanel {
         }
 
         Move selectedMove = moves.get(selectedMoveIndex);
-
-        // Ottieni le coordinate relative dalla mossa
         List<Coordinates> relativeArea = selectedMove.getAttackArea();
 
         if (relativeArea == null || relativeArea.isEmpty()) {
@@ -202,19 +251,16 @@ class MovesPanel extends JPanel {
             return;
         }
 
-        // ✓ OTTIENI LA POSIZIONE DEL GIOCATORE (non del cursore!)
         Coordinates playerPos = currentPlayer.getCoordinates();
         if (playerPos == null) {
             mapPanel.clearAttackArea();
             return;
         }
 
-        // Calcola le coordinate assolute sommando la posizione DEL GIOCATORE
         List<Coordinates> absoluteArea = new ArrayList<>();
         for (Coordinates relative : relativeArea) {
             Coordinates absolute = Coordinates.sum(playerPos, relative);
 
-            // Verifica che sia dentro i limiti della mappa
             if (isValidCoordinate(absolute)) {
                 absoluteArea.add(absolute);
             }
@@ -224,10 +270,8 @@ class MovesPanel extends JPanel {
                            " from player at (" + playerPos.getX() + "," + playerPos.getY() + 
                            "): " + absoluteArea.size() + " cells");
 
-        // Mostra l'area sulla mappa
         mapPanel.showAttackArea(absoluteArea);
     }
-    
     
     private boolean isValidCoordinate(Coordinates coord) {
         if (mapPanel == null) return false;
@@ -239,7 +283,6 @@ class MovesPanel extends JPanel {
                coord.getY() >= 0 && coord.getY() < rows;
     }
     
-    
     public void refreshAttackArea() {
         if (isInMoveSelection && !moves.isEmpty()) {
             updateAttackArea();
@@ -247,10 +290,15 @@ class MovesPanel extends JPanel {
     }
     
     /**
-     * Set player and weapons
+     * Imposta il giocatore corrente
      */
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
+        
+        if (combatStrategy != null) {
+            combatStrategy.setCurrentPlayer(player);
+            System.out.println("CombatStrategy player updated to: " + player.getName());
+        }
         
         if (player != null) {
             this.weapons = player.getWeapons();
@@ -265,7 +313,6 @@ class MovesPanel extends JPanel {
         isInMoveSelection = false;
         moves.clear();
         
-        // Nascondi area di attacco
         if (mapPanel != null) {
             mapPanel.clearAttackArea();
         }
@@ -273,11 +320,9 @@ class MovesPanel extends JPanel {
         repaint();
     }
     
-    
     public void setMapPanel(MapPanel mapPanel) {
         this.mapPanel = mapPanel;
     }
-    
     
     public Move getSelectedMove() {
         if (isInMoveSelection && !moves.isEmpty()) {
@@ -286,9 +331,15 @@ class MovesPanel extends JPanel {
         return null;
     }
     
-   
     public boolean isInMoveSelection() {
         return isInMoveSelection;
+    }
+    
+    /**
+     * Ottieni la CombatStrategy
+     */
+    public CombatStrategy getCombatStrategy() {
+        return combatStrategy;
     }
     
     private void whiteLineDivider(javax.swing.JSplitPane splitPane) {
@@ -320,7 +371,6 @@ class MovesPanel extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
                                  RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
             
-            // Titolo
             g2d.setFont(TITLE_FONT);
             g2d.setColor(Color.WHITE);
             String title = "WEAPONS";
@@ -328,13 +378,11 @@ class MovesPanel extends JPanel {
             int titleWidth = fm.stringWidth(title);
             g2d.drawString(title, (getWidth() - titleWidth) / 2, MARGIN + fm.getAscent());
             
-            // Linea separatore
             int y = MARGIN + fm.getHeight() + 5;
             g2d.drawLine(MARGIN, y, getWidth() - MARGIN, y);
             
             y += 15;
             
-            // Lista armi
             if (weapons.isEmpty()) {
                 g2d.setFont(FONT);
                 g2d.setColor(Color.GRAY);
@@ -359,23 +407,19 @@ class MovesPanel extends JPanel {
             FontMetrics fm = g2d.getFontMetrics();
             
             if (isSelected) {
-                // Evidenzia arma selezionata
                 g2d.setColor(new Color(0, 139, 139));
                 g2d.fillRect(0, y - fm.getAscent() + 2, getWidth(), LINE_HEIGHT);
                 
-                // Freccia
                 g2d.setColor(Color.CYAN);
                 g2d.drawString(">", MARGIN, y);
             }
             
-            // Testo
             g2d.setColor(isSelected ? Color.CYAN : Color.WHITE);
             g2d.setFont(isSelected ? SELECTED_FONT : FONT);
             
             String text = weapon.getName();
             g2d.drawString(text, MARGIN + 15, y);
             
-            // Info aggiuntiva (es. numero mosse)
             if (weapon.getMoves() != null) {
                 g2d.setFont(FONT);
                 g2d.setColor(Color.GRAY);
@@ -400,7 +444,6 @@ class MovesPanel extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
                                  RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
             
-            // Titolo
             g2d.setFont(TITLE_FONT);
             g2d.setColor(Color.WHITE);
             String title = "MOVES";
@@ -408,13 +451,11 @@ class MovesPanel extends JPanel {
             int titleWidth = fm.stringWidth(title);
             g2d.drawString(title, (getWidth() - titleWidth) / 2, MARGIN + fm.getAscent());
             
-            // Linea separatore
             int y = MARGIN + fm.getHeight() + 5;
             g2d.drawLine(MARGIN, y, getWidth() - MARGIN, y);
             
             y += 15;
             
-            // Se non siamo nella selezione mosse, mostra istruzioni
             if (!isInMoveSelection) {
                 g2d.setFont(FONT);
                 g2d.setColor(Color.GRAY);
@@ -424,7 +465,6 @@ class MovesPanel extends JPanel {
                 return;
             }
             
-            // Lista mosse
             if (moves.isEmpty()) {
                 g2d.setFont(FONT);
                 g2d.setColor(Color.GRAY);
@@ -449,23 +489,19 @@ class MovesPanel extends JPanel {
             FontMetrics fm = g2d.getFontMetrics();
             
             if (isSelected) {
-                // Evidenzia mossa selezionata
-                g2d.setColor(new Color(139, 0, 0)); // Rosso scuro per le mosse
+                g2d.setColor(new Color(139, 0, 0));
                 g2d.fillRect(0, y - fm.getAscent() + 2, getWidth(), LINE_HEIGHT);
                 
-                // Freccia
                 g2d.setColor(Color.RED);
                 g2d.drawString(">", MARGIN, y);
             }
             
-            // Testo
             g2d.setColor(isSelected ? Color.RED : Color.WHITE);
             g2d.setFont(isSelected ? SELECTED_FONT : FONT);
             
             String text = move.getName();
             g2d.drawString(text, MARGIN + 15, y);
             
-            // Info aggiuntiva (potenza e AP)
             g2d.setFont(FONT);
             g2d.setColor(Color.GRAY);
             String info = String.format("PWR:%d AP:%d", move.getPower(), move.getActionPoints());

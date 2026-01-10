@@ -125,7 +125,7 @@ public class Maps {
     
     public Enemy checkAggro(Coordinates coordinates){
         for(Enemy enemy : enemies){
-            if(enemy.getVisionArea().contains(coordinates)){
+            if(Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates()).contains(coordinates)){
                 return enemy;
             }
         }

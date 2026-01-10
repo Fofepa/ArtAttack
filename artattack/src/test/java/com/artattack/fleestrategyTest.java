@@ -47,7 +47,7 @@ public class fleestrategyTest {
         Coordinates.getDistance(oldPos, map.getPlayerTwo().getCoordinates())
         );
 
-    flee.execute(enemy, map);
+        flee.execute(enemy, map);
 
         Coordinates newPos = enemy.getCoordinates();
         double newDist = Math.min(
@@ -55,7 +55,7 @@ public class fleestrategyTest {
             Coordinates.getDistance(newPos, map.getPlayerTwo().getCoordinates())
         );
         
-        assertTrue(newDist > oldDist);
+        assertTrue(newDist > oldDist); //Check if the new distance from the player is greater than the old one
     }
 
     @After

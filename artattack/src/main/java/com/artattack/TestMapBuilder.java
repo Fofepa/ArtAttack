@@ -89,7 +89,7 @@ public class TestMapBuilder implements MapBuilder {
             if (y >= 0 && y < rows && x >= 0 && x < columns) {
                 charMatrix[y][x] = element.getMapSymbol();
             } else {
-                System.out.println("⚠️ Coordinate fuori mappa ignorate: " + key);
+                System.out.println("⚠️ Coordinates Out of Bounds!: " + key);
             }
         }
 

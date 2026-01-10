@@ -26,23 +26,17 @@ public class MovementStrategy {
 
 
     private void moveCursor(int dx, int dy){
-        int x = cursor.getX();
-        int y = cursor.getY();
-        Coordinates new_c = new Coordinates(dx + x,dy + y);
+        Coordinates new_c = Coordinates.sum(cursor, new Coordinates(dx,dy));
 
-        if (Math.abs(new_c.getX() - player.getCoordinates().getX()) <= 1 &&
-            Math.abs(new_c.getY() - player.getCoordinates().getY()) <= 1 &&
-            new_c.getX() >= 0 && new_c.getX() < this.map.getColumns() &&
-            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() /*&&
-            player.getActionArea().contains(new_c)*/){
+        if (new_c.getX() >= 0 && new_c.getX() < this.map.getColumns() &&
+            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() &&
+            Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
             cursor = new_c;
         }
     }
 
     public void acceptMovement() {
-        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '#' &&
-            this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != 'E' &&
-            this.map.getMapMatrix()[cursor.getY()][cursor.getX()] != '$'){
+        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] == '.'){  // it's easier to check if it is a walkable character (Maybe int the future we can change the character)
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
             player.setCoordinates(cursor);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
@@ -79,7 +73,7 @@ public class MovementStrategy {
 
     public final void setPlayer(Player player) {
         this.player = player;
-        this.cursor = new Coordinates(player.getCoordinates().getX(), player.getCoordinates().getY());
+        this.cursor = player.getCoordinates(); 
     }
 
 

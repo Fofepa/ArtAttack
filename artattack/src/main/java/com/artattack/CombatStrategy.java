@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.artattack.view.MainFrame;
 
-public class CombatStrategy{
+public class CombatStrategy implements PlayerStrategy{
     private Maps map;
     private Player player;    
     private boolean isSelected = false;
@@ -16,6 +16,7 @@ public class CombatStrategy{
         this.map = map;
     }
 
+    @Override
     public void execute(int dx, int dy){    // in this case dx is the weapon index and dy is the move index
         
         if (dx >=0 && dx <= player.getWeapons().size()-1 && dy == 0){ // selection of the weapon, dy must be 0
@@ -72,5 +73,10 @@ public class CombatStrategy{
 
     public void setMainFrame(MainFrame mainFrame){
         this.mainFrame = mainFrame;
+    }
+
+    @Override
+    public int getType(){
+        return 1;
     }
 }

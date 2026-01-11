@@ -1,6 +1,6 @@
 package com.artattack;
 
-public class MovementStrategy {
+public class MovementStrategy implements PlayerStrategy{
     private Maps map;
     private Player player;
     private Coordinates cursor;
@@ -15,6 +15,7 @@ public class MovementStrategy {
         this.map =map;
     }
 
+    @Override
     public void execute(int dx, int dy){
         if (dx != 0 || dy != 0) {
             if (!isSelected)
@@ -75,6 +76,11 @@ public class MovementStrategy {
     public final void setPlayer(Player player) {
         this.player = player;
         this.cursor = player.getCoordinates(); 
+    }
+
+    @Override
+    public int getType(){
+        return 0;
     }
 
 

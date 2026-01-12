@@ -1,18 +1,21 @@
 package com.artattack.inputcontroller;
 
-import java.awt.event.*;
-import java.util.List;
-import java.awt.ActiveEvent;
 import java.awt.Component;
-import java.awt.KeyboardFocusManager;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.List;
 
 import com.artattack.interactions.InteractionStrategy;
-import com.artattack.mapelements.*;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.TurnListener;
-import com.artattack.view.*;
+import com.artattack.view.GamePanel;
+import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
+import com.artattack.view.MovesPanel;
 
 
 public class InputController implements KeyListener, TurnListener {
@@ -292,8 +295,10 @@ public class InputController implements KeyListener, TurnListener {
                     }
                 }
             }
-            default:
-                handleFocusInput(e);
+            default ->{
+                        handleFocusInput(e);
+                        break;
+                    }
         }
         
     }
@@ -356,8 +361,11 @@ public class InputController implements KeyListener, TurnListener {
                         mainFrame.getMap().getConcreteTurnHandler().next();
                         return;
                     }
-                    default:
+                    default ->{
                         handleFocusInput(e);
+                        break;
+                    }
+
         }
     }
         

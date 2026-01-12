@@ -7,8 +7,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +63,6 @@ public class MovesPanel extends JPanel {
         
         add(splitPane, BorderLayout.CENTER);
         
-        addKeyboardControls();
         addFocusBorder();
         
         weapons = new ArrayList<>();
@@ -74,7 +71,7 @@ public class MovesPanel extends JPanel {
     
     
     public void initializeCombatStrategy(Maps map) {
-        this.combatStrategy = new CombatStrategy(map);
+        this.combatStrategy = new CombatStrategy(map, currentPlayer);
         this.combatStrategy.setMainFrame(this.mainFrame);
         System.out.println("CombatStrategy initialized in MovesPanel");
     }
@@ -94,145 +91,6 @@ public class MovesPanel extends JPanel {
                 }
             }
         });
-    }
-    
-    private void addKeyboardControls() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                handleKeyPress(e.getKeyCode());
-            }
-        });
-    }
-    
-    private void handleKeyPress(int keyCode) {
-        if (weapons.isEmpty() || combatStrategy == null) {
-            System.out.println("No weapons available or CombatStrategy not initialized");
-            return;
-        }
-        
-        switch (keyCode) {
-            case KeyEvent.VK_UP -> {
-                if (!isInMoveSelection) {
-                    // Scorri armi verso l'alto
-                    selectedWeaponIndex = Math.max(0, selectedWeaponIndex - 1);
-                    
-                    //  CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
-                    combatStrategy.execute(selectedWeaponIndex, 0);
-                    
-                    System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
-                } else {
-                    // Scorri mosse verso l'alto
-                    if (!moves.isEmpty()) {
-                        selectedMoveIndex = Math.max(0, selectedMoveIndex - 1);
-                        
-                        //  CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
-                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
-                        
-                        updateAttackArea();
-                        System.out.println("Selected move: " + moves.get(selectedMoveIndex).getName());
-                    }
-                }
-                repaint();
-            }
-            
-            case KeyEvent.VK_DOWN -> {
-                if (!isInMoveSelection) {
-                    // Scorri armi verso il basso
-                    selectedWeaponIndex = Math.min(weapons.size() - 1, selectedWeaponIndex + 1);
-                    
-                    // ✓ CHIAMA COMBAT STRATEGY - selezione arma (dy = 0)
-                    combatStrategy.execute(selectedWeaponIndex, 0);
-                    
-                    System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
-                } else {
-                    // Scorri mosse verso il basso
-                    if (!moves.isEmpty()) {
-                        selectedMoveIndex = Math.min(moves.size() - 1, selectedMoveIndex + 1);
-                        
-                        //  CHIAMA COMBAT STRATEGY - selezione mossa (dy = index + 1)
-                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
-                        
-                        updateAttackArea();
-                        System.out.println("Selected move: " + moves.get(selectedMoveIndex).getName());
-                    }
-                }
-                repaint();
-            }
-            
-            case KeyEvent.VK_RIGHT -> {
-                if (!isInMoveSelection && !weapons.isEmpty()) {
-                    // Entra nella selezione mosse
-                    Weapon selectedWeapon = weapons.get(selectedWeaponIndex);
-                    moves = selectedWeapon.getMoves();
-                    selectedMoveIndex = 0;
-                    isInMoveSelection = true;
-                    
-                    if (!moves.isEmpty()) {
-                        // ✓ INIZIALIZZA con la prima mossa
-                        combatStrategy.execute(selectedWeaponIndex, 1); // dy = 1 per la prima mossa
-                        updateAttackArea();
-                    }
-                    
-                    System.out.println("Opened moves for: " + selectedWeapon.getName());
-                    repaint();
-                }
-            }
-            
-            case KeyEvent.VK_LEFT -> {
-                if (isInMoveSelection) {
-                    // Torna alla lista delle armi
-                    isInMoveSelection = false;
-                    moves = null;
-                    selectedMoveIndex = 0;
-                    
-                    // Reset della selezione nella strategy
-                    combatStrategy.execute(selectedWeaponIndex, 0);
-                    
-                    if (mapPanel != null) {
-                        mapPanel.clearAttackArea();
-                    }
-                    
-                    System.out.println("Back to weapon list");
-                    repaint();
-                }
-            }
-            
-            case KeyEvent.VK_ENTER -> {
-                if (isInMoveSelection && !moves.isEmpty()) {
-                    //  USA LA MOSSA - chiama acceptMove()
-                    System.out.println("=== Using Move ===");
-                    System.out.println("Weapon: " + weapons.get(selectedWeaponIndex).getName());
-                    System.out.println("Move: " + moves.get(selectedMoveIndex).getName());
-                    
-                    int result = combatStrategy.acceptMove();
-                    
-                    if (result != 0) {
-                        System.out.println("✓ Move executed successfully! Damage: " + result);
-                        
-                        // La mossa è stata usata, resetta tutto
-                        isInMoveSelection = false;
-                        moves = null;
-                        selectedWeaponIndex = 0;
-                        selectedMoveIndex = 0;
-                        
-                        if (mapPanel != null) {
-                            mapPanel.clearAttackArea();
-                            mapPanel.repaint(); // Aggiorna la mappa per mostrare i danni
-                        }
-                        
-                        repaint();
-                        
-                        /* // Notifica che l'azione è completata (potrebbe terminare il turno)
-                        if (mapPanel != null) {
-                            mapPanel.onCombatActionCompleted();
-                        } */
-                    } else {
-                        System.out.println("Move failed! (not enough AP or invalid target)");
-                    }
-                }
-            }
-        }
     }
     
     public void updateAttackArea() {

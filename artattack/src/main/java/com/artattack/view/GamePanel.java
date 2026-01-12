@@ -54,6 +54,7 @@ public class GamePanel extends JPanel {
     private final SpritePanel spritePanel;
     private final TurnPanel turnPanel;
     private final StatsPanel statsPanel;
+    private InventoryPanel inventoryPanel;
     private MainFrame mainFrame;
     private MovesPanel movesPanel;
 
@@ -78,7 +79,7 @@ public class GamePanel extends JPanel {
         });
         
         //Inventory and moves Split
-        JPanel inventoryPanel = createBlackPanel("Inventory");
+        inventoryPanel = new InventoryPanel();
         movesPanel = new MovesPanel(); 
         movesPanel.setMainFrame(mainFrame);
         JSplitPane movesInventorySplit = new JSplitPane(
@@ -262,48 +263,12 @@ public class GamePanel extends JPanel {
         });
     }
     
-    public void loadInitialMap() {
-        Weapon prova = new Weapon("prova", "prova", 2);
-
-        musician = new Musician(1, '@', "Zappa", new Coordinates(10, 5));
-        director = new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5));
-
-        enemies = List.of(
-            new Enemy(0, 'E', "Employee", new Coordinates(20, 20), EnemyType.EMPLOYEE),
-            new Enemy(1, 'E', "Guard", new Coordinates(25, 25), EnemyType.GUARD)
-        );
-
-        MapBuilder mapBuilder = new TestMapBuilder();
-        mapBuilder.setDimension(36, 150);
-        mapBuilder.setPlayerOne(director);
-        mapBuilder.setPlayerTwo(musician);
-        mapBuilder.setEnemies(enemies);
-        mapBuilder.setInteractableElements(List.of(
-                new InteractableElement(0, 'G', "Gurlukovich", new Coordinates(10, 10), 
-                    List.of(new Talk(interactionPanel, List.of("HELP ME!!", "...","I'M STUCK BETWEEN THE WALLS!!!"))),
-                    "artattack\\src\\main\\java\\com\\artattack\\view\\assets\\Gurluk htlm.png", 
-                    spritePanel, interactionPanel)
-            ));
-        mapBuilder.setDict();
-        mapBuilder.setTurnQueue();
-        mapBuilder.startMap();
-        
-        currentMap = mapBuilder.getResult();
-        
-        mapPanel.setMap(currentMap, director, musician);
-        movesPanel.initializeCombatStrategy(currentMap);
-        
-        mapPanel.revalidate();
-        mapPanel.repaint();
-        mapPanel.requestFocusInWindow();
-        
-        System.out.println("Map loaded! Panel size: " + mapPanel.getWidth() + "x" + mapPanel.getHeight());
-    }
-
+    
     public void loadInitialMapFacade(Maps mapFacade){
         currentMap= mapFacade;
         mapPanel.setMap(mapFacade, mapFacade.getPlayerOne(), mapFacade.getPlayerTwo());
         movesPanel.initializeCombatStrategy(mapFacade);
+        inventoryPanel.initializeInventoryStrategy(currentMap);
 
         mapPanel.revalidate();
         mapPanel.repaint();
@@ -371,6 +336,9 @@ public class GamePanel extends JPanel {
         
         // ✓ AGGIORNA StatsPanel
         statsPanel.setCurrentPlayer(player);
+
+        //Update InventoryPanel
+        
         
         System.out.println("✓ All panels updated with player: " + player.getName());
     }
@@ -382,7 +350,8 @@ public class GamePanel extends JPanel {
         mapPanel.repaint();
         turnPanel.repaint();
         movesPanel.repaint();
-        statsPanel.updateStats();  
+        statsPanel.updateStats();
+        inventoryPanel.repaint(); 
         
         System.out.println("✓ All panels updated");
     }
@@ -441,6 +410,10 @@ public class GamePanel extends JPanel {
     
     public TurnPanel getTurnPanel() {
         return turnPanel;
+    }
+
+    public InventoryPanel getInventoryPanel() {
+        return inventoryPanel;
     }
 
     public InteractionPanel getInteractionPanel(){

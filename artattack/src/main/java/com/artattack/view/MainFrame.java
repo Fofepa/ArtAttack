@@ -88,11 +88,7 @@ public class MainFrame extends JFrame {
         SwingUtilities.invokeLater(() -> {
             
 
-            if (initialMap== null) {
-                gamePanel.loadInitialMap();
-            }else{
-                loadInitialMap(initialMap);
-            }
+            loadInitialMap(initialMap);
             
             gamePanel.requestFocusInWindow();
             
@@ -241,13 +237,15 @@ public class MainFrame extends JFrame {
         gamePanel.getMovesPanel().giveFocus();
     }
 
-    public void focusInventoryPanel(){
-        // TODO: add invetoryPanel
+    public void focusInventoryPanel() {
+        gamePanel.getInventoryPanel().giveFocus();
     }
 
     public Component getFocused(){
         return KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
     }
+
+    //FACADE getPanels
 
     public MapPanel getMapPanel(){
         return this.gamePanel.getMapPanel();
@@ -256,6 +254,11 @@ public class MainFrame extends JFrame {
     public MovesPanel getMovesPanel(){
         return this.gamePanel.getMovesPanel();
     }
+
+    public InventoryPanel getInventoryPanel(){
+        return this.gamePanel.getInventoryPanel();
+    }
+
 
 
     //FACADE Repaint
@@ -278,6 +281,10 @@ public class MainFrame extends JFrame {
 
     public void repaintInteractionPanel(){
         gamePanel.getInteractionPanel().repaint();
+    }
+
+    public void repaintInventoryPanel() {
+        gamePanel.getInventoryPanel().repaint();
     }
 
 

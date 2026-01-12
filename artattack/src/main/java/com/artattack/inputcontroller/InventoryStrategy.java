@@ -1,0 +1,86 @@
+package com.artattack.inputcontroller;
+
+import java.util.List;
+
+import com.artattack.level.Maps;
+import com.artattack.mapelements.Player;
+import com.artattack.view.MainFrame;
+
+public class InventoryStrategy implements PlayerStrategy {
+    private Maps map;
+    private Player player;
+    private boolean isSelected = false;
+    private int inventoryIndex = 0;
+    //private int elementIndex = 0;
+    private MainFrame mainFrame;
+
+    public InventoryStrategy(Maps map, Player player){
+        this.player = player;
+    }
+
+    @Override
+    public void execute(int dx, int dy) {
+        moveInventoryIndex(dx);
+
+        /* if (dx >=0 && dx <= player.getInventory().size()-1 && dy == 0){ // selection of the item, dy must be 0                   // this is needed if a player can use the item on other entities
+            moveInventoryIndex(dx);
+        }
+        else if (dx >=0 && dx <= player.getInventory().size()-1 && dy >= 1 && dy <= 2){ // selection of the element we want the item to interact
+            movePlayerIndex(dy);
+        } */
+    }
+
+    private void moveInventoryIndex(int index){
+        this.inventoryIndex = index % (player.getInventory().size());
+    }
+
+    /* private void movePlayerIndex(int index){
+        this.inventoryIndex = (index-1) % 2;
+    } */
+
+    public int acceptItem(Player player){
+        int value = player.getInventory().get(inventoryIndex).use(player);
+
+        if(value != 0){     // TODO: we have to check what kind of Item it was in order to print the correct message inside the InteractionPanel
+            mainFrame.showDialog(List.of(player.getName() + " used " + player.getInventory().get(inventoryIndex).getName()));
+            player.getInventory().remove(inventoryIndex); // it HAS to be a mutable List.
+            isSelected = false;
+            inventoryIndex = 0;
+        }
+        else{
+            mainFrame.showDialog(List.of(player.getInventory().get(inventoryIndex).getName() + " could not be used..."));
+            isSelected = false;
+            inventoryIndex = 0;
+        } 
+        return value;
+    }
+
+    @Override
+    public int getType() {
+        return 2;
+    }
+
+    public Maps getMap(){
+        return this.map;
+    }
+
+    public Player getPlayer(){
+        return this.player;
+    }
+
+    public boolean isSelected(){
+        return this.isSelected;
+    }
+
+    public int getInventoryIndex(){
+        return this.inventoryIndex;
+    }
+
+    public void setMainFrame(MainFrame mainFrame){
+        this.mainFrame = mainFrame;
+    }
+
+    public void setCurrentPlayer(Player player){
+        this.player = player;
+    }
+}

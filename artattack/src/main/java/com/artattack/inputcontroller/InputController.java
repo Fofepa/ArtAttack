@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.util.List;
 
 import com.artattack.interactions.InteractionStrategy;
+import com.artattack.items.Item;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
@@ -14,6 +15,7 @@ import com.artattack.moves.Weapon;
 import com.artattack.turns.TurnListener;
 import com.artattack.view.GamePanel;
 import com.artattack.view.InteractionPanel;
+import com.artattack.view.InventoryPanel;
 import com.artattack.view.MainFrame;
 import com.artattack.view.MovesPanel;
 
@@ -39,7 +41,20 @@ public class InputController implements KeyListener, TurnListener {
             handleMovesInput(e);
         }else if(isInteractionPanelFocused(focused)){
             handleInteractionInput(e);
+        }else if(isInventoryPanelFocused(focused)){
+            handleInventoryInput(e);
         }
+    }
+
+    public boolean isInventoryPanelFocused(Component component) {
+        Component current = component;
+        while (current != null) {
+            if (current instanceof InventoryPanel) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return false;
     }
 
 
@@ -88,14 +103,70 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_F:
                 mainFrame.focusMovesPanel();
                 break;
-            /* case KeyEvent.VK_I:
-                mainFrame.focusInventoryPanel(); */
+            case KeyEvent.VK_I:
+                mainFrame.focusInventoryPanel(); 
             /* case KeyEvent.VK_T:
                 mainFrame.focusInteractionPanel(); */
             default:
                 break;
         }
     }
+
+
+    private void handleInventoryInput(KeyEvent e) {
+        InventoryStrategy inventoryStrategy = (InventoryStrategy) currentState;
+
+        int selectedItemIndex = 0;
+        List<Item> inventory = ((Player) currentElement).getInventory();
+        
+        if (mainFrame.getInventoryPanel() == null) {  // Checks if the inventoryPanel is initialized
+            System.out.println("InventoryPanel or InventoryStrategy not initialized");
+            return;
+        }
+        
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> {
+
+                selectedItemIndex = Math.max(0, selectedItemIndex - 1);
+
+                inventoryStrategy.execute(selectedItemIndex, 0);
+                System.out.println("UP pressed on InventoryPanel");
+                mainFrame.repaintInventoryPanel();
+            }
+            
+            case KeyEvent.VK_DOWN -> {
+                selectedItemIndex = Math.min(inventory.size() - 1, selectedItemIndex + 1);
+                inventoryStrategy.execute(selectedItemIndex, 0);
+                System.out.println("DOWN pressed on InventoryPanel");
+                mainFrame.repaintInventoryPanel();
+            }
+            
+            /* case KeyEvent.VK_RIGHT -> {
+                System.out.println("RIGHT pressed on InventoryPanel");
+                inventoryPanel.navigateRight();
+            }
+            
+            case KeyEvent.VK_LEFT -> {
+                System.out.println("LEFT pressed on InventoryPanel");
+                inventoryPanel.navigateLeft();
+            } */
+            
+            case KeyEvent.VK_ENTER -> {
+                inventoryStrategy.acceptItem((Player) currentElement);  // for now it only uses item on itself
+                System.out.println("ENTER pressed on InventoryPanel");
+                
+                // Updates the stats panel after use
+                mainFrame.repaintStatsPanel();
+                mainFrame.repaintInventoryPanel();
+            }
+            
+            default -> {
+                handleFocusInput(e);
+            }
+        }
+    }
+
+
 
     private void handleInteractionInput(KeyEvent e){
         boolean dialogActive = mainFrame.getDialogActive();

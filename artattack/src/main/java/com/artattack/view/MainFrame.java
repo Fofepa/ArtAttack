@@ -1,6 +1,8 @@
 package com.artattack.view;
 
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
+import com.artattack.inputcontroller.InputController;
 import com.artattack.interactions.Talk;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
@@ -26,6 +29,7 @@ import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
+import com.artattack.view.InteractionPanel.DialogCallback;
 
 public class MainFrame extends JFrame {
     
@@ -33,6 +37,8 @@ public class MainFrame extends JFrame {
     private JPanel mainPanel;
     private MenuPanel menuPanel;
     private GamePanel gamePanel;
+
+    private InputController inputController;
 
     private Maps initialMap;
     
@@ -67,6 +73,7 @@ public class MainFrame extends JFrame {
         
         add(mainPanel);
         
+        inputController = new InputController(this);
         
         showMenu();
     }
@@ -158,12 +165,48 @@ public class MainFrame extends JFrame {
         gamePanel.getInteractionPanel().confirmChoice();
     }
 
-    public void advanceDialogue(){
-        gamePanel.getInteractionPanel().advanceDialogue();
+    public void advanceDialog(){
+        gamePanel.getInteractionPanel().advanceDialog();
     }
 
-    public void closeDialogue(){
-        gamePanel.getInteractionPanel().closeDialogue();
+    public void closeDialog(){
+        gamePanel.getInteractionPanel().closeDialog();
+    }
+
+    public void activateAndFocus() {
+        requestFocusInWindow();
+    }
+
+    public List<String> getCurrentDialog(){
+        return this.gamePanel.getInteractionPanel().getCurrentDialog();
+    }
+
+    public int getCurrentPhraseIndex(){
+        return this.gamePanel.getInteractionPanel().getCurrentPhraseIndex();
+    }
+
+    public boolean getDialogActive(){
+        return this.gamePanel.getInteractionPanel().getDialogActive();
+    }
+
+    public int getSelectedOption(){
+        return this.gamePanel.getInteractionPanel().getSelectedOption();
+    }
+
+    public List<String> getResponseOptions(){
+        return this.gamePanel.getInteractionPanel().getResponseOptions();
+    }
+
+    public boolean getChoiceMode(){
+        return this.gamePanel.getInteractionPanel().getChoiceMode();
+    }
+
+    public DialogCallback getCallback(){
+        return this.gamePanel.getInteractionPanel().getCallback();
+    }
+
+    public boolean getTextFullyRevealed(){
+        return this.gamePanel.getInteractionPanel().getTextFullyRevealed();
     }
 
 
@@ -202,8 +245,16 @@ public class MainFrame extends JFrame {
         // TODO: add invetoryPanel
     }
 
-    public JPanel getFocused(){
+    public Component getFocused(){
+        return KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
+    }
 
+    public MapPanel getMapPanel(){
+        return this.gamePanel.getMapPanel();
+    }
+
+    public MovesPanel getMovesPanel(){
+        return this.gamePanel.getMovesPanel();
     }
 
 
@@ -222,7 +273,11 @@ public class MainFrame extends JFrame {
     }
 
     public void repaintStatsPanel(){
-        gamePanel.getStatsPanel.repaint();
+        gamePanel.getStatsPanel().repaint();
+    }
+
+    public void repaintInteractionPanel(){
+        gamePanel.getInteractionPanel().repaint();
     }
 
 
@@ -246,7 +301,7 @@ public class MainFrame extends JFrame {
 
     //FACADE turns
 
-    public void updateTurnDisplay(ActiveElement activeElement){
+    public void updateTurnDisplay(){
         gamePanel.getTurnPanel().updateTurnDisplay();
     }
 
@@ -254,6 +309,7 @@ public class MainFrame extends JFrame {
     public void setCurrentPlayer(Player player){
         gamePanel.setCurrentPlayer(player);
     }
+
 
     //Turn System
 
@@ -343,6 +399,11 @@ public class MainFrame extends JFrame {
 
     public void setInitialMap(Maps initialMap) {
         this.initialMap = initialMap;
+    }
+
+
+    public Maps getMap(){
+        return this.initialMap;
     }
     
     

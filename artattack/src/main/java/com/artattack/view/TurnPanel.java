@@ -13,7 +13,7 @@ import com.artattack.mapelements.ActiveElement;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
 
-class TurnPanel extends JPanel {
+public class TurnPanel extends JPanel {
     private ConcreteTurnQueue turnQueue;
     private ConcreteTurnHandler turnHandler;
     private final Font FONT = new Font("Monospaced", Font.PLAIN, 12);

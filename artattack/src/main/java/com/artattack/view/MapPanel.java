@@ -22,7 +22,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
 
-class MapPanel extends JPanel {
+public class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;
     private InteractionStrategy interactionStrategy;
     private boolean showCursor = true;

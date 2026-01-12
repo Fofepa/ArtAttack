@@ -354,5 +354,35 @@ public class InteractionPanel extends JPanel {
         requestFocusInWindow();
     }
 
+    public List<String> getCurrentDialog(){
+        return this.currentDialog;
+    }
 
+    public int getCurrentPhraseIndex(){
+        return this.currentPhraseIndex;
+    }
+
+    public boolean getDialogActive(){
+        return this.dialogActive;
+    }
+
+    public int getSelectedOption(){
+        return this.selectedOption;
+    }
+
+    public List<String> getResponseOptions(){
+        return this.responseOptions;
+    }
+
+    public boolean getChoiceMode(){
+        return this.getChoiceMode();
+    }
+
+    public DialogCallback getCallback(){
+        return this.callback;
+    }
+
+    public boolean getTextFullyRevealed(){
+        return this.textFullyRevealed;
+    }
 }

@@ -15,6 +15,8 @@ public class TurnManager {
     }
 
     public void notifyTurn(ActiveElement activeElement){
-        
+        for (TurnListener listener : listeners){
+            listener.updateTurn(activeElement);
+        }
     }
 }

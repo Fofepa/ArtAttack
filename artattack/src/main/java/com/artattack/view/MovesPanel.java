@@ -22,7 +22,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
-class MovesPanel extends JPanel {
+public class MovesPanel extends JPanel {
     private Player currentPlayer;
     private MapPanel mapPanel;
     private MainFrame mainFrame;

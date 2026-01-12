@@ -22,7 +22,7 @@ public class StatsPanel extends JPanel {
     private final int MARGIN = 10;
     private final int LINE_HEIGHT = 18;
     private final int BAR_HEIGHT = 12;
-    private final int BAR_WIDTH_RATIO = 70; // percentuale della larghezza
+    private final int BAR_WIDTH_RATIO = 70;
 
     private boolean lowHealthBlink = false;
     private Timer blinkTimer;
@@ -43,7 +43,7 @@ public class StatsPanel extends JPanel {
     }
     
     /**
-     * Imposta il giocatore corrente e aggiorna le statistiche
+     * set current player and update stats
      */
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
@@ -62,7 +62,7 @@ public class StatsPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
                              RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         
-        // Titolo
+        // Title
         g2d.setFont(TITLE_FONT);
         g2d.setColor(Color.WHITE);
         String title = "STATS";
@@ -70,14 +70,14 @@ public class StatsPanel extends JPanel {
         int titleWidth = fm.stringWidth(title);
         g2d.drawString(title, (getWidth() - titleWidth) / 2, MARGIN + fm.getAscent());
         
-        // Linea separatore
+        // Separator Line
         int y = MARGIN + fm.getHeight() + 5;
         g2d.drawLine(MARGIN, y, getWidth() - MARGIN, y);
         
         y += 15;
         
         if (currentPlayer == null) {
-            // Nessun giocatore selezionato
+            // no player selected
             g2d.setFont(LABEL_FONT);
             g2d.setColor(Color.GRAY);
             String msg = "No player selected";
@@ -86,7 +86,7 @@ public class StatsPanel extends JPanel {
             return;
         }
         
-        // ========== NOME DEL PERSONAGGIO ==========
+        // ========== Player name ==========
         g2d.setFont(new Font("Monospaced", Font.BOLD, 14));
         g2d.setColor(Color.CYAN);
         g2d.drawString(currentPlayer.getName(), MARGIN, y);
@@ -96,8 +96,8 @@ public class StatsPanel extends JPanel {
         y = drawStatBar(g2d, "HP", 
                        currentPlayer.getCurrHP(), 
                        currentPlayer.getMaxHP(), 
-                       new Color(220, 20, 60),  // Rosso
-                       new Color(139, 0, 0),     // Rosso scuro
+                       new Color(220, 20, 60),  // red
+                       new Color(139, 0, 0),     // Deep red
                        y);
         
         // ========== AP (ACTION POINTS) ==========
@@ -105,24 +105,24 @@ public class StatsPanel extends JPanel {
                        currentPlayer.getActionPoints(), 
                        currentPlayer.getMaxActionPoints(), 
                        new Color(65, 105, 225),  // Blu
-                       new Color(25, 25, 112),    // Blu scuro
+                       new Color(25, 25, 112),    // deep Blu 
                        y);
         
         // ========== XP (EXPERIENCE) ==========
         y = drawStatBar(g2d, "XP", 
                        currentPlayer.getCurrXP(), 
                        currentPlayer.getMaxXP(), 
-                       new Color(255, 215, 0),   // Oro
-                       new Color(184, 134, 11),  // Oro scuro
+                       new Color(255, 215, 0),   // gold
+                       new Color(184, 134, 11),  // deep gold 
                        y);
         
-        y += 5; // Spazio extra
+        y += 5; // extra space
         
-        // ========== STATISTICHE BASE ==========
+        // ========== BASE STATS ==========
         y = drawStatLine(g2d, "LVL", String.valueOf(currentPlayer.getLevel()), Color.CYAN, y);
         y = drawStatLine(g2d, "SPD", String.valueOf(currentPlayer.getSpeed()), Color.GREEN, y);
         
-        // Indicatore Level Up
+        //  Level Up
         if (currentPlayer.getLeveledUp()) {
             g2d.setFont(new Font("Monospaced", Font.BOLD, 12));
             g2d.setColor(Color.YELLOW);
@@ -130,14 +130,14 @@ public class StatsPanel extends JPanel {
             y += LINE_HEIGHT;
         }
         
-        // ========== INVENTARIO ==========
+        // ========== Inventory ==========
         y += 5;
         g2d.setFont(LABEL_FONT);
         g2d.setColor(Color.GRAY);
         g2d.drawString("─────────────────", MARGIN, y);
         y += LINE_HEIGHT;
         
-        // Armi
+        // Weapons
         g2d.setColor(Color.YELLOW);
         g2d.drawString("Weapons:", MARGIN, y);
         y += LINE_HEIGHT;
@@ -164,7 +164,7 @@ public class StatsPanel extends JPanel {
                 y += LINE_HEIGHT - 3;
             }
             
-            // Slots armi
+            // WEAPONS SLOTS
             g2d.setColor(Color.GRAY);
             g2d.setFont(new Font("Monospaced", Font.PLAIN, 10));
             g2d.drawString("Slots: " + currentPlayer.getWeapons().size() + "/" + 
@@ -207,9 +207,7 @@ public class StatsPanel extends JPanel {
         }
     }
     
-    /**
-     * Disegna una barra di statistiche con valore/massimo
-     */
+    
     private int drawStatBar(Graphics2D g2d, String label, int current, int max, 
                            Color fillColor, Color bgColor, int y) {
         // Label
@@ -217,7 +215,7 @@ public class StatsPanel extends JPanel {
         g2d.setColor(Color.GRAY);
         g2d.drawString(label + ":", MARGIN, y);
         
-        // Valori numerici
+        // Numeric values
         g2d.setFont(VALUE_FONT);
         g2d.setColor(Color.WHITE);
         String valueText = current + "/" + max;
@@ -226,19 +224,19 @@ public class StatsPanel extends JPanel {
         
         y += LINE_HEIGHT - 2;
         
-        // Barra di progresso
+        // progress bar
         int barWidth = (getWidth() - 2 * MARGIN) * BAR_WIDTH_RATIO / 100;
         int barX = MARGIN;
         
-        // Background della barra
+        // bar Background 
         g2d.setColor(bgColor);
         g2d.fillRect(barX, y - BAR_HEIGHT + 2, barWidth, BAR_HEIGHT);
         
-        // Bordo
+        // Border
         g2d.setColor(Color.DARK_GRAY);
         g2d.drawRect(barX, y - BAR_HEIGHT + 2, barWidth, BAR_HEIGHT);
         
-        // Riempimento proporzionale
+        // Proportional fill
         if (max > 0) {
             int fillWidth = (int) ((double) current / max * barWidth);
             fillWidth = Math.max(0, Math.min(fillWidth, barWidth)); // Clamp
@@ -246,9 +244,9 @@ public class StatsPanel extends JPanel {
             g2d.setColor(fillColor);
             g2d.fillRect(barX + 1, y - BAR_HEIGHT + 3, fillWidth - 1, BAR_HEIGHT - 1);
             
-            // Effetto "low health" - lampeggia quando HP < 25%
+            // Low health effect
             if (label.equals("HP") && current > 0 && (double) current / max < 0.25 && lowHealthBlink) {
-                g2d.setColor(new Color(255, 255, 0, 150)); // Giallo lampeggiante
+                g2d.setColor(new Color(255, 255, 0, 150)); // blinking yellow
                 g2d.fillRect(barX + 1, y - BAR_HEIGHT + 3, fillWidth - 1, BAR_HEIGHT - 1);
             }
         }
@@ -258,7 +256,7 @@ public class StatsPanel extends JPanel {
     }
     
     /**
-     * Disegna una linea di statistica semplice (label: valore)
+     * Draw simple stat line (label: value)
      */
     private int drawStatLine(Graphics2D g2d, String label, String value, Color valueColor, int y) {
         g2d.setFont(LABEL_FONT);
@@ -274,16 +272,12 @@ public class StatsPanel extends JPanel {
         return y;
     }
     
-    /**
-     * Aggiorna il pannello (forza repaint)
-     */
+    
     public void updateStats() {
         repaint();
     }
     
-    /**
-     * Ottieni il giocatore corrente
-     */
+    
     public Player getCurrentPlayer() {
         return currentPlayer;
     }

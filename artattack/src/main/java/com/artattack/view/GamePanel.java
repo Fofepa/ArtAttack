@@ -445,6 +445,10 @@ public class GamePanel extends JPanel {
         return turnPanel;
     }
 
+    public InteractionPanel getInteractionPanel(){
+        return interactionPanel;
+    }
+
     public Maps getCurrentMap(){
         return this.currentMap;
     }

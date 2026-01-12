@@ -427,7 +427,6 @@ public class GamePanel extends JPanel {
         spritePanel.clearImage();
     }
     
-    // ✓ GETTER per i pannelli (utile per debugging o accesso esterno)
     public StatsPanel getStatsPanel() {
         return statsPanel;
     }

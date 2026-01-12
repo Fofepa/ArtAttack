@@ -313,6 +313,11 @@ public class InteractionPanel extends JPanel {
         
         return linesDrawn;
     }
+
+    public void giveFocus(){
+        setFocusable(true);
+        requestFocusInWindow();
+    }
     
     public boolean isDialogActive() {
         return dialogActive;

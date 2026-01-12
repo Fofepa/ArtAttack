@@ -4,13 +4,11 @@ import java.awt.CardLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.naming.directory.AttributeModificationException;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import com.artattack.*;
 import com.artattack.interactions.Talk;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
@@ -170,8 +168,64 @@ public class MainFrame extends JFrame {
         gamePanel.clearSprite();
     }
 
+    // FACADE Focus
 
-    
+    public void focusMapPanel(){
+        gamePanel.getMapPanel().giveFocus();
+    }
+
+    public void  focusInteractionPanel(){
+        gamePanel.getInteractionPanel().giveFocus();
+    }
+
+    public void focusMovesPanel(){
+        gamePanel.getMovesPanel().giveFocus();
+    }
+
+    public void focusInventoryPanel(){
+        // TODO: add invetoryPanel
+    }
+
+
+    //FACADE Repaint
+
+    public void repaintMapPanel(){
+        gamePanel.getMapPanel().repaint();
+    }
+
+    public void repaintMovesPanel(){
+        gamePanel.getMovesPanel().repaint();
+    }
+
+    public void repaintTurnPanel(){
+        gamePanel.getTurnPanel().repaint();
+    }
+
+
+    //FACADE  attackArea
+
+    public void updateAttackArea(){
+        gamePanel.getMovesPanel().updateAttackArea();
+    }
+
+    public void clearAttackArea(){
+        gamePanel.getMapPanel().clearAttackArea();
+    }
+
+
+        //Update attackArea after player movement
+    public void refreshAttackArea(){
+        gamePanel.getMovesPanel().refreshAttackArea();
+    }
+
+
+    //FACADE turns
+
+    public void updateTurnDisplay(){
+        gamePanel.getTurnPanel().updateTurnDisplay();
+    }
+
+
     //Turn System
 
     private void initializeTurnSystem() {

@@ -41,7 +41,7 @@ class TurnPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, 
                              RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
         
-        // Titolo
+        // Title
         g2d.setFont(TITLE_FONT);
         g2d.setColor(Color.WHITE);
         String title = "TURN ORDER";
@@ -49,7 +49,7 @@ class TurnPanel extends JPanel {
         int titleWidth = fm.stringWidth(title);
         g2d.drawString(title, (getWidth() - titleWidth) / 2, MARGIN + fm.getAscent());
         
-        // Linea separatore
+        // Separator Line
         int y = MARGIN + fm.getHeight() + 5;
         g2d.setColor(Color.WHITE);
         g2d.drawLine(MARGIN, y, getWidth() - MARGIN, y);
@@ -74,7 +74,7 @@ class TurnPanel extends JPanel {
             return;
         }
         
-        // Disegna la lista dei turni
+        // Draw Turn List
         g2d.setFont(FONT);
         int currentIndex = Math.max(0, turnHandler.getIndex() - 1);
         
@@ -96,16 +96,16 @@ class TurnPanel extends JPanel {
         FontMetrics fm = g2d.getFontMetrics();
         
         if (isCurrent) {
-            // Evidenzia il turno corrente
+            // Current turn highlight
             g2d.setColor(new Color(0, 139, 139));
             g2d.fillRect(0, y - fm.getAscent() + 2, getWidth(), LINE_HEIGHT);
             
-            // Freccia
+            // Arrow
             g2d.setColor(Color.CYAN);
             g2d.drawString(">", MARGIN, y);
         }
         
-        // Testo
+        // Text
         g2d.setColor(isCurrent ? Color.CYAN : Color.WHITE);
         
         try {
@@ -118,7 +118,6 @@ class TurnPanel extends JPanel {
             
             g2d.drawString(line, MARGIN + 15, y);
         } catch (Exception e) {
-            // Fallback se i metodi non esistono
             g2d.drawString(position + ". " + element.toString(), MARGIN + 15, y);
         }
     }

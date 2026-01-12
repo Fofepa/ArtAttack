@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import static java.lang.Thread.sleep;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -259,8 +258,7 @@ class MapPanel extends JPanel {
                         if (movementStrategy.getSelectedState()) {
                             movementStrategy.acceptMovement();
 
-                            // AGGIORNA L'AREA DI ATTACCO DOPO IL MOVIMENTO
-                            // perché il giocatore si è spostato
+                            // Update attackArea after player movement
                             if (movesPanel != null) {
                                 movesPanel.refreshAttackArea();
                             }
@@ -408,6 +406,12 @@ class MapPanel extends JPanel {
         
         // Termina il turno dopo un'azione di combattimento
         endTurn();
+    }
+
+
+    public void giveFocus(){
+        setFocusable(true);
+        requestFocusInWindow();
     }
 
     public void setCurrentPlayer(Player player) {

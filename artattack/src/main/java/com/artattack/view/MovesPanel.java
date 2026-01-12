@@ -72,9 +72,7 @@ class MovesPanel extends JPanel {
         moves = new ArrayList<>();
     }
     
-    /**
-     * Inizializza la CombatStrategy con la mappa
-     */
+    
     public void initializeCombatStrategy(Maps map) {
         this.combatStrategy = new CombatStrategy(map);
         this.combatStrategy.setMainFrame(this.mainFrame);
@@ -237,7 +235,7 @@ class MovesPanel extends JPanel {
         }
     }
     
-    private void updateAttackArea() {
+    public void updateAttackArea() {
         if (mapPanel == null || moves.isEmpty() || currentPlayer == null) {
             if (mapPanel != null) {
                 mapPanel.clearAttackArea();
@@ -291,9 +289,7 @@ class MovesPanel extends JPanel {
         }
     }
     
-    /**
-     * Imposta il giocatore corrente
-     */
+    
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
         
@@ -321,6 +317,11 @@ class MovesPanel extends JPanel {
         
         repaint();
     }
+
+    public void giveFocus(){
+        setFocusable(true);
+        requestFocusInWindow();
+    }
     
     public void setMapPanel(MapPanel mapPanel) {
         this.mapPanel = mapPanel;
@@ -337,9 +338,7 @@ class MovesPanel extends JPanel {
         return isInMoveSelection;
     }
     
-    /**
-     * Ottieni la CombatStrategy
-     */
+    
     public CombatStrategy getCombatStrategy() {
         return combatStrategy;
     }
@@ -363,7 +362,7 @@ class MovesPanel extends JPanel {
         this.mainFrame = mainFrame;
     }
     
-    // ========== PANNELLO LISTA ARMI ==========
+    // ========== Weapon List Panel ==========
     private class WeaponListPanel extends JPanel {
         public WeaponListPanel() {
             setBackground(Color.BLACK);
@@ -436,7 +435,7 @@ class MovesPanel extends JPanel {
         }
     }
     
-    // ========== PANNELLO LISTA MOSSE ==========
+    // ========== Moves List Panel ==========
     private class MoveListPanel extends JPanel {
         public MoveListPanel() {
             setBackground(Color.BLACK);

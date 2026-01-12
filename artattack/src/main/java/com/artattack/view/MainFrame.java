@@ -21,6 +21,7 @@ import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.ConcreteTurnHandler;
@@ -109,13 +110,13 @@ public class MainFrame extends JFrame {
         System.out.println("Loading map (FACADE)");
         gamePanel.loadInitialMapFacade(map);
 
-        //Turn System initialization
+        /* //Turn System initialization
         Timer initTimer = new Timer(100,e-> {
             initializeTurnSystemFromMap(map);
             ((Timer)e.getSource()).stop();
         });
         initTimer.setRepeats(false);
-        initTimer.start();
+        initTimer.start(); */
     }
 
 
@@ -147,6 +148,18 @@ public class MainFrame extends JFrame {
 
     public boolean isDialogActive(){
         return gamePanel.isDialogActive();
+    }
+
+    public void skipTextAnimation(){
+        gamePanel.getInteractionPanel().skipTextAnimation();
+    }
+
+    public void confirmChoice(){
+        gamePanel.getInteractionPanel().confirmChoice();
+    }
+
+    public void advanceDialogue(){
+        gamePanel.getInteractionPanel().advanceDialogue();
     }
 
 
@@ -186,6 +199,10 @@ public class MainFrame extends JFrame {
         // TODO: add invetoryPanel
     }
 
+    public JPanel getFocused(){
+
+    }
+
 
     //FACADE Repaint
 
@@ -201,11 +218,16 @@ public class MainFrame extends JFrame {
         gamePanel.getTurnPanel().repaint();
     }
 
+    public void repaintStatsPanel(){
+        gamePanel.getStatsPanel.repaint();
+    }
+
+
 
     //FACADE  attackArea
 
     public void updateAttackArea(){
-        gamePanel.getMovesPanel().updateAttackArea();
+    gamePanel.getMovesPanel().updateAttackArea();
     }
 
     public void clearAttackArea(){
@@ -221,14 +243,18 @@ public class MainFrame extends JFrame {
 
     //FACADE turns
 
-    public void updateTurnDisplay(){
+    public void updateTurnDisplay(ActiveElement activeElement){
         gamePanel.getTurnPanel().updateTurnDisplay();
     }
 
+    //Set Player for MapPanel StatsPanel and MovesPanel
+    public void setCurrentPlayer(Player player){
+        gamePanel.setCurrentPlayer(player);
+    }
 
     //Turn System
 
-    private void initializeTurnSystem() {
+    /* private void initializeTurnSystem() {
         
         List<ActiveElement> activeElements = initialMap.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue();
         
@@ -309,7 +335,7 @@ public class MainFrame extends JFrame {
     
     public ConcreteTurnHandler getTurnHandler() {
         return turnHandler;
-    }
+    } */
 
 
     public void setInitialMap(Maps initialMap) {

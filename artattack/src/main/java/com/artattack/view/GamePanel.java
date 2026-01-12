@@ -195,8 +195,7 @@ public class GamePanel extends JPanel {
         }
     }
     
-    // ✓ PUOI RIMUOVERE createTestPanel() SE NON SERVE PIÙ
-    // O LASCIARLO PER COMPATIBILITÀ
+    
     
     private JPanel createBlackPanel(String name) {
         JPanel panel = new JPanel();
@@ -376,14 +375,14 @@ public class GamePanel extends JPanel {
         System.out.println("✓ All panels updated with player: " + player.getName());
     }
 
-    // ✓ NUOVO METODO: Aggiorna tutti i pannelli
+   
     public void updateAllPanels() {
         System.out.println("GamePanel: Updating all panels");
         
         mapPanel.repaint();
         turnPanel.repaint();
         movesPanel.repaint();
-        statsPanel.updateStats();  // ✓ AGGIORNA STATS
+        statsPanel.updateStats();  
         
         System.out.println("✓ All panels updated");
     }

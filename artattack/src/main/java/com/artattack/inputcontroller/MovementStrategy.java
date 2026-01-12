@@ -4,6 +4,7 @@ import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
 
+// TODO: Make the cursor appear to the side of the player and when it goes inside it go directly on the next character.
 public class MovementStrategy implements PlayerStrategy{
     private Maps map;
     private Player player;

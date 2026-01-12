@@ -54,7 +54,7 @@ class MapPanel extends JPanel {
 
     
     
-    public void setTurnSystem(ConcreteTurnQueue queue, ConcreteTurnHandler handler, 
+    /* public void setTurnSystem(ConcreteTurnQueue queue, ConcreteTurnHandler handler, 
                              TurnPanel turnPanel) {
         this.turnQueue = queue;
         this.turnHandler = handler;
@@ -175,7 +175,7 @@ class MapPanel extends JPanel {
         endTurn();
 
          
-    }
+    } */
 
     public void showAttackArea(List<Coordinates> area) {
         this.attackArea = area != null ? area : new ArrayList<>();
@@ -401,12 +401,12 @@ class MapPanel extends JPanel {
     }
 
 
-    public void onCombatActionCompleted() {
+   /*  public void onCombatActionCompleted() {
         System.out.println("Combat action completed - ending turn");
         
         // Termina il turno dopo un'azione di combattimento
         endTurn();
-    }
+    } */
 
 
     public void giveFocus(){

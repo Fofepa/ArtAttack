@@ -5,10 +5,12 @@ import com.artattack.mapelements.ActiveElement;
 public class ConcreteTurnHandler implements TurnHandler {
 
     private ConcreteTurnQueue turnQueue;
+    private TurnManager turnManager;
     private int index = 0;
 
     public ConcreteTurnHandler(ConcreteTurnQueue turnQueue){
         this.turnQueue = turnQueue;
+        this.turnManager = new TurnManager();
     }
 
 
@@ -20,12 +22,16 @@ public class ConcreteTurnHandler implements TurnHandler {
     @Override
     public ActiveElement next(){    // add the isActive control
         this.current().resetActionPoints(); 
+        index++;
         if(hasNext()){ 
-            return turnQueue.getTurnQueue().get(index++);
+            this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            return turnQueue.getTurnQueue().get(index);
         }
         else{
             resetIndex();
-            return turnQueue.getTurnQueue().get(index++);
+            index++;
+            this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            return turnQueue.getTurnQueue().get(index);
         }
     }
 

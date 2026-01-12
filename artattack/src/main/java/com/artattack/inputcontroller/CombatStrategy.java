@@ -14,8 +14,9 @@ public class CombatStrategy implements PlayerStrategy{
     private int moveIndex = 0;
     private MainFrame mainFrame;
 
-    public CombatStrategy(Maps map){
+    public CombatStrategy(Maps map, Player player){
         this.map = map;
+        this.player = player;
     }
 
     @Override

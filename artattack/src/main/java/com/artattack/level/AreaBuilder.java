@@ -23,7 +23,7 @@ public class AreaBuilder {
                         new Coordinates(0, 1)));
             case "8" -> {
                 addShape("4");
-                addShape("x", 1, false);
+                addShape("x", 1);
             }
             case "base" -> {
                 addShape("8");
@@ -33,6 +33,31 @@ public class AreaBuilder {
                             new Coordinates(2, 0),
                             new Coordinates(0, 2)));
             }
+            default -> {}
+        }
+    }
+
+    public void addShape(String shape, int size) {
+        switch (shape) {
+            case "+" -> {
+                for (int i = size; i > 0; i--) {
+                    this.area.addAll(
+                            List.of(new Coordinates(-i, 0), //left arm
+                                    new Coordinates(0, i), //top arm
+                                    new Coordinates(i, 0), //right arm
+                                    new Coordinates(0, -i))); //bottom arm
+                }
+            }
+            case "x" -> {
+                for (int i = size; i > 0; i--) {
+                    this.area.addAll(
+                            List.of(new Coordinates(-i, -i), //bottom-left arm
+                                    new Coordinates(-i, i), //top-left arm
+                                    new Coordinates(i, -i), //bottom-right arm
+                                    new Coordinates(i, i))); //top-right arm
+                }
+            }
+            default -> {}
         }
     }
 
@@ -62,24 +87,24 @@ public class AreaBuilder {
                                     new Coordinates(i, -size))); //bottom side
                 }
             }
-            case "+" -> {
+            case "circle" -> {
+                if (fill && size > 1) {
+                    addShape("circle", size - 1, true);
+                }
+                this.area.addAll(
+                        List.of(new Coordinates(-size, 0), //left
+                                new Coordinates(0, size), //top
+                                new Coordinates(size, 0), //right
+                                new Coordinates(0, -size))); //bottom
                 for (int i = size; i > 0; i--) {
                     this.area.addAll(
-                            List.of(new Coordinates(-i, 0), //left arm
-                                    new Coordinates(0, i), //top arm
-                                    new Coordinates(i, 0), //right arm
-                                    new Coordinates(0, -i))); //bottom arm
+                            List.of(new Coordinates(i - size - 1, -i), //bottom-left side
+                                    new Coordinates(-i, size + 1 - i), //top-left side
+                                    new Coordinates(i, i - size - 1), //bottom-right side
+                                    new Coordinates(size + 1 - i, i))); //top-right side
                 }
             }
-            case "x" -> {
-                for (int i = size; i > 0; i--) {
-                    this.area.addAll(
-                            List.of(new Coordinates(-i, -i), //bottom-left arm
-                                    new Coordinates(-i, i), //top-left arm
-                                    new Coordinates(i, -i), //bottom-right arm
-                                    new Coordinates(i, i))); //top-right arm
-                }
-            }
+            default -> {}
         }
     }
 

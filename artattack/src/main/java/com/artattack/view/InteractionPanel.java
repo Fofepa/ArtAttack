@@ -165,7 +165,7 @@ public class InteractionPanel extends JPanel {
         textTimer.start();
     }
     
-    private void skipTextAnimation() {
+    public void skipTextAnimation() {
         if (textTimer != null && textTimer.isRunning()) {
             textTimer.stop();
         }
@@ -174,7 +174,7 @@ public class InteractionPanel extends JPanel {
         repaint();
     }
     
-    private void advanceDialog() {
+    public void advanceDialog() {
         currentPhraseIndex++;
         if (currentPhraseIndex >= currentDialog.size()) {
             // End of dialog
@@ -185,14 +185,14 @@ public class InteractionPanel extends JPanel {
         }
     }
     
-    private void confirmChoice() {
+    public void confirmChoice() {
         if (callback != null) {
             callback.onChoiceMade(selectedOption);
         }
         closeDialog();
     }
     
-    private void closeDialog() {
+    public void closeDialog() {
         dialogActive = false;
         choiceMode = false;
         currentDialog = null;

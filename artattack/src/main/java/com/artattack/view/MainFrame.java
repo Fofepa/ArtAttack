@@ -162,6 +162,9 @@ public class MainFrame extends JFrame {
         gamePanel.getInteractionPanel().advanceDialogue();
     }
 
+    public void closeDialogue(){
+        gamePanel.getInteractionPanel().closeDialogue();
+    }
 
 
     //FACADE SPRITE

@@ -77,6 +77,22 @@ public class InputController implements KeyListener, TurnListener {
         return false;
     }
 
+    public void handleFocusInput(KeyEvent e){
+        switch(e.getKeyCode()){
+            case KeyEvent.VK_M:
+                mainFrame.focusMapPanel();
+                break;
+            case KeyEvent.VK_F:
+                mainFrame.focusMovesPanel();
+                break;
+            /* case KeyEvent.VK_I:
+                mainFrame.focusInventoryPanel(); */
+            /* case KeyEvent.VK_T:
+                mainFrame.focusInteractionPanel(); */
+            default:
+                break;
+        }
+    }
 
     private void handleInteractionInput(KeyEvent e){
         boolean dialogActive = mainFrame.getDialogActive();
@@ -118,7 +134,12 @@ public class InputController implements KeyListener, TurnListener {
                                 mainFrame.confirmChoice();       
                             }
                             break;
+                            
+                        default:
+                            handleFocusInput(e);
+                            break;
                     }
+                    
                 }
 
                 else {
@@ -271,6 +292,8 @@ public class InputController implements KeyListener, TurnListener {
                     }
                 }
             }
+            default:
+                handleFocusInput(e);
         }
         
     }
@@ -333,6 +356,8 @@ public class InputController implements KeyListener, TurnListener {
                         mainFrame.getMap().getConcreteTurnHandler().next();
                         return;
                     }
+                    default:
+                        handleFocusInput(e);
         }
     }
         

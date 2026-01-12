@@ -11,6 +11,17 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.inputcontroller.MovementStrategy;
+import com.artattack.interactions.Talk;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
 import com.artattack.view.InteractionPanel;
 
 

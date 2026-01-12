@@ -10,12 +10,23 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import com.artattack.ActiveElement;
-import com.artattack.ConcreteTurnHandler;
-import com.artattack.ConcreteTurnQueue;
-import com.artattack.MapBuilder;
 import com.artattack.*;
-import com.artattack.TestMapBuilder;
+import com.artattack.interactions.Talk;
+import com.artattack.level.AreaBuilder;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.moves.Move;
+import com.artattack.moves.Weapon;
+import com.artattack.turns.ConcreteTurnHandler;
+import com.artattack.turns.ConcreteTurnQueue;
 
 public class MainFrame extends JFrame {
     

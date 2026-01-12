@@ -21,21 +21,21 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import com.artattack.ActiveElement;
-import com.artattack.ConcreteTurnHandler;
-import com.artattack.ConcreteTurnQueue;
-import com.artattack.Coordinates;
-import com.artattack.Enemy;
-import com.artattack.EnemyType;
-import com.artattack.InteractableElement;
-import com.artattack.MapBuilder;
-import com.artattack.Maps;
-import com.artattack.MovieDirector;
-import com.artattack.Musician;
-import com.artattack.Player;
-import com.artattack.Talk;
-import com.artattack.TestMapBuilder;
-import com.artattack.Weapon;
+import com.artattack.interactions.Talk;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Weapon;
+import com.artattack.turns.ConcreteTurnHandler;
+import com.artattack.turns.ConcreteTurnQueue;
 
 public class GamePanel extends JPanel {
 

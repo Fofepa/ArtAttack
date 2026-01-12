@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import com.artattack.Player;
+import com.artattack.mapelements.Player;
 
 public class StatsPanel extends JPanel {
     private Player currentPlayer;

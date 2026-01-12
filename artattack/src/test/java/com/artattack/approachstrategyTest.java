@@ -9,6 +9,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.enemystrategy.ApproachStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.moves.Weapon;
 import com.artattack.view.MainFrame;
 
 public class approachstrategyTest {

@@ -12,6 +12,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.turns.ConcreteTurnHandler;
+import com.artattack.turns.ConcreteTurnQueue;
+
 public class concreteturnhandlerTest {
     private ConcreteTurnHandler turn;
     private ConcreteTurnQueue queue;

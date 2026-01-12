@@ -10,6 +10,18 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.inputcontroller.MovementStrategy;
+import com.artattack.level.AreaBuilder;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.moves.Weapon;
+
 
 public class checkaggroTest {
     private MovementStrategy movementStrategy;

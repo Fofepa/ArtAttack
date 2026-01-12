@@ -12,6 +12,19 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.items.Cure;
+import com.artattack.items.Key;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
+
 public class moveTest {
     private Move m1, m2, m3, m4, m5;
     private MoveBuilder1 mb1;

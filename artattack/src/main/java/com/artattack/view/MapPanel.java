@@ -12,16 +12,16 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import com.artattack.ActiveElement;
-import com.artattack.ConcreteTurnHandler;
-import com.artattack.ConcreteTurnQueue;
-import com.artattack.Coordinates;
-import com.artattack.Enemy;
-import com.artattack.EnemyChoice;
-import com.artattack.InteractionStrategy;
-import com.artattack.Maps;
-import com.artattack.MovementStrategy;
-import com.artattack.Player;
+import com.artattack.enemystrategy.EnemyChoice;
+import com.artattack.inputcontroller.MovementStrategy;
+import com.artattack.interactions.InteractionStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.Player;
+import com.artattack.turns.ConcreteTurnHandler;
+import com.artattack.turns.ConcreteTurnQueue;
 
 class MapPanel extends JPanel {
     private MovementStrategy movementStrategy;

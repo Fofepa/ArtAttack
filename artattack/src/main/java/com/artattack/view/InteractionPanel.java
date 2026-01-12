@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
-import com.artattack.Player;
+import com.artattack.mapelements.Player;
 
 public class InteractionPanel extends JPanel {
     private Player currentPlayer;

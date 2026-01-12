@@ -9,6 +9,11 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.level.Coordinates;
+import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
+import com.artattack.moves.Weapon;
+
 public class weaponTest {
     private Weapon w;
     private MoveBuilder1 mb1;

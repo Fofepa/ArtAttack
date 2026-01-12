@@ -7,6 +7,11 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.items.AttackBuff;
+import com.artattack.level.Coordinates;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
+
 public class attackbuffTest{
 
     private AttackBuff ab;

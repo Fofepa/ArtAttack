@@ -10,6 +10,15 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.interactions.Give;
+import com.artattack.interactions.Interaction;
+import com.artattack.interactions.Talk;
+import com.artattack.items.Cure;
+import com.artattack.items.Item;
+import com.artattack.level.Coordinates;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
 import com.artattack.view.InteractionPanel;
 import com.artattack.view.SpritePanel;
 

@@ -5,6 +5,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.level.Coordinates;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.turns.ConcreteTurnQueue;
+
 import java.util.*;
 
 public class concreteturnqueueTest {

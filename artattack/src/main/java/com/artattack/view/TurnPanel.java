@@ -9,9 +9,9 @@ import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
 
-import com.artattack.ActiveElement;
-import com.artattack.ConcreteTurnHandler;
-import com.artattack.ConcreteTurnQueue;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.turns.ConcreteTurnHandler;
+import com.artattack.turns.ConcreteTurnQueue;
 
 class TurnPanel extends JPanel {
     private ConcreteTurnQueue turnQueue;

@@ -7,6 +7,11 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.artattack.items.SpeedBuff;
+import com.artattack.level.Coordinates;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
+
 public class speedbuffTest{
 
     private SpeedBuff sb;

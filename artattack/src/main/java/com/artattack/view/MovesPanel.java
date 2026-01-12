@@ -15,12 +15,12 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import com.artattack.CombatStrategy;
-import com.artattack.Coordinates;
-import com.artattack.Maps;
-import com.artattack.Move;
-import com.artattack.Player;
-import com.artattack.Weapon;
+import com.artattack.inputcontroller.CombatStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
+import com.artattack.moves.Weapon;
 
 class MovesPanel extends JPanel {
     private Player currentPlayer;

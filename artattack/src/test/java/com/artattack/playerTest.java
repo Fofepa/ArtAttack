@@ -9,6 +9,12 @@ import static org.junit.Assert.assertFalse;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.artattack.items.Item;
+import com.artattack.level.Coordinates;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
+
 import org.junit.After;
 
 

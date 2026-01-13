@@ -52,7 +52,7 @@ public class combatstrategyTest {
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(List.of(new Coordinates(1, 1))); m2.setActionPoints(4);
         map.getPlayerOne().getWeapons().get(0).addMove(m1);
         map.getPlayerOne().getWeapons().get(0).addMove(m2);
-        combatStrategy = new CombatStrategy(map);
+        combatStrategy = new CombatStrategy(map, map.getPlayerOne());
         combatStrategy.setCurrentPlayer(map.getPlayerOne());
         assertNotNull(combatStrategy);
     }

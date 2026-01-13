@@ -32,15 +32,13 @@ public class dumbattackstrategyTest {
 
     @Before
     public void setUp(){
-        this.mainFrame = new MainFrame();
-        assertNotNull(mainFrame);
         Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(List.of(new Coordinates(-1, 0))); m1.setActionPoints(3); m1.setAreaAttack(false);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(List.of(new Coordinates(4, 4))); m2.setActionPoints(4);
         Move m3 = new Move(); 
         m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(List.of(new Coordinates(-1, 0), new Coordinates(4, 4))); m3.setAreaAttack(true); m3.setActionPoints(3);
         Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(1,1),EnemyType.GUARD, 20, 20, 3,
-                                 List.of(enemyWeapon),5,5,null,null,null,null,0);
+        List.of(enemyWeapon),5,5,null,null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
         mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
@@ -50,6 +48,8 @@ public class dumbattackstrategyTest {
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.mainFrame = new MainFrame(map);
+        assertNotNull(mainFrame);
         dumbAttack = new DumbAttackStrategy(mainFrame);
         Map<Move,Integer> moves = new LinkedHashMap<>(); moves.put(m1,1);moves.put(m2,1);moves.put(m3,2);
         dumbAttack.setMoves(moves); 

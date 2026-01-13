@@ -20,11 +20,29 @@ public class MapPanel extends JPanel {
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
     private List<Coordinates> attackArea;
+
+    // Blinking cursor properties
+    private boolean cursorVisible = true;
+    private Timer blinkTimer;
     
     public MapPanel(Maps map) {
         this.map = map;
         setBackground(Color.BLACK);
         setFocusable(true);
+
+        // Initialize the blinking timer
+        initializeBlinkTimer();
+    }
+
+    /**
+     * Initializes the timer for cursor blinking
+     */
+    private void initializeBlinkTimer() {
+        blinkTimer = new Timer(350, e -> {
+            cursorVisible = !cursorVisible;
+            repaint();
+        });
+        blinkTimer.start();
     }
     
     @Override
@@ -45,15 +63,27 @@ public class MapPanel extends JPanel {
         for (int y = 0; y < map.getRows(); y++) {
             for (int x = 0; x < map.getColumns(); x++) {
                 char c = matrix[y][x];
+
+                // Check if cursor should be drawn at this position
+                boolean isCursorPosition = movementCursor != null && 
+                                          movementCursor.getX() == x && 
+                                          movementCursor.getY() == y;
                 
-                // Set colors based on character
-                switch (c) {
-                    case '#' -> g.setColor(Color.GRAY);
-                    case '@' -> g.setColor(Color.CYAN);
-                    case '.' -> g.setColor(new Color(50, 50, 50));
-                    case 'E' -> g.setColor(Color.RED);
-                    case 'I' -> g.setColor(Color.YELLOW);
-                    default -> g.setColor(Color.WHITE);
+                // If cursor is at this position and visible, draw cursor instead
+                if (isCursorPosition && cursorVisible) {
+                    g.setColor(Color.GREEN);
+                    g.drawString("*", x * cellSize + 10, y * cellSize + 20);
+                }
+                else{
+                    // Set colors based on character
+                    switch (c) {
+                        case '#' -> g.setColor(Color.GRAY);
+                        case '@' -> g.setColor(Color.CYAN);
+                        case '.' -> g.setColor(new Color(50, 50, 50));
+                        case 'E' -> g.setColor(Color.RED);
+                        case 'I' -> g.setColor(Color.YELLOW);
+                        default -> g.setColor(Color.WHITE);
+                    } 
                 }
                 
                 g.drawString(String.valueOf(c), x * cellSize + 10, y * cellSize + 20);
@@ -117,5 +147,14 @@ public class MapPanel extends JPanel {
     
     public void refreshAttackArea(CombatStrategy strategy) {
         updateAttackArea(strategy);
+    }
+    
+    /**
+     * Stops the blink timer when the panel is no longer needed
+     */
+    public void cleanup() {
+        if (blinkTimer != null) {
+            blinkTimer.stop();
+        }
     }
 }

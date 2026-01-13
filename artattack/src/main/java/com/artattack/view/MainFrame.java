@@ -130,6 +130,7 @@ public class MainFrame {
         // Initialize strategies
         if (map != null && player != null) {
             movementStrategy = new MovementStrategy(map, player);
+            movementStrategy.setMainFrame(this);
             combatStrategy = new CombatStrategy(map, player);
             combatStrategy.setMainFrame(this);
             inventoryStrategy = new InventoryStrategy(map, player);

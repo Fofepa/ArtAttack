@@ -1,132 +1,99 @@
 package com.artattack.view;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
+/**
+ * SpritePanel - Displays character/NPC sprites during interactions
+ */
 public class SpritePanel extends JPanel {
-    private Image spriteImage;
-    private boolean keepAspectRatio = true;
+    private BufferedImage currentSprite;
+    private String currentSpritePath;
     
     public SpritePanel() {
         setBackground(Color.BLACK);
+        setPreferredSize(new Dimension(200, 200));
+        setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
     }
     
     /**
-     * Load an image from file path
-     * @param imagePath Path to the image file
-     * @return true if loaded successfully, false otherwise
+     * Loads and displays a sprite image
+     * @param spritePath Path to the sprite image file
      */
-    public boolean loadImage(String imagePath) {
+    public void loadImage(String spritePath) {
         try {
-            File imageFile = new File(imagePath);
-            spriteImage = ImageIO.read(imageFile);
-            repaint();
-            return true;
-        } catch (IOException e) {
-            System.err.println("Failed to load image: " + imagePath);
+            if (spritePath != null && !spritePath.isEmpty()) {
+                File imageFile = new File(spritePath);
+                if (imageFile.exists()) {
+                    currentSprite = ImageIO.read(imageFile);
+                    currentSpritePath = spritePath;
+                    repaint();
+                } else {
+                    System.err.println("Sprite file not found: " + spritePath);
+                    currentSprite = null;
+                    repaint();
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading sprite: " + spritePath);
             e.printStackTrace();
-            spriteImage = null;
+            currentSprite = null;
             repaint();
-            return false;
         }
     }
     
     /**
-     * Load an image from File object
-     * @param imageFile File object of the image
-     * @return true if loaded successfully, false otherwise
+     * Clears the currently displayed sprite
      */
-    public boolean loadImage(File imageFile) {
-        try {
-            spriteImage = ImageIO.read(imageFile);
-            repaint();
-            return true;
-        } catch (IOException e) {
-            System.err.println("Failed to load image: " + imageFile.getAbsolutePath());
-            e.printStackTrace();
-            spriteImage = null;
-            repaint();
-            return false;
-        }
-    }
-    
-    /**
-     * Set the image directly
-     * @param image Image to display
-     */
-    public void setImage(Image image) {
-        this.spriteImage = image;
+    public void clearSprite() {
+        currentSprite = null;
+        currentSpritePath = null;
         repaint();
-    }
-    
-    /**
-     * Clear the current image
-     */
-    public void clearImage() {
-        spriteImage = null;
-        repaint();
-    }
-    
-    /**
-     * Set whether to keep aspect ratio when scaling
-     * @param keepAspectRatio true to keep aspect ratio, false to stretch
-     */
-    public void setKeepAspectRatio(boolean keepAspectRatio) {
-        this.keepAspectRatio = keepAspectRatio;
-        repaint();
-    }
-    
-    /**
-     * Get the current image
-     * @return Current image or null if no image loaded
-     */
-    public Image getImage() {
-        return spriteImage;
     }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        if (spriteImage == null) {
-            return;
-        }
-        
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        
-        int panelWidth = getWidth();
-        int panelHeight = getHeight();
-        int imageWidth = spriteImage.getWidth(this);
-        int imageHeight = spriteImage.getHeight(this);
-        
-        if (keepAspectRatio) {
-            // Calculate scaling to fit within panel while maintaining aspect ratio
-            double scaleX = (double) panelWidth / imageWidth;
-            double scaleY = (double) panelHeight / imageHeight;
-            double scale = Math.min(scaleX, scaleY);
+        if (currentSprite != null) {
+            // Calculate scaling to fit the panel while maintaining aspect ratio
+            int panelWidth = getWidth();
+            int panelHeight = getHeight();
+            int imgWidth = currentSprite.getWidth();
+            int imgHeight = currentSprite.getHeight();
             
-            int scaledWidth = (int) (imageWidth * scale);
-            int scaledHeight = (int) (imageHeight * scale);
+            double scaleX = (double) panelWidth / imgWidth;
+            double scaleY = (double) panelHeight / imgHeight;
+            double scale = Math.min(scaleX, scaleY) * 0.9; // 90% to leave some padding
+            
+            int scaledWidth = (int) (imgWidth * scale);
+            int scaledHeight = (int) (imgHeight * scale);
             
             // Center the image
             int x = (panelWidth - scaledWidth) / 2;
             int y = (panelHeight - scaledHeight) / 2;
             
-            g2d.drawImage(spriteImage, x, y, scaledWidth, scaledHeight, this);
+            g.drawImage(currentSprite, x, y, scaledWidth, scaledHeight, this);
         } else {
-            // Stretch to fill entire panel
-            g2d.drawImage(spriteImage, 0, 0, panelWidth, panelHeight, this);
+            // Draw placeholder text when no sprite is loaded
+            g.setColor(Color.GRAY);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            String text = "No sprite";
+            FontMetrics fm = g.getFontMetrics();
+            int textX = (getWidth() - fm.stringWidth(text)) / 2;
+            int textY = (getHeight() + fm.getAscent()) / 2;
+            g.drawString(text, textX, textY);
         }
+    }
+    
+    public String getCurrentSpritePath() {
+        return currentSpritePath;
+    }
+    
+    public boolean hasSprite() {
+        return currentSprite != null;
     }
 }

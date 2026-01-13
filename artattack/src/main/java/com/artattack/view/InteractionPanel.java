@@ -1,388 +1,181 @@
 package com.artattack.view;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.*;
 import java.util.List;
+import java.util.function.Consumer;
 
-import javax.swing.BorderFactory;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
+import javax.swing.*;
 
-import com.artattack.mapelements.Player;
-
+/**
+ * InteractionPanel - Displays dialog and interaction text
+ */
 public class InteractionPanel extends JPanel {
-    private Player currentPlayer;
-    //private InteractableElement currentInteractableElement;
-    
-    // Dialog state
     private List<String> currentDialog;
-    private int currentPhraseIndex;
-    private boolean dialogActive;
-    
-    // For choice dialogs
+    private int currentPhraseIndex = 0;
+    private boolean dialogActive = false;
+    private boolean choiceMode = false;
+    private boolean textFullyRevealed = true;
+    private int selectedOption = 0;
     private List<String> responseOptions;
-    private int selectedOption;
-    private boolean choiceMode;
-    private DialogCallback callback;
-    
-    // Text animation
-    private String fullText;
-    private int revealedCharacters;
-    private Timer textTimer;
-    private boolean textFullyRevealed;
-    private static final int CHAR_DELAY = 30; // milliseconds per character
-    
-    // Rendering variables
-    private static final int PADDING = 20;
-    private static final int LINE_HEIGHT = 25;
-    
-
-    private Runnable onDialogFinished;
-
+    private Consumer<Integer> choiceCallback;
     
     public InteractionPanel() {
         setBackground(Color.BLACK);
         setFocusable(true);
-        dialogActive = false;
-        choiceMode = false;
-        
-        addKeyboardInputs();
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            @Override
-            public void focusGained(java.awt.event.FocusEvent e) {
-                setBorder(BorderFactory.createLineBorder(Color.CYAN, 3));
-            }
-            
-            @Override
-            public void focusLost(java.awt.event.FocusEvent e) {
-                setBorder(null);
-            }
-        });
-    }
-    
-    private void addKeyboardInputs() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (!dialogActive) return;
-                
-                if (choiceMode) {
-                    switch (e.getKeyCode()) {
-                    
-                        case KeyEvent.VK_UP:
-                        case KeyEvent.VK_W:
-                            if (textFullyRevealed && selectedOption > 0) {
-                                selectedOption--;
-                                repaint();
-                            }
-                            break;
-                        
-                        case KeyEvent.VK_DOWN:
-                        case KeyEvent.VK_S:
-                            if (textFullyRevealed && selectedOption < responseOptions.size() - 1) {
-                                selectedOption++;
-                                repaint();
-                            }
-                            break;
-                        
-                        case KeyEvent.VK_ENTER:
-                        case KeyEvent.VK_SPACE:
-                            if (!textFullyRevealed) {
-                                skipTextAnimation();   
-                            } else {
-                                confirmChoice();       
-                            }
-                            break;
-                    }
-                }
-                else {
-                    // Simple dialog mode
-                    if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
-                        if (!textFullyRevealed) {
-                            // Skip animation - reveal all text immediately
-                            skipTextAnimation();
-                        } else {
-                            // Text is fully revealed - advance to next phrase
-                            advanceDialog();
-                        }
-                    }
-                }
-            }
-        });
     }
     
     /**
-     * Start a simple dialog with a list of phrases
+     * Shows a simple dialog with multiple phrases
      */
-    public void showDialog(List<String> phrases) {
-        
-        this.currentDialog = phrases;
+    public void showDialog(List<String> messages) {
+        this.currentDialog = messages;
         this.currentPhraseIndex = 0;
         this.dialogActive = true;
         this.choiceMode = false;
-        startTextAnimation(phrases.get(0));
-    }
-    
-    
-    public void showDialogWithChoice(String question, List<String> options, DialogCallback callback) {
-        this.currentDialog = List.of(question);
-        this.responseOptions = options;
-        this.selectedOption = 0;
-        this.dialogActive = true;
-        this.choiceMode = true;
-        this.callback = callback;
-        startTextAnimation(question);
-    }
-    
-    private void startTextAnimation(String text) {
-        fullText = text;
-        revealedCharacters = 0;
-        textFullyRevealed = false;
-        
-        // Stop any existing timer
-        if (textTimer != null && textTimer.isRunning()) {
-            textTimer.stop();
-        }
-        
-        // Start new animation timer
-        textTimer = new Timer(CHAR_DELAY, e -> {
-            if (revealedCharacters < fullText.length()) {
-                revealedCharacters++;
-                repaint();
-            } else {
-                textFullyRevealed = true;
-                textTimer.stop();
-                repaint();
-            }
-        });
-        textTimer.start();
-    }
-    
-    public void skipTextAnimation() {
-        if (textTimer != null && textTimer.isRunning()) {
-            textTimer.stop();
-        }
-        revealedCharacters = fullText.length();
-        textFullyRevealed = true;
+        this.textFullyRevealed = true;
+        setVisible(true);
         repaint();
     }
     
-    public void advanceDialog() {
-        currentPhraseIndex++;
-        if (currentPhraseIndex >= currentDialog.size()) {
-            // End of dialog
-            closeDialog();
-        } else {
-            // Start animation for next phrase
-            startTextAnimation(currentDialog.get(currentPhraseIndex));
-        }
+    /**
+     * Activates the interaction panel and requests focus
+     * Called by InteractableElement when interaction starts
+     */
+    public void activateAndFocus() {
+        setVisible(true);
+        requestFocusInWindow();
+        repaint();
     }
     
-    public void confirmChoice() {
-        if (callback != null) {
-            callback.onChoiceMade(selectedOption);
-        }
-        closeDialog();
-    }
-    
-    public void closeDialog() {
+    /**
+     * Deactivates the interaction panel
+     */
+    public void deactivate() {
+        setVisible(false);
         dialogActive = false;
         choiceMode = false;
-        currentDialog = null;
-        responseOptions = null;
-        callback = null;
-
-        if (textTimer != null && textTimer.isRunning()) {
-            textTimer.stop();
-        }
-
         repaint();
-
-        if (onDialogFinished != null) {
-            SwingUtilities.invokeLater(onDialogFinished);
+    }
+    
+    /**
+     * Shows a dialog with a question and multiple choice options
+     * @param question The question text
+     * @param options List of response options
+     * @param callback Function to call when choice is confirmed
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback) {
+        this.currentDialog = List.of(question);
+        this.currentPhraseIndex = 0;
+        this.dialogActive = true;
+        this.choiceMode = true;
+        this.responseOptions = options;
+        this.selectedOption = 0;
+        this.choiceCallback = callback;
+        this.textFullyRevealed = true;
+        repaint();
+    }
+    
+    /**
+     * Moves selection up in choice mode
+     */
+    public void selectUp() {
+        if (choiceMode && selectedOption > 0) {
+            selectedOption--;
+            repaint();
         }
     }
-
+    
+    /**
+     * Moves selection down in choice mode
+     */
+    public void selectDown() {
+        if (choiceMode && responseOptions != null && selectedOption < responseOptions.size() - 1) {
+            selectedOption++;
+            repaint();
+        }
+    }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        if (!dialogActive) {
-            // No active dialog - empty panel
+        if (!dialogActive || currentDialog == null || currentDialog.isEmpty()) {
             return;
         }
         
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
         
-        Font font = new Font("Monospaced", Font.PLAIN, 16);
-        g2d.setFont(font);
+        String text = currentDialog.get(currentPhraseIndex);
+        int y = 30;
         
-        int y = PADDING + 20;
-        
-        if (choiceMode) {
-            // Draw the question (with animation)
-            g2d.setColor(Color.WHITE);
-            String displayText = fullText.substring(0, Math.min(revealedCharacters, fullText.length()));
-            drawWrappedString(g2d, displayText, PADDING, y, getWidth() - PADDING * 2);
-            y += LINE_HEIGHT * 2;
-            
-            // Only show options when text is fully revealed
-            if (textFullyRevealed) {
-                // Draw the options
-                for (int i = 0; i < responseOptions.size(); i++) {
-                    if (i == selectedOption) {
-                        // Selected option - highlighted
-                        g2d.setColor(Color.YELLOW);
-                        g2d.drawString("> " + responseOptions.get(i), PADDING, y);
-                    } else {
-                        // Normal option
-                        g2d.setColor(Color.GRAY);
-                        g2d.drawString("  " + responseOptions.get(i), PADDING, y);
-                    }
-                    y += LINE_HEIGHT;
-                }
-                
-                // Instructions
-                g2d.setColor(new Color(100, 100, 100));
-                g2d.setFont(new Font("Monospaced", Font.ITALIC, 12));
-                g2d.drawString("W/S to choose, ENTER to confirm", PADDING, getHeight() - PADDING);
-            } else {
-                // Show "skip" instruction while animating
-                g2d.setColor(new Color(100, 100, 100));
-                g2d.setFont(new Font("Monospaced", Font.ITALIC, 12));
-                g2d.drawString("SPACE/ENTER to skip...", PADDING, getHeight() - PADDING);
-            }
-            
-        } else {
-            // Simple dialog - show current phrase with animation
-            g2d.setColor(Color.WHITE);
-            
-            // Display only revealed characters
-            String displayText = fullText.substring(0, Math.min(revealedCharacters, fullText.length()));
-            drawWrappedString(g2d, displayText, PADDING, y, getWidth() - PADDING * 2);
-            
-            // "Press Enter" indicator
-            g2d.setColor(new Color(100, 100, 100));
-            g2d.setFont(new Font("Monospaced", Font.ITALIC, 12));
-            
-            String indicator;
-            if (!textFullyRevealed) {
-                indicator = "SPACE/ENTER to skip...";
-            } else if (currentPhraseIndex < currentDialog.size() - 1) {
-                indicator = "ENTER to continue...";
-            } else {
-                indicator = "ENTER to close";
-            }
-            g2d.drawString(indicator, PADDING, getHeight() - PADDING);
-        }
-    }
-    
-    // Helper method for multi-line text
-    private int drawWrappedString(Graphics2D g, String text, int x, int y, int maxWidth) {
-        FontMetrics fm = g.getFontMetrics();
+        // Word wrap the text
         String[] words = text.split(" ");
         StringBuilder line = new StringBuilder();
-        int linesDrawn = 0;
         
         for (String word : words) {
-            String testLine = line.length() == 0 ? word : line + " " + word;
-            int width = fm.stringWidth(testLine);
-            
-            if (width > maxWidth && line.length() > 0) {
-                g.drawString(line.toString(), x, y);
-                y += LINE_HEIGHT;
-                linesDrawn++;
-                line = new StringBuilder(word);
+            if (g.getFontMetrics().stringWidth(line + word + " ") > getWidth() - 20) {
+                g.drawString(line.toString(), 10, y);
+                y += 15;
+                line = new StringBuilder(word + " ");
             } else {
-                line = new StringBuilder(testLine);
+                line.append(word).append(" ");
             }
         }
+        
         if (line.length() > 0) {
-            g.drawString(line.toString(), x, y);
-            linesDrawn++;
+            g.drawString(line.toString(), 10, y);
         }
         
-        return linesDrawn;
-    }
-
-    public void giveFocus(){
-        setFocusable(true);
-        requestFocusInWindow();
-    }
-    
-    public boolean isDialogActive() {
-        return dialogActive;
-    }
-    
-    public Player getCurrentPlayer() {
-        return currentPlayer;
-    }
-    
-    /* public InteractableElement getCurrentInteractableElement() {
-        return currentInteractableElement;
-    } */
-    
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+        // Display "Press ENTER to continue" or options
+        if (textFullyRevealed) {
+            y += 30;
+            if (choiceMode && responseOptions != null) {
+                for (int i = 0; i < responseOptions.size(); i++) {
+                    if (i == selectedOption) {
+                        g.setColor(Color.CYAN);
+                        g.drawString("> ", 10, y);
+                    } else {
+                        g.setColor(Color.GRAY);
+                    }
+                    g.drawString(responseOptions.get(i), 25, y);
+                    y += 20;
+                }
+            } else {
+                g.setColor(Color.GRAY);
+                g.drawString("[Press ENTER to continue]", 10, y);
+            }
+        }
     }
     
-    /* public void setCurrentInteractableElement(InteractableElement currentInteractableElement) {
-        this.currentInteractableElement = currentInteractableElement;
-    } */
+    public void advanceDialog() {
+        if (currentPhraseIndex < currentDialog.size() - 1) {
+            currentPhraseIndex++;
+            repaint();
+        } else {
+            dialogActive = false;
+            repaint();
+        }
+    }
     
-    // Callback interface
-    @FunctionalInterface
-    public interface DialogCallback {
-        void onChoiceMade(int chosenIndex);
+    public void skipTextAnimation() {
+        textFullyRevealed = true;
+        repaint();
     }
-
-
-    public void setOnDialogFinished(Runnable r) {
-        this.onDialogFinished = r;
+    
+    public void confirmChoice() {
+        if (choiceMode && choiceCallback != null) {
+            // Execute the callback with the selected option
+            choiceCallback.accept(selectedOption);
+        }
+        dialogActive = false;
+        choiceMode = false;
+        repaint();
     }
-
-    public void activateAndFocus() {
-        requestFocusInWindow();
-    }
-
-    public List<String> getCurrentDialog(){
-        return this.currentDialog;
-    }
-
-    public int getCurrentPhraseIndex(){
-        return this.currentPhraseIndex;
-    }
-
-    public boolean getDialogActive(){
-        return this.dialogActive;
-    }
-
-    public int getSelectedOption(){
-        return this.selectedOption;
-    }
-
-    public List<String> getResponseOptions(){
-        return this.responseOptions;
-    }
-
-    public boolean getChoiceMode(){
-        return this.getChoiceMode();
-    }
-
-    public DialogCallback getCallback(){
-        return this.callback;
-    }
-
-    public boolean getTextFullyRevealed(){
-        return this.textFullyRevealed;
-    }
+    
+    public boolean isDialogActive() { return dialogActive; }
+    public boolean isChoiceMode() { return choiceMode; }
+    public boolean isTextFullyRevealed() { return textFullyRevealed; }
+    public int getSelectedOption() { return selectedOption; }
+    public List<String> getResponseOptions() { return responseOptions; }
 }

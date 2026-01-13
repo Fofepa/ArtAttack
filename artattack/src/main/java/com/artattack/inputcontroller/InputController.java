@@ -17,6 +17,7 @@ import com.artattack.view.GamePanel;
 import com.artattack.view.InteractionPanel;
 import com.artattack.view.InventoryPanel;
 import com.artattack.view.MainFrame;
+import com.artattack.view.MapPanel;
 import com.artattack.view.MovesPanel;
 
 
@@ -87,7 +88,7 @@ public class InputController implements KeyListener, TurnListener {
         Component current = component;
 
         while (current != null) {
-            if (current instanceof GamePanel) {
+            if (current instanceof MapPanel) {
                 return true;
             }
             current = current.getParent();
@@ -114,6 +115,7 @@ public class InputController implements KeyListener, TurnListener {
 
 
     private void handleInventoryInput(KeyEvent e) {
+        setStrategy(new InventoryStrategy(mainFrame.getMap(),(Player)currentElement));
         InventoryStrategy inventoryStrategy = (InventoryStrategy) currentState;
 
         int selectedItemIndex = 0;
@@ -244,7 +246,7 @@ public class InputController implements KeyListener, TurnListener {
 
         int selectedWeaponIndex = 0;
         int selectedMoveIndex = 0;
-        boolean isInMoveSelection = false;
+        boolean isInMoveSelection = false;      
 
         List<Weapon> weapons = currentElement.getWeapons();
         

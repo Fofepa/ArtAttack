@@ -115,6 +115,9 @@ public class InputController implements KeyListener, TurnListener {
                 System.out.println("Focusing InventoryPanel");
                 mainFrame.focusInventoryPanel(); 
                 break;
+            case KeyEvent.VK_ESCAPE:
+                System.out.println("Pressed escape button");
+                
             default:
                 break;
         }
@@ -134,8 +137,9 @@ public class InputController implements KeyListener, TurnListener {
         setStrategy(mainFrame.getInventoryStrategy());
         InventoryStrategy inventoryStrategy = (InventoryStrategy) currentState;
 
-        int selectedItemIndex = inventoryStrategy.getInventoryIndex();
+        /* int selectedItemIndex = inventoryStrategy.getInventoryIndex(); */
         List<Item> inventory = ((Player) currentElement).getInventory();
+        InventoryPanel inventoryPanel = mainFrame.getInventoryPanel();
         
         if (mainFrame.getInventoryPanel() == null) {
             System.out.println("InventoryPanel not initialized");
@@ -144,15 +148,23 @@ public class InputController implements KeyListener, TurnListener {
         
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> {
-                selectedItemIndex = Math.max(0, selectedItemIndex - 1);
-                inventoryStrategy.execute(selectedItemIndex, 0);
+                inventoryStrategy.execute(-1, 0);
+
+                if (inventoryPanel != null) {
+                inventoryPanel.setSelectedIndex(inventoryStrategy.getInventoryIndex());
+            }
+
                 System.out.println("UP pressed on InventoryPanel");
                 mainFrame.repaintInventoryPanel();
             }
             
             case KeyEvent.VK_DOWN -> {
-                selectedItemIndex = Math.min(inventory.size() - 1, selectedItemIndex + 1);
-                inventoryStrategy.execute(selectedItemIndex, 0);
+                inventoryStrategy.execute(1, 0);
+
+                if (inventoryPanel != null) {
+                inventoryPanel.setSelectedIndex(inventoryStrategy.getInventoryIndex());
+            }
+
                 System.out.println("DOWN pressed on InventoryPanel");
                 mainFrame.repaintInventoryPanel();
             }
@@ -160,6 +172,15 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_ENTER -> {
                 inventoryStrategy.acceptItem((Player) currentElement);
                 System.out.println("ENTER pressed on InventoryPanel");
+
+                if (inventoryPanel != null) {
+                inventoryPanel.setSelectedIndex(0); 
+                }   
+
+                //If a dialogue is triggered after using the item, pass the focus to it.
+                if (mainFrame.getDialogActive()) {
+                    mainFrame.focusInteractionPanel();
+                }
                 mainFrame.repaintStatsPanel();
                 mainFrame.repaintInventoryPanel();
             }
@@ -168,13 +189,15 @@ public class InputController implements KeyListener, TurnListener {
                 handleFocusInput(e);
             }
         }
-    }
+    }   
 
     private void handleInteractionInput(KeyEvent e){
         boolean dialogActive = mainFrame.getDialogActive();
+        InteractionPanel panel = mainFrame.getInteractionPanel();
 
         if (!dialogActive) {
             System.out.println("No dialog active");
+            mainFrame.focusMapPanel();
             return;
         }
 
@@ -182,7 +205,6 @@ public class InputController implements KeyListener, TurnListener {
         boolean textFullyRevealed = mainFrame.getTextFullyRevealed();
         
         if (choiceMode) {
-            InteractionPanel panel = mainFrame.getInteractionPanel();
             
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_UP:
@@ -219,9 +241,38 @@ public class InputController implements KeyListener, TurnListener {
                     mainFrame.skipTextAnimation();
                 } else {
                     mainFrame.advanceDialog();
+
+                // GENERAL CHECK: If advanceDialog reached the end of the text,
+                // automatically return the player to Map exploration
+                if (!panel.isDialogActive()) {
+                    returnToGameplay();
                 }
             }
         }
+    }
+}
+
+    /**
+     * Resets the game state to Map Exploration and refocuses the Map Panel.
+     * This is called automatically whenever any dialog finishes.
+     */
+    private void returnToGameplay() {
+        System.out.println("Dialog finished: Returning to Map Exploration...");
+
+        // 1. Hide the dialog UI container (Facade cleanup)
+        if (mainFrame.getInteractionPanel().getParent() != null) {
+            mainFrame.getInteractionPanel().getParent().setVisible(false);
+        }
+        
+        // 2. Set the internal controller state back to Movement
+        // This ensures keys (I, M, Arrows) control the player on the map again
+        this.currentState = mainFrame.getMovementStrategy();
+        
+        // 3. Physically move the keyboard focus back to the MapPanel
+        mainFrame.focusMapPanel();
+        
+        // 4. Update the visual display
+        mainFrame.repaintMapPanel();
     }
 
     private void handleMovesInput(KeyEvent e){

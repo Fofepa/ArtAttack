@@ -42,9 +42,20 @@ public class InteractionPanel extends JPanel {
      * Called by InteractableElement when interaction starts
      */
     public void activateAndFocus() {
-        setVisible(true);
-        requestFocusInWindow();
-        repaint();
+        // Make sure the component is displayable and visible before requesting focus
+        this.setVisible(true);
+        this.setEnabled(true);
+        
+        // Requesting focus is essential for the KeyListener to work here
+        this.requestFocusInWindow();
+        
+        // Mark as active so the paintComponent method knows it should draw the dialog box
+        this.dialogActive = true; 
+        
+        this.revalidate();
+        this.repaint();
+        
+        System.out.println("InteractionPanel: activateAndFocus() called");
     }
     
     /**
@@ -153,7 +164,15 @@ public class InteractionPanel extends JPanel {
             currentPhraseIndex++;
             repaint();
         } else {
+            // Dialog is finished
             dialogActive = false;
+            setVisible(false); // Hide the panel
+            
+            // If it's inside a container in the Facade, hide the container too
+            if (getParent() != null) {
+                getParent().setVisible(false);
+            }
+            
             repaint();
         }
     }

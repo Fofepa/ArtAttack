@@ -20,7 +20,7 @@ public class InventoryPanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
     }
-    
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -57,5 +57,10 @@ public class InventoryPanel extends JPanel {
             g.drawString(item.getName(), 20, y);
             y += 15;
         }
+    }
+
+    public void setSelectedIndex(int index) {
+        this.selectedIndex = index;
+        this.repaint(); 
     }
 }

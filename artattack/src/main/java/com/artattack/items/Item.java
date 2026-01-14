@@ -29,7 +29,5 @@ public abstract class Item {
     }
 
     //Methods
-    public int use(Player player){
-        return 0;
-    }
+    public abstract int use(Player player);
 }

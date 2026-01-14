@@ -14,8 +14,8 @@ import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.inputcontroller.InventoryStrategy;
 
 /**
- * MainFrame adapter that bridges the Facade pattern with your InputController
- * This class acts as the interface between the GUI and your game logic
+ * MainFrame adapter that bridges the Facade pattern with the InputController
+ * This class acts as the interface between the GUI and the game logic
  */
 public class MainFrame {
     private Maps map;
@@ -310,12 +310,27 @@ public class MainFrame {
     // ========== Dialog Management (for InteractionPanel) ==========
     
     public void showDialog(List<String> messages) {
-        if (interactionPanel == null) {
-            interactionPanel = new InteractionPanel();
-        }
+    if (interactionPanel != null) {
         interactionPanel.showDialog(messages);
-        repaintInteractionPanel();
+        
+        // Ensure the panel is visible
+        interactionPanel.setVisible(true);
+        
+        // If the panel is inside a container (like in the Facade), 
+        // we must ensure the parent container is also visible
+        if (interactionPanel.getParent() != null) {
+            interactionPanel.getParent().setVisible(true);
+            interactionPanel.getParent().revalidate();
+        }
+
+        // Trigger focus and internal state
+        interactionPanel.activateAndFocus();
+        
+        // Ensure the UI refreshes to show the new content
+        interactionPanel.revalidate();
+        interactionPanel.repaint();
     }
+}
     
     public boolean getDialogActive() {
         return interactionPanel != null && interactionPanel.isDialogActive();

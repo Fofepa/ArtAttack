@@ -1,17 +1,16 @@
 package com.artattack.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
 import java.util.List;
 
-import com.artattack.level.Maps;
-import com.artattack.level.Coordinates;
-import com.artattack.mapelements.Player;
-import com.artattack.mapelements.MapElement;
-import com.artattack.mapelements.InteractableElement;
-import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.inputcontroller.InventoryStrategy;
+import com.artattack.inputcontroller.MovementStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MapElement;
+import com.artattack.mapelements.Player;
 
 /**
  * MainFrame adapter that bridges the Facade pattern with the InputController
@@ -31,6 +30,9 @@ public class MainFrame {
     private TurnOrderPanel turnOrderPanel;
     private DetailsPanel detailsPanel;
     private SpritePanel spritePanel;
+    private PausePanel pausePanel;
+
+    private MainGUIFacade mainGUIFacade;
     
     // Current strategies
     private MovementStrategy movementStrategy;
@@ -76,6 +78,14 @@ public class MainFrame {
                     }
                 }
             }
+        }
+    }
+
+
+    public void setMainGUIFacade(MainGUIFacade facade) {
+        this.mainGUIFacade = facade;
+        if (pausePanel == null && facade != null) {
+            pausePanel = new PausePanel(facade);
         }
     }
     
@@ -404,5 +414,36 @@ public class MainFrame {
             spritePanel.clearSprite();
             repaintSpritePanel();
         }
+    }
+
+
+    // ========== Pause Panel Management ==========
+
+    public PausePanel getPausePanel() {
+        return pausePanel;
+    }
+
+    public void setPausePanel(PausePanel pausePanel){
+        this.pausePanel = pausePanel;
+    }
+
+    public void showPauseMenu() {
+        if (pausePanel != null) {
+           mainGUIFacade.showPauseMenu();
+        }
+    }
+
+    public void hidePauseMenu() {
+        if (pausePanel != null) {
+            mainGUIFacade.hidePauseMenu();
+        }
+    }
+
+    public boolean isPauseMenuVisible() {
+        return pausePanel != null && pausePanel.isVisible();
+    }
+
+    public boolean isPaused(){
+        return mainGUIFacade.isPaused();
     }
 }

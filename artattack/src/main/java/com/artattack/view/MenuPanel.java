@@ -1,14 +1,37 @@
 package com.artattack.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.*;
 
-import com.artattack.level.*;
-import com.artattack.mapelements.*;
-import com.artattack.items.*;
-import com.artattack.moves.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.artattack.items.Cure;
+import com.artattack.items.Item;
+import com.artattack.level.AreaBuilder;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Weapon;
 
 /**
  * Facade for managing menu screens
@@ -29,7 +52,8 @@ public class MenuPanel {
         
         // Logo
         LogoPanel logoPanel = new LogoPanel();
-        logoPanel.setPreferredSize(new Dimension(800, 250));
+        logoPanel.setPreferredSize(new Dimension(800, 500));
+        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 500));
 
         
         // Buttons
@@ -138,7 +162,7 @@ public class MenuPanel {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(300, 50));
-        button.setFont(new Font("Monospaced", Font.BOLD, 18));
+        button.setFont(new Font("Courier New", Font.BOLD, 18));
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
@@ -172,6 +196,11 @@ class LogoPanel extends JPanel {
             getClass().getResource("/images/logo.png")
         ).getImage();
     }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(800, 600); 
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -195,12 +224,12 @@ class LogoPanel extends JPanel {
         double ratio = (double) imgWidth / imgHeight;
 
         // width = 60% of the panel
-        int drawWidth = (int) (panelWidth * 0.6);
+        int drawWidth = (int) (panelWidth * 0.4);
         int drawHeight = (int) (drawWidth / ratio);
 
         // center the image
         int x = (panelWidth - drawWidth) / 2;
-        int y = (panelHeight - drawHeight) / 2;
+         int y = 1;
 
         g2.drawImage(logo, x, y, drawWidth, drawHeight, this);
     }

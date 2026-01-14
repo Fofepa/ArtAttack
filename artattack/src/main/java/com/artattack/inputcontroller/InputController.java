@@ -13,7 +13,11 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.TurnListener;
-import com.artattack.view.*;
+import com.artattack.view.InteractionPanel;
+import com.artattack.view.InventoryPanel;
+import com.artattack.view.MainFrame;
+import com.artattack.view.MapPanel;
+import com.artattack.view.MovesPanel;
 
 
 public class InputController implements KeyListener, TurnListener {
@@ -28,6 +32,18 @@ public class InputController implements KeyListener, TurnListener {
 
     @Override
     public void keyPressed(KeyEvent e){
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            System.out.println("ESC pressed (global)");
+            togglePause();
+            return;
+        }
+
+        if (mainFrame.isPaused()) {
+            System.out.println("Game is paused - input blocked");
+            return;
+        }
+        
         System.out.println("=== KEY PRESSED: " + KeyEvent.getKeyText(e.getKeyCode()) + " ===");
         System.out.println("Current Element: " + (currentElement != null ? currentElement.getName() : "NULL"));
         System.out.println("Current State: " + (currentState != null ? currentState.getClass().getSimpleName() : "NULL"));
@@ -115,9 +131,6 @@ public class InputController implements KeyListener, TurnListener {
                 System.out.println("Focusing InventoryPanel");
                 mainFrame.focusInventoryPanel(); 
                 break;
-            case KeyEvent.VK_ESCAPE:
-                System.out.println("Pressed escape button");
-                
             default:
                 break;
         }
@@ -500,6 +513,17 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.updateTurnDisplay();
         mainFrame.repaintMapPanel();
         System.out.println("=== UPDATE TURN COMPLETE ===\n");
+    }
+
+
+    public void togglePause(){
+        if(mainFrame.isPauseMenuVisible()){
+            System.out.println("Resuming game");
+            mainFrame.hidePauseMenu();
+        }else{
+            System.out.println("Pausing game");
+            mainFrame.showPauseMenu();
+        }
     }
 
     @Override

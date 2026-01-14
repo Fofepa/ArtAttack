@@ -1,5 +1,6 @@
 package com.artattack.level;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,8 @@ import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
+import com.artattack.mapelements.TriggerGroup;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
 
@@ -18,6 +21,7 @@ public class Maps {
     private Player playerOne;
     private Player playerTwo;
     private List<Enemy> enemies;
+    private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
     private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
@@ -42,6 +46,25 @@ public class Maps {
 
     public void setInteractableElements(List<InteractableElement> interactableElements){
         this.interactableElements = interactableElements;
+    }
+
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int rows, int columns) {
+        if (this.triggers == null) {
+            this.triggers = new ArrayList<>();
+        }
+        for (int i = 0; i < columns; i++) {
+            this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), rows - 1 + offset.getY()), triggerGroup));
+        }
+        for (int i = 1; i < rows; i++) {
+            this.triggers.add(new Trigger(0, '.', "", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "", new Coordinates(columns - 1 + offset.getX(), i), triggerGroup));
+        }
+        for (int i = 1; i < columns; i++) {
+            for (int j = 1; j < rows; j++) {
+                this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
+            }
+        }
     }
 
     public void setDimension(int rows, int columns){
@@ -69,6 +92,13 @@ public class Maps {
             for (Enemy e : this.enemies) {
                 if (e.getCoordinates() != null)
                     this.dictionaire.put(e.getCoordinates(), e);
+            }
+        }
+        if (this.triggers != null) {
+            for (Trigger t : this.triggers) {
+                if (t.getCoordinates() != null) {
+                    this.dictionaire.put(t.getCoordinates(), t);
+                }
             }
         }
     }

@@ -3,6 +3,7 @@ package com.artattack.inputcontroller;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
 
 
 // TODO: Make the cursor appear to the side of the player and when it goes inside it go directly on the next character.
@@ -48,6 +49,9 @@ public class MovementStrategy implements PlayerStrategy{
             player.setCoordinates(cursor);
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
+            if (map.getDict().get(player.getCoordinates()) instanceof Trigger t) {
+                t.OnTrigger(this.player);
+            }
         }
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));

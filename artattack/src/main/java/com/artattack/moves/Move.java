@@ -185,8 +185,10 @@ public class Move{
         if (user.getActionPoints() < this.getActionPoints()) {
             return 0;
         }
+        int total = 0;
+        boolean works = false;
         //Damage Logic
-        if (this.power != 0 && !this.attackArea.isEmpty()) {
+        if (this.power != 0 && !this.attackArea.isEmpty() && !this.getAttackTargets(user, map).isEmpty()) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 switch (element) {
                     case Enemy e -> {
@@ -221,19 +223,29 @@ public class Move{
                 if (!this.areaAttack) {
                     break;
                 }
+                total += this.power;
+                if (!works) {
+                    works = true;
+                }
             }
         }
         //Healing Logic
-        if (this.healAmount != 0 && !this.healArea.isEmpty()) {
+        if (this.healAmount != 0 && !this.healArea.isEmpty() && !this.getHealTargets(user, map).isEmpty()) {
             for (ActiveElement element : this.getHealTargets(user, map)) {
                 element.updateHP(this.healAmount);
                 if (!this.areaHeal) {
                     break;
                 }
             }
+            total += this.healAmount;
+            if (!works) {
+                works = true;
+            }
         }
-        user.setActionPoints(user.getActionPoints() - this.getActionPoints());
-        return this.power;
+        if (works) {
+            user.setActionPoints(user.getActionPoints() - this.getActionPoints());
+        }
+        return total;
     }
 
 }

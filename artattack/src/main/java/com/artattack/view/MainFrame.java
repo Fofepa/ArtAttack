@@ -2,6 +2,7 @@ package com.artattack.view;
 
 import java.awt.Component;
 import java.util.List;
+import java.util.function.Consumer;
 
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.inputcontroller.InventoryStrategy;
@@ -72,7 +73,7 @@ public class MainFrame {
                 if (element instanceof InteractableElement ie) {
                     try {
                         ie.setSpritePanel(spritePanel);
-                        ie.setInteractionPanel(interactionPanel);
+                        ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
                     } catch (Exception e) {
                         System.err.println("Could not set panels for InteractableElement: " + ie.getName());
                     }
@@ -320,27 +321,74 @@ public class MainFrame {
     // ========== Dialog Management (for InteractionPanel) ==========
     
     public void showDialog(List<String> messages) {
-    if (interactionPanel != null) {
-        interactionPanel.showDialog(messages);
-        
-        // Ensure the panel is visible
-        interactionPanel.setVisible(true);
-        
-        // If the panel is inside a container (like in the Facade), 
-        // we must ensure the parent container is also visible
-        if (interactionPanel.getParent() != null) {
-            interactionPanel.getParent().setVisible(true);
-            interactionPanel.getParent().revalidate();
-        }
+        if (interactionPanel != null) {
+            interactionPanel.showDialog(messages);
+            
+            // Ensure the panel is visible
+            interactionPanel.setVisible(true);
+            
+            // If the panel is inside a container (like in the Facade), 
+            // we must ensure the parent container is also visible
+            if (interactionPanel.getParent() != null) {
+                interactionPanel.getParent().setVisible(true);
+                interactionPanel.getParent().revalidate();
+            }
 
-        // Trigger focus and internal state
-        interactionPanel.activateAndFocus();
-        
-        // Ensure the UI refreshes to show the new content
-        interactionPanel.revalidate();
-        interactionPanel.repaint();
+            // Trigger focus and internal state
+            interactionPanel.activateAndFocus();
+            
+            // Ensure the UI refreshes to show the new content
+            interactionPanel.revalidate();
+            interactionPanel.repaint();
+        }
     }
-}
+
+    // ========== Dialog Management (for InteractionPanel) ==========
+
+    // Keep existing showDialog method as is...
+
+    /**
+     * Shows a dialog with multiple choice options
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback) {
+        if (interactionPanel != null) {
+            interactionPanel.showDialogWithChoice(question, options, callback);
+            
+            interactionPanel.setVisible(true);
+            
+            if (interactionPanel.getParent() != null) {
+                interactionPanel.getParent().setVisible(true);
+                interactionPanel.getParent().revalidate();
+            }
+
+            interactionPanel.activateAndFocus();
+            
+            interactionPanel.revalidate();
+            interactionPanel.repaint();
+        }
+    }
+
+    /**
+     * Moves selection up in choice dialogs
+     */
+    public void selectUp() {
+        if (interactionPanel != null) {
+            interactionPanel.selectUp();
+        }
+    }
+
+    /**
+     * Moves selection down in choice dialogs
+     */
+    public void selectDown() {
+        if (interactionPanel != null) {
+            interactionPanel.selectDown();
+        }
+    }
+
+    // Keep all other existing dialog methods (getDialogActive, confirmChoice, etc.)...
+
+
     
     public boolean getDialogActive() {
         return interactionPanel != null && interactionPanel.isDialogActive();

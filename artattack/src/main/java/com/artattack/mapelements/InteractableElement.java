@@ -3,61 +3,54 @@ package com.artattack.mapelements;
 import java.util.List;
 
 import com.artattack.interactions.Interaction;
-import com.artattack.interactions.Talk;
+import com.artattack.interactions.InteractionFactory;
 import com.artattack.level.Coordinates;
-import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
 import com.artattack.view.SpritePanel;
 
 public class InteractableElement extends MapElement {
 
-    private List<Interaction> interactions;
+    private List<InteractionFactory> interactionFactories;
     private int maxInteractions;
     private int lastInteraction;
     private int currInteraction;
     private String spritePath;
     private SpritePanel sp;
-    private InteractionPanel interactionPanel;
+    private MainFrame mainFrame;
 
-
-    public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, List<Interaction> interactions, String spritePath, SpritePanel spritePanel, InteractionPanel interactionPanel){
-        super(ID,mapSymbol,name,coordinates);
-        this.maxInteractions = interactions.size();
+    public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
+                               List<InteractionFactory> interactionFactories, String spritePath, 
+                               SpritePanel spritePanel, MainFrame mainFrame){
+        super(ID, mapSymbol, name, coordinates);
+        this.interactionFactories = interactionFactories;
+        this.maxInteractions = interactionFactories.size();
         this.lastInteraction = this.maxInteractions - 1;
-        if(interactions.get(this.lastInteraction).getClass() != Talk.class)
-            throw new IllegalArgumentException();
-        this.interactions = interactions;
         this.currInteraction = 0;
         this.spritePath = spritePath;
         this.sp = spritePanel;
-        this.interactionPanel = interactionPanel;
-    }
-    
-
-    public List<Interaction> getInteractions(){
-        return this.interactions;
-    }
-
-    public int getMaxInteractions(){
-        return this.maxInteractions;
-    }
-
-    public int getCurrInteraction(){
-        return this.currInteraction;
-    }
-
-    public int getLastInteraction(){
-        return this.lastInteraction;
+        this.mainFrame = mainFrame;
     }
 
     public void interact(Player player){
-        sp.loadImage(this.spritePath);
-        interactionPanel.activateAndFocus();
-
-        if(this.currInteraction < this.maxInteractions){
-            this.interactions.get(this.currInteraction).doInteraction(player);
-            this.currInteraction++;
+        // Load sprite
+        if (sp != null) {
+            sp.loadImage(this.spritePath);
         }
-        else this.interactions.get(this.lastInteraction).doInteraction(player);
+
+        // CREATE the interaction from the factory
+        Interaction interaction;
+        if(this.currInteraction < this.maxInteractions){
+            interaction = this.interactionFactories.get(this.currInteraction).createInteraction();
+            this.currInteraction++;
+        } else {
+            interaction = this.interactionFactories.get(this.lastInteraction).createInteraction();
+        }
+        
+        // INJECT the MainFrame before executing
+        if (interaction != null && this.mainFrame != null) {
+            interaction.setMainFrame(this.mainFrame);
+            interaction.doInteraction(player);
+        }
     }
 
     public String getSpritePath() {
@@ -67,11 +60,8 @@ public class InteractableElement extends MapElement {
     public void setSpritePanel(SpritePanel spritePanel) {
         this.sp = spritePanel;
     }
-
-    public void setInteractionPanel(InteractionPanel interactionPanel) {
-        this.interactionPanel = interactionPanel;
-    }
-
-
     
+    public void setMainFrame(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+    }
 }

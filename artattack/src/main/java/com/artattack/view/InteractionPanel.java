@@ -80,29 +80,32 @@ public class InteractionPanel extends JPanel {
         this.dialogActive = true;
         this.choiceMode = true;
         this.responseOptions = options;
-        this.selectedOption = 0;
+        this.selectedOption = 0;  // Start at first option
         this.choiceCallback = callback;
         this.textFullyRevealed = true;
+        setVisible(true);
         repaint();
-    }
+}
     
-    /**
-     * Moves selection up in choice mode
+        /**
+     * Moves selection up in choice mode (UP arrow key)
      */
     public void selectUp() {
         if (choiceMode && selectedOption > 0) {
             selectedOption--;
             repaint();
+            System.out.println("Selected option " + selectedOption + ": " + responseOptions.get(selectedOption));
         }
     }
-    
+
     /**
-     * Moves selection down in choice mode
+     * Moves selection down in choice mode (DOWN arrow key)
      */
     public void selectDown() {
         if (choiceMode && responseOptions != null && selectedOption < responseOptions.size() - 1) {
             selectedOption++;
             repaint();
+            System.out.println("Selected option " + selectedOption + ": " + responseOptions.get(selectedOption));
         }
     }
     
@@ -114,20 +117,23 @@ public class InteractionPanel extends JPanel {
             return;
         }
         
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        g.setFont(new Font("Monospaced", Font.PLAIN, 14));
         
         String text = currentDialog.get(currentPhraseIndex);
         int y = 30;
         
-        // Word wrap the text
+        // Word wrap the question/dialog text
         String[] words = text.split(" ");
         StringBuilder line = new StringBuilder();
         
         for (String word : words) {
-            if (g.getFontMetrics().stringWidth(line + word + " ") > getWidth() - 20) {
-                g.drawString(line.toString(), 10, y);
-                y += 15;
+            if (g.getFontMetrics().stringWidth(line + word + " ") > getWidth() - 40) {
+                g.drawString(line.toString(), 20, y);
+                y += 20;
                 line = new StringBuilder(word + " ");
             } else {
                 line.append(word).append(" ");
@@ -135,26 +141,51 @@ public class InteractionPanel extends JPanel {
         }
         
         if (line.length() > 0) {
-            g.drawString(line.toString(), 10, y);
+            g.drawString(line.toString(), 20, y);
         }
         
-        // Display "Press ENTER to continue" or options
+        // Display options or "Press ENTER to continue"
         if (textFullyRevealed) {
-            y += 30;
+            y += 40;  // Add spacing before options
+            
             if (choiceMode && responseOptions != null) {
+                // Draw a separator line
+                g.setColor(Color.GRAY);
+                g.drawLine(20, y - 10, getWidth() - 20, y - 10);
+                
+                // Draw each option
                 for (int i = 0; i < responseOptions.size(); i++) {
                     if (i == selectedOption) {
+                        // Highlighted option
                         g.setColor(Color.CYAN);
-                        g.drawString("> ", 10, y);
+                        g.setFont(new Font("Monospaced", Font.BOLD, 14));
+                        g.drawString("> ", 20, y);
+                        g.drawString(responseOptions.get(i), 45, y);
+                        
+                        // Draw a selection box around it
+                        g.setColor(new Color(0, 255, 255, 50));  // Semi-transparent cyan
+                        g.fillRect(15, y - 15, getWidth() - 30, 22);
+                        
                     } else {
-                        g.setColor(Color.GRAY);
+                        // Non-selected option
+                        g.setColor(Color.LIGHT_GRAY);
+                        g.setFont(new Font("Monospaced", Font.PLAIN, 14));
+                        g.drawString("  " + responseOptions.get(i), 45, y);
                     }
-                    g.drawString(responseOptions.get(i), 25, y);
-                    y += 20;
+                    y += 30;  // Spacing between options
                 }
-            } else {
+                
+                // Instruction text
+                y += 20;
                 g.setColor(Color.GRAY);
-                g.drawString("[Press ENTER to continue]", 10, y);
+                g.setFont(new Font("Monospaced", Font.ITALIC, 12));
+                g.drawString("[Use UP/DOWN arrows to select, ENTER to confirm]", 20, y);
+                
+            } else {
+                // Simple dialog mode
+                g.setColor(Color.GRAY);
+                g.setFont(new Font("Monospaced", Font.ITALIC, 12));
+                g.drawString("[Press ENTER to continue]", 20, y);
             }
         }
     }
@@ -182,12 +213,16 @@ public class InteractionPanel extends JPanel {
         repaint();
     }
     
+    /**
+     * Confirms the selected choice (ENTER key)
+     */
     public void confirmChoice() {
         if (choiceMode && choiceCallback != null) {
+            System.out.println("Confirming choice: " + selectedOption);
             // Execute the callback with the selected option
             choiceCallback.accept(selectedOption);
         }
-        dialogActive = false;
+        // Don't close dialog here - the callback will handle showing the response
         choiceMode = false;
         repaint();
     }

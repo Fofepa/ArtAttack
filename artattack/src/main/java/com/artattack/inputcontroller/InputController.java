@@ -206,7 +206,6 @@ public class InputController implements KeyListener, TurnListener {
 
     private void handleInteractionInput(KeyEvent e){
         boolean dialogActive = mainFrame.getDialogActive();
-        InteractionPanel panel = mainFrame.getInteractionPanel();
 
         if (!dialogActive) {
             System.out.println("No dialog active");
@@ -223,14 +222,14 @@ public class InputController implements KeyListener, TurnListener {
                 case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
                     if (textFullyRevealed) {
-                        panel.selectUp();
+                        mainFrame.selectUp();  // CHANGED: Use MainFrame method
                     }
                     break;
                 
                 case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
                     if (textFullyRevealed) {
-                        panel.selectDown();
+                        mainFrame.selectDown();  // CHANGED: Use MainFrame method
                     }
                     break;
                 
@@ -255,15 +254,14 @@ public class InputController implements KeyListener, TurnListener {
                 } else {
                     mainFrame.advanceDialog();
 
-                // GENERAL CHECK: If advanceDialog reached the end of the text,
-                // automatically return the player to Map exploration
-                if (!panel.isDialogActive()) {
-                    returnToGameplay();
+                    // Check if dialog finished
+                    if (!mainFrame.getDialogActive()) {
+                        returnToGameplay();
+                    }
                 }
             }
         }
     }
-}
 
     /**
      * Resets the game state to Map Exploration and refocuses the Map Panel.

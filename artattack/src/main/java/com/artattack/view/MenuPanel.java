@@ -19,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import com.artattack.interactions.Talk;
+import com.artattack.interactions.TalkFactory;
 import com.artattack.items.Cure;
 import com.artattack.items.Item;
 import com.artattack.level.AreaBuilder;
@@ -28,6 +30,7 @@ import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
@@ -106,6 +109,8 @@ public class MenuPanel {
             areaBuilder.addShape("8");
             List<Coordinates> moveArea = areaBuilder.getResult();
             List<Item> items = new ArrayList<>();
+            List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
+                                            new Coordinates(8, 8), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!"))), null, null, null));
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));
@@ -136,7 +141,7 @@ public class MenuPanel {
             builder.setPlayerOne(playerOne);
             builder.setPlayerTwo(playerTwo);
             builder.setEnemies(List.of(enemy));
-            builder.setInteractableElements(new java.util.ArrayList<>());
+            builder.setInteractableElements(npcs);
             builder.setDict();
             builder.setTurnQueue();
             builder.startMap();

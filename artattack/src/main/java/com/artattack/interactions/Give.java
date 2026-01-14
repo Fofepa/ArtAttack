@@ -6,7 +6,7 @@ import com.artattack.items.Item;
 import com.artattack.mapelements.Player;
 import com.artattack.view.InteractionPanel;
 
-public class Give implements Interaction {
+public class Give extends Interaction {
 
     private InteractionPanel dialogPanel;
     private List<String> dialog;

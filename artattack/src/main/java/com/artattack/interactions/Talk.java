@@ -6,7 +6,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.view.InteractionPanel;
 
 
-public class Talk implements  Interaction {
+public class Talk extends  Interaction {
 
     private InteractionPanel dialogPanel;
     private List<String> dialog;

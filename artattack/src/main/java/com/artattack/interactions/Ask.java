@@ -5,17 +5,18 @@ import java.util.List;
 import com.artattack.items.Item;
 import com.artattack.mapelements.Player;
 import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
 
-public class Ask implements Interaction {
+public class Ask extends Interaction {
 
-    private InteractionPanel dialogPanel;
+   /*  private InteractionPanel dialogPanel; */
 	private String question;
 	private List<String> options;
 	private List<List<String>> answers;
 	private List<Item> items;
 	
-	public Ask(InteractionPanel dialogPanel, String question, List<String> options, List<List<String>> answers, List<Item> items){
-		this.dialogPanel = dialogPanel;
+	public Ask(MainFrame mainFrame ,String question, List<String> options, List<List<String>> answers, List<Item> items){
+		super(mainFrame);
 		this.question = question;
 		this.options = options;
 		this.answers = answers;
@@ -24,7 +25,7 @@ public class Ask implements Interaction {
 	
 	@Override
 	public void doInteraction(Player player){
-		this.dialogPanel.showDialogWithChoice(
+		this.getMainFrame().showDialogWithChoice(
 			this.question,
 			this.options,
 			choice -> handleChoice(choice, player)
@@ -32,7 +33,7 @@ public class Ask implements Interaction {
 	}
 	
 	private void handleChoice(int choice, Player player){
-		this.dialogPanel.showDialog(this.answers.get(choice));
+		this.getMainFrame().showDialog(this.answers.get(choice));
 		if(this.items != null)
 			player.addItem(this.items.get(choice));
 	}

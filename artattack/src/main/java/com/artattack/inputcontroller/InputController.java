@@ -289,52 +289,48 @@ public class InputController implements KeyListener, TurnListener {
         setStrategy(mainFrame.getCombatStrategy());
         CombatStrategy combatStrategy = (CombatStrategy) currentState;
 
-        int selectedWeaponIndex = combatStrategy.getWeaponIndex();
-        int selectedMoveIndex = combatStrategy.getMoveIndex();
-        boolean isInMoveSelection = (selectedMoveIndex > 0 || combatStrategy.isSelected());
+        /* int selectedWeaponIndex = combatStrategy.getWeaponIndex();
+        int selectedMoveIndex = combatStrategy.getMoveIndex(); */
+        /* boolean isInMoveSelection = (selectedMoveIndex > 0 || combatStrategy.isSelected()); */
 
         List<Weapon> weapons = currentElement.getWeapons();
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> {
-                if (!isInMoveSelection) {
-                    selectedWeaponIndex = Math.max(0, selectedWeaponIndex - 1);
-                    combatStrategy.execute(selectedWeaponIndex, 0);
-                    System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
+                if (!combatStrategy.isSelected()) {
+                    combatStrategy.execute(1, 0);
+                    System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 } else {
-                    if (!weapons.get(selectedWeaponIndex).getMoves().isEmpty()) {
-                        selectedMoveIndex = Math.max(0, selectedMoveIndex - 1);
-                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
+                    if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
+                        combatStrategy.execute(1,1);
                         mainFrame.updateAttackArea();
-                        System.out.println("Selected move: " + weapons.get(selectedWeaponIndex).getMoves().get(selectedMoveIndex).getName());
+                        System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                     }
                 }
                 mainFrame.repaintMovesPanel();
             }
             
             case KeyEvent.VK_DOWN -> {
-                if (!isInMoveSelection) {
-                    selectedWeaponIndex = Math.min(weapons.size() - 1, selectedWeaponIndex + 1);
-                    combatStrategy.execute(selectedWeaponIndex, 0);
-                    System.out.println("Selected weapon: " + weapons.get(selectedWeaponIndex).getName());
+                if (!combatStrategy.isSelected()) {
+                    combatStrategy.execute(-1, 0);
+                    System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 } else {
-                    if (!weapons.get(selectedWeaponIndex).getMoves().isEmpty()) {
-                        selectedMoveIndex = Math.min(weapons.get(selectedWeaponIndex).getMoves().size() - 1, selectedMoveIndex + 1);
-                        combatStrategy.execute(selectedWeaponIndex, selectedMoveIndex + 1);
+                    if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
+                        combatStrategy.execute(-1,1);
                         mainFrame.updateAttackArea();
-                        System.out.println("Selected move: " + weapons.get(selectedWeaponIndex).getMoves().get(selectedMoveIndex).getName());
+                        System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                     }
                 }
                 mainFrame.repaintMovesPanel();
             }
             
             case KeyEvent.VK_RIGHT -> {
-                if (!isInMoveSelection && !weapons.isEmpty()) {
-                    Weapon selectedWeapon = weapons.get(selectedWeaponIndex);
+                if (!combatStrategy.isSelected() && !weapons.isEmpty()) {
+                    Weapon selectedWeapon = weapons.get(combatStrategy.getWeaponIndex());
                     List<Move> moves = selectedWeapon.getMoves();
                     
                     if (!moves.isEmpty()) {
-                        combatStrategy.execute(selectedWeaponIndex, 1);
+                        combatStrategy.setIsSelected(true);
                         mainFrame.updateAttackArea();
                     }
                     
@@ -344,8 +340,8 @@ public class InputController implements KeyListener, TurnListener {
             }
             
             case KeyEvent.VK_LEFT -> {
-                if (isInMoveSelection) {
-                    combatStrategy.execute(selectedWeaponIndex, 0);
+                if (combatStrategy.isSelected()) {
+                    combatStrategy.setIsSelected(false);
                     
                     if (mainFrame.getMapPanel() != null) {
                         mainFrame.clearAttackArea();
@@ -357,10 +353,10 @@ public class InputController implements KeyListener, TurnListener {
             }
             
             case KeyEvent.VK_ENTER -> {
-                if (isInMoveSelection && !weapons.get(selectedWeaponIndex).getMoves().isEmpty()) {
+                if (combatStrategy.isSelected() && !weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
                     System.out.println("=== Using Move ===");
-                    System.out.println("Weapon: " + weapons.get(selectedWeaponIndex).getName());
-                    System.out.println("Move: " + weapons.get(selectedWeaponIndex).getMoves().get(selectedMoveIndex).getName());
+                    System.out.println("Weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
+                    System.out.println("Move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                     
                     int result = combatStrategy.acceptMove();
                     

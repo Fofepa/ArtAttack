@@ -29,13 +29,11 @@ public class approachstrategyTest {
     
     @Before
     public void setUp(){
-        this.mainFrame = new MainFrame();
-        assertNotNull(mainFrame);
         
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(10,10),EnemyType.GUARD, 20, 20, 3,
-                                 null,5,5,List.of(new Coordinates(-1, -1), new Coordinates(-1, 0), new Coordinates(-1, 1), new Coordinates(0, -1), new Coordinates(-2, 0), 
-                                new Coordinates(0, 2), new Coordinates(0, -2), new Coordinates(2, 0), new Coordinates(-2, -2), new Coordinates(2, 2), new Coordinates(2, -2), new Coordinates(-2, 2), 
-                                new Coordinates(0, 1), new Coordinates(1, -1), new Coordinates(1, 0), new Coordinates(13,24), new Coordinates(1, 1)),null,null,null,0);
+        null,5,5,List.of(new Coordinates(-1, -1), new Coordinates(-1, 0), new Coordinates(-1, 1), new Coordinates(0, -1), new Coordinates(-2, 0), 
+        new Coordinates(0, 2), new Coordinates(0, -2), new Coordinates(2, 0), new Coordinates(-2, -2), new Coordinates(2, 2), new Coordinates(2, -2), new Coordinates(-2, 2), 
+        new Coordinates(0, 1), new Coordinates(1, -1), new Coordinates(1, 0), new Coordinates(13,24), new Coordinates(1, 1)),null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
         mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
@@ -45,6 +43,8 @@ public class approachstrategyTest {
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.mainFrame = new MainFrame(this.map);
+        assertNotNull(mainFrame);
         approach = new ApproachStrategy(mainFrame);
     }
 

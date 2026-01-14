@@ -28,20 +28,20 @@ public class stallstrategyTest {
 
     @Before
     public void setUp(){
-        this.mainFrame = new MainFrame();
-        assertNotNull(mainFrame);
         
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(10,10),EnemyType.EMPLOYEE, 20, 20, 3,
                                  null,5,5,List.of(new Coordinates(-1, -1)),null,null,null,0);
-        MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
-        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+                                 MapBuilder mapBuilder = new TestMapBuilder(); 
+                                 mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+                                 mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);
         mapBuilder.setDict();
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.mainFrame = new MainFrame(map);
+        assertNotNull(mainFrame);
         stall = new StallStrategy(mainFrame);
     }
 

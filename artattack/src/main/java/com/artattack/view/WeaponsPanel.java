@@ -7,13 +7,14 @@ import javax.swing.*;
 
 import com.artattack.mapelements.Player;
 import com.artattack.moves.*;
+
 /**
- * StatsPanel - Displays player statistics
+ * WeaponsPanel - Displays available weapons
  */
-public class StatsPanel extends JPanel {
+public class WeaponsPanel extends JPanel {
     private Player player;
     
-    public StatsPanel(Player player) {
+    public WeaponsPanel(Player player) {
         this.player = player;
         setBackground(Color.BLACK);
     }
@@ -25,7 +26,16 @@ public class StatsPanel extends JPanel {
         if (player == null) {
             g.setColor(Color.GRAY);
             g.setFont(new Font("Monospaced", Font.PLAIN, 12));
-            g.drawString("No player selected", 10, 20);
+            g.drawString("No player", 10, 20);
+            return;
+        }
+        
+        List<Weapon> weapons = player.getWeapons();
+        
+        if (weapons.isEmpty()) {
+            g.setColor(Color.GRAY);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            g.drawString("No weapons", 10, 20);
             return;
         }
         
@@ -33,13 +43,9 @@ public class StatsPanel extends JPanel {
         g.setFont(new Font("Monospaced", Font.PLAIN, 11));
         
         int y = 20;
-        g.drawString("Name: " + player.getName(), 10, y);
-        y += 15;
-        g.drawString("HP: " + player.getCurrHP() + "/" + player.getMaxHP(), 10, y);
-        y += 15;
-        g.drawString("AP: " + player.getActionPoints(), 10, y);
-        y += 15;
-        
-        // Add more stats as needed
+        for (Weapon weapon : weapons) {
+            g.drawString("• " + weapon.getName(), 10, y);
+            y += 15;
+        }
     }
 }

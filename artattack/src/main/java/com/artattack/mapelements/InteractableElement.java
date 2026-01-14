@@ -64,6 +64,14 @@ public class InteractableElement extends MapElement {
         return spritePath;
     }
 
+    public void setSpritePanel(SpritePanel spritePanel) {
+        this.sp = spritePanel;
+    }
+
+    public void setInteractionPanel(InteractionPanel interactionPanel) {
+        this.interactionPanel = interactionPanel;
+    }
+
 
     
 }

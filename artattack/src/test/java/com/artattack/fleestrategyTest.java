@@ -29,11 +29,9 @@ public class fleestrategyTest {
 
     @Before
     public void setUp(){
-                this.mainFrame = new MainFrame();
-        assertNotNull(mainFrame);
         
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(3,70),EnemyType.GUARD, 20, 20, 3,
-                                 null,5,5,List.of(new Coordinates(-1, -1), new Coordinates(-1, 0), new Coordinates(-1, 1), new Coordinates(0, -1), new Coordinates(-2, 0), 
+        null,5,5,List.of(new Coordinates(-1, -1), new Coordinates(-1, 0), new Coordinates(-1, 1), new Coordinates(0, -1), new Coordinates(-2, 0), 
                                 new Coordinates(0, 2), new Coordinates(0, -2), new Coordinates(2, 0), new Coordinates(-2, -2), new Coordinates(2, 2), new Coordinates(2, -2), new Coordinates(-2, 2), 
                                 new Coordinates(0, 1), new Coordinates(1, -1), new Coordinates(1, 0), new Coordinates(1, 1)),null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
@@ -45,6 +43,8 @@ public class fleestrategyTest {
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.mainFrame = new MainFrame(map);
+        assertNotNull(mainFrame);
         flee = new FleeStrategy(mainFrame);
     }
 

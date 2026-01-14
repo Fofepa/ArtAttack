@@ -33,8 +33,6 @@ public class smartattackstrategyTest {
 
     @Before
     public void setUp(){
-        this.mainFrame = new MainFrame();
-        assertNotNull(mainFrame);
         Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(List.of(new Coordinates(-1, 0))); m1.setActionPoints(3); m1.setAreaAttack(false);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(List.of(new Coordinates(4, 4))); m2.setActionPoints(4);
         Move m3 = new Move(); 
@@ -51,6 +49,8 @@ public class smartattackstrategyTest {
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.mainFrame = new MainFrame(map);
+        assertNotNull(mainFrame);
         smartAttack = new SmartAttackStrategy(mainFrame);
         Map<Move,Integer> moves = new LinkedHashMap<>(); moves.put(m1,1);moves.put(m2,1); moves.put(m3,2);
         smartAttack.setMoves(moves);  

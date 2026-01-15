@@ -63,9 +63,12 @@ public class MovementStrategy implements PlayerStrategy{
     public void acceptMovement() {
         if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] == '.'){
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
+            this.map.updateDict(player.getCoordinates(),cursor);
             player.setCoordinates(cursor);
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
+
+            System.out.println("Char present in the dictionary after the movement:" + map.getDict().get(player.getCoordinates()).getMapSymbol());
         }
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));
@@ -75,6 +78,7 @@ public class MovementStrategy implements PlayerStrategy{
         }
         isSelected = false;
         clearCursorDisplay(); // Clear cursor after movement
+
     }
 
     /**

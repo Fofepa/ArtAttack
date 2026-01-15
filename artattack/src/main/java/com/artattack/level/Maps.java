@@ -73,6 +73,17 @@ public class Maps {
         }
     }
 
+    public void updateDict(Coordinates oldCoordinates, Coordinates newCoordinates){
+        if(oldCoordinates == null || newCoordinates == null){
+            return;
+        }
+
+        MapElement element = this.dictionaire.remove(oldCoordinates);
+        if(element != null){
+            this.dictionaire.put(newCoordinates,element);
+        }
+    }
+
     public void setTurnQueue(){
         List<ActiveElement>list = new LinkedList<ActiveElement>();
         list.add(this.playerOne);

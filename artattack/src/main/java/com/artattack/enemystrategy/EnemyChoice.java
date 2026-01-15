@@ -22,7 +22,7 @@ public class EnemyChoice{   // Our Context class
     private Enemy enemy;
     private Maps map;
     private DecisionStrategy strategy;
-     private Map<Move,Integer> usable; 
+    private Map<Move,Integer> usable; 
     private MainFrame mainFrame;
     private boolean hasFinished = false;
 
@@ -141,6 +141,8 @@ public class EnemyChoice{   // Our Context class
             default:
                 map.getConcreteTurnHandler().next();
         }
+
+        this.usable.clear();
     }
 
     private void setStrategy(DecisionStrategy strategy){

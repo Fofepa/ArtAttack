@@ -44,6 +44,7 @@ public class FleeStrategy extends DecisionStrategy {
 
         // sets the new position and decreases the AP
         map.setCell(enemy.getCoordinates(), '.');
+        map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), maxCoord));
         enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), maxCoord));
         enemy.setActionPoints(enemy.getActionPoints()-1);
         map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());

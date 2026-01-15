@@ -41,6 +41,7 @@ public class ApproachStrategy extends DecisionStrategy {
 
         // sets the new position and decreases the AP
         map.setCell(enemy.getCoordinates(), '.');
+        map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
         enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
         enemy.setActionPoints(enemy.getActionPoints()-1);
         map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());

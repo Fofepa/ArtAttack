@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.List;
 
+import com.artattack.enemystrategy.EnemyChoice;
 import com.artattack.interactions.InteractionStrategy;
 import com.artattack.items.Item;
 import com.artattack.mapelements.ActiveElement;
@@ -24,6 +25,8 @@ public class InputController implements KeyListener, TurnListener {
     private PlayerStrategy currentState;
     private ActiveElement currentElement;
     private MainFrame mainFrame; 
+    private EnemyChoice currentEnemyChoice;
+    private boolean isEnemyTurn;
 
     public InputController(MainFrame mainFrame){
         this.mainFrame = mainFrame;
@@ -42,6 +45,14 @@ public class InputController implements KeyListener, TurnListener {
         if (mainFrame.isPaused()) {
             System.out.println("Game is paused - input blocked");
             return;
+        }
+
+        // enemy turn case
+        if(isEnemyTurn){
+            if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
+                continueEnemyTurn();
+            }
+            return; // blocks the other inputs during enemy turn
         }
         
         System.out.println("=== KEY PRESSED: " + KeyEvent.getKeyText(e.getKeyCode()) + " ===");
@@ -470,6 +481,59 @@ public class InputController implements KeyListener, TurnListener {
             mainFrame.repaintMapPanel();
         }
     }
+
+    // starts the enemy turn using the enemyChoice
+    public void startEnemyTurn(EnemyChoice enemyChoice){
+        this.currentEnemyChoice = enemyChoice;
+        this.isEnemyTurn = true;
+
+        mainFrame.repaintStatsPanel();
+        mainFrame.updateTurnDisplay();
+        mainFrame.repaintMapPanel();
+
+        mainFrame.showDialog(List.of("Enemy Turn"));
+
+        continueEnemyTurn();    // start the moves
+    }
+
+    // does the choice() method until hasFinished is true
+    public void continueEnemyTurn(){
+        if(this.currentElement == null || this.currentEnemyChoice.getHasFinished()){
+            endEnemyTurn();
+            return;
+        }
+
+        if(mainFrame.getDialogActive() && mainFrame.getInteractionPanel().getParent() != null){
+            mainFrame.getInteractionPanel().getParent().setVisible(false);
+        }
+
+        this.currentEnemyChoice.choose();
+
+        mainFrame.repaintStatsPanel();
+        mainFrame.updateTurnDisplay();
+        mainFrame.repaintMapPanel();
+
+        if(this.currentEnemyChoice.getHasFinished()){
+            endEnemyTurn();
+        }
+    }
+
+    // ends the enemy turn
+    public void endEnemyTurn(){
+        this.isEnemyTurn = false;
+        this.currentEnemyChoice = null;
+
+        if(mainFrame.getDialogActive() && mainFrame.getInteractionPanel().getParent() != null){
+            mainFrame.getInteractionPanel().getParent().setVisible(false);
+        }
+        
+        mainFrame.repaintStatsPanel();
+        mainFrame.updateTurnDisplay();
+        mainFrame.repaintMapPanel();
+
+        mainFrame.showDialog(List.of("Enemy turn ended"));
+        System.out.println("enemy turn ended");
+    }
     
     public void setStrategy(PlayerStrategy strategy){
         this.currentState = strategy;
@@ -498,10 +562,12 @@ public class InputController implements KeyListener, TurnListener {
             
         } else if(activeElement instanceof Enemy){
             System.out.println(">> ENEMY TURN: " + activeElement.getName());
-            System.out.println("Enemy AI should execute here (not implemented yet)");
-            // Enemy AI logic here
-            // For now, just skip the enemy turn
-            mainFrame.getMap().getConcreteTurnHandler().next();
+            //handleEnemyTurn()
+            EnemyChoice enemyChoice = new EnemyChoice(this.mainFrame);
+            enemyChoice.setMap(mainFrame.getMap());
+            enemyChoice.setEnemy((Enemy) currentElement);
+
+            startEnemyTurn(enemyChoice);
         }
         
         mainFrame.updateTurnDisplay();

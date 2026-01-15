@@ -127,13 +127,13 @@ public class Maps {
     }
 
     public void setCell(Coordinates coord, char character){
-        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
-            this.mapMatrix[coord.getX() ][coord.getY() ] = character;
+        if(coord.getY() >= 0 && coord.getY() < rows && coord.getX() >= 0 && coord.getX() < columns)
+            this.mapMatrix[coord.getY()][coord.getX()] = character; 
     }
 
     public char getCell(Coordinates coord){
-        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
-            return this.mapMatrix[coord.getX()][coord.getY()];
+        if(coord.getY() >= 0 && coord.getY() < rows && coord.getX() >= 0 && coord.getX() < columns)
+            return this.mapMatrix[coord.getY()][coord.getX()]; 
         else
             return ' ';
     }

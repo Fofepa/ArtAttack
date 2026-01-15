@@ -13,8 +13,9 @@ public class ApproachStrategy extends DecisionStrategy {
 
     @Override
     public void execute(Enemy enemy, Maps map){
-        double min = 500;
-        Coordinates minCoord = new Coordinates(500, 500);
+        double min = Double.MAX_VALUE;
+        Coordinates minCoord = null;
+        
         // finds the coordinate that gets the enemy closest to the player (the closest)
         if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates())){
             for(Coordinates coord : enemy.getMoveArea()){
@@ -40,10 +41,15 @@ public class ApproachStrategy extends DecisionStrategy {
         }
 
         // sets the new position and decreases the AP
-        map.setCell(enemy.getCoordinates(), '.');
-        map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
-        enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
-        enemy.setActionPoints(enemy.getActionPoints()-1);
-        map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());
+        if (minCoord != null){
+            map.setCell(enemy.getCoordinates(), '.');
+            map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
+            enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
+            enemy.setActionPoints(enemy.getActionPoints()-1);
+            map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());
+        }
+        else{
+            System.out.println("Cannot find  a valid move");
+        }
     }
 }

@@ -139,7 +139,7 @@ public class MenuPanel {
             Enemy enemy = new Enemy(
                 3, 'E', "C17", 
                 new Coordinates(10, 10),
-                EnemyType.ROBOT, 20, 20, 3,
+                EnemyType.EMPLOYEE, 20, 20, 3,
                 List.of(enemyWeapon), 15, 15, moveArea, 
                 moveArea, null, null, 0
             );

@@ -26,6 +26,7 @@ import com.artattack.mapelements.Musician;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
 
 public class combatstrategyTest {
     private CombatStrategy combatStrategy;
@@ -35,10 +36,10 @@ public class combatstrategyTest {
         MapBuilder mapBuilder = new TestMapBuilder(); 
         mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
         mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
-        mapBuilder.setInteractableElements(List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new TalkFactory(List.of("Ciao!"))), "",null,null),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new TalkFactory(List.of("Haloa!"))), "",null,null
-         )));
+        /* mapBuilder.setInteractableElements(List.of(
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null, "",null,null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),null, "",null,null
+         ))); */
         mapBuilder.setEnemies(List.of(
             new Enemy(0, 'E', "Goblin", new Coordinates(1, 1),EnemyType.EMPLOYEE),
             new Enemy(1, 'E', "Orco", new Coordinates(1, 2),EnemyType.EMPLOYEE)

@@ -36,31 +36,30 @@ public class interactableelementTest {
     private Player player;
     private Item item;
     private List<Interaction> interactions;
-    private InteractionPanel panel;
     private MainFrame mainFrame;
-    private TestMapBuilder tmb;
+    private Maps map;
 
     @Before
     public void setUp(){
         TestMapBuilder tmb = new TestMapBuilder();
-        assertNotNull(this.tmb);
         tmb.setDimension(26, 135);
         tmb.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(0, 1)));
         tmb.setInteractableElements(List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(new InteractionPanel(), List.of("Ciao!"))), "",null,null),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
-         )));
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(null,List.of("Ciao!"))), "",null,null),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(null,List.of("Haloa!"))), "",null,null
+        )));
         tmb.setTurnQueue();
         tmb.setDict();
         tmb.startMap();
-        Maps map = tmb.getResult();
+        this.map = tmb.getResult();
+        assertNotNull(tmb);
         this.mainFrame = new MainFrame(map);
+        this.mainFrame.linkInteractablePanels();
         assertNotNull(mainFrame);
         player = new MovieDirector(0, '+', "", new Coordinates(0, 0),
             null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<Item>(), null, null);
         this.item = new Cure(" ", " ", 0);
         this.interactions = new ArrayList<Interaction>();
-        this.panel = new InteractionPanel();
         this.interactions.add(new GiveFactory(List.of(" "), this.item).createInteraction());
         this.interactions.add(new TalkFactory(List.of(" ")).createInteraction());
         this.npc = new InteractableElement(0,'*',null,null, interactions, "", new SpritePanel(), mainFrame);
@@ -85,13 +84,13 @@ public class interactableelementTest {
         this.player = null;
         this.item = null;
         this.interactions = null;
-        this.panel = null;
+        this.map = null;
 
         assertNull(this.item);
         assertNull(this.npc);
         assertNull(this.player);
         assertNull(this.interactions);
-        assertNull(this.panel);
+        assertNull(this.map);
     }
 
 }

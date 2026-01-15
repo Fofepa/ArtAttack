@@ -110,7 +110,7 @@ public class MenuPanel {
             List<Coordinates> moveArea = areaBuilder.getResult();
             List<Item> items = new ArrayList<>();
             List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
-                                            new Coordinates(8, 8), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!"))), null, null, null));
+                                            new Coordinates(8, 8), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));

@@ -10,7 +10,7 @@ import com.artattack.view.SpritePanel;
 
 public class InteractableElement extends MapElement {
 
-    private List<InteractionFactory> interactionFactories;
+    private List<Interaction> interactions;
     private int maxInteractions;
     private int lastInteraction;
     private int currInteraction;
@@ -19,11 +19,11 @@ public class InteractableElement extends MapElement {
     private MainFrame mainFrame;
 
     public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
-                               List<InteractionFactory> interactionFactories, String spritePath, 
+                               List<Interaction> interactions, String spritePath, 
                                SpritePanel spritePanel, MainFrame mainFrame){
         super(ID, mapSymbol, name, coordinates);
-        this.interactionFactories = interactionFactories;
-        this.maxInteractions = interactionFactories.size();
+        this.interactions = interactions;
+        this.maxInteractions = interactions.size();
         this.lastInteraction = this.maxInteractions - 1;
         this.currInteraction = 0;
         this.spritePath = spritePath;
@@ -40,17 +40,33 @@ public class InteractableElement extends MapElement {
         // CREATE the interaction from the factory
         Interaction interaction;
         if(this.currInteraction < this.maxInteractions){
-            interaction = this.interactionFactories.get(this.currInteraction).createInteraction();
+            interaction = this.interactions.get(this.currInteraction);
             this.currInteraction++;
         } else {
-            interaction = this.interactionFactories.get(this.lastInteraction).createInteraction();
+            interaction = this.interactions.get(this.lastInteraction);
         }
         
         // INJECT the MainFrame before executing
-        if (interaction != null && this.mainFrame != null) {
+        if (interaction != null) {
             interaction.setMainFrame(this.mainFrame);
             interaction.doInteraction(player);
         }
+    }
+
+    public List<Interaction> getInteractions(){
+        return this.interactions;
+    }
+
+    public int getMaxInteractions(){
+        return this.maxInteractions;
+    }
+
+    public int getCurrInteraction(){
+        return this.currInteraction;
+    }
+
+    public int getLastInteraction(){
+        return this.lastInteraction;
     }
 
     public String getSpritePath() {
@@ -63,5 +79,14 @@ public class InteractableElement extends MapElement {
     
     public void setMainFrame(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
+        
+        // IMPORTANT: Also inject MainFrame into all interactions
+        if (this.interactions != null) {
+            for (Interaction interaction : this.interactions) {
+                if (interaction != null) {
+                    interaction.setMainFrame(mainFrame);
+                }
+            }
+        }
     }
 }

@@ -235,12 +235,12 @@ public class Move{
             for (ActiveElement element : this.getHealTargets(user, map)) {
                 element.updateHP(this.healAmount);
                 total += this.healAmount;
-                if (!works) {
-                    works = true;
-                }
                 if (!this.areaHeal) {
                     break;
                 }
+            }
+            if (!works) {
+                works = true;
             }
         }
         if (works) {

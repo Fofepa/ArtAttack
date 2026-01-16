@@ -3,9 +3,9 @@ package com.artattack.mapelements;
 import java.util.List;
 
 import com.artattack.interactions.Interaction;
-import com.artattack.interactions.Talk;
+import com.artattack.interactions.InteractionFactory;
 import com.artattack.level.Coordinates;
-import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
 import com.artattack.view.SpritePanel;
 
 public class InteractableElement extends MapElement {
@@ -16,22 +16,42 @@ public class InteractableElement extends MapElement {
     private int currInteraction;
     private String spritePath;
     private SpritePanel sp;
-    private InteractionPanel interactionPanel;
+    private MainFrame mainFrame;
 
-
-    public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, List<Interaction> interactions, String spritePath, SpritePanel spritePanel, InteractionPanel interactionPanel){
-        super(ID,mapSymbol,name,coordinates);
+    public InteractableElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
+                               List<Interaction> interactions, String spritePath, 
+                               SpritePanel spritePanel, MainFrame mainFrame){
+        super(ID, mapSymbol, name, coordinates);
+        this.interactions = interactions;
         this.maxInteractions = interactions.size();
         this.lastInteraction = this.maxInteractions - 1;
-        if(interactions.get(this.lastInteraction).getClass() != Talk.class)
-            throw new IllegalArgumentException();
-        this.interactions = interactions;
         this.currInteraction = 0;
         this.spritePath = spritePath;
         this.sp = spritePanel;
-        this.interactionPanel = interactionPanel;
+        this.mainFrame = mainFrame;
     }
-    
+
+    public void interact(Player player){
+        // Load sprite
+        if (sp != null) {
+            sp.loadImage(this.spritePath);
+        }
+
+        // CREATE the interaction from the factory
+        Interaction interaction;
+        if(this.currInteraction < this.maxInteractions){
+            interaction = this.interactions.get(this.currInteraction);
+            this.currInteraction++;
+        } else {
+            interaction = this.interactions.get(this.lastInteraction);
+        }
+        
+        // INJECT the MainFrame before executing
+        if (interaction != null) {
+            interaction.setMainFrame(this.mainFrame);
+            interaction.doInteraction(player);
+        }
+    }
 
     public List<Interaction> getInteractions(){
         return this.interactions;
@@ -49,17 +69,6 @@ public class InteractableElement extends MapElement {
         return this.lastInteraction;
     }
 
-    public void interact(Player player){
-        sp.loadImage(this.spritePath);
-        interactionPanel.activateAndFocus();
-
-        if(this.currInteraction < this.maxInteractions){
-            this.interactions.get(this.currInteraction).doInteraction(player);
-            this.currInteraction++;
-        }
-        else this.interactions.get(this.lastInteraction).doInteraction(player);
-    }
-
     public String getSpritePath() {
         return spritePath;
     }
@@ -67,11 +76,17 @@ public class InteractableElement extends MapElement {
     public void setSpritePanel(SpritePanel spritePanel) {
         this.sp = spritePanel;
     }
-
-    public void setInteractionPanel(InteractionPanel interactionPanel) {
-        this.interactionPanel = interactionPanel;
-    }
-
-
     
+    public void setMainFrame(MainFrame mainFrame) {
+        this.mainFrame = mainFrame;
+        
+        // IMPORTANT: Also inject MainFrame into all interactions
+        if (this.interactions != null) {
+            for (Interaction interaction : this.interactions) {
+                if (interaction != null) {
+                    interaction.setMainFrame(mainFrame);
+                }
+            }
+        }
+    }
 }

@@ -41,7 +41,8 @@ public class MenuPanel {
         
         // Logo
         LogoPanel logoPanel = new LogoPanel();
-        logoPanel.setPreferredSize(new Dimension(800, 250));
+        logoPanel.setPreferredSize(new Dimension(800, 500));
+        logoPanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 500));
 
         
         // Buttons
@@ -93,13 +94,17 @@ public class MenuPanel {
             AreaBuilder areaBuilder = new AreaBuilder();
             areaBuilder.addShape("8");
             List<Coordinates> moveArea = areaBuilder.getResult();
+            areaBuilder.addShape("4");
+            List<Coordinates> area4 = areaBuilder.getResult();
             List<Item> items = new ArrayList<>();
+            List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
+                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));
             Player playerOne = new Musician(
                 1, '@', "Zappa", 
-                new Coordinates(2, 2), 
+                new Coordinates(8, 8), 
                 List.of(new Weapon("Guitar", "A musical weapon", 10)), 
                 5, 5, moveArea, 19, 20, 0, 20, 1, 5, 2, items, null, null
             );
@@ -110,12 +115,17 @@ public class MenuPanel {
                 5, 5, moveArea, 20, 20, 0, 20, 1, 5, 2, items, null, null
             );
             
+            Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
+            Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
+            Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
+            Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);
+
             // Create enemies (optional)
             Enemy enemy = new Enemy(
-                3, 'E', "Guard", 
+                3, 'E', "C17", 
                 new Coordinates(10, 10),
-                EnemyType.GUARD, 20, 20, 3,
-                null, 5, 5, moveArea, 
+                EnemyType.EMPLOYEE, 20, 20, 3,
+                List.of(enemyWeapon), 15, 15, moveArea, 
                 moveArea, null, null, 0
             );
             
@@ -124,7 +134,7 @@ public class MenuPanel {
             builder.setPlayerOne(playerOne);
             builder.setPlayerTwo(playerTwo);
             builder.setEnemies(List.of(enemy));
-            builder.setInteractableElements(new java.util.ArrayList<>());
+            builder.setInteractableElements(npcs);
             builder.setDict();
             builder.setTurnQueue();
             builder.startMap();
@@ -157,7 +167,7 @@ public class MenuPanel {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setMaximumSize(new Dimension(300, 50));
-        button.setFont(new Font("Monospaced", Font.BOLD, 18));
+        button.setFont(new Font("Courier New", Font.BOLD, 18));
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
@@ -191,6 +201,11 @@ class LogoPanel extends JPanel {
             getClass().getResource("/images/logo.png")
         ).getImage();
     }
+    
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(800, 600); 
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -214,12 +229,12 @@ class LogoPanel extends JPanel {
         double ratio = (double) imgWidth / imgHeight;
 
         // width = 60% of the panel
-        int drawWidth = (int) (panelWidth * 0.6);
+        int drawWidth = (int) (panelWidth * 0.4);
         int drawHeight = (int) (drawWidth / ratio);
 
         // center the image
         int x = (panelWidth - drawWidth) / 2;
-        int y = (panelHeight - drawHeight) / 2;
+         int y = 1;
 
         g2.drawImage(logo, x, y, drawWidth, drawHeight, this);
     }

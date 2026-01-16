@@ -15,7 +15,7 @@ public class FleeStrategy extends DecisionStrategy {
     @Override
     public void execute(Enemy enemy, Maps map){
         double max = 0;
-        Coordinates maxCoord;
+        Coordinates maxCoord = null;
         // finds the coordinate that gets the enemy furthest to the player (the closest) it is meant even to go to the closest player, we should create a new strategy named RetreatStrategy that let the enemy go to the closest ally
         if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates())){
             maxCoord = map.getPlayerOne().getCoordinates();
@@ -44,6 +44,7 @@ public class FleeStrategy extends DecisionStrategy {
 
         // sets the new position and decreases the AP
         map.setCell(enemy.getCoordinates(), '.');
+        map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), maxCoord));
         enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), maxCoord));
         enemy.setActionPoints(enemy.getActionPoints()-1);
         map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());

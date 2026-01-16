@@ -3,22 +3,22 @@ package com.artattack.interactions;
 import java.util.List;
 
 import com.artattack.mapelements.Player;
-import com.artattack.view.InteractionPanel;
+import com.artattack.view.MainFrame;
 
+public class Talk extends Interaction {
 
-public class Talk implements  Interaction {
-
-    private InteractionPanel dialogPanel;
     private List<String> dialog;
     
-    public Talk(InteractionPanel dialogPanel, List<String> dialog){
-        this.dialogPanel = dialogPanel;
+    public Talk(MainFrame mainFrame, List<String> dialog){
+        super(mainFrame);
         this.dialog = dialog;
     }
 
     @Override
     public void doInteraction(Player player){
-        this.dialogPanel.showDialog(dialog);
+        if (getMainFrame() != null) {
+            getMainFrame().showDialog(dialog);
+        }
     }
 
     public List<String> getDialog() {

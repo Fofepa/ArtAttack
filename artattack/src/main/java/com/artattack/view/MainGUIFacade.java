@@ -1,22 +1,27 @@
 package com.artattack.view;
 
-import java.util.List;
-import java.util.ArrayList;
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+
 import com.artattack.inputcontroller.InputController;
-import com.artattack.items.Cure;
-import com.artattack.items.Item;
-import com.artattack.view.*;
-import com.artattack.mapelements.Player;
-import com.artattack.moves.Weapon;
 import com.artattack.level.Maps;
-import com.artattack.level.MapBuilder;
-import com.artattack.level.TestMapBuilder;
-import com.artattack.mapelements.*;
-import com.artattack.level.*;
+import com.artattack.mapelements.Player;
 
 
 /**
@@ -27,6 +32,7 @@ public class MainGUIFacade {
     private InputController inputController;
     private GameFacade gameFacade;
     private MenuPanel menuFacade;
+    private PausePanel pausePanel;
     
     private String currentState = "MENU"; // MENU, GAME, PAUSE
     
@@ -61,18 +67,45 @@ public class MainGUIFacade {
         
         // Initialize game facade with game data
         gameFacade = new GameFacade(mainFrame, map, playerOne);
+
+        gameFacade.getMainFrame().setMainGUIFacade(this);
         
+        //Initialize pause panel
+        pausePanel = gameFacade.getMainFrame().getPausePanel();
+
+        if (pausePanel == null) {
+            pausePanel = new PausePanel(this);
+            // Store it back in MainFrame for consistency
+
+            gameFacade.getMainFrame().setPausePanel(pausePanel);
+        }
+        pausePanel.setVisible(false);
+
         // Initialize input controller and register it as turn listener
         inputController = new InputController(gameFacade.getMainFrame());
         map.getConcreteTurnHandler().addTurnListener(inputController);
         
         // Clear and setup the display
         mainFrame.getContentPane().removeAll();
-        mainFrame.add(gameFacade.getGamePanel(), BorderLayout.CENTER);
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        
+        JPanel gamePanel = gameFacade.getGamePanel();
+        gamePanel.setBounds(0, 0, 1920, 1080);
+        pausePanel.setBounds(0, 0, 1920, 1080);
+        
+        layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
+        
+        mainFrame.add(layeredPane, BorderLayout.CENTER);
+        
+        
         
         // KEY FIX: Add InputController as KeyListener to multiple components
         mainFrame.addKeyListener(inputController);
         gameFacade.getGamePanel().addKeyListener(inputController);
+        pausePanel.addKeyListener(inputController);
         
         // Add to specific panels that need key input
         if (gameFacade.getMainFrame().getMapPanel() != null) {
@@ -103,10 +136,24 @@ public class MainGUIFacade {
         // Start the turn system
         map.getConcreteTurnHandler().start();
     }
+
+
+    public void showPauseMenu() {
+        if (pausePanel != null) {
+            pausePanel.showPauseMenu();
+            currentState = "PAUSE";
+        }
+    }
     
-    public void pauseGame() {
-        currentState = "PAUSE";
-        // Implementation for pause menu
+    public void hidePauseMenu() {
+        if (pausePanel != null) {
+            pausePanel.hidePauseMenu();
+            currentState = "GAME";
+        }
+    }
+    
+    public boolean isPaused() {
+        return currentState.equals("PAUSE");
     }
     
     public void exitGame() {

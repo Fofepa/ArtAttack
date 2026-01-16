@@ -22,13 +22,11 @@ public class EnemyChoice{   // Our Context class
     private Enemy enemy;
     private Maps map;
     private DecisionStrategy strategy;
-     private Map<Move,Integer> usable; 
     private MainFrame mainFrame;
     private boolean hasFinished = false;
 
     public EnemyChoice(MainFrame mainFrame){
         this.mainFrame = mainFrame;
-        this.usable = new HashMap<Move,Integer>();
     }
 
     public void setEnemy(Enemy enemy){
@@ -41,6 +39,8 @@ public class EnemyChoice{   // Our Context class
 
     public void choose(){
         
+        Map<Move,Integer> usable = new HashMap<Move,Integer>();
+
         // checks if there are any player to be hit and what move can hit them
         for(Move move : enemy.getWeapons().get(0).getMoves()){
             if(move.getAttackTargets(this.enemy, this.map) != null){
@@ -69,11 +69,15 @@ public class EnemyChoice{   // Our Context class
             case EMPLOYEE:
                 if(hasTarget){
                     if(r < 0.6){
-                        setStrategy(new DumbAttackStrategy(this.mainFrame));
+                        setStrategy(new DumbAttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else if (r < 0.8){
+                        setStrategy(new StallStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
                     }
                     else{
-                        setStrategy(new StallStrategy(this.mainFrame));
+                        setStrategy(new FleeStrategy(this.mainFrame));
                         this.strategy.execute(enemy, map);
                     }
                 }
@@ -96,7 +100,7 @@ public class EnemyChoice{   // Our Context class
             case GUARD:
                 if(hasTarget){ 
                     if(r < 0.7){
-                        setStrategy(new AttackStrategy(this.mainFrame));
+                        setStrategy(new AttackStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
                     }
                     else{
@@ -119,7 +123,7 @@ public class EnemyChoice{   // Our Context class
             case ROBOT:
                 if(hasTarget){
                     if(r < 0.95){
-                        setStrategy(new SmartAttackStrategy(this.mainFrame));
+                        setStrategy(new SmartAttackStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
                     }
                     else{
@@ -143,10 +147,10 @@ public class EnemyChoice{   // Our Context class
         }
     }
 
-    private void setStrategy(DecisionStrategy strategy){
+    private void setStrategy(DecisionStrategy strategy, Map<Move, Integer> usable){
         this.strategy = strategy;
         if(!usable.isEmpty()){
-                this.usable = this.usable.entrySet().stream().sorted((a,b) -> {
+                Map<Move, Integer> sortedUsable = usable.entrySet().stream().sorted((a,b) -> {
                     return (a.getKey().getPower() * a.getValue()) - (b.getKey().getPower() * b.getValue()); 
                 }).
                 collect(Collectors.toMap(
@@ -155,8 +159,12 @@ public class EnemyChoice{   // Our Context class
                     (a,b) -> a,
                     LinkedHashMap::new
                 ));
-            strategy.setMoves(this.usable);
+            this.strategy.setMoves(sortedUsable);
         }
+    }
+
+    private void setStrategy(DecisionStrategy strategy){
+        this.strategy = strategy;
     }
 
     public void setHasFinished(){
@@ -165,5 +173,9 @@ public class EnemyChoice{   // Our Context class
 
     public boolean getHasFinished(){
         return this.hasFinished;
+    }
+
+    public Enemy getEnemy(){
+        return this.enemy;
     }
 }

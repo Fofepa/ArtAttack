@@ -32,7 +32,7 @@ public class giveTest {
         item = new Cure("","",0);
         player = new MovieDirector(0, ' ', "", new Coordinates(0, 0),
             null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, inventory,null,null);
-        interaction = new GiveFactory(new InteractionPanel(),List.of(" "), item).createInteraction();
+        interaction = new GiveFactory(List.of(" "), item).createInteraction();
     }
 
     @Test

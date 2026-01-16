@@ -48,7 +48,11 @@ public class CombatStrategy implements PlayerStrategy{
             weaponIndex = 0;
         } 
         else{
-            this.mainFrame.showDialog(List.of("Who are you trying to hit?"));
+            this.mainFrame.showDialog(List.of("Not enough AP or no one to be hit"));
+        }
+
+        if(player.getActionPoints() == 0){
+            mainFrame.getMap().getConcreteTurnHandler().next();
         }
         return value;
     }

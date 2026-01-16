@@ -1,13 +1,15 @@
 package com.artattack.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
-import com.artattack.mapelements.Player;
-import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnHandler;
 
 /**
@@ -19,6 +21,10 @@ public class TurnOrderPanel extends JPanel {
     public TurnOrderPanel(ConcreteTurnHandler turnHandler) {
         this.turnHandler = turnHandler;
         setBackground(Color.BLACK);
+    }
+
+    public void setTurnHandler(ConcreteTurnHandler turnHandler){
+        this.turnHandler = turnHandler;
     }
     
     @Override

@@ -1,16 +1,16 @@
 package com.artattack.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
-import com.artattack.level.Maps;
-import com.artattack.level.Coordinates;
-import com.artattack.mapelements.Player;
-import com.artattack.items.Item;
-import com.artattack.moves.Weapon;
-import com.artattack.moves.Move;
-import com.artattack.turns.ConcreteTurnHandler;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
 import com.artattack.inputcontroller.CombatStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
 
 /**
  * MapPanel - Displays the game map with all elements
@@ -156,5 +156,9 @@ public class MapPanel extends JPanel {
         if (blinkTimer != null) {
             blinkTimer.stop();
         }
+    }
+
+    public void setMap(Maps map){
+        this.map = map;
     }
 }

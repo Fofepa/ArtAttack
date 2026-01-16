@@ -494,4 +494,16 @@ public class MainFrame {
     public boolean isPaused(){
         return mainGUIFacade.isPaused();
     }
+
+    // ========== Switch Map Management ==========
+    public void switchMap(Maps map){
+        this.map = map;
+        this.mapPanel.setMap(map); //Need to add updateMap
+        linkInteractablePanels();
+        this.turnOrderPanel.setTurnHandler(map.getConcreteTurnHandler());
+        this.movementStrategy.setMap(map); //movementStrategy has mainFrame. Should we get map from ManeFrame??
+        this.combatStrategy.setMap(map); //Same as movementStrategy
+        repaintMapPanel();
+        repaintTurnOrderPanel();
+    }
 }

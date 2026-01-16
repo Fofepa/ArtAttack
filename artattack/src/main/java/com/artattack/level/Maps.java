@@ -49,6 +49,10 @@ public class Maps {
         this.columns = columns;
     }
 
+    public void setTurnHandler(ConcreteTurnHandler turnHandler){
+        this.turnHandler = turnHandler;
+    }
+
 
     public void setDict(){
          this.dictionaire = new HashMap<>();
@@ -149,5 +153,18 @@ public class Maps {
             }
         }
         return null;
+    }
+
+    public void remove(ActiveElement element){
+        if(this.dictionaire.containsValue(element)){
+            this.turnHandler.getConcreteTurnQueue().remove(element);
+            this.mapMatrix[element.getCoordinates().getX()][element.getCoordinates().getY()] = '.';
+            if(element instanceof Player){
+                if(element.equals(this.playerOne))
+                    this.playerOne = null;
+                else this.playerTwo = null;
+            } //else this.enemies.remove(this.enemies.indexOf(element)) doesn't work if List<Enemy> is unmodifiable (like List.of())
+            this.dictionaire.remove(element.getCoordinates());
+        }
     }
 }

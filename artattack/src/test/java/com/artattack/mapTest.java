@@ -67,9 +67,9 @@ public class mapTest {
         TriggerGroup tg = new TriggerGroup(new Talk(new InteractionPanel(), List.of("TestDialog")));
         map.addTriggerGroup(tg, new Coordinates(1, 1), 3, 3);
         map.setDict();
-        for (int i = 1; i < 4; i++) {
-            for (int j = 1; i < 4; j++) {
-                assertNotNull(map.getDict().get(new Coordinates(i, j)));
+        for (int q = 1; q < 4; q++) {
+            for (int k = 1; k < 4; k++) {
+                assertNotNull(map.getDict().get(new Coordinates(q, k)));
             }
         }
     }

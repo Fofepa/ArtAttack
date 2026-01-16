@@ -1,14 +1,26 @@
 package com.artattack.view;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
 
-import com.artattack.level.*;
-import com.artattack.mapelements.*;
-import com.artattack.items.*;
-import com.artattack.moves.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
+import com.artattack.level.MapBuilder;
+import com.artattack.level.MapDirector;
+import com.artattack.level.Maps;
+import com.artattack.level.TutorialMapBuilder;
 
 /**
  * Facade for managing menu screens
@@ -74,7 +86,7 @@ public class MenuPanel {
      */
     private void startNewGameWithTestData() {
         try {
-            // Build the map using your MapBuilder pattern
+            /*// Build the map using your MapBuilder pattern
             MapBuilder builder = new TestMapBuilder();
             
             // Create players (adjust based on your actual Player constructors)
@@ -120,7 +132,14 @@ public class MenuPanel {
             Maps map = builder.getResult();
             
             // Start the game through the facade
-            mainFacade.startNewGame(map, playerOne, playerTwo);
+            mainFacade.startNewGame(map, playerOne, playerTwo);*/
+        MapBuilder builder = new TutorialMapBuilder();
+        MapDirector director = new MapDirector(builder);
+
+        director.make("Tutorial");
+        Maps map = builder.getResult();
+
+        mainFacade.startNewGame(map, map.getPlayerOne(), map.getPlayerTwo());
             
         } catch (Exception ex) {
             System.err.println("Error starting game:");

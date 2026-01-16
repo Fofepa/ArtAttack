@@ -185,8 +185,10 @@ public class Move{
         if (user.getActionPoints() < this.getActionPoints()) {
             return 0;
         }
+        int total = 0;
+        boolean works = false;
         //Damage Logic
-        if (this.power != 0 && !this.attackArea.isEmpty()) {
+        if (this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 switch (element) {
                     case Enemy e -> {
@@ -210,13 +212,18 @@ public class Move{
                             }
                             e.remove(map);
                         }
+                        total += this.power;
                     }
                     case Player p -> {  
                         p.updateHP(- this.power /*-variabile globale*/);
+                        total += this.power;
                         //Need to add GameOver logic
                     }
                     default -> {
                     }
+                }
+                if (!works) {
+                    works = true;
                 }
                 if (!this.areaAttack) {
                     break;
@@ -224,16 +231,22 @@ public class Move{
             }
         }
         //Healing Logic
-        if (this.healAmount != 0 && !this.healArea.isEmpty()) {
+        if (this.healAmount != 0 && !this.healArea.isEmpty() && this.getHealTargets(user, map) != null) {
             for (ActiveElement element : this.getHealTargets(user, map)) {
                 element.updateHP(this.healAmount);
+                total += this.healAmount;
+                if (!works) {
+                    works = true;
+                }
                 if (!this.areaHeal) {
                     break;
                 }
             }
         }
-        user.setActionPoints(user.getActionPoints() - this.getActionPoints());
-        return this.power;
+        if (works) {
+            user.setActionPoints(user.getActionPoints() - this.getActionPoints());
+        }
+        return total;
     }
 
 }

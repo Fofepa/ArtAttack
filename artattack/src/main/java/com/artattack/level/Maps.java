@@ -25,8 +25,8 @@ public class Maps {
     private List<InteractableElement> interactableElements;
     private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
-    private int rows;
-    private int columns;
+    private int width;
+    private int height;
     private ConcreteTurnHandler turnHandler;
 
     
@@ -48,28 +48,28 @@ public class Maps {
         this.interactableElements = interactableElements;
     }
 
-    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int rows, int columns) {
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height) {
         if (this.triggers == null) {
             this.triggers = new ArrayList<>();
         }
-        for (int i = 0; i < columns; i++) {
-            this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
-            this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), rows - 1 + offset.getY()), triggerGroup));
+        for (int i = 0; i < width; i++) {
+            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup));
         }
-        for (int i = 1; i < rows; i++) {
-            this.triggers.add(new Trigger(0, '.', "", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
-            this.triggers.add(new Trigger(0, '.', "", new Coordinates(columns - 1 + offset.getX(), i), triggerGroup));
+        for (int i = 1; i < height; i++) {
+            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup));
         }
-        for (int i = 1; i < columns; i++) {
-            for (int j = 1; j < rows; j++) {
-                this.triggers.add(new Trigger(0, '.', "", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
+        for (int i = 1; i < width; i++) {
+            for (int j = 1; j < height; j++) {
+                this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
             }
         }
     }
 
-    public void setDimension(int rows, int columns){
-        this.rows = rows;
-        this.columns = columns;
+    public void setDimension(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
 
@@ -96,7 +96,7 @@ public class Maps {
         }
         if (this.triggers != null) {
             for (Trigger t : this.triggers) {
-                if (t.getCoordinates() != null) {
+                if (t.getCoordinates() != null && this.dictionaire.get(t.getCoordinates()) == null) {
                     this.dictionaire.put(t.getCoordinates(), t);
                 }
             }
@@ -121,12 +121,12 @@ public class Maps {
         return this.dictionaire;
     }
 
-    public int getRows(){
-        return this.rows;
+    public int getHeight(){
+        return this.height;
     }
 
-    public int getColumns(){
-        return this.columns;
+    public int getWidth(){
+        return this.width;
     }
 
     public Player getPlayerOne(){
@@ -146,12 +146,12 @@ public class Maps {
     }
 
     public void setCell(Coordinates coord, char character){
-        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
+        if(coord.getX() >= 0 && coord.getX() < height && coord.getY() >= 0 && coord.getY() < width)
             this.mapMatrix[coord.getX() ][coord.getY() ] = character;
     }
 
     public char getCell(Coordinates coord){
-        if(coord.getX() >= 0 && coord.getX() < rows && coord.getY() >= 0 && coord.getY() < columns)
+        if(coord.getX() >= 0 && coord.getX() < height && coord.getY() >= 0 && coord.getY() < width)
             return this.mapMatrix[coord.getX()][coord.getY()];
         else
             return ' ';

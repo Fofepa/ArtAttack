@@ -6,6 +6,7 @@ import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.TriggerGroup;
 
 public class TestMapBuilder implements MapBuilder {
     private Maps map;
@@ -49,38 +50,43 @@ public class TestMapBuilder implements MapBuilder {
     }
 
     @Override
-    public void setDimension(int rows, int columns){
-        this.map.setDimension(rows, columns);
+    public void setDimension(int width, int height){
+        this.map.setDimension(width, height);
+    }
+
+    @Override
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height) {
+        this.map.addTriggerGroup(triggerGroup, offset, width, height);
     }
 
     @Override
     public void startMap() {
-        int rows = this.map.getRows();
-        int columns = this.map.getColumns();
+        int height = this.map.getHeight();
+        int width = this.map.getWidth();
 
-        char[][] charMatrix = new char[rows][columns];
+        char[][] charMatrix = new char[width][height];
 
         // Sets all the cells with the "." character
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
                 charMatrix[i][j] = '.';
             }
         }
 
         // Coverage of the border with the # character
-        for (int j = 0; j < columns; j++) {
+        for (int j = 0; j < height; j++) {
             charMatrix[0][j] = '#';
-            charMatrix[rows - 1][j] = '#';
+            charMatrix[width - 1][j] = '#';
         }
 
-        for (int i = 0; i < rows; i++) {
+        for (int i = 0; i < width; i++) {
             charMatrix[i][0] = '#';
-            charMatrix[i][columns - 1] = '#';
+            charMatrix[i][height - 1] = '#';
         }
 
         // putting all the obstacles
-        for (int j = 5; j < 15 && j < columns; j++) {
-            if (10 < rows) {
+        for (int j = 5; j < 15 && j < height; j++) {
+            if (10 < width) {
                 charMatrix[10][j] = '#';
             }
         }
@@ -91,8 +97,8 @@ public class TestMapBuilder implements MapBuilder {
             int y = key.getY();
             int x = key.getX();
 
-            if (y >= 0 && y < rows && x >= 0 && x < columns) {
-                charMatrix[y][x] = element.getMapSymbol();
+            if (y >= 0 && y < height && x >= 0 && x < width) {
+                charMatrix[x][y] = element.getMapSymbol();
             } else {
                 System.out.println("⚠️ Coordinates Out of Bounds!: " + key);
             }

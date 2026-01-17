@@ -12,6 +12,7 @@ import com.artattack.level.Maps;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
 
 /**
  * MainFrame adapter that bridges the Facade pattern with the InputController
@@ -76,6 +77,15 @@ public class MainFrame {
                         ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
                     } catch (Exception e) {
                         System.err.println("Could not set panels for InteractableElement: " + ie.getName());
+                    }
+                }
+                if (element instanceof Trigger t) {
+                    try {
+                        if (t.getTriggerGroup().getInteraction().getMainFrame() == null) {
+                            t.getTriggerGroup().getInteraction().setMainFrame(this);
+                        }
+                    } catch (Exception e) {
+                        System.err.println("Could not set panels for InteractableElement: " + t.getName());
                     }
                 }
             }

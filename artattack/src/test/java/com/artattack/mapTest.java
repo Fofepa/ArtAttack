@@ -19,7 +19,6 @@ import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.TriggerGroup;
-import com.artattack.view.InteractionPanel;
 import com.artattack.view.MainFrame;
 import com.artattack.view.SpritePanel;
 
@@ -69,7 +68,7 @@ public class mapTest {
 
     @Test
     public void addTriggerGroupTest() {
-        TriggerGroup tg = new TriggerGroup(new Talk(new InteractionPanel(), List.of("TestDialog")));
+        TriggerGroup tg = new TriggerGroup(new Talk(new MainFrame(this.map), List.of("TestDialog")));
         map.addTriggerGroup(tg, new Coordinates(1, 1), 3, 3);
         map.setDict();
         for (int q = 1; q < 4; q++) {

@@ -148,7 +148,6 @@ public class MenuPanel {
 
         director.make("Tutorial");
         Maps map = builder.getResult();
-
         mainFacade.startNewGame(map, map.getPlayerOne(), map.getPlayerTwo());
             
         } catch (Exception ex) {

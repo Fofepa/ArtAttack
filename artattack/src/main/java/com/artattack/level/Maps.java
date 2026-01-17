@@ -53,16 +53,16 @@ public class Maps {
             this.triggers = new ArrayList<>();
         }
         for (int i = 0; i < width; i++) {
-            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
-            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup));
         }
         for (int i = 1; i < height; i++) {
-            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
-            this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup));
         }
         for (int i = 1; i < width; i++) {
             for (int j = 1; j < height; j++) {
-                this.triggers.add(new Trigger(0, 't', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
+                this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
             }
         }
     }

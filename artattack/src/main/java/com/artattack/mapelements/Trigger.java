@@ -10,6 +10,10 @@ public class Trigger extends MapElement {
         this.triggerGroup = triggerGroup;
     }
 
+    public TriggerGroup getTriggerGroup() {
+        return this.triggerGroup;
+    }
+
     public void OnTrigger(Player player) {
         triggerGroup.OnTrigger(player);
     }

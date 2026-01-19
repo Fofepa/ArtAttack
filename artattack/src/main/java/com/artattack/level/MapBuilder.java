@@ -17,6 +17,7 @@ public interface MapBuilder {
     public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height);
     public void startMap();     // only for the view part
     public void setDict();
-    public void setTurnQueue(); 
+    public void setTurnQueue();
+    public void setTurnQueue(Player currPlayer, Player otherPlayer); 
     public Maps getResult();
 }

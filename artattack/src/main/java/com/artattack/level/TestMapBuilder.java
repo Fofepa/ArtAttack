@@ -50,6 +50,11 @@ public class TestMapBuilder implements MapBuilder {
     }
 
     @Override
+    public void setTurnQueue(Player first, Player second) {
+        this.map.setTurnQueue(first, second);
+    }
+
+    @Override
     public void setDimension(int width, int height){
         this.map.setDimension(width, height);
     }

@@ -127,6 +127,14 @@ public class Maps {
         
     }
 
+    public void setTurnQueue(Player currPlayer, Player otherPlayer){
+        List<ActiveElement>list = new LinkedList<ActiveElement>();
+        list.add(currPlayer);
+        list.add(otherPlayer);
+        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
+        this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+    }
+
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;

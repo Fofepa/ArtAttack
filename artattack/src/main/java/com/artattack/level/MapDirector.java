@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.artattack.interactions.GiveFactory;
+import com.artattack.interactions.SwitchMap;
 import com.artattack.interactions.TalkFactory;
 import com.artattack.items.Cure;
 import com.artattack.mapelements.Enemy;
@@ -16,6 +17,7 @@ import com.artattack.moves.Weapon;
 
 public class MapDirector {
     private MapBuilder builder;
+    private MapBuilder builder_;
 
     public MapDirector(MapBuilder builder) {
         this.builder = builder;
@@ -37,6 +39,8 @@ public class MapDirector {
                 areaBuilder.addShape("square", 5, true);
                 List<Coordinates> enemyVisionArea = areaBuilder.getResult();
 
+
+
                 //Creating Players
                 Musician p1 = new Musician(1, '@', "Zappa", new Coordinates(29, 23), List.of(new Weapon("Hoe", "", 0)), 5,5, bigArea, 20, 20, 0, 20, 1, 5, 2, new ArrayList<>(), null, null);
                 MovieDirector p2 = new MovieDirector(0, '@', "Lynch", new Coordinates(26, 23),List.of(new Weapon("Hoe", "", 0)), 5, 5 , bigArea, 20, 20, 0, 20, 1, 5, 2, new ArrayList<>(), null, null);
@@ -55,6 +59,9 @@ public class MapDirector {
                             "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Understood? Alright, go and beat up that fella over there.")).createInteraction()), null, null, null);
+                make("Test");
+                InteractableElement door = new InteractableElement(0, 'H', "Door", new Coordinates(0, 2), 
+                List.of(new SwitchMap(null, new ArrayList<>(), p1, p2, this.builder_, List.of(new Coordinates(1, 1), new Coordinates(1, 2)))), null, null, null);
 
                 //Creating TriggerGroups
                 TriggerGroup firstDialogue = new TriggerGroup(new TalkFactory( 
@@ -93,7 +100,7 @@ public class MapDirector {
                 this.builder.setPlayerOne(p1);
                 this.builder.setPlayerTwo(p2);
                 this.builder.setEnemies(List.of(e));
-                this.builder.setInteractableElements(List.of(npc, chest));
+                this.builder.setInteractableElements(List.of(npc, chest, door));
                 this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4);
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9);
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 1), 3, 5);
@@ -102,6 +109,10 @@ public class MapDirector {
                 this.builder.setDict();
                 this.builder.setTurnQueue();
                 this.builder.startMap();
+                break;
+            case "Test":
+                this.builder_ = new TestMapBuilder();
+                builder_.setDimension(20, 20);
                 break;
         }
     }

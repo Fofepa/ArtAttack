@@ -104,6 +104,11 @@ public class TutorialMapBuilder implements MapBuilder {
     }
 
     @Override
+    public void setTurnQueue(Player first, Player second) {
+        this.map.setTurnQueue(first, second);
+    }
+
+    @Override
     public Maps getResult() {
         Maps product = this.map;
         this.reset();

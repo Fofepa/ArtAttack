@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artattack.level.Coordinates;
-import com.artattack.level.Maps;
+import com.artattack.level.MapBuilder;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnHandler;
@@ -14,15 +14,17 @@ import com.artattack.view.MainFrame;
 public class SwitchMap extends Interaction {
 
     private List<String> dialog;
-    private Maps currentMap;
-    private Maps nextMap;
+    private Player playerOne;
+    private Player playerTwo;
+    private MapBuilder builder;
     private List<Coordinates> nextCoordinateses;
 
-    public SwitchMap(MainFrame mainFrame, List<String> dialog,Maps currentMap,  Maps nextMap, List<Coordinates> nextCoordinateses){
+    public SwitchMap(MainFrame mainFrame, List<String> dialog, Player playerOne, Player playerTwo,  MapBuilder builder, List<Coordinates> nextCoordinateses){
         super(mainFrame);
         this.dialog = dialog;
-        this.currentMap = currentMap;
-        this.nextMap = nextMap;
+        this.playerOne = playerOne;
+        this.playerTwo = playerTwo;
+        this.builder = builder;
         this.nextCoordinateses = nextCoordinateses;
     }
 
@@ -34,14 +36,11 @@ public class SwitchMap extends Interaction {
 
         setNextMap(player);
 
-        this.currentMap.remove(this.currentMap.getPlayerOne());
-        this.currentMap.remove(this.currentMap.getPlayerTwo());
-
-        getMainFrame().switchMap(this.nextMap);
+        getMainFrame().switchMap(this.builder.getResult());
     }
 
-    public Maps getNextMap(){
-        return this.nextMap;
+    public MapBuilder getBuilder(){
+        return this.builder;
     }
 
     public List<String> getDialog(){
@@ -49,21 +48,23 @@ public class SwitchMap extends Interaction {
     }
 
     private void setNextMap(Player player){
-        List<ActiveElement>list = new LinkedList<ActiveElement>();
+        List<ActiveElement> list = new LinkedList<ActiveElement>();
         list.add(player);
         player.setCoordinates(this.nextCoordinateses.get(0));
-        if(player.equals(this.currentMap.getPlayerOne())){
-            this.nextMap.setPlayerOne(player);
-            this.currentMap.getPlayerTwo().setCoordinates(this.nextCoordinateses.get(1));
-            this.nextMap.setPlayerTwo(this.currentMap.getPlayerTwo());
-            list.add(this.currentMap.getPlayerTwo());
+        if(player.equals(this.playerOne)){
+            this.builder.setPlayerOne(player);
+            this.playerTwo.setCoordinates(this.nextCoordinateses.get(1));
+            this.builder.setPlayerTwo(this.playerTwo);
+            list.add(this.playerTwo);
+            this.builder.setTurnQueue(player, this.playerTwo);
         } else {
-            this.nextMap.setPlayerTwo(player);
-            this.currentMap.getPlayerOne().setCoordinates(this.nextCoordinateses.get(1));
-            this.nextMap.setPlayerOne(this.currentMap.getPlayerTwo());
-            list.add(this.currentMap.getPlayerOne());
+            this.builder.setPlayerTwo(player);
+            this.playerOne.setCoordinates(this.nextCoordinateses.get(1));
+            this.builder.setPlayerOne(this.playerOne);
+            list.add(this.playerOne);
+            this.builder.setTurnQueue(player, this.playerOne);
         }
-        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
-        this.nextMap.setTurnHandler((ConcreteTurnHandler) turnQueue.createTurnHandler()); 
+        this.builder.setDict();
+        this.builder.startMap(); 
     }
 }

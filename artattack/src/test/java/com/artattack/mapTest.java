@@ -20,8 +20,8 @@ import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
-import com.artattack.mapelements.TriggerGroup;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.TriggerGroup;
 import com.artattack.view.MainFrame;
 import com.artattack.view.SpritePanel;
 
@@ -94,9 +94,10 @@ public class mapTest {
                 assertNotNull(map.getDict().get(new Coordinates(q, k)));
             }
         }
+    }
     
     @Test
-    public void removeTest(){
+    public void removeTest() {
         this.map.remove(enemy);
         //assertFalse(this.map.getEnemies().contains(enemy));
         assertTrue(this.map.getMapMatrix()[enemy.getCoordinates().getX()][enemy.getCoordinates().getY()] == '.');

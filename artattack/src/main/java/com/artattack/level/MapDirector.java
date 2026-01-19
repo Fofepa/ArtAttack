@@ -45,7 +45,8 @@ public class MapDirector {
                 Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea, enemyVisionArea, null, null, 0);
 
                 //Creating InteractableElements
-                InteractableElement chest = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(new GiveFactory(List.of("You found a Cure!"), new Cure("Cure", "Heals 5 HP.", 5)).createInteraction()), null, null, null);
+                InteractableElement chest = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
+                    new GiveFactory(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), new Cure("Cure", "Heals 5 HP.", 5)).createInteraction()), null, null, null);
                 InteractableElement npc = new InteractableElement(0, 'T', "John Belushi", new Coordinates(22, 21), List.of(new TalkFactory(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
@@ -80,12 +81,12 @@ public class MapDirector {
                             "You see that red area around him? That's their line of sight! Or VISION AREA, if you'd like!",
                             "If you enter that area, they will notice you and become hostile!",
                             "So it's important that you get the jump on them by using a RANGED MOVE from your MOVE INVENTORY!",
-                            "Press M to browse your MOVE INVENTORY. Then, after choosing a MOVE, press ENTER to use it!")).createInteraction());
+                            "Press F to browse your MOVE INVENTORY. Then, after choosing a MOVE, press ENTER to use it!")).createInteraction());
                 TriggerGroup turnQueueDialogue = new TriggerGroup(new TalkFactory(
                     List.of("Okay, now they're mad! As you can see, the enemy has now entered the TURN QUEUE! It tells you what the order of turns is!",
                             "As you can see, the QUEUE is numbered, and the slot belonging to the person who's turn it is will be highlighted.",
                             "When all your ACTION POINTS are depleted, your turn will pass and it'll be the next person in the queue's turn!",
-                            "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know?")).createInteraction());
+                            "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know!")).createInteraction());
 
                 //Building Map
                 this.builder.setDimension(32, 26);

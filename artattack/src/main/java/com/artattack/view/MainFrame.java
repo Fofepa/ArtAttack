@@ -71,21 +71,25 @@ public class MainFrame {
     public void linkInteractablePanels() {
         if (map != null && map.getDict() != null) {
             for (MapElement element : map.getDict().values()) {
-                if (element instanceof InteractableElement ie) {
-                    try {
-                        ie.setSpritePanel(spritePanel);
-                        ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
-                    } catch (Exception e) {
-                        System.err.println("Could not set panels for InteractableElement: " + ie.getName());
-                    }
-                }
-                if (element instanceof Trigger t) {
-                    try {
-                        if (t.getTriggerGroup().getInteraction().getMainFrame() == null) {
-                            t.getTriggerGroup().getInteraction().setMainFrame(this);
+                switch (element) {
+                    case InteractableElement ie -> {
+                        try {
+                            ie.setSpritePanel(spritePanel);
+                            ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
+                        } catch (Exception e) {
+                            System.err.println("Could not set panels for InteractableElement: " + ie.getName());
                         }
-                    } catch (Exception e) {
-                        System.err.println("Could not set panels for InteractableElement: " + t.getName());
+                    }
+                    case Trigger t -> {
+                        try {
+                            if (t.getTriggerGroup().getInteraction().getMainFrame() == null) {
+                                t.getTriggerGroup().getInteraction().setMainFrame(this);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Could not set panels for Trigger: " + t.getName());
+                        }
+                    }
+                    default -> {
                     }
                 }
             }

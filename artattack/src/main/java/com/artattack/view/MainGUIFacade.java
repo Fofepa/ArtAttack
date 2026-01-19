@@ -172,6 +172,10 @@ public class MainGUIFacade {
     public GameFacade getGameFacade() {
         return gameFacade;
     }
+
+    public InputController getInputController(){
+        return this.inputController;
+    }
 }
 
 

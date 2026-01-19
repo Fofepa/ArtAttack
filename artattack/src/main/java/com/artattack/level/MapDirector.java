@@ -113,6 +113,7 @@ public class MapDirector {
             case "Test":
                 this.builder_ = new TestMapBuilder();
                 builder_.setDimension(20, 20);
+                builder_.setEnemies(List.of());
                 break;
         }
     }

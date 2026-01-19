@@ -514,6 +514,8 @@ public class MainFrame {
         this.map = map;
         this.mapPanel.setMap(map); //Need to add updateMap
         linkInteractablePanels();
+        this.map.getConcreteTurnHandler().addTurnListener(this.mainGUIFacade.getInputController());
+        this.map.getConcreteTurnHandler().start();
         this.turnOrderPanel.setTurnHandler(map.getConcreteTurnHandler());
         this.movementStrategy.setMap(map); //movementStrategy has mainFrame. Should we get map from ManeFrame??
         this.combatStrategy.setMap(map); //Same as movementStrategy

@@ -89,6 +89,10 @@ public class CombatStrategy implements PlayerStrategy{
         this.isSelected = condition;
     }
 
+    public void setMap(Maps map){
+        this.map = map;
+    }
+
     @Override
     public int getType(){
         return 1;

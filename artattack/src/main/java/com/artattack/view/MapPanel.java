@@ -157,4 +157,8 @@ public class MapPanel extends JPanel {
             blinkTimer.stop();
         }
     }
+
+    public void setMap(Maps map){
+        this.map = map;
+    }
 }

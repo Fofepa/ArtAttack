@@ -62,6 +62,10 @@ public class ActiveElement extends MapElement implements Comparable<ActiveElemen
     public void setSpeed(int speed){
         this.speed = speed;
     }
+
+    public void setMaxHP(int newHP){
+        this.maxHP = newHP;
+    }
     
     public void setActionPoints(int actionPoints){
         this.actionPoints = actionPoints;

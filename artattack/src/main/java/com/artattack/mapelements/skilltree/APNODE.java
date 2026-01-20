@@ -13,7 +13,13 @@ public class  APNODE extends Node{
 
     @Override
     public void setSkill(){
-        this.getPlayer().setMaxActionPoints(this.getPlayer().getMaxActionPoints()+ newAP);
-        this.setSpent();
+        for(Node parent : this.getParents()){
+            if(parent.isSpent() && !this.isSpent()){
+                this.getPlayer().setMaxActionPoints(this.getPlayer().getMaxActionPoints()+ newAP);
+                this.setSpent();
+                return;
+            }
+        }
+        System.out.println("No parent has been used before");
     }
 }

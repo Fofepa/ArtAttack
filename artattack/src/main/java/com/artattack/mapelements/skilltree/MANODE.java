@@ -16,7 +16,13 @@ public class  MANODE extends Node{
 
     @Override
     public void setSkill(){
-        this.getPlayer().getMoveArea().addAll(shape);
-        this.setSpent();
+        for(Node parent : this.getParents()){
+            if(parent.isSpent() && !this.isSpent()){
+                this.getPlayer().getMoveArea().addAll(shape);
+                this.setSpent();
+                return;
+            }
+        }
+        System.out.println("No parent has been used before");
     }
 }

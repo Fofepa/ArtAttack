@@ -11,7 +11,13 @@ public class  MAXWPNODE extends Node{
 
     @Override
     public void setSkill(){
-        this.getPlayer().setMaxWeapons();
-        this.setSpent();
+        for(Node parent : this.getParents()){
+            if(parent.isSpent() && !this.isSpent()){
+                this.getPlayer().setMaxWeapons();
+                this.setSpent();
+                return;
+            }
+        }
+        System.out.println("No parent has been used before");
     }
 }

@@ -50,4 +50,12 @@ public class Weapon{
         moves.add(move);
         return true;
     }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Weapon weapon = (Weapon) obj;
+        return this.getName().equals(weapon.getName());
+    }
 }

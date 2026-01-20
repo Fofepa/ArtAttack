@@ -15,10 +15,21 @@ public class SpecialMoveNODE extends Node{
 
     @Override
     public void setSkill(){
-        this.getPlayer().setMaxWeapons();
-        Weapon specialWeapon = new Weapon("Special", "You got it with tears", 0);
-        specialWeapon.addMove(specialMove);
-        this.getPlayer().getWeapons().add(specialWeapon);
-        this.setSpent();
+        for(Node parent : this.getParents()){
+            if(parent.isSpent() && !this.isSpent()){
+                Weapon specialWeapon = new Weapon("Special", "You got it with tears", 0);
+                if(!this.getPlayer().getWeapons().contains(specialWeapon)){
+                    specialWeapon.addMove(specialMove);
+                    this.getPlayer().setMaxWeapons();
+                    this.getPlayer().getWeapons().add(specialWeapon);
+                    this.setSpent();
+                }
+                else{
+                    this.getPlayer().getWeapons().get(this.getPlayer().getWeapons().indexOf(specialWeapon)).addMove(specialMove);
+                }
+                return;
+            }
+        }
+        System.out.println("No parent has been used before");
     }
 }

@@ -14,7 +14,13 @@ public class  HPNODE extends Node{
 
     @Override
     public void setSkill(){
-        this.getPlayer().setMaxHP(this.getPlayer().getMaxHP()+ newHP);
-        this.setSpent();
+        for(Node parent : this.getParents()){
+            if(parent.isSpent() && !this.isSpent()){
+                this.getPlayer().setMaxHP(this.getPlayer().getMaxHP()+ newHP);
+                this.setSpent();
+                return;
+            }
+        }
+        System.out.println("No parent has been used before");
     }
 }

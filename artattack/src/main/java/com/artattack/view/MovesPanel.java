@@ -1,31 +1,68 @@
 package com.artattack.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import com.artattack.mapelements.Player;
-import com.artattack.moves.*;
+import com.artattack.moves.Move;
+import com.artattack.moves.Weapon;
 
 /**
- * MovesPanel - Displays weapons and their moves
+ * MovesPanel - Displays moves for the selected weapon
  */
 public class MovesPanel extends JPanel {
     private Player player;
     private int selectedWeaponIndex = 0;
     private int selectedMoveIndex = 0;
-    private boolean isInMoveSelection = false;
+    private boolean active = false;
     
     public MovesPanel(Player player) {
         this.player = player;
         setBackground(Color.BLACK);
         setFocusable(true);
     }
+
+    public void setActive(boolean active) {
+        this.active = active;
+        repaint();
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+        selectedWeaponIndex = 0;
+        selectedMoveIndex = 0;
+        repaint();
+    }
+    
+    public void setSelectedWeaponIndex(int index) {
+        this.selectedWeaponIndex = index;
+        this.selectedMoveIndex = 0; // Reset move selection when weapon changes
+    }
+    
+    public int getSelectedMoveIndex() {
+        return selectedMoveIndex;
+    }
+    
+    public void setSelectedMoveIndex(int index) {
+        if (player != null && !player.getWeapons().isEmpty()) {
+            Weapon weapon = player.getWeapons().get(selectedWeaponIndex);
+            if (!weapon.getMoves().isEmpty()) {
+                this.selectedMoveIndex = Math.max(0, Math.min(index, weapon.getMoves().size() - 1));
+            }
+        }
+    }
     
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        if (!active) {
+            return; 
+        }
         
         if (player == null) {
             g.setColor(Color.GRAY);
@@ -34,48 +71,51 @@ public class MovesPanel extends JPanel {
             return;
         }
         
-        g.setFont(new Font("Monospaced", Font.PLAIN, 11));
-        int y = 20;
-        
         List<Weapon> weapons = player.getWeapons();
         
-        if (weapons.isEmpty()) {
+        if (weapons.isEmpty() || selectedWeaponIndex >= weapons.size()) {
             g.setColor(Color.GRAY);
-            g.drawString("Press » to select", 10, y);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+            g.drawString("No weapon selected", 10, 20);
             return;
         }
         
-        // Display weapons
-        for (int i = 0; i < weapons.size(); i++) {
-            Weapon weapon = weapons.get(i);
+        Weapon selectedWeapon = weapons.get(selectedWeaponIndex);
+        List<Move> moves = selectedWeapon.getMoves();
+        
+        // Display weapon name
+        g.setColor(Color.CYAN);
+        g.setFont(new Font("Monospaced", Font.BOLD, 12));
+        g.drawString(selectedWeapon.getName(), 10, 20);
+        
+        int y = 40;
+        
+        if (moves.isEmpty()) {
+            g.setColor(Color.GRAY);
+            g.setFont(new Font("Monospaced", Font.PLAIN, 11));
+            g.drawString("No moves available", 10, y);
+            return;
+        }
+        
+        // Display moves
+        g.setFont(new Font("Monospaced", Font.PLAIN, 11));
+        for (int i = 0; i < moves.size(); i++) {
+            Move move = moves.get(i);
             
-            if (i == selectedWeaponIndex && !isInMoveSelection) {
-                g.setColor(Color.CYAN);
+            if (i == selectedMoveIndex) {
+                g.setColor(Color.YELLOW);
                 g.drawString("> ", 5, y);
             } else {
                 g.setColor(Color.WHITE);
             }
             
-            g.drawString(weapon.getName(), 20, y);
+            g.drawString(move.getName(), 20, y);
             y += 15;
-            
-            // Display moves if this weapon is selected
-            if (i == selectedWeaponIndex && isInMoveSelection) {
-                List<Move> moves = weapon.getMoves();
-                for (int j = 0; j < moves.size(); j++) {
-                    Move move = moves.get(j);
-                    
-                    if (j == selectedMoveIndex) {
-                        g.setColor(Color.YELLOW);
-                        g.drawString("  > ", 25, y);
-                    } else {
-                        g.setColor(Color.LIGHT_GRAY);
-                    }
-                    
-                    g.drawString(move.getName(), 45, y);
-                    y += 15;
-                }
-            }
         }
+        
+        // Instruction
+        g.setColor(Color.GRAY);
+        g.setFont(new Font("Monospaced", Font.PLAIN, 10));
+        g.drawString("Press « to go back", 10, getHeight() - 10);
     }
 }

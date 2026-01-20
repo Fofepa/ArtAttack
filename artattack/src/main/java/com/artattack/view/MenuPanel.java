@@ -19,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.artattack.interactions.Talk;
 import com.artattack.interactions.TalkFactory;
 import com.artattack.items.Cure;
 import com.artattack.items.Item;
@@ -35,6 +34,7 @@ import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
 
 /**
@@ -102,6 +102,17 @@ public class MenuPanel {
      */
     private void startNewGameWithTestData() {
         try {
+
+            MoveBuilder1 mb1= new MoveBuilder1();
+            mb1.setName("prova");
+            mb1.setPower(20);
+            mb1.setActionPoints(1);
+            mb1.setAreaAttack(false);
+            
+        
+
+           
+        
             // Build the map using your MapBuilder pattern
             MapBuilder builder = new TestMapBuilder();
             
@@ -111,6 +122,9 @@ public class MenuPanel {
             List<Coordinates> moveArea = areaBuilder.getResult();
             areaBuilder.addShape("4");
             List<Coordinates> area4 = areaBuilder.getResult();
+            mb1.setAttackArea(area4);
+            Move mossa = mb1.getResult();
+            Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
             List<Item> items = new ArrayList<>();
             List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
                                             new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
@@ -120,7 +134,7 @@ public class MenuPanel {
             Player playerOne = new Musician(
                 1, '@', "Zappa", 
                 new Coordinates(8, 8), 
-                List.of(new Weapon("Guitar", "A musical weapon", 10)), 
+                List.of(hoe), 
                 5, 5, moveArea, 19, 20, 0, 20, 1, 5, 2, items, null, null
             );
             Player playerTwo = new MovieDirector(

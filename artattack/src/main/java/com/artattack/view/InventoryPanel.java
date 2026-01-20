@@ -1,13 +1,14 @@
 package com.artattack.view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
 
-import javax.swing.*;
+import javax.swing.JPanel;
 
 import com.artattack.items.Item;
 import com.artattack.mapelements.Player;
-import com.artattack.moves.*;
 /**
  * InventoryPanel - Displays player inventory
  */
@@ -19,6 +20,12 @@ public class InventoryPanel extends JPanel {
         this.player = player;
         setBackground(Color.BLACK);
         setFocusable(true);
+    }
+
+
+    public void setPlayer(Player player){
+        this.player = player;
+        repaint();
     }
 
     @Override

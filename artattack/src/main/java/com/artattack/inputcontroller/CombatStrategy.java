@@ -89,8 +89,14 @@ public class CombatStrategy implements PlayerStrategy{
         this.isSelected = condition;
     }
 
+    public void setMoveIndex(int moveIndex) {
+        this.moveIndex = moveIndex;
+    }
+
     @Override
     public int getType(){
         return 1;
     }
+
+    
 }

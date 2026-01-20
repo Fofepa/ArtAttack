@@ -7,6 +7,7 @@ import java.util.function.Consumer;
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.inputcontroller.InventoryStrategy;
 import com.artattack.inputcontroller.MovementStrategy;
+import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.InteractableElement;
@@ -97,6 +98,9 @@ public class MainFrame {
         if (mapPanel != null && mapPanel.hasFocus()) {
             return mapPanel;
         }
+        if (weaponsPanel != null && weaponsPanel.hasFocus()) {
+            return weaponsPanel;
+        }
         if (movesPanel != null && movesPanel.hasFocus()) {
             return movesPanel;
         }
@@ -147,10 +151,24 @@ public class MainFrame {
             inventoryStrategy = new InventoryStrategy(map, player);
             inventoryStrategy.setMainFrame(this);
         }
+
+
+
+        weaponsPanel.setPlayer(player);
+        movesPanel.setPlayer(player);
+        statsPanel.setPlayer(player);
+        inventoryPanel.setPlayer(player);
     }
     
     public Player getCurrentPlayer() {
         return currentPlayer;
+    }
+
+
+    public void updateItemDetails(Item item) {
+        if (detailsPanel != null) {
+            detailsPanel.showItemDetails(item);
+        }
     }
     
     // ========== Focus Management ==========
@@ -161,6 +179,15 @@ public class MainFrame {
             System.out.println("Focus set to MapPanel");
         }
     }
+
+    public void focusWeaponsPanel() {
+        if (weaponsPanel != null) {
+            weaponsPanel.requestFocusInWindow();
+            /* weaponsPanel.setFocusable(true);
+            weaponsPanel.requestFocus(); */
+            System.out.println("Focus set to WeaponsPanel");
+        }
+    }   
     
     public void focusMovesPanel() {
         if (movesPanel != null) {

@@ -1,16 +1,19 @@
 package com.artattack.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.util.List;
-import com.artattack.level.Maps;
-import com.artattack.level.Coordinates;
-import com.artattack.mapelements.Player;
-import com.artattack.items.Item;
-import com.artattack.moves.Weapon;
-import com.artattack.moves.Move;
-import com.artattack.turns.ConcreteTurnHandler;
+
+import javax.swing.JPanel;
+import javax.swing.Timer;
+
 import com.artattack.inputcontroller.CombatStrategy;
+import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
+import com.artattack.moves.Weapon;
 
 /**
  * MapPanel - Displays the game map with all elements
@@ -19,7 +22,7 @@ public class MapPanel extends JPanel {
     private Maps map;
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
-    private List<Coordinates> attackArea;
+    private List<Coordinates> attackArea; // Questa lista verrà riempita quando selezioni una mossa
 
     // Blinking cursor properties
     private boolean cursorVisible = true;
@@ -66,8 +69,8 @@ public class MapPanel extends JPanel {
 
                 // Check if cursor should be drawn at this position
                 boolean isCursorPosition = movementCursor != null && 
-                                          movementCursor.getX() == x && 
-                                          movementCursor.getY() == y;
+                                           movementCursor.getX() == x && 
+                                           movementCursor.getY() == y;
                 
                 // If cursor is at this position and visible, draw cursor instead
                 if (isCursorPosition && cursorVisible) {
@@ -108,13 +111,19 @@ public class MapPanel extends JPanel {
             }
         }
         
-        // Draw attack area
+        // --- QUESTA È LA PARTE CHE DISEGNA L'AREA DI ATTACCO ---
         if (attackArea != null) {
-            g.setColor(new Color(255, 0, 0, 50));
+            // Usa un colore Rosso semi-trasparente per l'attacco
+            g.setColor(new Color(255, 0, 0, 80)); 
             for (Coordinates coord : attackArea) {
                 int x = coord.getX() * cellSize + 10;
                 int y = coord.getY() * cellSize + 20;
                 g.fillRect(x - 2, y - 10, cellSize, cellSize);
+                
+                // Opzionale: Disegna un bordo rosso attorno all'area
+                g.setColor(Color.RED);
+                g.drawRect(x - 2, y - 10, cellSize, cellSize);
+                g.setColor(new Color(255, 0, 0, 80)); // Reset fill color
             }
         }
     }
@@ -134,9 +143,47 @@ public class MapPanel extends JPanel {
         repaint();
     }
     
+    // --- IMPLEMENTAZIONE LOGICA AREA ATTACCO ---
     public void updateAttackArea(CombatStrategy strategy) {
-        // Get attack area from selected move
-        // This would need to be implemented based on your Move class
+        if (strategy == null || strategy.getPlayer() == null) {
+            this.attackArea = null;
+            repaint();
+            return;
+        }
+
+        Player player = strategy.getPlayer();
+        
+        // 1. Recupera gli indici correnti dalla strategia
+        int weaponIdx = strategy.getWeaponIndex();
+        int moveIdx = strategy.getMoveIndex();
+
+        // 2. Controlli di sicurezza per evitare IndexOutOfBounds
+        List<Weapon> weapons = player.getWeapons();
+        if (weaponIdx >= 0 && weaponIdx < weapons.size()) {
+            Weapon weapon = weapons.get(weaponIdx);
+            List<Move> moves = weapon.getMoves();
+
+            if (moveIdx >= 0 && moveIdx < moves.size()) {
+                Move move = moves.get(moveIdx);
+
+                // 3. Recupera l'area relativa dalla mossa
+                List<Coordinates> relativeArea = move.getAttackArea();
+
+                if (relativeArea != null && !relativeArea.isEmpty()) {
+                    // 4. Trasforma l'area relativa in assoluta (sommando la posizione del player)
+                    // Questo usa il metodo statico sum() che hai usato anche in MenuPanel
+                    this.attackArea = Coordinates.sum(relativeArea, player.getCoordinates());
+                } else {
+                    this.attackArea = null;
+                }
+            } else {
+                this.attackArea = null;
+            }
+        } else {
+            this.attackArea = null;
+        }
+
+        // 5. Ridisegna la mappa
         repaint();
     }
     
@@ -149,9 +196,6 @@ public class MapPanel extends JPanel {
         updateAttackArea(strategy);
     }
     
-    /**
-     * Stops the blink timer when the panel is no longer needed
-     */
     public void cleanup() {
         if (blinkTimer != null) {
             blinkTimer.stop();

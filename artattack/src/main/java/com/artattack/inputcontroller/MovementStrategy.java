@@ -68,7 +68,7 @@ public class MovementStrategy implements PlayerStrategy{
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
 
-            System.out.println("Char present in the dictionary after the movement:" + map.getDict().get(player.getCoordinates()).getMapSymbol());
+            /* System.out.println("Char present in the dictionary after the movement:" + map.getDict().get(player.getCoordinates()).getMapSymbol()); */
         }
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));

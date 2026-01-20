@@ -1,15 +1,25 @@
 package com.artattack;
 
-import javax.swing.SwingUtilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.artattack.view.MainGUIFacade;
-import com.artattack.level.*;
-import com.artattack.*;
-import com.artattack.mapelements.*;
+import javax.swing.SwingUtilities;
+
+import com.artattack.level.AreaBuilder;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
+import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
-import com.artattack.items.Item;
+import com.artattack.view.MainGUIFacade;
 
 /**
  * Main application entry point demonstrating the Facade pattern integration
@@ -36,9 +46,15 @@ public class GameLauncher {
     public static void startTestGame(MainGUIFacade facade) {
         // Build the map using your MapBuilder pattern
         MapBuilder builder = new TestMapBuilder();
+        MoveBuilder1 mb1= new MoveBuilder1();
+        mb1.setName("prova");
+        Move mossa = mb1.getResult();
+        
+
+        Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
         
         // Create players
-        Player playerOne = new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null);
+        Player playerOne = new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(hoe), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null);
         Player playerTwo = new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5),List.of(new Weapon("Hoe", "", 0)), 5, 5 , null, 20, 20, 0, 20, 1, 5, 2, null, null, null);
         
         // Create enemies (optional)

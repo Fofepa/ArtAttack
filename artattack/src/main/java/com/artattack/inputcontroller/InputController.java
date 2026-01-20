@@ -19,6 +19,7 @@ import com.artattack.view.InventoryPanel;
 import com.artattack.view.MainFrame;
 import com.artattack.view.MapPanel;
 import com.artattack.view.MovesPanel;
+import com.artattack.view.WeaponsPanel;
 
 
 public class InputController implements KeyListener, TurnListener {
@@ -47,6 +48,13 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
 
+        if (e.getKeyCode() == KeyEvent.VK_F ||
+            e.getKeyCode() == KeyEvent.VK_I ||
+            e.getKeyCode() == KeyEvent.VK_M) {
+            handleFocusInput(e);
+            return;
+        }
+
         // enemy turn case
         if(isEnemyTurn){
             if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
@@ -65,6 +73,9 @@ public class InputController implements KeyListener, TurnListener {
         if(isMapPanelFocused(focused)){
             System.out.println("-> Routing to handleMapInput");
             handleMapInput(e);
+        }else if(isWeaponsPanelFocused(focused)){
+            System.out.println("-> Routing to handleWeaponsInput");
+            handleWeaponsInput(e);
         }else if(isMovesPanelFocused(focused)){
             System.out.println("-> Routing to handleMovesInput");
             handleMovesInput(e);
@@ -114,6 +125,17 @@ public class InputController implements KeyListener, TurnListener {
         return false;
     }
 
+    public boolean isWeaponsPanelFocused(Component component) {
+        Component current = component;
+        while (current != null) {
+            if (current instanceof WeaponsPanel) {
+                return true;
+            }
+            current = current.getParent();
+        }
+        return false;
+    }
+
     public boolean isMapPanelFocused(Component component){
         if (component == null) {
             return false;
@@ -135,12 +157,23 @@ public class InputController implements KeyListener, TurnListener {
                 mainFrame.focusMapPanel();
                 break;
             case KeyEvent.VK_F:
-                System.out.println("Focusing MovesPanel");
-                mainFrame.focusMovesPanel();
+                System.out.println("Focusing WeaponsPanel");
+                mainFrame.focusWeaponsPanel();
                 break;
             case KeyEvent.VK_I:
                 System.out.println("Focusing InventoryPanel");
                 mainFrame.focusInventoryPanel(); 
+
+
+                //Force correct Details display
+                if (currentElement instanceof Player && mainFrame.getInventoryStrategy() != null) {
+                    setStrategy(mainFrame.getInventoryStrategy()); 
+                    updateInventorySelectionDisplay(
+                        mainFrame.getInventoryStrategy(), 
+                        (Player) currentElement
+                    );
+                }
+
                 break;
             default:
                 break;
@@ -160,12 +193,19 @@ public class InputController implements KeyListener, TurnListener {
         
         setStrategy(mainFrame.getInventoryStrategy());
         InventoryStrategy inventoryStrategy = (InventoryStrategy) currentState;
+        Player player = (Player) currentElement;
+
+        if (e.getID() == KeyEvent.KEY_PRESSED) { 
+        // Note: Update Details regardless of key pressed, 
+        // Ensure panel sync.
+            updateInventorySelectionDisplay(inventoryStrategy, player);
+        }
 
         /* int selectedItemIndex = inventoryStrategy.getInventoryIndex(); */
-        List<Item> inventory = ((Player) currentElement).getInventory();
+        List<Item> inventory = player.getInventory();
         InventoryPanel inventoryPanel = mainFrame.getInventoryPanel();
         
-        if (mainFrame.getInventoryPanel() == null) {
+        if (inventoryPanel == null) {
             System.out.println("InventoryPanel not initialized");
             return;
         }
@@ -173,33 +213,26 @@ public class InputController implements KeyListener, TurnListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> {
                 inventoryStrategy.execute(-1, 0);
-
-                if (inventoryPanel != null) {
-                inventoryPanel.setSelectedIndex(inventoryStrategy.getInventoryIndex());
-            }
-
+                
                 System.out.println("UP pressed on InventoryPanel");
-                mainFrame.repaintInventoryPanel();
+                updateInventorySelectionDisplay(inventoryStrategy, player);
             }
             
             case KeyEvent.VK_DOWN -> {
                 inventoryStrategy.execute(1, 0);
 
-                if (inventoryPanel != null) {
-                inventoryPanel.setSelectedIndex(inventoryStrategy.getInventoryIndex());
-            }
-
                 System.out.println("DOWN pressed on InventoryPanel");
-                mainFrame.repaintInventoryPanel();
+                updateInventorySelectionDisplay(inventoryStrategy, player);
+                
             }
             
             case KeyEvent.VK_ENTER -> {
                 inventoryStrategy.acceptItem((Player) currentElement);
                 System.out.println("ENTER pressed on InventoryPanel");
 
-                if (inventoryPanel != null) {
-                inventoryPanel.setSelectedIndex(0); 
-                }   
+                if (mainFrame.getInventoryPanel() != null) {
+                    mainFrame.getInventoryPanel().setSelectedIndex(0); 
+                }
 
                 //If a dialogue is triggered after using the item, pass the focus to it.
                 if (mainFrame.getDialogActive()) {
@@ -207,6 +240,7 @@ public class InputController implements KeyListener, TurnListener {
                 }
                 mainFrame.repaintStatsPanel();
                 mainFrame.repaintInventoryPanel();
+                updateInventorySelectionDisplay(inventoryStrategy, player);
             }
             
             default -> {
@@ -297,106 +331,162 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.repaintMapPanel();
     }
 
-    private void handleMovesInput(KeyEvent e){
-        if (currentElement == null) {
-            System.out.println("ERROR: Cannot use moves - currentElement is NULL!");
+    private void handleWeaponsInput(KeyEvent e) {
+        if (currentElement == null || !(currentElement instanceof Player)) {
+            System.out.println("ERROR: Cannot use weapons - currentElement is not a Player!");
             return;
         }
-        
+
         if (mainFrame.getCombatStrategy() == null) {
             System.out.println("ERROR: CombatStrategy is NULL!");
             return;
         }
-        
+
         setStrategy(mainFrame.getCombatStrategy());
         CombatStrategy combatStrategy = (CombatStrategy) currentState;
 
-        /* int selectedWeaponIndex = combatStrategy.getWeaponIndex();
-        int selectedMoveIndex = combatStrategy.getMoveIndex(); */
-        /* boolean isInMoveSelection = (selectedMoveIndex > 0 || combatStrategy.isSelected()); */
-
         List<Weapon> weapons = currentElement.getWeapons();
+        WeaponsPanel weaponsPanel = mainFrame.getWeaponsPanel();
+
+        if (weaponsPanel == null || weapons.isEmpty()) {
+            System.out.println("WeaponsPanel not initialized or no weapons available");
+            return;
+        }
 
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> {
-                if (!combatStrategy.isSelected()) {
-                    combatStrategy.execute(1, 0);
-                    System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
-                } else {
-                    if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
-                        combatStrategy.execute(1,1);
-                        mainFrame.updateAttackArea();
-                        System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
-                    }
-                }
-                mainFrame.repaintMovesPanel();
+                combatStrategy.execute(1, 0);
+                weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
+                mainFrame.clearAttackArea();
+                mainFrame.repaintWeaponsPanel();
             }
-            
+
             case KeyEvent.VK_DOWN -> {
-                if (!combatStrategy.isSelected()) {
-                    combatStrategy.execute(-1, 0);
-                    System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
-                } else {
-                    if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
-                        combatStrategy.execute(-1,1);
+                combatStrategy.execute(-1, 0);
+                weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
+                mainFrame.clearAttackArea();
+                mainFrame.repaintWeaponsPanel();
+            }
+
+            case KeyEvent.VK_RIGHT -> {
+                Weapon selectedWeapon = weapons.get(combatStrategy.getWeaponIndex());
+                List<Move> moves = selectedWeapon.getMoves();
+
+                if (!moves.isEmpty()) {
+                    combatStrategy.setIsSelected(true);
+                    MovesPanel mp = mainFrame.getMovesPanel();
+
+                    // Update MovesPanel with current weapon
+                    if (mp!= null) {
+                        mp.setPlayer((Player) currentElement);
+                        mp.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                        mp.setActive(true);
+                        mainFrame.repaintMovesPanel();
                         mainFrame.updateAttackArea();
-                        System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                     }
+
+                    // Switch focus to MovesPanel
+                    mainFrame.focusMovesPanel();
+                    mainFrame.updateAttackArea();
+
+                    System.out.println("Opened moves for: " + selectedWeapon.getName());
+                }
+            }
+
+            default -> {
+                handleFocusInput(e);
+            }
+        }
+    }
+
+   private void handleMovesInput(KeyEvent e){
+        if (currentElement == null) {
+            System.out.println("ERROR: Cannot use moves - currentElement is NULL!");
+            return;
+        }
+
+        if (mainFrame.getCombatStrategy() == null) {
+            System.out.println("ERROR: CombatStrategy is NULL!");
+            return;
+        }
+
+        setStrategy(mainFrame.getCombatStrategy());
+        CombatStrategy combatStrategy = (CombatStrategy) currentState;
+
+        List<Weapon> weapons = currentElement.getWeapons();
+        MovesPanel movesPanel = mainFrame.getMovesPanel();
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP -> {
+                if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
+                    combatStrategy.execute(1, 1);
+                    if (movesPanel != null) {
+                        movesPanel.setSelectedMoveIndex(combatStrategy.getMoveIndex());
+                    }
+                    mainFrame.updateAttackArea();
+                    System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                 }
                 mainFrame.repaintMovesPanel();
             }
-            
-            case KeyEvent.VK_RIGHT -> {
-                if (!combatStrategy.isSelected() && !weapons.isEmpty()) {
-                    Weapon selectedWeapon = weapons.get(combatStrategy.getWeaponIndex());
-                    List<Move> moves = selectedWeapon.getMoves();
-                    
-                    if (!moves.isEmpty()) {
-                        combatStrategy.setIsSelected(true);
-                        mainFrame.updateAttackArea();
+
+            case KeyEvent.VK_DOWN -> {
+                if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
+                    combatStrategy.execute(-1, 1);
+                    if (movesPanel != null) {
+                        movesPanel.setSelectedMoveIndex(combatStrategy.getMoveIndex());
                     }
-                    
-                    System.out.println("Opened moves for: " + selectedWeapon.getName());
-                    mainFrame.repaintMovesPanel();
+                    mainFrame.updateAttackArea();
+                    System.out.println("Selected move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
                 }
+                mainFrame.repaintMovesPanel();
             }
-            
+
             case KeyEvent.VK_LEFT -> {
-                if (combatStrategy.isSelected()) {
-                    combatStrategy.setIsSelected(false);
-                    
-                    if (mainFrame.getMapPanel() != null) {
-                        mainFrame.clearAttackArea();
-                    }
-                    
-                    System.out.println("Back to weapon list");
-                    mainFrame.repaintMovesPanel();
+                combatStrategy.setIsSelected(false);
+                combatStrategy.setMoveIndex(0); // Reset move selection
+
+                if (mainFrame.getMovesPanel()!= null) {
+                    mainFrame.getMovesPanel().setActive(false);
                 }
+
+                if (mainFrame.getMapPanel() != null) {
+                    mainFrame.clearAttackArea();
+                }
+
+                
+
+                // Switch focus back to WeaponsPanel
+                mainFrame.focusWeaponsPanel();
+
+                System.out.println("Back to weapon list");
+                mainFrame.repaintWeaponsPanel();
             }
-            
+
             case KeyEvent.VK_ENTER -> {
-                if (combatStrategy.isSelected() && !weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
+                if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
                     System.out.println("=== Using Move ===");
                     System.out.println("Weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                     System.out.println("Move: " + weapons.get(combatStrategy.getWeaponIndex()).getMoves().get(combatStrategy.getMoveIndex()).getName());
-                    
+
                     int result = combatStrategy.acceptMove();
-                    
+
                     if (result != 0) {
                         System.out.println("✓ Move executed successfully! Damage: " + result);
-                        
+
                         if (mainFrame.getMapPanel() != null) {
                             mainFrame.clearAttackArea();
                             mainFrame.repaintMapPanel();
                         }
-                        
+
                         mainFrame.repaintMovesPanel();
                     } else {
                         System.out.println("Move failed! (not enough AP or invalid target)");
                     }
                 }
             }
-            
+
             default -> {
                 handleFocusInput(e);
             }
@@ -404,6 +494,7 @@ public class InputController implements KeyListener, TurnListener {
     }
 
     private void handleMapInput(KeyEvent e){
+        mainFrame.clearAttackArea();
         if (currentElement == null) {
             System.out.println("ERROR: Cannot handle map input - currentElement is NULL!");
             System.out.println("This means updateTurn() was never called or failed!");
@@ -444,9 +535,10 @@ public class InputController implements KeyListener, TurnListener {
                 if (movementStrategy.getSelectedState()) {
                     movementStrategy.acceptMovement();
                     
-                    if (mainFrame.getMovesPanel() != null) {
+                    /* if (mainFrame.getMovesPanel() != null) {
                         mainFrame.refreshAttackArea();
-                    }
+                    } */
+                    mainFrame.clearAttackArea();
                     mainFrame.repaintStatsPanel();
                     mainFrame.updateTurnDisplay();
                     mainFrame.repaintMapPanel();
@@ -526,6 +618,8 @@ public class InputController implements KeyListener, TurnListener {
         if(mainFrame.getDialogActive() && mainFrame.getInteractionPanel().getParent() != null){
             mainFrame.getInteractionPanel().getParent().setVisible(false);
         }
+
+        mainFrame.getMap().getConcreteTurnHandler().next();
         
         mainFrame.repaintStatsPanel();
         mainFrame.updateTurnDisplay();
@@ -551,10 +645,16 @@ public class InputController implements KeyListener, TurnListener {
         
         this.currentElement = activeElement;
         
+        mainFrame.clearAttackArea();
+        mainFrame.clearMovementCursor();
+
         if (activeElement instanceof Player){ 
             System.out.println(">> PLAYER TURN: " + activeElement.getName());
+
+
             mainFrame.setCurrentPlayer((Player)currentElement);
             
+
             // Verify strategies were created
             System.out.println("MovementStrategy created: " + (mainFrame.getMovementStrategy() != null));
             System.out.println("CombatStrategy created: " + (mainFrame.getCombatStrategy() != null));
@@ -583,6 +683,25 @@ public class InputController implements KeyListener, TurnListener {
         }else{
             System.out.println("Pausing game");
             mainFrame.showPauseMenu();
+        }
+    }
+
+
+    private void updateInventorySelectionDisplay(InventoryStrategy strategy, Player player) {
+        if (mainFrame.getInventoryPanel() != null) {
+            mainFrame.getInventoryPanel().setSelectedIndex(strategy.getInventoryIndex());
+            mainFrame.repaintInventoryPanel();
+        }
+
+        // Aggiorna il DetailsPanel con l'oggetto correntemente selezionato
+        List<Item> inventory = player.getInventory();
+        int idx = strategy.getInventoryIndex();
+
+        if (idx >= 0 && idx < inventory.size()) {
+            Item selectedItem = inventory.get(idx);
+            mainFrame.updateItemDetails(selectedItem);
+        } else {
+            mainFrame.updateItemDetails(null);
         }
     }
 

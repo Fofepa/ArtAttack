@@ -117,6 +117,9 @@ public class MainGUIFacade {
         if (gameFacade.getMainFrame().getInventoryPanel() != null) {
             gameFacade.getMainFrame().getInventoryPanel().addKeyListener(inputController);
         }
+        if (gameFacade.getMainFrame().getWeaponsPanel() != null) {
+            gameFacade.getMainFrame().getWeaponsPanel().addKeyListener(inputController);
+        }
         if (gameFacade.getMainFrame().getInteractionPanel() != null) {
             gameFacade.getMainFrame().getInteractionPanel().addKeyListener(inputController);
         }
@@ -247,6 +250,7 @@ class LeftPanelFacade {
     // Border containers for focus highlighting
     private JPanel inventoryContainer;
     private JPanel movesContainer;
+    private JPanel weaponsContainer;
     
     public LeftPanelFacade(MainFrame mainFrame, Player player) {
         this.mainFrame = mainFrame;
@@ -328,7 +332,9 @@ class LeftPanelFacade {
         if (weaponsPanel == null) {
             weaponsPanel = new WeaponsPanel(player);
         }
-        middleSection.add(createBorderedPanel(weaponsPanel, "WEAPONS"));
+        weaponsPanel.setFocusable(true);
+        weaponsContainer = createBorderedPanel(weaponsPanel, "WEAPONS");
+        middleSection.add(weaponsContainer);
         
         movesPanel = mainFrame.getMovesPanel();
         if (movesPanel == null) {
@@ -339,6 +345,18 @@ class LeftPanelFacade {
         middleSection.add(movesContainer);
         
         // Add focus listener to update border
+        weaponsPanel.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                updateBorder(weaponsContainer, true);
+            }
+            
+            @Override
+            public void focusLost(FocusEvent e) {
+                updateBorder(weaponsContainer, false);
+            }
+        });
+
         movesPanel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {

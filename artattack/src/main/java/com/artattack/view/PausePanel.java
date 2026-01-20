@@ -123,16 +123,24 @@ public class PausePanel extends JPanel {
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+        button.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.GREEN, 2),
+            BorderFactory.createEmptyBorder(1, 1, 1, 1) // 1px di padding trasparente
+        ));
         
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(50, 50, 50));
                 button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 3));
+                PausePanel.this.repaint();
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 button.setBackground(new Color(30, 30, 30));
-                button.setBorder(BorderFactory.createLineBorder(Color.GREEN, 2));
+                button.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GREEN, 2),
+                    BorderFactory.createEmptyBorder(1, 1, 1, 1)
+                ));
+                PausePanel.this.repaint();
             }
         });
         
@@ -144,6 +152,8 @@ public class PausePanel extends JPanel {
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D) g.create();
+        g2.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                            java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(new Color(0, 0, 0, 150)); // NERO SEMI-TRASPARENTE
         g2.fillRect(0, 0, getWidth(), getHeight());
         g2.dispose();

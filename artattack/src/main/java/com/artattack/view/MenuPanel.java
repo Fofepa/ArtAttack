@@ -131,18 +131,23 @@ public class MenuPanel {
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));
-            Player playerOne = new Musician(
+
+            Musician zappa = new Musician(
                 1, '@', "Zappa", 
                 new Coordinates(8, 8), 
                 List.of(hoe), 
                 5, 5, moveArea, 19, 20, 0, 20, 1, 5, 2, items, null, null
             );
-            Player playerTwo = new MovieDirector(
+
+            MovieDirector lynch = new MovieDirector(
                 2, '@', "Lynch", 
                 new Coordinates(5, 5),
                 List.of(new Weapon("Camera", "A cinematic weapon", 10)), 
                 5, 5, moveArea, 20, 20, 0, 20, 1, 5, 2, items, null, null
             );
+
+            Player playerOne = zappa;
+            Player playerTwo = lynch;
             
             Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
             Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);

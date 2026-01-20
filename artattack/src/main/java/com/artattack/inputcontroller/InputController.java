@@ -526,6 +526,8 @@ public class InputController implements KeyListener, TurnListener {
         if(mainFrame.getDialogActive() && mainFrame.getInteractionPanel().getParent() != null){
             mainFrame.getInteractionPanel().getParent().setVisible(false);
         }
+
+        mainFrame.getMap().getConcreteTurnHandler().next();
         
         mainFrame.repaintStatsPanel();
         mainFrame.updateTurnDisplay();

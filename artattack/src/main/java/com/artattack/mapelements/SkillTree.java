@@ -12,12 +12,22 @@ import com.artattack.moves.Weapon;
 public class SkillTree{
     private Player player;
     private Node root;
-    
+
+    public SkillTree(Player player, Node root){
+        this.player = player;
+        this.root = root;
+        this.root.setSpent();
+        this.root.setLabel();
+    }
+
+    // TODO: add the find and search method    
 }
 
 abstract class Node{
     private boolean spent;  // tells if it was used or not
     private int label;  // defines his number as a child
+    private static int counter = 0;
+    private List<Node> parents;
     private List<Node> children;
     private Player player;
 
@@ -27,7 +37,13 @@ abstract class Node{
         this.player = player;
     }
 
-    public void setChildren(ArrayList<Node> children){
+    public void addChildren(ArrayList<Node> children){
+        for(Node child : children){
+            if(!child.hasParent()){
+                this.label = counter++;
+            }
+            child.setParent(this);
+        }
         this.children = children;
     }
 
@@ -37,6 +53,38 @@ abstract class Node{
 
     public int getLabel(){
         return this.label;
+    }
+
+    public List<Node> getChildren(){
+        return this.children;
+    }
+
+    public Node getChild(int index){
+        return this.children.get(index);
+    }
+
+    public List<Node> getParents(){
+        return this.parents;
+    }
+
+    public void setParent(Node parent){
+        this.parents.add(parent);
+    }
+
+    public boolean isSpent(){
+        return this.spent;
+    }
+
+    public void setSpent(){
+        this.spent = true;
+    }
+    
+    public boolean hasParent(){
+        return this.parents.isEmpty() ? false : true;
+    }
+
+    public void setLabel(){
+        this.label = counter++;
     }
 
     public abstract void setSkill();
@@ -50,11 +98,13 @@ class  HPNODE extends Node{
     public HPNODE(Player player, int newHP){
         super(player);
         this.newHP = newHP;
+        
     }
 
     @Override
     public void setSkill(){
         this.getPlayer().setMaxHP(this.getPlayer().getMaxHP()+ newHP);
+        this.setSpent();
     }
 }
 
@@ -70,6 +120,7 @@ class  APNODE extends Node{
     @Override
     public void setSkill(){
         this.getPlayer().setMaxActionPoints(this.getPlayer().getMaxActionPoints()+ newAP);
+        this.setSpent();
     }
 }
 
@@ -85,6 +136,7 @@ class  SPNODE extends Node{
     @Override
     public void setSkill(){
         this.getPlayer().setSpeed(this.getPlayer().getSpeed()+ newSP);
+        this.setSpent();
     }
 }
 
@@ -98,6 +150,7 @@ class  MAXWPNODE extends Node{
     @Override
     public void setSkill(){
         this.getPlayer().setMaxWeapons();
+        this.setSpent();
     }
 }
 
@@ -113,6 +166,7 @@ class  MANODE extends Node{
     @Override
     public void setSkill(){
         this.getPlayer().getMoveArea().addAll(shape);
+        this.setSpent();
     }
 }
 
@@ -131,6 +185,7 @@ class SpecialMoveNODE extends Node{
         Weapon specialWeapon = new Weapon("Special", "You got it with tears", 0);
         specialWeapon.addMove(specialMove);
         this.getPlayer().getWeapons().add(specialWeapon);
+        this.setSpent();
     }
 }
 

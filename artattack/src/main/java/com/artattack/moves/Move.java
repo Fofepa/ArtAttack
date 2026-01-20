@@ -211,6 +211,8 @@ public class Move{
                                     p.addKey(key);
                             }
                             e.remove(map);
+                            map.getConcreteTurnHandler().getConcreteTurnQueue().remove(e);
+                            map.getEnemies().remove(map.getEnemies().indexOf(e));
                         }
                         total += this.power;
                     }

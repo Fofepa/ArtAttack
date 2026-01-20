@@ -162,12 +162,14 @@ public class MenuPanel {
                 List.of(enemyWeapon), 15, 15, moveArea, 
                 moveArea, null, null, 0
             );
+            ArrayList<Enemy> enemies = new ArrayList<>();
+            enemies.add(enemy);
             
             // Build the map
             builder.setDimension(40, 140);
             builder.setPlayerOne(playerOne);
             builder.setPlayerTwo(playerTwo);
-            builder.setEnemies(List.of(enemy));
+            builder.setEnemies(enemies);
             builder.setInteractableElements(npcs);
             builder.setDict();
             builder.setTurnQueue();

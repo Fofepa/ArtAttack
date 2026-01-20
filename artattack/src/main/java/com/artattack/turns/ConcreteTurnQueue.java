@@ -25,7 +25,7 @@ public class ConcreteTurnQueue implements TurnQueue {
 
     public boolean remove(ActiveElement element){
         if (turnQueue.contains(element)){
-            turnQueue.remove(element);
+            turnQueue.remove(turnQueue.indexOf(element));
             return true;
         }
         return false;

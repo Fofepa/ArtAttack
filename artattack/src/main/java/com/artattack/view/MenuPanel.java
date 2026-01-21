@@ -81,8 +81,8 @@ public class MenuPanel {
         
         // Button actions
         newGameBtn.addActionListener(e -> {
-            System.out.println("Starting new game...");
-            startNewGameWithTestData();
+            System.out.println("Go to character selection...");
+            mainFacade.showCharacterSelection();
         });
         
         loadGameBtn.addActionListener(e -> {

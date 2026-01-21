@@ -10,6 +10,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -20,8 +22,23 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
+import com.artattack.interactions.TalkFactory;
+import com.artattack.items.Cure;
+import com.artattack.items.Item;
+import com.artattack.level.AreaBuilder;
+import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilder;
 import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
+import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
+import com.artattack.moves.Weapon;
 
 
 /**
@@ -33,6 +50,7 @@ public class MainGUIFacade {
     private GameFacade gameFacade;
     private MenuPanel menuFacade;
     private PausePanel pausePanel;
+    private CharacterSelectionPanel characterSelectionPanel;
     
     private String currentState = "MENU"; // MENU, GAME, PAUSE
     
@@ -52,6 +70,7 @@ public class MainGUIFacade {
     
     private void initializeFacades() {
         menuFacade = new MenuPanel(this);
+        characterSelectionPanel = new CharacterSelectionPanel(this);
     }
     
     public void showMenu() {
@@ -60,6 +79,123 @@ public class MainGUIFacade {
         mainFrame.add(menuFacade.getMenuPanel(), BorderLayout.CENTER);
         mainFrame.revalidate();
         mainFrame.repaint();
+    }
+
+    public void showCharacterSelection() {
+        currentState = "SELECTION";
+        mainFrame.getContentPane().removeAll();
+        
+        // Ricrea il pannello per resettare lo stato (hover, scelte, ecc.)
+        characterSelectionPanel = new CharacterSelectionPanel(this);
+        
+        mainFrame.add(characterSelectionPanel, BorderLayout.CENTER);
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        
+        // Focus fondamentale per il KeyListener
+        characterSelectionPanel.requestFocusInWindow();
+    }
+
+    public void finalizeGameSetup(CharacterType p1Type, CharacterType p2Type) {
+        System.out.println("Setup game with: " + p1Type + " vs " + p2Type);
+        
+        // Qui spostiamo la logica di creazione che prima era nel MenuPanel
+        // Ma usiamo i tipi passati per creare i giocatori corretti
+        createGameFromSelection(p1Type, p2Type);
+    }
+
+    private void createGameFromSelection(CharacterType p1Type, CharacterType p2Type) {
+         try {
+             MoveBuilder1 mb1= new MoveBuilder1();
+            mb1.setName("prova");
+            mb1.setPower(20);
+            mb1.setActionPoints(1);
+            mb1.setAreaAttack(false);
+            
+        
+
+           
+        
+            // Build the map using your MapBuilder pattern
+            MapBuilder builder = new TestMapBuilder();
+            
+            // Create players (adjust based on your actual Player constructors)
+            AreaBuilder areaBuilder = new AreaBuilder();
+            areaBuilder.addShape("8");
+            List<Coordinates> moveArea = areaBuilder.getResult();
+            areaBuilder.addShape("4");
+            List<Coordinates> area4 = areaBuilder.getResult();
+            mb1.setAttackArea(area4);
+            Move mossa = mb1.getResult();
+            Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
+            List<Item> items = new ArrayList<>();
+            List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
+                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
+            items.add(new Cure("Potion", " ", 10));
+            items.add(new Cure("SuperPotion", " ", 2));
+            items.add(new Cure("IperPotion", "Sex on the beach ", 1));
+
+            // --- CREAZIONE DINAMICA GIOCATORI ---
+            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(8, 8), moveArea, items);
+            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(5, 5), moveArea, items);
+            
+            Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
+            Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
+            Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
+            Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);
+
+            // Create enemies (optional)
+            Enemy enemy = new Enemy(
+                3, 'E', "C17", 
+                new Coordinates(10, 10),
+                EnemyType.EMPLOYEE, 20, 20, 3,
+                List.of(enemyWeapon), 15, 15, moveArea, 
+                moveArea, null, null, 0
+            );
+            ArrayList<Enemy> enemies = new ArrayList<>();
+            enemies.add(enemy);
+            
+            // Build the map
+            builder.setDimension(40, 140);
+            builder.setPlayerOne(playerOne);
+            builder.setPlayerTwo(playerTwo);
+            builder.setEnemies(enemies);
+            builder.setInteractableElements(npcs);
+            builder.setDict();
+            builder.setTurnQueue();
+            builder.startMap();
+            
+            Maps map = builder.getResult();
+            // Avvia il gioco
+            startNewGame(map, playerOne, playerTwo);
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private Player createPlayerFromType(CharacterType type, int id, Coordinates coords, List<Coordinates> moveArea, List<Item> items) {
+        // Parametri fittizi presi dal tuo vecchio codice
+        // In un codice pulito, questi valori dovrebbero venire da file di config o dal CharacterType
+        switch (type) {
+            case MUSICIAN:
+                // Copia logica di creazione Zappa
+                // Nota: Devi passare l'arma corretta
+                return new Musician(id, '@', type.getName(), coords, 
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), // Esempio arma
+                    5, 5, moveArea, 19, type.getMaxHP(), 10, 
+                    20, 1, type.getSpeed(), 2, items, null, null);
+                    
+            case DIRECTOR:
+                // Copia logica di creazione Lynch
+                return new MovieDirector(id, '@', type.getName(), coords,
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), 
+                    5, 5, moveArea, 20, type.getMaxHP(), 
+                    10, 20, 1, type.getSpeed(), 2, items, null, null);
+                    
+            default:
+                throw new IllegalArgumentException("Unknown type: " + type);
+        }
     }
     
     public void startNewGame(Maps map, Player playerOne, Player playerTwo) {

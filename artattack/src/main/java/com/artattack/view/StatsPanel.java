@@ -49,7 +49,8 @@ public class StatsPanel extends JPanel {
 
         // 2. Draw Player Name
         g.setColor(Color.WHITE);
-        g.drawString("Name: " + player.getName(), START_X, currentY);
+        String nameText = player.getName() + " (Lvl: " + player.getLevel() + ")";
+        g.drawString(nameText, START_X, currentY);
         
         currentY += 20; // Move down for the first bar
 
@@ -62,6 +63,14 @@ public class StatsPanel extends JPanel {
         
         int maxAP = player.getMaxActionPoints(); 
         drawBar(g, "AP", player.getActionPoints(), maxAP, Color.CYAN, START_X, currentY);
+
+        currentY += GAP_Y;
+
+        // 5. Draw XP Bar (Yellow)
+        int currentExp = player.getCurrXP();
+        int maxExp = player.getMaxHP();
+
+        drawBar(g, "XP", currentExp, maxExp, Color.YELLOW, START_X, currentY);
     }
 
     /**

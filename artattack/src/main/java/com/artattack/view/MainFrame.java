@@ -13,6 +13,7 @@ import com.artattack.level.Maps;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
 
 /**
  * MainFrame adapter that bridges the Facade pattern with the InputController
@@ -71,12 +72,25 @@ public class MainFrame {
     public void linkInteractablePanels() {
         if (map != null && map.getDict() != null) {
             for (MapElement element : map.getDict().values()) {
-                if (element instanceof InteractableElement ie) {
-                    try {
-                        ie.setSpritePanel(spritePanel);
-                        ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
-                    } catch (Exception e) {
-                        System.err.println("Could not set panels for InteractableElement: " + ie.getName());
+                switch (element) {
+                    case InteractableElement ie -> {
+                        try {
+                            ie.setSpritePanel(spritePanel);
+                            ie.setMainFrame(this);  // CHANGED: Only set MainFrame, not InteractionPanel
+                        } catch (Exception e) {
+                            System.err.println("Could not set panels for InteractableElement: " + ie.getName());
+                        }
+                    }
+                    case Trigger t -> {
+                        try {
+                            if (t.getTriggerGroup().getInteraction().getMainFrame() == null) {
+                                t.getTriggerGroup().getInteraction().setMainFrame(this);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Could not set panels for Trigger: " + t.getName());
+                        }
+                    }
+                    default -> {
                     }
                 }
             }
@@ -520,5 +534,19 @@ public class MainFrame {
 
     public boolean isPaused(){
         return mainGUIFacade.isPaused();
+    }
+
+    // ========== Switch Map Management ==========
+    public void switchMap(Maps map){
+        this.map = map;
+        this.mapPanel.setMap(map); //Need to add updateMap
+        linkInteractablePanels();
+        this.map.getConcreteTurnHandler().addTurnListener(this.mainGUIFacade.getInputController());
+        this.map.getConcreteTurnHandler().start();
+        this.turnOrderPanel.setTurnHandler(map.getConcreteTurnHandler());
+        this.movementStrategy.setMap(map); //movementStrategy has mainFrame. Should we get map from ManeFrame??
+        this.combatStrategy.setMap(map); //Same as movementStrategy
+        repaintMapPanel();
+        repaintTurnOrderPanel();
     }
 }

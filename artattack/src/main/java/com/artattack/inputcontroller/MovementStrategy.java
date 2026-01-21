@@ -3,6 +3,7 @@ package com.artattack.inputcontroller;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
 import com.artattack.view.MainFrame;
 
 public class MovementStrategy implements PlayerStrategy{
@@ -52,8 +53,8 @@ public class MovementStrategy implements PlayerStrategy{
             }
         }
 
-        if (new_c.getX() >= 0 && new_c.getX() < this.map.getColumns() &&
-            new_c.getY() >= 0 && new_c.getY() < this.map.getRows() &&
+        if (new_c.getX() >= 0 && new_c.getX() < this.map.getWidth() &&
+            new_c.getY() >= 0 && new_c.getY() < this.map.getHeight() &&
             Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
             
             cursor = new_c;
@@ -61,14 +62,14 @@ public class MovementStrategy implements PlayerStrategy{
     }
 
     public void acceptMovement() {
-        if (this.map.getMapMatrix()[cursor.getY()][cursor.getX()] == '.'){
-            this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '.';
-            this.map.updateDict(player.getCoordinates(),cursor);
+        if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '.' || this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == 't'){
+            this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '.';
             player.setCoordinates(cursor);
             player.setActionPoints(player.getActionPoints() - 1);
-            this.map.getMapMatrix()[player.getCoordinates().getY()][player.getCoordinates().getX()] = '@';
-
-            /* System.out.println("Char present in the dictionary after the movement:" + map.getDict().get(player.getCoordinates()).getMapSymbol()); */
+            this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';
+            if (map.getDict().get(player.getCoordinates()) instanceof Trigger t) {
+                t.OnTrigger(this.player);
+            }
         }
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));

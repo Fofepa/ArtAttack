@@ -19,10 +19,11 @@ public class Give extends Interaction {
 
     @Override
     public void doInteraction(Player player){
+        player.addItem(item);
         if (getMainFrame() != null) {
             getMainFrame().showDialog(dialog);
+            this.getMainFrame().repaintInventoryPanel();
         }
-        player.addItem(item);
     }
 
     public Item item(){

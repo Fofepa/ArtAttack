@@ -63,9 +63,9 @@ public class MapPanel extends JPanel {
         char[][] matrix = map.getMapMatrix();
         int cellSize = 12;
         
-        for (int y = 0; y < map.getRows(); y++) {
-            for (int x = 0; x < map.getColumns(); x++) {
-                char c = matrix[y][x];
+        for (int y = 0; y < map.getHeight(); y++) {
+            for (int x = 0; x < map.getWidth(); x++) {
+                char c = matrix[x][y];
 
                 // Check if cursor should be drawn at this position
                 boolean isCursorPosition = movementCursor != null && 
@@ -200,5 +200,9 @@ public class MapPanel extends JPanel {
         if (blinkTimer != null) {
             blinkTimer.stop();
         }
+    }
+
+    public void setMap(Maps map){
+        this.map = map;
     }
 }

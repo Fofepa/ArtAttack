@@ -1,5 +1,6 @@
 package com.artattack.level;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,8 @@ import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.Trigger;
+import com.artattack.mapelements.TriggerGroup;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
 
@@ -18,11 +21,12 @@ public class Maps {
     private Player playerOne;
     private Player playerTwo;
     private List<Enemy> enemies;
+    private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
     private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
-    private int rows;
-    private int columns;
+    private int width;
+    private int height;
     private ConcreteTurnHandler turnHandler;
 
     
@@ -44,9 +48,32 @@ public class Maps {
         this.interactableElements = interactableElements;
     }
 
-    public void setDimension(int rows, int columns){
-        this.rows = rows;
-        this.columns = columns;
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height) {
+        if (this.triggers == null) {
+            this.triggers = new ArrayList<>();
+        }
+        for (int i = 0; i < width; i++) {
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup));
+        }
+        for (int i = 1; i < height; i++) {
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup));
+            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup));
+        }
+        for (int i = 1; i < width; i++) {
+            for (int j = 1; j < height; j++) {
+                this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup));
+            }
+        }
+    }
+
+    public void setDimension(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    public void setTurnHandler(ConcreteTurnHandler turnHandler){
+        this.turnHandler = turnHandler;
     }
 
 
@@ -71,6 +98,13 @@ public class Maps {
                     this.dictionaire.put(e.getCoordinates(), e);
             }
         }
+        if (this.triggers != null) {
+            for (Trigger t : this.triggers) {
+                if (t.getCoordinates() != null && this.dictionaire.get(t.getCoordinates()) == null) {
+                    this.dictionaire.put(t.getCoordinates(), t);
+                }
+            }
+        }
     }
 
     public void updateDict(Coordinates oldCoordinates, Coordinates newCoordinates){
@@ -93,6 +127,14 @@ public class Maps {
         
     }
 
+    public void setTurnQueue(Player currPlayer, Player otherPlayer){
+        List<ActiveElement>list = new LinkedList<ActiveElement>();
+        list.add(currPlayer);
+        list.add(otherPlayer);
+        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
+        this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+    }
+
 
     public char[][] getMapMatrix(){
         return this.mapMatrix;
@@ -102,12 +144,12 @@ public class Maps {
         return this.dictionaire;
     }
 
-    public int getRows(){
-        return this.rows;
+    public int getHeight(){
+        return this.height;
     }
 
-    public int getColumns(){
-        return this.columns;
+    public int getWidth(){
+        return this.width;
     }
 
     public Player getPlayerOne(){
@@ -127,13 +169,13 @@ public class Maps {
     }
 
     public void setCell(Coordinates coord, char character){
-        if(coord.getY() >= 0 && coord.getY() < rows && coord.getX() >= 0 && coord.getX() < columns)
-            this.mapMatrix[coord.getY()][coord.getX()] = character; 
+        if(coord.getX() >= 0 && coord.getX() < height && coord.getY() >= 0 && coord.getY() < width)
+            this.mapMatrix[coord.getX() ][coord.getY() ] = character;
     }
 
     public char getCell(Coordinates coord){
-        if(coord.getY() >= 0 && coord.getY() < rows && coord.getX() >= 0 && coord.getX() < columns)
-            return this.mapMatrix[coord.getY()][coord.getX()]; 
+        if(coord.getX() >= 0 && coord.getX() < height && coord.getY() >= 0 && coord.getY() < width)
+            return this.mapMatrix[coord.getX()][coord.getY()];
         else
             return ' ';
     }
@@ -149,5 +191,18 @@ public class Maps {
             }
         }
         return null;
+    }
+
+    public void remove(ActiveElement element){
+        if(this.dictionaire.containsValue(element)){
+            this.turnHandler.getConcreteTurnQueue().remove(element);
+            this.mapMatrix[element.getCoordinates().getX()][element.getCoordinates().getY()] = '.';
+            if(element instanceof Player){
+                if(element.equals(this.playerOne))
+                    this.playerOne = null;
+                else this.playerTwo = null;
+            } //else this.enemies.remove(this.enemies.indexOf(element)) doesn't work if List<Enemy> is unmodifiable (like List.of())
+            this.dictionaire.remove(element.getCoordinates());
+        }
     }
 }

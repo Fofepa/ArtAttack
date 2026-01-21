@@ -198,18 +198,8 @@ public class Move{
                         else e.updatePlayerTwoDemage(this.power);
                         if(!e.isAlive()){
                             e.dropXP(map.getPlayerOne(), map.getPlayerTwo());
-                            if(e.getDrops() != null && !e.getDrops().isEmpty()){
-                                List<Item> drops = e.getDrops();
-                                Player p = (Player) user;
-                                for(Item item : drops)
-                                    p.addItem(item);
-                            }
-                            if(e.getKeys() != null && !e.getKeys().isEmpty()){
-                                List<Key> keys = e.getKeys();
-                                Player p = (Player) user;
-                                for(Key key : keys)
-                                    p.addKey(key);
-                            }
+                            Player p = (Player) user;
+                            e.drop(p);
                             e.remove(map);
                         }
                         total += this.power;

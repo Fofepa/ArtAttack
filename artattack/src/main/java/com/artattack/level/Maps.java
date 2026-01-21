@@ -18,12 +18,13 @@ import com.artattack.turns.ConcreteTurnQueue;
 
 
 public class Maps {
+    //private final int ID;
     private Player playerOne;
     private Player playerTwo;
     private List<Enemy> enemies;
     private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
-    private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
+    private transient Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
     private int width;
     private int height;

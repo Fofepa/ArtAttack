@@ -18,7 +18,7 @@ import com.artattack.mapelements.Trigger;
  * MainFrame adapter that bridges the Facade pattern with the InputController
  * This class acts as the interface between the GUI and the game logic
  */
-public class MainFrame {
+public class MainFrame implements UIManager {
     private Maps map;
     private Player currentPlayer;
     

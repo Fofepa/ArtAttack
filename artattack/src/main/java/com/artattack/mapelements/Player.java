@@ -7,9 +7,10 @@ import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
 import com.artattack.moves.Weapon;
 
-public abstract class Player extends ActiveElement {
+public class Player extends ActiveElement {
     
     //Attributes
+    private PlayerType type;
     private int currXP;
     private int maxXP;
     private int level;
@@ -25,8 +26,9 @@ public abstract class Player extends ActiveElement {
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
         List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
-        int currHP, int maxHP, int currXP, int maxXP, int level,int speed){
+        int currHP, int maxHP, PlayerType type, int currXP, int maxXP, int level,int speed){
         super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints,maxActionPoints,moveArea);
+        this.type = type;
         this.currXP = currXP;
         this.maxXP = maxXP;
         this.level = level;
@@ -35,8 +37,8 @@ public abstract class Player extends ActiveElement {
 
      public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
         List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
-        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea){
-            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed);
+        int currHP, int maxHP, PlayerType type, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea){
+            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, type, currXP, maxXP, level,speed);
             this.maxWeapons = maxWeapons;
             this.inventory = inventory;
             this.keys = keys;
@@ -90,12 +92,18 @@ public abstract class Player extends ActiveElement {
         return this.actionArea;
     }
 
-    public void addItem(Item item){
-        this.inventory.add(item);
+    public PlayerType getType(){
+        return this.type;
     }
 
-    public void addKey(Key key){
-        this.keys.add(key);
+    public void addItems(List<Item> items){
+        for(Item item : items)
+            this.inventory.add(item);
+    }
+
+    public void addKeys(List<Key> k){
+        for(Key key : k)
+            this.keys.add(key);
     }
 
     public void setMaxXP(int maxXP){

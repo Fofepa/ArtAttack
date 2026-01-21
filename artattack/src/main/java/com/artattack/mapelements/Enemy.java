@@ -105,4 +105,11 @@ public class Enemy extends ActiveElement {
         map.getDict().remove(this.getCoordinates());
     }
 
+    public void drop(Player player){
+        if(this.drops != null && !this.drops.isEmpty())
+            player.addItems(this.drops);
+        if(this.keys != null && !this.keys.isEmpty())
+            player.addKeys(this.keys);
+    }
+
 }

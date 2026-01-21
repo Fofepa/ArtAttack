@@ -72,6 +72,13 @@ public class Coordinates {
 
     @Override
     public String toString() {
-        return "(" + x + "," + y + ")";
+        return x + "," + y ;
     }
+
+    
+    public static Coordinates fromString(String s){
+        String[] parts = s.split(",");
+        return new Coordinates(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]));
+    }
+
 }

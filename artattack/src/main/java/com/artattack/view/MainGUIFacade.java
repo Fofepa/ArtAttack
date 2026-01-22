@@ -39,6 +39,8 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
+import com.artattack.level.MapDirector;
+import com.artattack.level.TutorialMapBuilder;
 
 
 /**
@@ -85,29 +87,26 @@ public class MainGUIFacade {
         currentState = "SELECTION";
         mainFrame.getContentPane().removeAll();
         
-        // Ricrea il pannello per resettare lo stato (hover, scelte, ecc.)
         characterSelectionPanel = new CharacterSelectionPanel(this);
         
         mainFrame.add(characterSelectionPanel, BorderLayout.CENTER);
         mainFrame.revalidate();
         mainFrame.repaint();
         
-        // Focus fondamentale per il KeyListener
+        // KeyListener Focus
         characterSelectionPanel.requestFocusInWindow();
     }
 
     public void finalizeGameSetup(CharacterType p1Type, CharacterType p2Type) {
         System.out.println("Setup game with: " + p1Type + " vs " + p2Type);
         
-        // Qui spostiamo la logica di creazione che prima era nel MenuPanel
-        // Ma usiamo i tipi passati per creare i giocatori corretti
         createGameFromSelection(p1Type, p2Type);
     }
 
     private void createGameFromSelection(CharacterType p1Type, CharacterType p2Type) {
          try {
-             MoveBuilder1 mb1= new MoveBuilder1();
-            mb1.setName("prova");
+            MoveBuilder1 mb1= new MoveBuilder1();
+            /*mb1.setName("prova");
             mb1.setPower(20);
             mb1.setActionPoints(1);
             mb1.setAreaAttack(false);
@@ -119,7 +118,7 @@ public class MainGUIFacade {
             // Build the map using your MapBuilder pattern
             MapBuilder builder = new TestMapBuilder();
             
-            // Create players (adjust based on your actual Player constructors)
+            // Create players (adjust based on your actual Player constructors)*/
             AreaBuilder areaBuilder = new AreaBuilder();
             areaBuilder.addShape("8");
             List<Coordinates> moveArea = areaBuilder.getResult();
@@ -129,22 +128,22 @@ public class MainGUIFacade {
             Move mossa = mb1.getResult();
             Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
             List<Item> items = new ArrayList<>();
-            List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
-                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
+            /*List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
+                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));*/
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));
 
-            // --- CREAZIONE DINAMICA GIOCATORI ---
+            // --- Dynamic Character Creation ---
             Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(8, 8), moveArea, items);
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(5, 5), moveArea, items);
             
             Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
             Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
             Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
-            Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);
+            /*Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);*/
 
-            // Create enemies (optional)
+            /*// Create enemies (optional)
             Enemy enemy = new Enemy(
                 3, 'E', "C17", 
                 new Coordinates(10, 10),
@@ -165,8 +164,15 @@ public class MainGUIFacade {
             builder.setTurnQueue();
             builder.startMap();
             
+            Maps map = builder.getResult();*/
+
+            MapBuilder builder = new TutorialMapBuilder();
+            MapDirector director = new MapDirector(builder);
+
+            director.make("Tutorial");
             Maps map = builder.getResult();
-            // Avvia il gioco
+
+            // Start the game
             startNewGame(map, playerOne, playerTwo);
             
         } catch (Exception ex) {
@@ -175,19 +181,18 @@ public class MainGUIFacade {
     }
 
     private Player createPlayerFromType(CharacterType type, int id, Coordinates coords, List<Coordinates> moveArea, List<Item> items) {
-        // Parametri fittizi presi dal tuo vecchio codice
-        // In un codice pulito, questi valori dovrebbero venire da file di config o dal CharacterType
+        
+        // Character stats come From the enum class CharacterType
         switch (type) {
             case MUSICIAN:
-                // Copia logica di creazione Zappa
-                // Nota: Devi passare l'arma corretta
                 return new Musician(id, '@', type.getName(), coords, 
                     List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), // Esempio arma
                     5, 5, moveArea, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null);
                     
+            
+            
             case DIRECTOR:
-                // Copia logica di creazione Lynch
                 return new MovieDirector(id, '@', type.getName(), coords,
                     List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), 
                     5, 5, moveArea, 20, type.getMaxHP(), 
@@ -266,10 +271,21 @@ public class MainGUIFacade {
         
         // Request focus after GUI is built using invokeLater
         SwingUtilities.invokeLater(() -> {
-            gameFacade.focusMapPanel();
-            if (gameFacade.getMainFrame().getMapPanel() != null) {
-                gameFacade.getMainFrame().getMapPanel().requestFocusInWindow();
-            }
+            gameFacade.getMainFrame().showDialog(List.of("Hey, over here! Mr. Zappa! Mr. Lynch!", 
+                            "What a mess! Look at what they've done to our peaceful resting place! It's now a soul-harvesting data center! You need to do something about this, or else we'll never be able to return to our well-earned slumber!",
+                            "Me? Oh, I'm nowhere near as powerful as you guys, I wouldn't last a second against these guys.",
+                            "You guys don't look so good... What happened to you?",
+                            "Oh! Right! You two were dead, just like me! Hahahaha!",
+                            "What's that? You don't remember how to do things? Oh yeah, I guess it makes sense considering you were six feet deep just a few moments ago... You must be rusty on what it takes to walk the earth.",
+                            "But it's fine, I can teach you everything you need to know.",
+                            "Each one of you has a CURSOR. It has many uses, like moving!",
+                            "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
+                            "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
+                            "That's the basics. If you want me to refresh your memory, just talk to me.",
+                            "Now, go! Get to the top floor and defeat these power-hungry nerds!",
+                            "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
+                            "First let's focus on where we are going press M to focus the map",
+                            "Go teach him a lesson!"));
         });
         
         // Start the turn system

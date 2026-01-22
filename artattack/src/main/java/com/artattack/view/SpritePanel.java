@@ -1,56 +1,84 @@
 package com.artattack.view;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
 
 /**
- * SpritePanel - Displays character/NPC sprites during interactions
+ * SpritePanel - Displays character/NPC sprites using Pixel Perfect rendering
  */
 public class SpritePanel extends JPanel {
     private BufferedImage currentSprite;
-    private String currentSpritePath;
+    // Cache per evitare di ricaricare le immagini continuamente
+    private static final Map<String, BufferedImage> imageCache = new HashMap<>();
     
     public SpritePanel() {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(200, 200));
-        setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+        // Bordo più spesso e colorato per stile RPG
+        setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(Color.WHITE, 1),
+            BorderFactory.createLineBorder(Color.BLACK, 4)
+        ));
     }
     
     /**
-     * Loads and displays a sprite image
-     * @param spritePath Path to the sprite image file
+     * Loads and displays a sprite image from resources
+     * @param spriteName The name of the file in the resources folder (e.g., "zappa_portrait.png")
      */
-    public void loadImage(String spritePath) {
-        try {
-            if (spritePath != null && !spritePath.isEmpty()) {
-                File imageFile = new File(spritePath);
-                if (imageFile.exists()) {
-                    currentSprite = ImageIO.read(imageFile);
-                    currentSpritePath = spritePath;
-                    repaint();
-                } else {
-                    System.err.println("Sprite file not found: " + spritePath);
-                    currentSprite = null;
-                    repaint();
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("Error loading sprite: " + spritePath);
-            e.printStackTrace();
-            currentSprite = null;
+    public void loadImage(String spriteName) {
+        if (spriteName == null || spriteName.isEmpty()) {
+            clearSprite();
+            return;
+        }
+
+        // 1. Controlla nella cache
+        if (imageCache.containsKey(spriteName)) {
+            currentSprite = imageCache.get(spriteName);
             repaint();
+            return;
+        }
+
+        // 2. Carica dalle risorse (compatibile con JAR)
+        try {
+            // Assumiamo che le immagini siano in una cartella "src/images/" o "resources/images/"
+            // Se il path è assoluto, usalo, altrimenti cerca nella root o in /images/
+            URL imgUrl = getClass().getResource("/images/" + spriteName);
+            if (imgUrl == null) {
+                imgUrl = getClass().getResource("/" + spriteName);
+            }
+            
+            if (imgUrl != null) {
+                BufferedImage img = ImageIO.read(imgUrl);
+                imageCache.put(spriteName, img); // Salva in cache
+                currentSprite = img;
+                repaint();
+            } else {
+                System.err.println("Sprite resource not found: " + spriteName);
+                clearSprite();
+            }
+        } catch (IOException e) {
+            System.err.println("Error loading sprite: " + spriteName);
+            e.printStackTrace();
+            clearSprite();
         }
     }
     
-    /**
-     * Clears the currently displayed sprite
-     */
     public void clearSprite() {
         currentSprite = null;
-        currentSpritePath = null;
         repaint();
     }
     
@@ -59,41 +87,40 @@ public class SpritePanel extends JPanel {
         super.paintComponent(g);
         
         if (currentSprite != null) {
-            // Calculate scaling to fit the panel while maintaining aspect ratio
+            Graphics2D g2d = (Graphics2D) g;
+
+            // --- CRUCIALE PER PIXEL ART ---
+            // Disabilita l'interpolazione per mantenere i pixel nitidi quando si ingrandisce
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+
             int panelWidth = getWidth();
             int panelHeight = getHeight();
             int imgWidth = currentSprite.getWidth();
             int imgHeight = currentSprite.getHeight();
             
-            double scaleX = (double) panelWidth / imgWidth;
-            double scaleY = (double) panelHeight / imgHeight;
-            double scale = Math.min(scaleX, scaleY) * 0.9; // 90% to leave some padding
+            // Calcola scala mantenendo aspect ratio
+            double scaleX = (double) (panelWidth - 20) / imgWidth; // -20 per padding
+            double scaleY = (double) (panelHeight - 20) / imgHeight;
+            double scale = Math.min(scaleX, scaleY);
             
             int scaledWidth = (int) (imgWidth * scale);
             int scaledHeight = (int) (imgHeight * scale);
             
-            // Center the image
             int x = (panelWidth - scaledWidth) / 2;
             int y = (panelHeight - scaledHeight) / 2;
             
-            g.drawImage(currentSprite, x, y, scaledWidth, scaledHeight, this);
+            g2d.drawImage(currentSprite, x, y, scaledWidth, scaledHeight, this);
         } else {
-            // Draw placeholder text when no sprite is loaded
-            g.setColor(Color.GRAY);
-            g.setFont(new Font("Monospaced", Font.PLAIN, 12));
-            String text = "No sprite";
+            // Disegna un placeholder elegante se non c'è sprite
+            g.setColor(new Color(30, 30, 30));
+            g.fillRect(10, 10, getWidth()-20, getHeight()-20);
+            g.setColor(Color.DARK_GRAY);
+            g.setFont(new Font("Monospaced", Font.BOLD, 14));
+            String text = "NO SIGNAL";
             FontMetrics fm = g.getFontMetrics();
-            int textX = (getWidth() - fm.stringWidth(text)) / 2;
-            int textY = (getHeight() + fm.getAscent()) / 2;
-            g.drawString(text, textX, textY);
+            g.drawString(text, (getWidth() - fm.stringWidth(text))/2, (getHeight()/2) + 5);
         }
-    }
-    
-    public String getCurrentSpritePath() {
-        return currentSpritePath;
-    }
-    
-    public boolean hasSprite() {
-        return currentSprite != null;
     }
 }

@@ -360,6 +360,32 @@ public class MainFrame {
     }
     
     // ========== Dialog Management (for InteractionPanel) ==========
+
+
+    public void showInteractionPanel(boolean show) {
+        if (interactionPanel != null && interactionPanel.getParent() != null) {
+             // Il parent è interactionContainer in CenterPanelFacade
+             interactionPanel.getParent().setVisible(show);
+             
+             // Gestiamo anche lo sprite panel che è fratello nel layout
+             if (spritePanel != null) {
+                 spritePanel.setVisible(show);
+             }
+        }
+    }
+
+    public void startInteraction(String message, String spriteName) {
+        // 1. Carica lo sprite
+        if (spriteName != null && spritePanel != null) {
+            spritePanel.loadImage(spriteName);
+        } else if (spritePanel != null) {
+            spritePanel.clearSprite();
+        }
+
+        // 2. Mostra il dialogo
+        showDialog(List.of(message));
+    }
+
     
     public void showDialog(List<String> messages) {
         if (interactionPanel != null) {
@@ -383,10 +409,6 @@ public class MainFrame {
             interactionPanel.repaint();
         }
     }
-
-    // ========== Dialog Management (for InteractionPanel) ==========
-
-    // Keep existing showDialog method as is...
 
     /**
      * Shows a dialog with multiple choice options
@@ -426,9 +448,6 @@ public class MainFrame {
             interactionPanel.selectDown();
         }
     }
-
-    // Keep all other existing dialog methods (getDialogActive, confirmChoice, etc.)...
-
 
     
     public boolean getDialogActive() {

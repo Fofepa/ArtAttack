@@ -22,7 +22,9 @@ public class MapPanel extends JPanel {
     private Maps map;
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
-    private List<Coordinates> attackArea; // Questa lista verrà riempita quando selezioni una mossa
+    private List<Coordinates> attackArea;
+
+    private static final int CELL_SIZE = 12;
 
     // Blinking cursor properties
     private boolean cursorVisible = true;
@@ -56,29 +58,41 @@ public class MapPanel extends JPanel {
             return;
         }
         
-        // Simple character-based rendering
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.PLAIN, 12));
         
         char[][] matrix = map.getMapMatrix();
-        int cellSize = 12;
-        
+
+        // 1. CALCOLO DELL'OFFSET PER CENTRARE
+        // Calcoliamo quanto è grande la mappa in pixel
+        int mapPixelWidth = map.getWidth() * CELL_SIZE;
+        int mapPixelHeight = map.getHeight() * CELL_SIZE;
+
+        // Calcoliamo il punto di partenza (Top-Left) per centrarla nel pannello
+        int startX = (getWidth() - mapPixelWidth) / 2;
+        int startY = (getHeight() - mapPixelHeight) / 2;
+
+        // Ciclo di rendering
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
-                char c = matrix[x][y];
+                char c = matrix[x][y]; // Nota: verifica se è matrix[y][x] o [x][y] in base alla tua impl.
 
-                // Check if cursor should be drawn at this position
+                // Calcoliamo la posizione esatta in pixel di QUESTA cella
+                int px = startX + (x * CELL_SIZE);
+                int py = startY + (y * CELL_SIZE);
+
+                // --- CURSORE MOVIMENTO ---
                 boolean isCursorPosition = movementCursor != null && 
                                            movementCursor.getX() == x && 
                                            movementCursor.getY() == y;
                 
-                // If cursor is at this position and visible, draw cursor instead
                 if (isCursorPosition && cursorVisible) {
                     g.setColor(Color.GREEN);
-                    g.drawString("*", x * cellSize + 10, y * cellSize + 20);
+                    // Disegna il cursore leggermente spostato per centrarlo nel carattere
+                    g.drawString("*", px, py + CELL_SIZE); 
                 }
-                else{
-                    // Set colors based on character
+                else {
+                    // --- COLORI MAPPA ---
                     switch (c) {
                         case '#' -> g.setColor(Color.GRAY);
                         case '@' -> g.setColor(Color.CYAN);
@@ -89,42 +103,60 @@ public class MapPanel extends JPanel {
                     } 
                 }
                 
-                g.drawString(String.valueOf(c), x * cellSize + 10, y * cellSize + 20);
+                // Disegna il carattere. 
+                // Nota: drawString disegna dalla baseline (basso), quindi aggiungiamo CELL_SIZE a Y
+                g.drawString(String.valueOf(c), px, py + CELL_SIZE);
             }
         }
         
-        // Draw movement cursor if active
+        // --- RENDERING OVERLAYS (Cursori e Aree) ---
+        // Usiamo helper method per evitare codice duplicato nel calcolo pixel
+        
+        // 1. Cursore quadrato verde (bordi)
         if (movementCursor != null) {
             g.setColor(Color.GREEN);
-            int x = movementCursor.getX() * cellSize + 10;
-            int y = movementCursor.getY() * cellSize + 20;
-            g.drawRect(x - 2, y - 10, cellSize, cellSize);
+            drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false);
         }
         
-        // Draw move area
+        // 2. Area Movimento (Verde trasparente)
         if (moveArea != null) {
             g.setColor(new Color(0, 255, 0, 50));
             for (Coordinates coord : moveArea) {
-                int x = coord.getX() * cellSize + 10;
-                int y = coord.getY() * cellSize + 20;
-                g.fillRect(x - 2, y - 10, cellSize, cellSize);
+                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
             }
         }
         
-        // --- QUESTA È LA PARTE CHE DISEGNA L'AREA DI ATTACCO ---
+        // 3. Area Attacco (Rosso trasparente)
         if (attackArea != null) {
-            // Usa un colore Rosso semi-trasparente per l'attacco
             g.setColor(new Color(255, 0, 0, 80)); 
             for (Coordinates coord : attackArea) {
-                int x = coord.getX() * cellSize + 10;
-                int y = coord.getY() * cellSize + 20;
-                g.fillRect(x - 2, y - 10, cellSize, cellSize);
+                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
                 
-                // Opzionale: Disegna un bordo rosso attorno all'area
+                // Bordo rosso opzionale
                 g.setColor(Color.RED);
-                g.drawRect(x - 2, y - 10, cellSize, cellSize);
-                g.setColor(new Color(255, 0, 0, 80)); // Reset fill color
+                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false);
+                g.setColor(new Color(255, 0, 0, 80)); // Reset
             }
+        }
+    }
+
+    /**
+     * Helper per disegnare rettangoli sulle celle calcolando l'offset corretto
+     */
+    private void drawCellRect(Graphics g, int gridX, int gridY, int startX, int startY, boolean fill) {
+        int px = startX + (gridX * CELL_SIZE);
+        int py = startY + (gridY * CELL_SIZE);
+        
+        // Aggiustamenti fini per centrare il rettangolo attorno al testo
+        // Il testo drawString è a (px, py + CELL_SIZE).
+        // Il rettangolo deve partire da (px, py) con larghezza CELL_SIZE.
+        
+        // Nota: Nel tuo codice originale usavi offset specifici (-2, -10). 
+        // Qui normalizziamo: il rettangolo copre l'intera cella logica.
+        if (fill) {
+            g.fillRect(px, py, CELL_SIZE, CELL_SIZE);
+        } else {
+            g.drawRect(px, py, CELL_SIZE, CELL_SIZE);
         }
     }
     
@@ -204,5 +236,6 @@ public class MapPanel extends JPanel {
 
     public void setMap(Maps map){
         this.map = map;
+        repaint();
     }
 }

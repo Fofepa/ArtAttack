@@ -8,6 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,6 +28,7 @@ import com.artattack.level.MapBuilder;
 import com.artattack.level.MapDirector;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
+import com.artattack.level.TutorialMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
@@ -35,6 +38,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
+import com.artattack.level.MapDirector;
 
 /**
  * Facade for managing menu screens
@@ -101,83 +105,6 @@ public class MenuPanel {
      */
     private void startNewGameWithTestData() {
         try {
-
-            MoveBuilder1 mb1= new MoveBuilder1();
-            mb1.setName("prova");
-            mb1.setPower(20);
-            mb1.setActionPoints(1);
-            mb1.setAreaAttack(false);
-            
-        
-
-           
-        
-            // Build the map using your MapBuilder pattern
-            MapBuilder builder = new TestMapBuilder();
-            
-            // Create players (adjust based on your actual Player constructors)
-            AreaBuilder areaBuilder = new AreaBuilder();
-            areaBuilder.addShape("8");
-            List<Coordinates> moveArea = areaBuilder.getResult();
-            areaBuilder.addShape("4");
-            List<Coordinates> area4 = areaBuilder.getResult();
-            mb1.setAttackArea(area4);
-            Move mossa = mb1.getResult();
-            Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
-            List<Item> items = new ArrayList<>();
-            List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
-                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
-            items.add(new Cure("Potion", " ", 10));
-            items.add(new Cure("SuperPotion", " ", 2));
-            items.add(new Cure("IperPotion", "Sex on the beach ", 1));
-
-            Musician zappa = new Musician(
-                1, '@', "Zappa", 
-                new Coordinates(8, 8), 
-                List.of(hoe), 
-                5, 5, moveArea, 19, 20, 0, 20, 1, 5, 2, items, null, null
-            );
-
-            MovieDirector lynch = new MovieDirector(
-                2, '@', "Lynch", 
-                new Coordinates(5, 5),
-                List.of(new Weapon("Camera", "A cinematic weapon", 10)), 
-                5, 5, moveArea, 20, 20, 0, 20, 1, 5, 2, items, null, null
-            );
-
-            Player playerOne = zappa;
-            Player playerTwo = lynch;
-            
-            Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
-            Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
-            Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
-            Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);
-
-            // Create enemies (optional)
-            Enemy enemy = new Enemy(
-                3, 'E', "C17", 
-                new Coordinates(10, 10),
-                EnemyType.EMPLOYEE, 20, 20, 3,
-                List.of(enemyWeapon), 15, 15, moveArea, 
-                moveArea, null, null, 0
-            );
-            ArrayList<Enemy> enemies = new ArrayList<>();
-            enemies.add(enemy);
-            
-            // Build the map
-            builder.setDimension(40, 140);
-            builder.setPlayerOne(playerOne);
-            builder.setPlayerTwo(playerTwo);
-            builder.setEnemies(enemies);
-            builder.setInteractableElements(npcs);
-            builder.setDict();
-            builder.setTurnQueue();
-            builder.startMap();
-            
-            Maps map = builder.getResult();
-            
-            // Start the game through the facade
-            mainFacade.startNewGame(map, playerOne, playerTwo);*/
         MapBuilder builder = new TutorialMapBuilder();
         MapDirector director = new MapDirector(builder);
 

@@ -22,25 +22,16 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
-import com.artattack.interactions.TalkFactory;
-import com.artattack.items.Cure;
 import com.artattack.items.Item;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
-import com.artattack.level.MapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
+import com.artattack.level.MapDirector;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
-import com.artattack.mapelements.Enemy;
-import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
-import com.artattack.moves.Move;
-import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
-import com.artattack.level.MapDirector;
-import com.artattack.level.TutorialMapBuilder;
 
 
 /**
@@ -105,7 +96,7 @@ public class MainGUIFacade {
 
     private void createGameFromSelection(CharacterType p1Type, CharacterType p2Type) {
          try {
-            MoveBuilder1 mb1= new MoveBuilder1();
+            /*MoveBuilder1 mb1= new MoveBuilder1();
             /*mb1.setName("prova");
             mb1.setPower(20);
             mb1.setActionPoints(1);
@@ -118,7 +109,7 @@ public class MainGUIFacade {
             // Build the map using your MapBuilder pattern
             MapBuilder builder = new TestMapBuilder();
             
-            // Create players (adjust based on your actual Player constructors)*/
+            // Create players (adjust based on your actual Player constructors)
             AreaBuilder areaBuilder = new AreaBuilder();
             areaBuilder.addShape("8");
             List<Coordinates> moveArea = areaBuilder.getResult();
@@ -129,7 +120,7 @@ public class MainGUIFacade {
             Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
             List<Item> items = new ArrayList<>();
             /*List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
-                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));*/
+                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
             items.add(new Cure("Potion", " ", 10));
             items.add(new Cure("SuperPotion", " ", 2));
             items.add(new Cure("IperPotion", "Sex on the beach ", 1));
@@ -166,15 +157,29 @@ public class MainGUIFacade {
             
             Maps map = builder.getResult();*/
 
-            MapBuilder builder = new TutorialMapBuilder();
-            MapDirector director = new MapDirector(builder);
-
-            director.make("Tutorial");
-            Maps map = builder.getResult();
-
-            // Start the game
-            startNewGame(map, playerOne, playerTwo);
+            // Creating MoveArea
+            AreaBuilder ab = new AreaBuilder();
+            ab.addShape("base");
+            List<Coordinates> moveArea = ab.getResult();
             
+            // Creating Players
+            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
+            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+
+            // Creating Map
+            MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
+            MapDirector md = new MapDirector(mb1);
+            md.make("Tutorial");
+            mb1.setPlayerOne(playerOne);
+            mb1.setPlayerTwo(playerTwo);
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map = mb1.getResult();
+
+            // Start Game
+            startNewGame(map, playerOne, playerTwo);
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -284,8 +289,7 @@ public class MainGUIFacade {
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Now, go! Get to the top floor and defeat these power-hungry nerds!",
                             "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
-                            "First let's focus on where we are going press M to focus the map",
-                            "Go teach him a lesson!"));
+                            "Press M to shift your focus to the map and go teach him a lesson!"));
         });
         
         // Start the turn system

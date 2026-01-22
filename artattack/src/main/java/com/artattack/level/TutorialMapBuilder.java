@@ -114,5 +114,10 @@ public class TutorialMapBuilder implements MapBuilder {
         this.reset();
         return product;
     }
+
+    @Override
+    public void buildBorder() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
     
 }

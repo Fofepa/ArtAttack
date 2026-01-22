@@ -120,4 +120,14 @@ public class TestMapBuilder implements MapBuilder {
         return product;
     }
 
+    @Override
+    public void buildBorder() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void buildWall(Coordinates offset, int width, int height, char mapSymbol) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
 }

@@ -13,11 +13,14 @@ public interface MapBuilder {
     public void setPlayerTwo(Player player);
     public void setInteractableElements(List<InteractableElement> elements);
     public void setEnemies(List<Enemy> enemies);
-    public void setDimension(int rows, int columns);
+    public void setDimension(int width, int height);
     public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height);
     public void startMap();     // only for the view part
+    public void buildBorder();
+    public void buildWall(Coordinates offset, int width, int height, char mapSymbol);
     public void setDict();
     public void setTurnQueue();
-    public void setTurnQueue(Player currPlayer, Player otherPlayer); 
+    public void setTurnQueue(Player currPlayer, Player otherPlayer);
+    public void reset();
     public Maps getResult();
 }

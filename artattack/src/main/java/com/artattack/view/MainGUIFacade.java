@@ -163,13 +163,13 @@ public class MainGUIFacade {
             List<Coordinates> moveArea = ab.getResult();
             
             // Creating Players
-            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(28, 2), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
-            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(28, 4), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
+            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
 
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
-            md.make("1");
+            md.make("Tutorial");
             mb1.setPlayerOne(playerOne);
             mb1.setPlayerTwo(playerTwo);
             mb1.setDict();

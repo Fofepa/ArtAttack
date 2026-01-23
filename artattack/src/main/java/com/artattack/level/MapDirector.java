@@ -38,7 +38,7 @@ public class MapDirector {
                 //Creating InteractableElements
                 InteractableElement chest_t = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
                     new GiveFactory(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), new Cure("Cure", "Heals 5 HP.", 5)).createInteraction()), null, null, null);
-                InteractableElement npc_t = new InteractableElement(0, 'T', "John Belushi", new Coordinates(22, 21), List.of(new TalkFactory(
+                InteractableElement npc_t = new InteractableElement(0, 'T', "John Belushi", new Coordinates(29, 22), List.of(new TalkFactory(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
                             "Each one of you has a CURSOR. It has many uses, like moving!",

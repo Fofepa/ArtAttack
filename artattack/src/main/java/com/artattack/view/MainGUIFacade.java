@@ -163,13 +163,13 @@ public class MainGUIFacade {
             List<Coordinates> moveArea = ab.getResult();
             
             // Creating Players
-            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
-            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(28, 2), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
+            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(28, 4), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
 
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
-            md.make("Tutorial");
+            md.make("1");
             mb1.setPlayerOne(playerOne);
             mb1.setPlayerTwo(playerTwo);
             mb1.setDict();
@@ -285,7 +285,8 @@ public class MainGUIFacade {
                             "But it's fine, I can teach you everything you need to know.",
                             "Each one of you has a CURSOR. It has many uses, like moving!",
                             "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
-                            "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
+                            "Instead, if you see something that interests you, you can position your CURSOR on it and press the E key to interact with it. You can also talk to people this way!",
+                            "Keep in mind that if you want to interact with something, you have to move next to it first!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Now, go! Get to the top floor and defeat these power-hungry nerds!",
                             "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",

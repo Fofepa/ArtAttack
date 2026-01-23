@@ -43,7 +43,8 @@ public class MapDirector {
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
                             "Each one of you has a CURSOR. It has many uses, like moving!",
                             "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
-                            "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
+                            "Instead, if you see something that interests you, you can position your CURSOR on it and press the E key to interact with it. You can also talk to people this way!",
+                            "Keep in mind that if you want to interact with something, you have to move next to it first!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Understood? Alright, go and beat up that fella over there.")).createInteraction()), null, null, null);
 
@@ -109,8 +110,15 @@ public class MapDirector {
                 this.builder.setEnemies(List.of(e0_1, e1_1, e2_1, e3_1));
                 this.builder.setInteractableElements(List.of(chest0_1, chest1_1));
                 this.builder.buildBorder();
-                this.builder.buildWall(new Coordinates(11, 1), 8, 27, '#');
-                this.builder.buildWall(new Coordinates(14, 27), 1, 3, '#');
+                this.builder.buildWall(new Coordinates(11, 1), 8, 25, '#');
+                this.builder.buildWall(new Coordinates(14, 28), 1, 3, '#');
+                this.builder.buildWall(new Coordinates(1, 14), 4, 1, '#');
+                this.builder.buildWall(new Coordinates(8, 8), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(11, 26), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(18, 26), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(23, 11), 8, 1, '#');
+                this.builder.buildWall(new Coordinates(19, 19), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(2, 19), 9, 1, '#');
         }
     }
 }

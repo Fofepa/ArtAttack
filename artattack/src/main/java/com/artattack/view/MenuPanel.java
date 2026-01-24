@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -19,6 +20,7 @@ import javax.swing.JPanel;
 
 import com.artattack.level.MapBuilder;
 import com.artattack.level.MapDirector;
+import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.level.TutorialMapBuilder;
 
@@ -148,7 +150,15 @@ public class MenuPanel {
 
         director.make("Tutorial");
         Maps map = builder.getResult();
-        mainFacade.startNewGame(map, map.getPlayerOne(), map.getPlayerTwo());
+
+        //director.make("Test");
+        //Maps map2 = builder.getResult();
+        
+        MapManager mapManager = new MapManager(new HashMap<Integer, Maps>(), map.getID());
+        mapManager.getLevels().put(map.getID(), map);
+        //mapManager.getLevels().put(map.getID(), map2);
+
+        mainFacade.startNewGame(mapManager, map.getPlayerOne(), map.getPlayerTwo());
             
         } catch (Exception ex) {
             System.err.println("Error starting game:");

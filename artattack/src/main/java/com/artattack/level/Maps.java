@@ -139,7 +139,7 @@ public class Maps {
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
     }
 
-    private int getID(){
+    public int getID(){
         return this.ID;
     }
 

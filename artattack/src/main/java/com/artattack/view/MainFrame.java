@@ -40,10 +40,16 @@ public class MainFrame implements UIManager {
     private MovementStrategy movementStrategy;
     private CombatStrategy combatStrategy;
     private InventoryStrategy inventoryStrategy;
+
+    private GameContext gameContext = null;
     
     public MainFrame(Maps map) {
         this.map = map;
         initializePanels();
+    }
+
+    public void setGameContext(GameContext gameContext){
+        this.gameContext = gameContext;
     }
     
     private void initializePanels() {
@@ -59,7 +65,7 @@ public class MainFrame implements UIManager {
         interactionPanel = new InteractionPanel();
         
         // Link panels to existing InteractableElements
-        linkInteractablePanels();
+        //linkInteractablePanels();
         
         // Other panels will be initialized when currentPlayer is set
     }
@@ -68,7 +74,7 @@ public class MainFrame implements UIManager {
      * Links the sprite and interaction panels to all InteractableElements in the map
      * Call this after map is loaded and panels are initialized
      */
-    public void linkInteractablePanels() {
+    /*public void linkInteractablePanels() {
         if (map != null && map.getDict() != null) {
             for (MapElement element : map.getDict().values()) {
                 switch (element) {
@@ -94,7 +100,7 @@ public class MainFrame implements UIManager {
                 }
             }
         }
-    }
+    }*/
 
 
     public void setMainGUIFacade(MainGUIFacade facade) {
@@ -127,6 +133,10 @@ public class MainFrame implements UIManager {
     
     public Maps getMap() {
         return map;
+    }
+
+    public GameContext getGameContext(){
+        return this.gameContext;
     }
     
     public void setCurrentPlayer(Player player) {
@@ -513,7 +523,7 @@ public class MainFrame implements UIManager {
     public void switchMap(Maps map){
         this.map = map;
         this.mapPanel.setMap(map); //Need to add updateMap
-        linkInteractablePanels();
+        //linkInteractablePanels();
         this.map.getConcreteTurnHandler().addTurnListener(this.mainGUIFacade.getInputController());
         this.map.getConcreteTurnHandler().start();
         this.turnOrderPanel.setTurnHandler(map.getConcreteTurnHandler());

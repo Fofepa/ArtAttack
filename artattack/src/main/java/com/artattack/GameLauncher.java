@@ -2,6 +2,7 @@ package com.artattack;
 
 import javax.swing.SwingUtilities;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.artattack.view.MainGUIFacade;
@@ -38,8 +39,8 @@ public class GameLauncher {
         MapBuilder builder = new TestMapBuilder();
         
         // Create players
-        Player playerOne = new Musician(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null);
-        Player playerTwo = new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5),List.of(new Weapon("Hoe", "", 0)), 5, 5 , null, 20, 20, 0, 20, 1, 5, 2, null, null, null);
+        Player playerOne = new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20,PlayerType.MUSICIAN, 0, 20, 1, 5, 2, null, null, null);
+        Player playerTwo = new Player(0, '@', "Lynch", new Coordinates(5, 5),List.of(new Weapon("Hoe", "", 0)), 5, 5 , null, 20, 20, PlayerType.MOVIE_DIRECTOR, 0, 20, 1, 5, 2, null, null, null);
         
         // Create enemies (optional)
         AreaBuilder areaBuilder = new AreaBuilder();
@@ -61,9 +62,12 @@ public class GameLauncher {
         builder.startMap();
         
         Maps map = builder.getResult();
+
+        MapManager mapManager = new MapManager(new HashMap<Integer, Maps>(), map.getID());
+        mapManager.getLevels().put(map.getID(), map);
         
         // Start the game through the facade
-        facade.startNewGame(map, playerOne, playerTwo);
+        facade.startNewGame(mapManager, playerOne, playerTwo);
     }
 }
 

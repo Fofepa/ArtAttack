@@ -18,12 +18,9 @@ import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.TriggerGroup;
 import com.artattack.view.MainFrame;
-import com.artattack.view.SpritePanel;
 
 public class mapTest {
     private TestMapBuilder tmb;
@@ -40,17 +37,17 @@ public class mapTest {
         assertNotNull(this.tmb);
 
         //Initialazing player and enemy for removeTest
-        this.player = new Musician(1, '@', "Zappa", new Coordinates(0, 1));
+        this.player = new Player(1, '@', "Zappa", new Coordinates(0, 1));
         assertNotNull(this.player);
         this.enemy = new Enemy(0, 'E', "Goblin", new Coordinates(20, 20), EnemyType.EMPLOYEE);
         assertNotNull(this.enemy);
         //Creating map
         tmb.setDimension(26, 135);
         tmb.setPlayerOne(this.player);
-        tmb.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5)));
+        tmb.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5)));
         tmb.setInteractableElements(List.of(
-            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(null, List.of(""))), "",new SpritePanel(),null),
-            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(null, List.of(""))), "",new SpritePanel(),null)));
+            new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(List.of(""))), ""),
+            new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(List.of(""))), "")));
         tmb.setEnemies(List.of(
             this.enemy,
             new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE)));
@@ -61,7 +58,6 @@ public class mapTest {
         this.map = tmb.getResult();
         this.map.getConcreteTurnHandler().getConcreteTurnQueue().add(this.enemy);
         this.mainFrame = new MainFrame(map);
-        mainFrame.linkInteractablePanels();
         assertNotNull(this.map);
     }
 
@@ -86,7 +82,7 @@ public class mapTest {
 
     @Test
     public void addTriggerGroupTest() {
-        TriggerGroup tg = new TriggerGroup(new Talk(new MainFrame(this.map), List.of("TestDialog")));
+        TriggerGroup tg = new TriggerGroup(new Talk( List.of("TestDialog")));
         map.addTriggerGroup(tg, new Coordinates(1, 1), 3, 3);
         map.setDict();
         for (int q = 1; q < 4; q++) {

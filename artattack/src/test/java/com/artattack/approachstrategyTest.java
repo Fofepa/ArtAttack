@@ -16,8 +16,8 @@ import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
+import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.moves.Weapon;
 import com.artattack.view.MainFrame;
 
@@ -35,8 +35,8 @@ public class approachstrategyTest {
         new Coordinates(0, 2), new Coordinates(0, -2), new Coordinates(2, 0), new Coordinates(-2, -2), new Coordinates(2, 2), new Coordinates(2, -2), new Coordinates(-2, 2), 
         new Coordinates(0, 1), new Coordinates(1, -1), new Coordinates(1, 0), new Coordinates(13,24), new Coordinates(1, 1)),null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
-        mapBuilder.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null));
+        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
+        mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MOVIE_DIRECTOR));
         mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);
         mapBuilder.setDict();

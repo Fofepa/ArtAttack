@@ -10,13 +10,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.interactions.GiveFactory;
 import com.artattack.interactions.Interaction;
-import com.artattack.items.Cure;
+import com.artattack.interactions.Give;
 import com.artattack.items.Item;
+import com.artattack.items.ItemType;
 import com.artattack.level.Coordinates;
-import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
+import com.artattack.view.GameContext;
 import com.artattack.view.InteractionPanel;
 
 public class giveTest {
@@ -29,15 +30,15 @@ public class giveTest {
     @Before
     public void setUp(){
         inventory = new ArrayList<Item>();
-        item = new Cure("","",0);
-        player = new MovieDirector(0, ' ', "", new Coordinates(0, 0),
-            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, inventory,null,null);
-        interaction = new GiveFactory(List.of(" "), item).createInteraction();
+        item = new Item(ItemType.CURE,"","",0);
+        player = new Player(0, ' ', "", new Coordinates(0, 0),
+            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, inventory,null,null, PlayerType.MOVIE_DIRECTOR);
+        interaction = new Give(List.of(" "), List.of(item));
     }
 
     @Test
     public void dointeractionTest(){
-        interaction.doInteraction(player);
+        interaction.doInteraction(new GameContext(null, null), player);
 
         assertTrue("Give dointeractionTest faild. Item not in Player's inventory.",
                     player.getInventory().contains(item));

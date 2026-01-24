@@ -29,7 +29,7 @@ public class skilltreeTest {
         area.add(new Coordinates(1,1));
         List<Weapon> weapons = new ArrayList<>();
         weapons.add(new Weapon("Hoe", "", 0));
-        this.player = new Musician(1, '@', "Zappa", new Coordinates(0, 1), weapons, 5,5, area, 20, 20, 0, 20, 1, 5, 2, null, null, null);
+        this.player = new Player(1, '@', "Zappa", new Coordinates(0, 1), weapons, 5,5, area, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN);
         Node root = new RootNode(player);
         HPNODE node_1 = new HPNODE(player,1);
         APNODE node_2 = new APNODE(player, 5);

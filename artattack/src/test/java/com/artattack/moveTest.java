@@ -12,16 +12,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.items.Cure;
+import com.artattack.items.Item;
+import com.artattack.items.ItemType;
 import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
 
@@ -77,14 +77,15 @@ public class moveTest {
         mb1.setHealArea(List.of(new Coordinates(1, 1)));
         this.m5 = mb1.getResult();
         //Creating p1
-        this.p1 = new MovieDirector(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 
-        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null);
+        this.p1 = new Player(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Creating p2
-        this.p2 = new Musician(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null);
+        this.p2 = new Player(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null, PlayerType.MOVIE_DIRECTOR);
         //Creating e
         this.e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 100, 100, 1, 
-            new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Cure(".", ".", 1)), 
+            new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Item(ItemType.CURE,
+                ".", ".", 1)), 
             List.of(new Key(".", ".", 0)), 100);
         //Creating maps
         tmb.setDimension(26, 135);

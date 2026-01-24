@@ -22,9 +22,8 @@ import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.view.InteractionPanel;
 
 
@@ -44,8 +43,8 @@ public class movementstrategyTest {
         this.tmb = new TestMapBuilder();
         assertNotNull(this.tmb);
         tmb.setDimension(26, 135);
-        tmb.setPlayerOne(new Musician(1, '@', "Zappa", new Coordinates(4,4), null, 20, 20, area, 10, 10, 10, 12, 0, 0));
-        tmb.setPlayerTwo(new MovieDirector(0, '@', "Lynch", new Coordinates(5, 5), null, 20, 20, area, 10, 10, 10, 12, 0, 0));
+        tmb.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(4,4), null, 20, 20, area, 10, 10, 10, 12, 0, 0, PlayerType.MUSICIAN));
+        tmb.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5), null, 20, 20, area, 10, 10, 10, 12, 0, 0, PlayerType.MOVIE_DIRECTOR));
         /* tmb.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),List.of(new Talk(null, List.of("Ciao!"))), "",null,null),
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null

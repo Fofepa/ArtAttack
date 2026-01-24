@@ -9,7 +9,7 @@ import com.artattack.level.Coordinates;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnQueue;
 
 import java.util.*;
@@ -20,7 +20,7 @@ public class concreteturnqueueTest {
     @Before
     public void setUp(){
         queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
-                new MovieDirector(1, '2', "o", new Coordinates(5,5)))));
+                new Player(1, '2', "o", new Coordinates(5,5)))));
         assertNotNull(queue);
     }
 
@@ -32,7 +32,7 @@ public class concreteturnqueueTest {
 
     @Test
     public void removeTest(){
-        queue.remove(new MovieDirector(1, '2', "o", new Coordinates(5,5)));
+        queue.remove(new Player(1, '2', "o", new Coordinates(5,5)));
         assertEquals(1, queue.getTurnQueue().size());
         
     }

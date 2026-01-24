@@ -15,7 +15,7 @@ import org.junit.Test;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.MovieDirector;
+import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnHandler;
 import com.artattack.turns.ConcreteTurnQueue;
 
@@ -26,7 +26,7 @@ public class concreteturnhandlerTest {
     @Before
     public void setUp(){
         queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
-                new MovieDirector(1, '2', "o", null))));
+                new Player(1, '2', "o", null))));
         turn = new ConcreteTurnHandler(queue);
         assertNotNull(queue);
         assertNotNull(turn);
@@ -44,7 +44,7 @@ public class concreteturnhandlerTest {
     public void nextTest(){
         Enemy enemy = (Enemy)turn.next();
         assertEquals(enemy, queue.getTurnQueue().get(0));
-        MovieDirector lynch = (MovieDirector)turn.next();
+        Player lynch = (Player)turn.next();
         assertEquals(lynch, queue.getTurnQueue().get(1));
 
         assertEquals((Enemy)turn.next(), turn.next());

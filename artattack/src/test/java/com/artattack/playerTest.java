@@ -12,8 +12,8 @@ import org.junit.Test;
 
 import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
-import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 
 import org.junit.After;
 
@@ -23,8 +23,8 @@ public class playerTest {
 
     @Before
     public void setUp() throws Exception{
-        this.player = new MovieDirector(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, 
-            new ArrayList<Coordinates>());
+        this.player = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, 
+            new ArrayList<Coordinates>(), PlayerType.MOVIE_DIRECTOR);
     }
 
     @After

@@ -10,13 +10,10 @@ import com.artattack.items.ItemType;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
-import com.artattack.mapelements.Player;
-import com.artattack.mapelements.PlayerType;
 import com.artattack.mapelements.TriggerGroup;
 
 public class MapDirector {
     private MapBuilder builder;
-    private MapBuilder builder_;
 
     public MapDirector(MapBuilder builder) {
         this.builder = builder;
@@ -24,10 +21,6 @@ public class MapDirector {
 
     public void changeBuilder(MapBuilder builder) {
         this.builder = builder;
-    }
-
-    public MapBuilder getBuilder(){
-        return this.builder_;
     }
 
     public void make(String type) {
@@ -44,9 +37,9 @@ public class MapDirector {
                 Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_t, enemyVisionArea_t, null, null, 0);
 
                 //Creating InteractableElements
-                InteractableElement chest = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
+                InteractableElement chest_t = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("ALready opened."))),"");
-                InteractableElement npc = new InteractableElement(0, 'T', "John Belushi", new Coordinates(22, 21), List.of(new Talk(
+                InteractableElement npc_t = new InteractableElement(0, 'T', "John Belushi", new Coordinates(29, 22), List.of(new Talk(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
                             "Each one of you has a CURSOR. It has many uses, like moving!",
@@ -55,9 +48,8 @@ public class MapDirector {
                             "Keep in mind that if you want to interact with something, you have to move next to it first!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Understood? Alright, go and beat up that fella over there."))), "");
-                make("Test");
-                InteractableElement door = new InteractableElement(0, 'H', "Door", new Coordinates(0, 2), 
-                List.of(new SwitchMap(1, List.of(new Coordinates(1, 1), new Coordinates(1, 2)))),"");
+                InteractableElement door_t = new InteractableElement(0, 'H', "Door", new Coordinates(0, 2), 
+                List.of(new SwitchMap(1, List.of(new Coordinates(28, 2), new Coordinates(28, 4)))),"");
 
                 //Creating TriggerGroups
                 TriggerGroup firstDialogue = new TriggerGroup(new Talk( 
@@ -95,7 +87,7 @@ public class MapDirector {
                 this.builder.setID(0);
                 this.builder.setDimension(32, 26);
                 this.builder.setEnemies(List.of(e));
-                this.builder.setInteractableElements(List.of(npc_t, chest_t));
+                this.builder.setInteractableElements(List.of(npc_t, chest_t, door_t));
                 this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4);
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9);
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 1), 3, 5);
@@ -109,15 +101,6 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(13, 1), 2, 3, '#');
                 this.builder.buildWall(new Coordinates(14, 12), 3, 2, '#');
                 this.builder.buildWall(new Coordinates(24, 11), 7, 1, '#');
-                break;
-            case "Test":
-                this.builder_ = new TestMapBuilder();
-                builder_.setID(1);
-                builder_.setDimension(20, 20);
-                builder_.setEnemies(List.of());
-                builder_.setDict();
-                builder_.setTurnQueue();
-                builder_.startMap();
                 break;
             case "1":
                 //Creating Areas
@@ -133,9 +116,9 @@ public class MapDirector {
                 Enemy e3_1 = new Enemy(0, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_1, enemyVisionArea_1, null, null, 0);
 
                 InteractableElement chest0_1 = new InteractableElement(0, '$', "Chest", new Coordinates(29, 29), List.of(
-                new GiveFactory(List.of("You found a Cure!"), new Cure("Cure", "Heals 5 HP.", 5)).createInteraction()), null, null, null);
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement chest1_1 = new InteractableElement(0, '$', "Chest", new Coordinates(9, 11), List.of(
-                new GiveFactory(List.of("You found a Cure!"), new Cure("Cure", "Heals 5 HP.", 5)).createInteraction()), null, null, null);
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
 
                 this.builder.setDimension(32, 32);
                 this.builder.setEnemies(List.of(e0_1, e1_1, e2_1, e3_1));

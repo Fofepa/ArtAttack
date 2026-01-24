@@ -5,14 +5,10 @@ import java.util.List;
 
 import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
-import com.artattack.level.MapBuilder;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Player;
-import com.artattack.turns.ConcreteTurnHandler;
-import com.artattack.turns.ConcreteTurnQueue;
 import com.artattack.view.GameContext;
-import com.artattack.view.MainFrame;
 
 public class SwitchMap extends Interaction {
 
@@ -101,16 +97,24 @@ public class SwitchMap extends Interaction {
                 next.setPlayerTwo(currMap.getPlayerTwo());
                 next.setTurnQueue(player, next.getPlayerTwo());
                 next.getDict().put(this.nextCoordinates.get(1), next.getPlayerTwo());
+                currMap.setCell(currMap.getPlayerTwo().getCoordinates(), '.');
+                gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerTwo().getCoordinates(), currMap.getPlayerTwo().getMapSymbol());
+                currMap.remove(currMap.getPlayerTwo());
             } else{
                 next.setPlayerTwo(player);
                 currMap.getPlayerOne().setCoordinates(this.nextCoordinates.get(1));
                 next.setPlayerOne(currMap.getPlayerOne());
                 next.setTurnQueue(player, next.getPlayerOne());
                 next.getDict().put(this.nextCoordinates.get(1), next.getPlayerOne());
-
+                currMap.setCell(currMap.getPlayerOne().getCoordinates(), '.');
+                gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerOne().getCoordinates(), currMap.getPlayerOne().getMapSymbol());
+                currMap.remove(currMap.getPlayerOne());
             }
             //next.setDict();
             //next.startMap();
+            currMap.remove(player);
+            currMap.setCell(player.getCoordinates(), '.');
+            gameContext.getMapManager().getLevels().get(nextMap).setCell(player.getCoordinates(), player.getMapSymbol());
             gameContext.getUiManager().switchMap(next);
             gameContext.getMapManager().setCurrMap(this.nextMap);
         } else {

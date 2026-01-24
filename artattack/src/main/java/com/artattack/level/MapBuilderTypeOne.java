@@ -107,6 +107,11 @@ public class MapBuilderTypeOne implements MapBuilder {
     }
 
     @Override
+    public void setID(int ID) {
+        this.map.setID(ID);
+    }
+
+    @Override
     public void setTurnQueue(Player currPlayer, Player otherPlayer) {
         this.map.setTurnQueue(currPlayer, otherPlayer);
     }

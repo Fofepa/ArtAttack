@@ -8,8 +8,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 
 import javax.swing.BorderFactory;
@@ -20,27 +18,11 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.artattack.interactions.TalkFactory;
-import com.artattack.items.Cure;
-import com.artattack.items.Item;
-import com.artattack.level.AreaBuilder;
-import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.level.TutorialMapBuilder;
-import com.artattack.mapelements.Enemy;
-import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.InteractableElement;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
-import com.artattack.mapelements.Player;
-import com.artattack.moves.Move;
-import com.artattack.moves.MoveBuilder1;
-import com.artattack.moves.Weapon;
-import com.artattack.level.MapDirector;
 
 /**
  * Facade for managing menu screens
@@ -113,8 +95,8 @@ public class MenuPanel {
         director.make("Tutorial");
         Maps map = builder.getResult();
 
-        director.make("Test");
-        Maps map2 = director.getBuilder().getResult();
+        director.make("1");
+        Maps map2 = builder.getResult();
         
         MapManager mapManager = new MapManager(new HashMap<Integer, Maps>(), map.getID());
         mapManager.getLevels().put(map.getID(), map);

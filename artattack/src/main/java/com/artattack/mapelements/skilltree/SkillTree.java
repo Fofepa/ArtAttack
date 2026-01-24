@@ -1,13 +1,9 @@
 package com.artattack.mapelements.skilltree;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.artattack.level.AreaBuilder;
-import com.artattack.level.Coordinates;
-import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
-import com.artattack.moves.Move;
-import com.artattack.moves.Weapon;
 
 
 // N-ary tree

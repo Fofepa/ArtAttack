@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -29,9 +30,8 @@ import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
-import com.artattack.mapelements.MovieDirector;
-import com.artattack.mapelements.Musician;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.moves.Weapon;
 
 
@@ -158,9 +158,12 @@ public class MainGUIFacade {
             
             Maps map = builder.getResult();*/
 
+            //Creating MapManager
+            MapManager mm = new MapManager(new HashMap<Integer, Maps>(), 0);
+
             // Creating MoveArea
             AreaBuilder ab = new AreaBuilder();
-            ab.addShape("base");
+            ab.addShape("square", 20, true);
             List<Coordinates> moveArea = ab.getResult();
             
             // Creating Players
@@ -173,13 +176,22 @@ public class MainGUIFacade {
             md.make("Tutorial");
             mb1.setPlayerOne(playerOne);
             mb1.setPlayerTwo(playerTwo);
+            mb1.setID(0);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
-            Maps map = mb1.getResult();
+            Maps map_t = mb1.getResult();
+            mm.getLevels().put(map_t.getID(), map_t);
+            md.make("1");
+            mb1.setID(1);
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_1 = mb1.getResult();
+            mm.getLevels().put(map_1.getID(), map_1);
 
             // Start Game
-            startNewGame(map, playerOne, playerTwo);
+            startNewGame(mm, playerOne, playerTwo);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -191,18 +203,18 @@ public class MainGUIFacade {
         // Character stats come From the enum class CharacterType
         switch (type) {
             case MUSICIAN:
-                return new Musician(id, '@', type.getName(), coords, 
+                return new Player(id, '@', type.getName(), coords, 
                     List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), // Esempio arma
                     5, 5, moveArea, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null);
+                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN);
                     
             
             
             case DIRECTOR:
-                return new MovieDirector(id, '@', type.getName(), coords,
+                return new Player(id, '@', type.getName(), coords,
                     List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), 
                     5, 5, moveArea, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, null, null);
+                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR);
                     
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);

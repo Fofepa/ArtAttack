@@ -2,14 +2,16 @@ package com.artattack.items;
 
 import com.artattack.mapelements.Player;
 
-public abstract class Item {
+public class Item {
     //Attributes
+    private ItemType type;
     private String name;
     private String description;
     private int amount;
 
     //Constructor
-    public Item(String name, String description, int amount) {
+    public Item(ItemType type, String name, String description, int amount) {
+        this.type = type;
         this.name = name;
         this.description = description;
         this.amount = amount;
@@ -29,5 +31,12 @@ public abstract class Item {
     }
 
     //Methods
-    public abstract int use(Player player);
+    public int use(Player player){
+        switch(this.type){
+            case ATTACK_BUFF: //toDO; break;
+            case CURE: player.updateHP(this.getAmount()); break;
+            case SPEED_BUFF: player.setSpeed(player.getSpeed() + this.getAmount()); break;
+        }
+        return this.amount;
+    }
 }

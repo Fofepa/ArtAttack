@@ -9,6 +9,7 @@ import com.artattack.mapelements.TriggerGroup;
 
 public interface MapBuilder {
     /* public void setDict(Map<Coordinates, ? extends MapElement> dictionaire); */
+    public void setID(int ID);
     public void setPlayerOne(Player player);
     public void setPlayerTwo(Player player);
     public void setInteractableElements(List<InteractableElement> elements);

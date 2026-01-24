@@ -27,6 +27,7 @@ import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.MapDirector;
+import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.MovieDirector;
 import com.artattack.mapelements.Musician;
@@ -208,11 +209,14 @@ public class MainGUIFacade {
         }
     }
     
-    public void startNewGame(Maps map, Player playerOne, Player playerTwo) {
+    public void startNewGame(MapManager maps, Player playerOne, Player playerTwo) {
         currentState = "GAME";
         
         // Initialize game facade with game data
-        gameFacade = new GameFacade(mainFrame, map, playerOne);
+        gameFacade = new GameFacade(mainFrame, maps, playerOne);
+
+        //Maps map = maps.getLevels().get(maps.getCurrMap());
+        
 
         gameFacade.getMainFrame().setMainGUIFacade(this);
         
@@ -229,7 +233,7 @@ public class MainGUIFacade {
 
         // Initialize input controller and register it as turn listener
         inputController = new InputController(gameFacade.getMainFrame());
-        map.getConcreteTurnHandler().addTurnListener(inputController);
+        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
         
         // Clear and setup the display
         mainFrame.getContentPane().removeAll();
@@ -294,7 +298,7 @@ public class MainGUIFacade {
         });
         
         // Start the turn system
-        map.getConcreteTurnHandler().start();
+        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
     }
 
 
@@ -350,13 +354,14 @@ class GameFacade {
     private Maps map;
     private Player currentPlayer;
     
-    public GameFacade(JFrame hostFrame, Maps map, Player player) {
-        this.map = map;
+    public GameFacade(JFrame hostFrame, MapManager maps, Player player) {
+        this.map = maps.getLevels().get(maps.getCurrMap());
         this.currentPlayer = player;
         
         // Create MainFrame adapter for InputController compatibility
         mainFrameAdapter = new MainFrame(map);
         mainFrameAdapter.setCurrentPlayer(player);
+        mainFrameAdapter.setGameContext(new GameContext(mainFrameAdapter, maps));
         
         initializeGamePanel();
     }

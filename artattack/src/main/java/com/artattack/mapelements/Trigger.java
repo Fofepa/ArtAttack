@@ -1,6 +1,7 @@
 package com.artattack.mapelements;
 
 import com.artattack.level.Coordinates;
+import com.artattack.view.GameContext;
 
 public class Trigger extends MapElement {
     private TriggerGroup triggerGroup;
@@ -14,7 +15,7 @@ public class Trigger extends MapElement {
         return this.triggerGroup;
     }
 
-    public void OnTrigger(Player player) {
-        triggerGroup.OnTrigger(player);
+    public void OnTrigger(GameContext gameContext, Player player) {
+        triggerGroup.OnTrigger(gameContext, player);
     }
 }

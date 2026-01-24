@@ -18,19 +18,26 @@ import com.artattack.turns.ConcreteTurnQueue;
 
 
 public class Maps {
+    private  int ID;
     private Player playerOne;
     private Player playerTwo;
     private List<Enemy> enemies;
     private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
-    private Map<Coordinates,MapElement> dictionaire; // for now we leave it here
+    private transient Map<Coordinates,MapElement> dictionaire; // for now we leave it here
     private char[][] mapMatrix;
     private int width;
     private int height;
     private ConcreteTurnHandler turnHandler;
 
     
-    public Maps(){} // now Maps is an empty builder because of the Builder design pattern
+    public Maps(){
+        
+    } // now Maps is an empty builder because of the Builder design pattern
+
+    public void setID(int ID){
+        this.ID = ID;
+    }
 
     public void setPlayerOne(Player player){
         this.playerOne = player;
@@ -133,6 +140,10 @@ public class Maps {
         list.add(otherPlayer);
         ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+    }
+
+    public int getID(){
+        return this.ID;
     }
 
 

@@ -20,6 +20,11 @@ public class TestMapBuilder implements MapBuilder {
     }
 
     @Override
+    public void setID(int ID){
+        this.map.setID(ID);
+    }
+
+    @Override
     public void setPlayerOne(Player player) {
         this.map.setPlayerOne(player);
     }

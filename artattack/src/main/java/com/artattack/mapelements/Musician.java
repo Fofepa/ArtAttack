@@ -7,7 +7,7 @@ import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
 import com.artattack.moves.Weapon;
 
-public class Musician extends Player{
+/*public class Musician extends Player{
 
   public Musician(int ID, char mapSymbol, String name, Coordinates coordinates){
             super(ID,mapSymbol,name,coordinates);
@@ -25,4 +25,4 @@ public class Musician extends Player{
             super(ID,mapSymbol,name,coordinates,weapons, actionPoints,maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed,maxWeapons,inventory, keys, actionArea);
         }
     
-}
+}*/

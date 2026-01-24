@@ -5,7 +5,7 @@ import java.util.List;
 import com.artattack.level.Coordinates;
 import com.artattack.moves.Weapon;
 
-public class ActiveElement extends MapElement implements Comparable<ActiveElement> {
+public abstract class ActiveElement extends MapElement implements Comparable<ActiveElement> {
 
     private int currHP;
     private int maxHP;

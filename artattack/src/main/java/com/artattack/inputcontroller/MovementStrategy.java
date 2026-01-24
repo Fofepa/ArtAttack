@@ -68,7 +68,7 @@ public class MovementStrategy implements PlayerStrategy{
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';
             if (map.getDict().get(player.getCoordinates()) instanceof Trigger t) {
-                t.OnTrigger(this.player);
+                t.OnTrigger(this.mainFrame.getGameContext(), this.player);
             }
         }
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
@@ -114,6 +114,10 @@ public class MovementStrategy implements PlayerStrategy{
 
     public Maps getMap() {
         return this.map;
+    }
+
+    public MainFrame getMainFrame(){
+        return this.mainFrame;
     }
 
     public void setIsSelected(boolean isSelected){

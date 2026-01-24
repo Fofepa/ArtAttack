@@ -1,6 +1,7 @@
 package com.artattack.mapelements;
 
 import com.artattack.interactions.Interaction;
+import com.artattack.view.GameContext;
 
 public class TriggerGroup {
     private Interaction interaction;
@@ -11,9 +12,9 @@ public class TriggerGroup {
         this.consumed = false;
     }
 
-    public void OnTrigger(Player player) {
+    public void OnTrigger(GameContext gameContext, Player player) {
         if (!this.consumed) {
-            this.interaction.doInteraction(player);
+            this.interaction.doInteraction(gameContext, player);
             this.consumed = true;
         }
     }

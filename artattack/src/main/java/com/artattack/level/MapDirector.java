@@ -28,6 +28,10 @@ public class MapDirector {
         this.builder = builder;
     }
 
+    public MapBuilder getBuilder(){
+        return this.builder_;
+    }
+
     public void make(String type) {
         switch (type) {
             case "Tutorial":
@@ -97,6 +101,7 @@ public class MapDirector {
                             "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know!")));
 
                 //Building Map
+                this.builder.setID(0);
                 this.builder.setDimension(32, 26);
                 this.builder.setPlayerOne(p1);
                 this.builder.setPlayerTwo(p2);
@@ -113,9 +118,11 @@ public class MapDirector {
                 break;
             case "Test":
                 this.builder_ = new TestMapBuilder();
+                builder_.setID(1);
                 builder_.setDimension(20, 20);
                 builder_.setEnemies(List.of());
                 builder_.setDict();
+                builder_.setTurnQueue();
                 builder_.startMap();
                 break;
         }

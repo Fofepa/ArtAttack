@@ -70,6 +70,7 @@ public class MainGUIFacade {
         gameFacade = new GameFacade(mainFrame, maps, playerOne);
 
         //Maps map = maps.getLevels().get(maps.getCurrMap());
+        
 
         gameFacade.getMainFrame().setMainGUIFacade(this);
         

@@ -22,6 +22,7 @@ import com.artattack.level.MapBuilder;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
+import com.artattack.level.TestMapBuilder;
 import com.artattack.level.TutorialMapBuilder;
 
 /**
@@ -151,12 +152,15 @@ public class MenuPanel {
         director.make("Tutorial");
         Maps map = builder.getResult();
 
-        //director.make("Test");
-        //Maps map2 = builder.getResult();
+        director.make("Test");
+        Maps map2 = director.getBuilder().getResult();
         
         MapManager mapManager = new MapManager(new HashMap<Integer, Maps>(), map.getID());
         mapManager.getLevels().put(map.getID(), map);
-        //mapManager.getLevels().put(map.getID(), map2);
+        mapManager.getLevels().put(map2.getID(), map2);
+
+        System.out.println(map.getID());
+        System.out.println(map2.getID());
 
         mainFacade.startNewGame(mapManager, map.getPlayerOne(), map.getPlayerTwo());
             

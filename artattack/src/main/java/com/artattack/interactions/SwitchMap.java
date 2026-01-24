@@ -110,7 +110,7 @@ public class SwitchMap extends Interaction {
 
             }
             //next.setDict();
-            //next.startMap(null);
+            //next.startMap();
             gameContext.getUiManager().switchMap(next);
             gameContext.getMapManager().setCurrMap(this.nextMap);
         } else {

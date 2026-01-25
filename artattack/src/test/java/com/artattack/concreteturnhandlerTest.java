@@ -25,11 +25,11 @@ public class concreteturnhandlerTest {
 
     @Before
     public void setUp(){
-        queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
+        this.queue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(List.of(new Enemy(0, '1', " ", null, EnemyType.EMPLOYEE), 
                 new Player(1, '2', "o", null))));
-        turn = new ConcreteTurnHandler(queue);
-        assertNotNull(queue);
-        assertNotNull(turn);
+        this.turn = new ConcreteTurnHandler(this.queue);
+        assertNotNull(this.queue);
+        assertNotNull(this.turn);
     }
 
     @Test
@@ -37,22 +37,20 @@ public class concreteturnhandlerTest {
         assertTrue(turn.hasNext());
         ActiveElement t = turn.next();
         ActiveElement g = turn.next();
-        assertFalse(turn.hasNext());
+        assertEquals(0, turn.getIndex());
     }
 
     @Test
     public void nextTest(){
-        Enemy enemy = (Enemy)turn.next();
+        Enemy enemy = (Enemy)turn.current();
         assertEquals(enemy, queue.getTurnQueue().get(0));
         Player lynch = (Player)turn.next();
         assertEquals(lynch, queue.getTurnQueue().get(1));
-
-        assertEquals((Enemy)turn.next(), turn.next());
     }
 
     @Test
     public void currentTest(){
-        Enemy enemy = (Enemy)turn.next();
+        Enemy enemy = (Enemy)turn.current();
         assertEquals(enemy, turn.current());
     }
 

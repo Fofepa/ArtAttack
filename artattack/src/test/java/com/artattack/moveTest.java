@@ -16,8 +16,8 @@ import com.artattack.items.Item;
 import com.artattack.items.ItemType;
 import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -30,7 +30,7 @@ public class moveTest {
     private MoveBuilder1 mb1;
     private Player p1, p2;
     private Enemy e;
-    private TestMapBuilder tmb;
+    private MapBuilderTypeOne mb;
     private Maps maps;
 
     @Before
@@ -38,9 +38,9 @@ public class moveTest {
         //Initializing MoveBuilder1
         this.mb1 = new MoveBuilder1();
         assertNotNull(this.mb1);
-        //Initializing TestMapBuilder
-        this.tmb = new TestMapBuilder();
-        assertNotNull(this.tmb);
+        //Initializing MapBuilder
+        this.mb = new MapBuilderTypeOne();
+        assertNotNull(this.mb);
         //Creating m1
         mb1.setName("TestMove");
         mb1.setDescription("TestDescription");
@@ -88,13 +88,14 @@ public class moveTest {
                 ".", ".", 1)), 
             List.of(new Key(".", ".", 0)), 100);
         //Creating maps
-        tmb.setDimension(26, 135);
-        tmb.setPlayerOne(p1);
-        tmb.setPlayerTwo(p2);
-        tmb.setEnemies(List.of(e));
-        tmb.setDict();
-        tmb.startMap();
-        this.maps = tmb.getResult();
+        mb.setDimension(26, 135);
+        mb.setPlayerOne(this.p1);
+        mb.setPlayerTwo(this.p2);
+        mb.setEnemies(new ArrayList<>(List.of(this.e)));
+        mb.setDict();
+        mb.setTurnQueue();
+        mb.startMap();
+        this.maps = mb.getResult();
 
         assertNotNull(this.m1);
         assertNotNull(this.m2);

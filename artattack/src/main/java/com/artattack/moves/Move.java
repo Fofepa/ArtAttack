@@ -3,8 +3,6 @@ package com.artattack.moves;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.artattack.items.Item;
-import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
@@ -193,12 +191,11 @@ public class Move{
                 switch (element) {
                     case Enemy e -> {
                         e.updateHP(- this.power /*-variabile globale*/);
-                        if(user.equals(map.getPlayerOne()))
-                            e.updatePlayerOneDemage(this.power);
-                        else e.updatePlayerTwoDemage(this.power);
-                        if(!e.isAlive()){
+                        if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
+                        else { e.updatePlayerTwoDemage(this.power); }
+                        if (!e.isAlive()) {
                             e.dropXP(map.getPlayerOne(), map.getPlayerTwo());
-                            Player p = (Player) user;
+                            Player p = (Player)user;
                             e.drop(p);
                             e.remove(map);
                             map.getConcreteTurnHandler().getConcreteTurnQueue().remove(e);

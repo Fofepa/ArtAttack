@@ -122,7 +122,7 @@ public class TutorialMapBuilder implements MapBuilder {
 
     @Override
     public void buildBorder() {
-        throw new UnsupportedOperationException("Not supported yet.");
+       // throw new UnsupportedOperationException("Not supported yet.");
     }
     
 }

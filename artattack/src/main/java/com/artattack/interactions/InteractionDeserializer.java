@@ -1,11 +1,5 @@
-package com.artattack.saving;
+package com.artattack.interactions;
 
-import com.artattack.interactions.Ask;
-import com.artattack.interactions.Give;
-import com.artattack.interactions.Interaction;
-import com.artattack.interactions.InteractionType;
-import com.artattack.interactions.SwitchMap;
-import com.artattack.interactions.Talk;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

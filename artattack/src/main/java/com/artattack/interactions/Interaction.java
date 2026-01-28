@@ -1,6 +1,5 @@
 package com.artattack.interactions;
 
-import com.google.gson.Gson;
 
 
 import com.artattack.mapelements.Player;

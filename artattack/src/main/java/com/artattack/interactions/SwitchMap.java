@@ -18,6 +18,7 @@ public class SwitchMap extends Interaction {
     private List<Coordinates> nextCoordinates;
 
     public SwitchMap(int key, int nextMap, List<Coordinates> nextCoordinates){
+        this.type = InteractionType.SWITCH_MAP;
         this.unloked = false;
         this.key = key;
         this.nextMap = nextMap;
@@ -27,6 +28,7 @@ public class SwitchMap extends Interaction {
 
 
     public SwitchMap(int nextMap, List<Coordinates> nextCoordinates){
+        this.type = InteractionType.SWITCH_MAP;
         this.unloked = true;
         this.nextMap = nextMap;
         this.nextCoordinates = nextCoordinates;

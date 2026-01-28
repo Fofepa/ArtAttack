@@ -12,6 +12,7 @@ public class Talk extends Interaction {
     
     public Talk(List<String> dialog){
         //super(mainFrame);
+        this.type = InteractionType.TALK;
         this.dialog = dialog;
     }
 

@@ -14,6 +14,7 @@ public class Give extends Interaction {
 
     public Give(List<String> dialog, List<Item> item){
         //super(mainFrame);
+        this.type = InteractionType.GIVE;
         this.dialog = dialog;
         this.item = item;
     }

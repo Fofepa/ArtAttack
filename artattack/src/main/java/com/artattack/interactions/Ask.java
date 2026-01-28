@@ -17,6 +17,7 @@ public class Ask extends Interaction {
 	
 	public Ask(MainFrame mainFrame, String question, List<String> options, List<List<String>> answers, List<Item> items){
 		//super(mainFrame);
+		this.type = InteractionType.ASK;
 		this.question = question;
 		this.options = options;
 		this.answers = answers;

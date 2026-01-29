@@ -204,7 +204,7 @@ public class MainGUIFacade {
         switch (type) {
             case MUSICIAN:
                 return new Player(id, '@', type.getName(), coords, 
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), // Esempio arma
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MUSICIAN)), // Esempio arma
                     5, 5, moveArea, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN);
                     
@@ -212,7 +212,7 @@ public class MainGUIFacade {
             
             case DIRECTOR:
                 return new Player(id, '@', type.getName(), coords,
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), 
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MOVIE_DIRECTOR)), 
                     5, 5, moveArea, 20, type.getMaxHP(), 
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR);
                     

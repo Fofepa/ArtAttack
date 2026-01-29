@@ -105,6 +105,15 @@ public class Enemy extends ActiveElement {
         map.getDict().remove(this.getCoordinates());
     }
 
+    @Override
+    public void onDeath(Maps map, ActiveElement killer) {
+        dropXP(map.getPlayerOne(), map.getPlayerTwo());
+        drop((Player)killer);
+        remove(map);
+        map.getConcreteTurnHandler().getConcreteTurnQueue().remove(this);
+        map.getEnemies().remove(map.getEnemies().indexOf(this));
+    }
+
     public void drop(Player player){
         if(this.drops != null && !this.drops.isEmpty())
             player.addItems(this.drops);

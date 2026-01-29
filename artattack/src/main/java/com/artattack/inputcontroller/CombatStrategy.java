@@ -3,7 +3,9 @@ package com.artattack.inputcontroller;
 import java.util.List;
 
 import com.artattack.level.Maps;
+import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Player;
+import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
 
 public class CombatStrategy implements PlayerStrategy{
@@ -39,13 +41,19 @@ public class CombatStrategy implements PlayerStrategy{
     }
 
     public int acceptMove(){
-        int value = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex).useMove(player, map);
+        Move move = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex);
+        int value = move.useMove(player, map);
         
         if(value != 0){
-            this.mainFrame.showDialog(List.of(player.getName() + " has done damage " + value));
+            this.mainFrame.showDialog(List.of(player.getName() + " has done damage " + value + " to " + move.getAttackTargets(player, map).size() + " enemies!"));
             isSelected = false;
             moveIndex = 0;
             weaponIndex = 0;
+            for(ActiveElement element : move.getAttackTargets(player, map)){
+                if(!element.isAlive()){
+                    this.mainFrame.showDialog(List.of(element.getName() + " has been defeated!"));
+                }
+            }
         } 
         else{
             this.mainFrame.showDialog(List.of("Not enough AP or no one to be hit"));

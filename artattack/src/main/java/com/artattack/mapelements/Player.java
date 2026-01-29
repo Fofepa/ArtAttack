@@ -5,6 +5,7 @@ import java.util.List;
 import com.artattack.items.Item;
 import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
 import com.artattack.moves.Weapon;
 
 public class Player extends ActiveElement {
@@ -127,6 +128,12 @@ public class Player extends ActiveElement {
             this.setLevel();
             this.currXP = amount;
         }
+    }
+
+    @Override
+    public void onDeath(Maps map, ActiveElement killer) {
+        map.getConcreteTurnHandler().getConcreteTurnQueue().remove(this);
+
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.artattack.mapelements.skilltree;
 
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
@@ -17,7 +18,7 @@ public class SpecialMoveNODE extends Node{
     public void setSkill(){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                Weapon specialWeapon = new Weapon("Special", "You got it with tears", 0);
+                Weapon specialWeapon = new Weapon("Special", "You got it with tears", 1, PlayerType.MUSICIAN);
                 if(!this.getPlayer().getWeapons().contains(specialWeapon)){
                     specialWeapon.addMove(specialMove);
                     this.getPlayer().setMaxWeapons();

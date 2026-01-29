@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.artattack.level.Maps;
+import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
@@ -21,6 +22,12 @@ public class DumbAttackStrategy extends DecisionStrategy {
         
         int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
         this.getMainFrame().showDialog(List.of(enemy.getName() + " has done " + damage + " dmg to the player"));
+        for(ActiveElement element : move.getAttackTargets(enemy, map)){
+            if(!element.isAlive()){
+               this.getMainFrame().showDialog(List.of(element.getName() + " has been defeated!"));
+            }
+        }
+        //this.getMainFrame().gameOver();
     }
     
     private Move chooseWeighted(Map<Move,Integer> moves) { // function that defines the pb distribution of the usable moves

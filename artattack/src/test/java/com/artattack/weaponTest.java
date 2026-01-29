@@ -22,7 +22,7 @@ public class weaponTest {
 
     @Before
     public void setUp() throws Exception {
-        w = new Weapon("TestWeapon", "TestDescription", 0);
+        w = new Weapon("TestWeapon", "TestDescription", 3, null);
         mb1 = new MoveBuilder1();
         mb1.setName("TestName");
         mb1.setDescription("TestDescription");

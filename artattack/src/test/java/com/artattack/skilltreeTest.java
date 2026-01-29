@@ -1,18 +1,26 @@
 package com.artattack;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.*;
-
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
-import com.artattack.mapelements.*;
-import com.artattack.mapelements.skilltree.*;
+import com.artattack.mapelements.Player;
+import com.artattack.mapelements.PlayerType;
+import com.artattack.mapelements.skilltree.APNODE;
+import com.artattack.mapelements.skilltree.HPNODE;
+import com.artattack.mapelements.skilltree.MANODE;
+import com.artattack.mapelements.skilltree.Node;
+import com.artattack.mapelements.skilltree.RootNode;
+import com.artattack.mapelements.skilltree.SPNODE;
+import com.artattack.mapelements.skilltree.SkillTree;
+import com.artattack.mapelements.skilltree.SpecialMoveNODE;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
@@ -28,7 +36,7 @@ public class skilltreeTest {
         List<Coordinates> area = new ArrayList<>();
         area.add(new Coordinates(1,1));
         List<Weapon> weapons = new ArrayList<>();
-        weapons.add(new Weapon("Hoe", "", 0));
+        weapons.add(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN));
         this.player = new Player(1, '@', "Zappa", new Coordinates(0, 1), weapons, 5,5, area, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN);
         Node root = new RootNode(player);
         HPNODE node_1 = new HPNODE(player,1);

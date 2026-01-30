@@ -126,7 +126,9 @@ public class Player extends ActiveElement {
         else{
             amount = amount - (this.maxXP - this.currXP);
             this.setLevel();
+            setMaxXP(this.maxXP + 5);
             this.currXP = amount;
+            
         }
     }
 

@@ -32,6 +32,8 @@ import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
+import com.artattack.mapelements.skilltree.SkillTree;
+import com.artattack.mapelements.skilltree.SkillTreeFactory;
 import com.artattack.moves.Weapon;
 
 
@@ -169,6 +171,10 @@ public class MainGUIFacade {
             // Creating Players
             Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+
+            //Creating the two Skill trees
+            SkillTree skillTreePlayerOne = SkillTreeFactory.createSkillTree(playerOne);
+            SkillTree skillTreePlayerTwo = SkillTreeFactory.createSkillTree(playerTwo);
 
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();

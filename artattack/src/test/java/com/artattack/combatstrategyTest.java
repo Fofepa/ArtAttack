@@ -12,19 +12,16 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artattack.inputcontroller.CombatStrategy;
-import com.artattack.interactions.Talk;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
-import com.artattack.view.InteractionPanel;
 import com.artattack.view.MainFrame;
 
 public class combatstrategyTest {
@@ -34,7 +31,7 @@ public class combatstrategyTest {
     @Before
     public void setUp(){
         MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 0)), 10,10, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
+        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 3, PlayerType.MUSICIAN)), 10,10, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5)));
         /* mapBuilder.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null, "",null,null),

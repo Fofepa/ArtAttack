@@ -32,6 +32,8 @@ import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
+import com.artattack.mapelements.skilltree.SkillTree;
+import com.artattack.mapelements.skilltree.SkillTreeFactory;
 import com.artattack.moves.Weapon;
 
 
@@ -170,6 +172,10 @@ public class MainGUIFacade {
             Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
 
+            //Creating the two Skill trees
+            SkillTree skillTreePlayerOne = SkillTreeFactory.createSkillTree(playerOne);
+            SkillTree skillTreePlayerTwo = SkillTreeFactory.createSkillTree(playerTwo);
+
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
@@ -204,7 +210,7 @@ public class MainGUIFacade {
         switch (type) {
             case MUSICIAN:
                 return new Player(id, '@', type.getName(), coords, 
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), // Esempio arma
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MUSICIAN)), // Esempio arma
                     5, 5, moveArea, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN);
                     
@@ -212,7 +218,7 @@ public class MainGUIFacade {
             
             case DIRECTOR:
                 return new Player(id, '@', type.getName(), coords,
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 10)), 
+                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MOVIE_DIRECTOR)), 
                     5, 5, moveArea, 20, type.getMaxHP(), 
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR);
                     

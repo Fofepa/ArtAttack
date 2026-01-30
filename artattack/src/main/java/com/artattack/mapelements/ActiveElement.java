@@ -3,6 +3,7 @@ package com.artattack.mapelements;
 import java.util.List;
 
 import com.artattack.level.Coordinates;
+import com.artattack.level.Maps;
 import com.artattack.moves.Weapon;
 
 public abstract class ActiveElement extends MapElement implements Comparable<ActiveElement> {
@@ -107,4 +108,6 @@ public abstract class ActiveElement extends MapElement implements Comparable<Act
     public int hashCode() {
         return Integer.hashCode(getID());
     }
+
+    public abstract void onDeath(Maps map, ActiveElement killer);
 }

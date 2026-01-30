@@ -3,6 +3,7 @@ package com.artattack.moves;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
@@ -65,14 +66,9 @@ public class Move{
     }
 
     public boolean getRange() {
-        this.range = !(this.attackArea.contains(new Coordinates(-1, 1)) || 
-                        this.attackArea.contains(new Coordinates(0, 1)) ||
-                        this.attackArea.contains(new Coordinates(1, 1)) ||
-                        this.attackArea.contains(new Coordinates(-1, 0)) ||
-                        this.attackArea.contains(new Coordinates(1, 0)) ||
-                        this.attackArea.contains(new Coordinates(-1, -1)) ||
-                        this.attackArea.contains(new Coordinates(0, -1)) ||
-                        this.attackArea.contains(new Coordinates(1, -1)));
+        AreaBuilder ab = new AreaBuilder();
+        ab.addShape("8");
+        this.range = !(this.attackArea.containsAll(ab.getResult()));
         return this.range;
     }
 
@@ -188,28 +184,14 @@ public class Move{
         //Damage Logic
         if (this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
-                switch (element) {
-                    case Enemy e -> {
-                        e.updateHP(- this.power /*-variabile globale*/);
-                        if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
-                        else { e.updatePlayerTwoDemage(this.power); }
-                        if (!e.isAlive()) {
-                            e.dropXP(map.getPlayerOne(), map.getPlayerTwo());
-                            Player p = (Player)user;
-                            e.drop(p);
-                            e.remove(map);
-                            map.getConcreteTurnHandler().getConcreteTurnQueue().remove(e);
-                            map.getEnemies().remove(map.getEnemies().indexOf(e));
-                        }
-                        total += this.power;
-                    }
-                    case Player p -> {  
-                        p.updateHP(- this.power /*-variabile globale*/);
-                        total += this.power;
-                        //Need to add GameOver logic
-                    }
-                    default -> {
-                    }
+                if (element instanceof Enemy e) {
+                    if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
+                    else { e.updatePlayerTwoDemage(this.power); }
+                }
+                element.updateHP(- this.power);
+                total += this.power;
+                if (!element.isAlive()) {
+                    element.onDeath(map, user);
                 }
                 if (!works) {
                     works = true;

@@ -1,9 +1,8 @@
 package com.artattack;
 
-import java.util.*;
+import java.util.List;
 
 import org.junit.After;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -36,8 +35,8 @@ public class checkaggroTest {
                                  null,5,5,null,areaBuilder.getResult(),null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
         areaBuilder.addShape("8");
-        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(12, 10), List.of(new Weapon("Hoe", "", 0)), 5,5, areaBuilder.getResult(), 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
-        mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 0)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MOVIE_DIRECTOR));
+        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(12, 10), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, areaBuilder.getResult(), 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
+        mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 1, PlayerType.MOVIE_DIRECTOR)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MOVIE_DIRECTOR));
         mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);
         mapBuilder.setDict();

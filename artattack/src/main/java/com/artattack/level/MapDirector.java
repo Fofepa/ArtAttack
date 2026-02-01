@@ -61,7 +61,7 @@ public class MapDirector {
                             "Keep in mind that if you want to interact with something, you have to move next to it first!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
                             "Understood? Alright, go and beat up that fella over there."))), "");
-                InteractableElement door_t = new InteractableElement(0, 'H', "Door", new Coordinates(0, 2), 
+                InteractableElement door_t = new InteractableElement(0, '\u2339', "Door", new Coordinates(0, 2), 
                 List.of(new SwitchMap(1, List.of(new Coordinates(28, 2), new Coordinates(28, 4)))),"");
 
                 //Creating TriggerGroups

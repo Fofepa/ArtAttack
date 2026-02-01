@@ -6,7 +6,7 @@ import com.artattack.mapelements.Player;
 public class  MAXWPNODE extends Node{
     
     public MAXWPNODE(Player player){
-        super(player);
+        super(player, NodeType.MAXWP);
     }
 
     @Override

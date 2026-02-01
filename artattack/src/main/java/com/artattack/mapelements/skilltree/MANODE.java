@@ -10,7 +10,7 @@ public class  MANODE extends Node{
     private List<Coordinates> shape;    // piece of area to add
     
     public MANODE(Player player, List<Coordinates> shape){
-        super(player);
+        super(player, NodeType.MA);
         this.shape = shape;
     }
 

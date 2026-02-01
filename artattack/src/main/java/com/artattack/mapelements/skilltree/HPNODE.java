@@ -7,7 +7,7 @@ public class  HPNODE extends Node{
     int newHP;
     
     public HPNODE(Player player, int newHP){
-        super(player);
+        super(player, NodeType.HP);
         this.newHP = newHP;
         
     }

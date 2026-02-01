@@ -10,7 +10,7 @@ public class SpecialMoveNODE extends Node{
     private Move specialMove;
 
     public SpecialMoveNODE(Player player, Move specialMove){
-        super(player);
+        super(player, NodeType.SPECIALMOVE);
         this.specialMove = specialMove;
     }
 

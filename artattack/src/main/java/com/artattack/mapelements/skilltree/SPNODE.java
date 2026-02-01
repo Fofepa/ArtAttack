@@ -7,7 +7,7 @@ public class  SPNODE extends Node{
     int newSP;
     
     public SPNODE(Player player, int newSP){
-        super(player);
+        super(player, NodeType.SP);
         this.newSP = newSP;
     }
 

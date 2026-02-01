@@ -4,7 +4,7 @@ import com.artattack.mapelements.Player;
 
 public class RootNode extends Node{
     public RootNode(Player player){
-        super(player);
+        super(player, NodeType.ROOT);
     }
 
     @Override

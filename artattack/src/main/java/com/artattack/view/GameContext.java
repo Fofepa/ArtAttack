@@ -1,14 +1,23 @@
 package com.artattack.view;
 
+import com.artattack.interactions.SaveManager;
 import com.artattack.level.MapManager;
 
 public class GameContext {
     private final UIManager uiManager;
     private MapManager mapManager;
+    private SaveManager saveManager;
 
     public GameContext(UIManager uiManager, MapManager mapManager){
         this.uiManager = uiManager;
         this.mapManager = mapManager;
+        this.saveManager = new SaveManager();
+    }
+
+    public GameContext(UIManager uiManager, MapManager mapManager, SaveManager saveManager){
+        this.uiManager = uiManager;
+        this.mapManager = mapManager;
+        this.saveManager = saveManager;
     }
 
     public UIManager getUiManager() {
@@ -18,6 +27,12 @@ public class GameContext {
     public MapManager getMapManager() {
         return mapManager;
     }
+
+    public SaveManager getSaveManager() {
+        return saveManager;
+    }
+
+    
 
     
 

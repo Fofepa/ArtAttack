@@ -7,7 +7,7 @@ public class  APNODE extends Node{
     int newAP;
     
     public APNODE(Player player, int newAP){
-        super(player);
+        super(player, NodeType.AP);
         this.newAP = newAP;
     }
 

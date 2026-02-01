@@ -6,6 +6,7 @@ import java.util.List;
 import com.artattack.mapelements.Player;
 
 public abstract class Node{
+    private NodeType type;
     private boolean spent;  // tells if it was used or not
     private int label;  // defines his number as a child
     private static int counter = 0;
@@ -13,7 +14,8 @@ public abstract class Node{
     private List<Node> children;
     private Player player;
 
-    public Node(Player player){
+    public Node(Player player, NodeType type){
+        this.type = type;
         this.spent = false;
         this.children = new ArrayList<>();
         this.player = player;
@@ -29,6 +31,8 @@ public abstract class Node{
         }
         this.children = children;
     }
+
+    
 
     public Player getPlayer(){
         return this.player;
@@ -71,5 +75,13 @@ public abstract class Node{
     }
 
     public abstract void setSkill();
+
+    public NodeType getType() {
+        return type;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
 
 }

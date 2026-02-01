@@ -7,7 +7,7 @@ import com.artattack.moves.Weapon;
 public class MAXMVNODE extends Node{
     
     public MAXMVNODE(Player player){
-        super(player);
+        super(player, NodeType.MAXMV);
     }
 
     @Override

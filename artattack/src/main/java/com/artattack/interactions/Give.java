@@ -21,7 +21,7 @@ public class Give extends Interaction {
 
     @Override
     public void doInteraction(GameContext gameContext, Player player){
-        player.addItems(this.item);;
+        player.addItems(this.item);
         if (gameContext.getUiManager() != null) {
             gameContext.getUiManager().showDialog(dialog);
             gameContext.getUiManager().repaintInventoryPanel();

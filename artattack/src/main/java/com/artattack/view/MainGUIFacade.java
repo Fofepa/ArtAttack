@@ -319,6 +319,80 @@ public class MainGUIFacade {
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
     }
 
+   /* public void continueGame(MapManager maps, Player playerOne, Player playerTwo) {
+        currentState = "GAME";
+        
+        // Initialize game facade with game data
+        gameFacade = new GameFacade(mainFrame, maps, playerOne);
+
+        //Maps map = maps.getLevels().get(maps.getCurrMap());
+        
+
+        gameFacade.getMainFrame().setMainGUIFacade(this);
+        
+        //Initialize pause panel
+        pausePanel = gameFacade.getMainFrame().getPausePanel();
+
+        if (pausePanel == null) {
+            pausePanel = new PausePanel(this);
+            // Store it back in MainFrame for consistency
+
+            gameFacade.getMainFrame().setPausePanel(pausePanel);
+        }
+        pausePanel.setVisible(false);
+
+        // Initialize input controller and register it as turn listener
+        inputController = new InputController(gameFacade.getMainFrame());
+        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
+        
+        // Clear and setup the display
+        mainFrame.getContentPane().removeAll();
+
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setLayout(null);
+        
+        JPanel gamePanel = gameFacade.getGamePanel();
+        gamePanel.setBounds(0, 0, 1920, 1080);
+        pausePanel.setBounds(0, 0, 1920, 1080);
+        
+        layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
+        layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
+        
+        mainFrame.add(layeredPane, BorderLayout.CENTER);
+        
+        
+        
+        // KEY FIX: Add InputController as KeyListener to multiple components
+        mainFrame.addKeyListener(inputController);
+        gameFacade.getGamePanel().addKeyListener(inputController);
+        pausePanel.addKeyListener(inputController);
+        
+        // Add to specific panels that need key input
+        if (gameFacade.getMainFrame().getMapPanel() != null) {
+            gameFacade.getMainFrame().getMapPanel().addKeyListener(inputController);
+        }
+        if (gameFacade.getMainFrame().getMovesPanel() != null) {
+            gameFacade.getMainFrame().getMovesPanel().addKeyListener(inputController);
+        }
+        if (gameFacade.getMainFrame().getInventoryPanel() != null) {
+            gameFacade.getMainFrame().getInventoryPanel().addKeyListener(inputController);
+        }
+        if (gameFacade.getMainFrame().getWeaponsPanel() != null) {
+            gameFacade.getMainFrame().getWeaponsPanel().addKeyListener(inputController);
+        }
+        if (gameFacade.getMainFrame().getInteractionPanel() != null) {
+            gameFacade.getMainFrame().getInteractionPanel().addKeyListener(inputController);
+        }
+        
+        mainFrame.setFocusable(true);
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        
+        
+        // Start the turn system
+        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
+    }*/
+
 
     public void showPauseMenu() {
         if (pausePanel != null) {

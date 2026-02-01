@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
+import com.artattack.interactions.SaveManager;
 import com.artattack.items.Item;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
@@ -319,79 +321,87 @@ public class MainGUIFacade {
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
     }
 
-   /* public void continueGame(MapManager maps, Player playerOne, Player playerTwo) {
+    public void continueGame() {
         currentState = "GAME";
-        
-        // Initialize game facade with game data
-        gameFacade = new GameFacade(mainFrame, maps, playerOne);
 
-        //Maps map = maps.getLevels().get(maps.getCurrMap());
-        
+        SaveManager saveManager = new SaveManager();
+        try{
+            MapManager mm = saveManager.load();
+            Player playerOne = mm.getLevels().get(mm.getCurrMap()).getPlayerOne();
+            
+            // Initialize game facade with game data
+            gameFacade = new GameFacade(mainFrame, mm, playerOne, saveManager);
 
-        gameFacade.getMainFrame().setMainGUIFacade(this);
-        
-        //Initialize pause panel
-        pausePanel = gameFacade.getMainFrame().getPausePanel();
+            //Maps map = maps.getLevels().get(maps.getCurrMap());
+            
 
-        if (pausePanel == null) {
-            pausePanel = new PausePanel(this);
-            // Store it back in MainFrame for consistency
+            gameFacade.getMainFrame().setMainGUIFacade(this);
+            
+            //Initialize pause panel
+            pausePanel = gameFacade.getMainFrame().getPausePanel();
 
-            gameFacade.getMainFrame().setPausePanel(pausePanel);
-        }
-        pausePanel.setVisible(false);
+            if (pausePanel == null) {
+                pausePanel = new PausePanel(this);
+                // Store it back in MainFrame for consistency
 
-        // Initialize input controller and register it as turn listener
-        inputController = new InputController(gameFacade.getMainFrame());
-        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
-        
-        // Clear and setup the display
-        mainFrame.getContentPane().removeAll();
+                gameFacade.getMainFrame().setPausePanel(pausePanel);
+            }
+            pausePanel.setVisible(false);
 
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayout(null);
-        
-        JPanel gamePanel = gameFacade.getGamePanel();
-        gamePanel.setBounds(0, 0, 1920, 1080);
-        pausePanel.setBounds(0, 0, 1920, 1080);
-        
-        layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
-        layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
-        
-        mainFrame.add(layeredPane, BorderLayout.CENTER);
-        
-        
-        
-        // KEY FIX: Add InputController as KeyListener to multiple components
-        mainFrame.addKeyListener(inputController);
-        gameFacade.getGamePanel().addKeyListener(inputController);
-        pausePanel.addKeyListener(inputController);
-        
-        // Add to specific panels that need key input
-        if (gameFacade.getMainFrame().getMapPanel() != null) {
-            gameFacade.getMainFrame().getMapPanel().addKeyListener(inputController);
+            // Initialize input controller and register it as turn listener
+            inputController = new InputController(gameFacade.getMainFrame());
+            mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
+            
+            // Clear and setup the display
+            mainFrame.getContentPane().removeAll();
+
+            JLayeredPane layeredPane = new JLayeredPane();
+            layeredPane.setLayout(null);
+            
+            JPanel gamePanel = gameFacade.getGamePanel();
+            gamePanel.setBounds(0, 0, 1920, 1080);
+            pausePanel.setBounds(0, 0, 1920, 1080);
+            
+            layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
+            layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
+            
+            mainFrame.add(layeredPane, BorderLayout.CENTER);
+            
+            
+            
+            // KEY FIX: Add InputController as KeyListener to multiple components
+            mainFrame.addKeyListener(inputController);
+            gameFacade.getGamePanel().addKeyListener(inputController);
+            pausePanel.addKeyListener(inputController);
+            
+            // Add to specific panels that need key input
+            if (gameFacade.getMainFrame().getMapPanel() != null) {
+                gameFacade.getMainFrame().getMapPanel().addKeyListener(inputController);
+            }
+            if (gameFacade.getMainFrame().getMovesPanel() != null) {
+                gameFacade.getMainFrame().getMovesPanel().addKeyListener(inputController);
+            }
+            if (gameFacade.getMainFrame().getInventoryPanel() != null) {
+                gameFacade.getMainFrame().getInventoryPanel().addKeyListener(inputController);
+            }
+            if (gameFacade.getMainFrame().getWeaponsPanel() != null) {
+                gameFacade.getMainFrame().getWeaponsPanel().addKeyListener(inputController);
+            }
+            if (gameFacade.getMainFrame().getInteractionPanel() != null) {
+                gameFacade.getMainFrame().getInteractionPanel().addKeyListener(inputController);
+            }
+            
+            mainFrame.setFocusable(true);
+            mainFrame.revalidate();
+            mainFrame.repaint();
+            
+            
+            // Start the turn system
+            //maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
+        } catch(IOException e){
+
         }
-        if (gameFacade.getMainFrame().getMovesPanel() != null) {
-            gameFacade.getMainFrame().getMovesPanel().addKeyListener(inputController);
-        }
-        if (gameFacade.getMainFrame().getInventoryPanel() != null) {
-            gameFacade.getMainFrame().getInventoryPanel().addKeyListener(inputController);
-        }
-        if (gameFacade.getMainFrame().getWeaponsPanel() != null) {
-            gameFacade.getMainFrame().getWeaponsPanel().addKeyListener(inputController);
-        }
-        if (gameFacade.getMainFrame().getInteractionPanel() != null) {
-            gameFacade.getMainFrame().getInteractionPanel().addKeyListener(inputController);
-        }
-        
-        mainFrame.setFocusable(true);
-        mainFrame.revalidate();
-        mainFrame.repaint();
-        
-        
-        // Start the turn system
-        maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
-    }*/
+    }
 
 
     public void showPauseMenu() {
@@ -454,6 +464,18 @@ class GameFacade {
         mainFrameAdapter = new MainFrame(map);
         mainFrameAdapter.setCurrentPlayer(player);
         mainFrameAdapter.setGameContext(new GameContext(mainFrameAdapter, maps));
+        
+        initializeGamePanel();
+    }
+
+        public GameFacade(JFrame hostFrame, MapManager maps, Player player, SaveManager saveManager) {
+        this.map = maps.getLevels().get(maps.getCurrMap());
+        this.currentPlayer = player;
+        
+        // Create MainFrame adapter for InputController compatibility
+        mainFrameAdapter = new MainFrame(map);
+        mainFrameAdapter.setCurrentPlayer(player);
+        mainFrameAdapter.setGameContext(new GameContext(mainFrameAdapter, maps, saveManager));
         
         initializeGamePanel();
     }

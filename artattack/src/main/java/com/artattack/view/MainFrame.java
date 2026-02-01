@@ -10,10 +10,9 @@ import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
-import com.artattack.mapelements.InteractableElement;
-import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
-import com.artattack.mapelements.Trigger;
+import com.artattack.mapelements.skilltree.Node;
+import com.artattack.mapelements.skilltree.SkillTree;
 
 /**
  * MainFrame adapter that bridges the Facade pattern with the InputController
@@ -563,6 +562,14 @@ public class MainFrame implements UIManager {
 
     public boolean isPaused(){
         return mainGUIFacade.isPaused();
+    }
+
+    // ========== Skill Tree Panel Management ==========
+    
+    public void showSkillTreePanel(Player player, SkillTree skillTree, Consumer<Node> callback) {
+        if (mainGUIFacade != null) {
+            mainGUIFacade.showSkillTreePanel(player, skillTree, callback);
+        }
     }
 
     // ========== Switch Map Management ==========

@@ -8,21 +8,13 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
-import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
-import com.artattack.level.MapBuilder;
-import com.artattack.level.MapDirector;
-import com.artattack.level.MapManager;
-import com.artattack.level.Maps;
-import com.artattack.level.TutorialMapBuilder;
 
 /**
  * Facade for managing menu screens
@@ -83,41 +75,6 @@ public class MenuPanel {
         exitBtn.addActionListener(e -> mainFacade.exitGame());
     }
     
-    /**
-     * Creates and starts a new game with test data
-     * Replace this with your actual game setup logic
-     */
-    private void startNewGameWithTestData() {
-        try {
-        MapBuilder builder = new TutorialMapBuilder();
-        MapDirector director = new MapDirector(builder);
-
-        director.make("Tutorial");
-        Maps map = builder.getResult();
-
-        director.make("1");
-        Maps map2 = builder.getResult();
-        
-        MapManager mapManager = new MapManager(new HashMap<Integer, Maps>(), map.getID());
-        mapManager.getLevels().put(map.getID(), map);
-        mapManager.getLevels().put(map2.getID(), map2);
-
-        System.out.println(map.getID());
-        System.out.println(map2.getID());
-
-        mainFacade.startNewGame(mapManager, map.getPlayerOne(), map.getPlayerTwo());
-            
-        } catch (Exception ex) {
-            System.err.println("Error starting game:");
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(
-                menuPanel, 
-                "Error starting game: " + ex.getMessage(),
-                "Error",
-                JOptionPane.ERROR_MESSAGE
-            );
-        }
-    }
     
     private JButton createMenuButton(String text) {
         JButton button = new JButton(text);

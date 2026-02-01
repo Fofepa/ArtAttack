@@ -11,9 +11,11 @@ import com.artattack.items.Item;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
+import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.TurnListener;
+import com.artattack.view.GameContext;
 import com.artattack.view.InteractionPanel;
 import com.artattack.view.InventoryPanel;
 import com.artattack.view.MainFrame;
@@ -651,9 +653,17 @@ public class InputController implements KeyListener, TurnListener {
         if (activeElement instanceof Player){ 
             System.out.println(">> PLAYER TURN: " + activeElement.getName());
 
-
-            mainFrame.setCurrentPlayer((Player)currentElement);
+            Player player = (Player) activeElement;
+            mainFrame.setCurrentPlayer(player);
             
+            // ========== SKILL TREE INTEGRATION ==========
+            // Check if the player leveled up
+            if (player.getLeveledUp()) {
+                System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
+                handlePlayerLevelUp(player);
+                return; // Don't continue with normal turn logic until skill is selected
+            }
+            // ========== END SKILL TREE INTEGRATION ==========
 
             // Verify strategies were created
             System.out.println("MovementStrategy created: " + (mainFrame.getMovementStrategy() != null));
@@ -673,6 +683,69 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.updateTurnDisplay();
         mainFrame.repaintMapPanel();
         System.out.println("=== UPDATE TURN COMPLETE ===\n");
+    }
+
+    /**
+     * Handles the player level up by showing the skill tree panel
+     */
+    private void handlePlayerLevelUp(Player player) {
+        GameContext context = mainFrame.getGameContext();
+        if (context == null) {
+            System.err.println("ERROR: GameContext is null!");
+            return;
+        }
+        
+        // Get the appropriate skill tree based on player ID
+        SkillTree skillTree = null;
+        if (player.getID() == 1) {
+            skillTree = context.getPlayer1SkillTree();
+        } else if (player.getID() == 2) {
+            skillTree = context.getPlayer2SkillTree();
+        }
+        
+        if (skillTree == null) {
+            System.err.println("ERROR: SkillTree not found for player: " + player.getName());
+            return;
+        }
+        
+        // Show the skill tree panel
+        mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
+            // This callback is called when the player confirms their selection
+            System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
+            System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
+            
+            // Update all panels to reflect new stats
+            mainFrame.repaintStatsPanel();
+            mainFrame.repaintWeaponsPanel();
+            mainFrame.repaintMovesPanel();
+            mainFrame.repaintMapPanel();
+            mainFrame.updateTurnDisplay();
+            
+            // Show a confirmation message
+            String nodeType = getNodeTypeName(selectedNode);
+            mainFrame.showDialog(List.of(
+                player.getName() + " has unlocked a new skill!",
+                "Skill: " + nodeType,
+                "Press ENTER to continue..."
+            ));
+        });
+    }
+    
+    /**
+     * Gets a human-readable name for the node type
+     */
+    private String getNodeTypeName(com.artattack.mapelements.skilltree.Node node) {
+        String className = node.getClass().getSimpleName();
+        return switch (className) {
+            case "HPNODE" -> "Health Boost";
+            case "APNODE" -> "Action Points Boost";
+            case "SPNODE" -> "Speed Boost";
+            case "MANODE" -> "Movement Area Expansion";
+            case "MAXWPNODE" -> "Weapon Slot Unlock";
+            case "MAXMVNODE" -> "Move Capacity Increase";
+            case "SpecialMoveNODE" -> "Special Move";
+            default -> "Unknown Skill";
+        };
     }
 
 

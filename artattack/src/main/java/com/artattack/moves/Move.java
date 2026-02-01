@@ -139,35 +139,41 @@ public class Move{
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates attackCell : this.attackArea) {
-            ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
-            //If user is Player, attack Enemies; If user is Enemy, attack Players
-            if (user instanceof Player) {
-                if (check instanceof Enemy enemy) {
-                    targets.add(enemy);
-                }
-            }
-            else if (user instanceof Enemy) {
-                if (check instanceof Player player) {
-                    targets.add(player);
-                }
+            Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
+            if (obj instanceof ActiveElement check) {
+
+                // If user is Player, attack Enemies; If user is Enemy, attack Players
+                if (user instanceof Player) {
+                    if (check instanceof Enemy enemy) {
+                        targets.add(enemy);
+                    }
+                } 
+                else if (user instanceof Enemy) {
+                    if (check instanceof Player player) {
+                        targets.add(player);
+                    }
+                }   
             }
         }
-        return (targets.isEmpty()) ? null : targets;
+        return targets.isEmpty() ? null : targets;
     }
+
 
     public List<ActiveElement> getHealTargets(ActiveElement user, Maps map) {
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates healCell : this.healArea) {
-            ActiveElement check = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));
-            //If user is Player, heal Players; If user is Enemy, heal Enemies
-            if (user instanceof Player) {
-                if (check instanceof Player player) {
-                    targets.add(player);
+            Object obj = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));
+            if (obj instanceof ActiveElement check) {
+                //If user is Player, heal Players; If user is Enemy, heal Enemies
+                if (user instanceof Player) {
+                    if (check instanceof Player player) {
+                        targets.add(player);
+                    }
                 }
-            }
-            else if (user instanceof Enemy) {
-                if (check instanceof Enemy enemy) {
-                    targets.add(enemy);
+                else if (user instanceof Enemy) {
+                    if (check instanceof Enemy enemy) {
+                        targets.add(enemy);
+                    }
                 }
             }
         }

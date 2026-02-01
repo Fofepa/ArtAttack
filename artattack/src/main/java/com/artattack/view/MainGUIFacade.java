@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Consumer;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -34,8 +35,10 @@ import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
+import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.mapelements.skilltree.SkillTreeFactory;
+import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
 
@@ -49,8 +52,9 @@ public class MainGUIFacade {
     private MenuPanel menuFacade;
     private PausePanel pausePanel;
     private CharacterSelectionPanel characterSelectionPanel;
+    private SkillTreePanel skillTreePanel;
     
-    private String currentState = "MENU"; // MENU, GAME, PAUSE
+    private String currentState = "MENU"; // MENU, GAME, PAUSE, SKILL_TREE
     
     public MainGUIFacade() {
         initializeMainFrame();
@@ -198,8 +202,8 @@ public class MainGUIFacade {
             Maps map_1 = mb1.getResult();
             mm.getLevels().put(map_1.getID(), map_1);
 
-            // Start Game
-            startNewGame(mm, playerOne, playerTwo);
+            // Start Game and set skill trees
+            startNewGame(mm, playerOne, playerTwo, skillTreePlayerOne, skillTreePlayerTwo);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -209,19 +213,26 @@ public class MainGUIFacade {
     private Player createPlayerFromType(CharacterType type, int id, Coordinates coords, List<Coordinates> moveArea, List<Item> items) {
         
         // Character stats come From the enum class CharacterType
+        AreaBuilder areaBuilder = new AreaBuilder();
+        areaBuilder.addShape("4");
+        List<Coordinates> area4 = areaBuilder.getResult();
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(area4); m1.setActionPoints(2);
+        Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(1);
         switch (type) {
             case MUSICIAN:
+                Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MUSICIAN);
                 return new Player(id, '@', type.getName(), coords, 
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MUSICIAN)), // Esempio arma
-                    5, 5, moveArea, 19, type.getMaxHP(), 10, 
+                    List.of(musicianWeapon), // Esempio arma
+                    15, 15, moveArea, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN);
                     
             
             
             case DIRECTOR:
+                Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MOVIE_DIRECTOR);
                 return new Player(id, '@', type.getName(), coords,
-                    List.of(new Weapon(type.getWeaponName(), "Default Weapon", 4, PlayerType.MOVIE_DIRECTOR)), 
-                    5, 5, moveArea, 20, type.getMaxHP(), 
+                    List.of(directorWeapon), 
+                    15, 15, moveArea, 20, type.getMaxHP(), 
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR);
                     
             default:
@@ -229,7 +240,7 @@ public class MainGUIFacade {
         }
     }
     
-    public void startNewGame(MapManager maps, Player playerOne, Player playerTwo) {
+    public void startNewGame(MapManager maps, Player playerOne, Player playerTwo, SkillTree player1SkillTree, SkillTree player2SkillTree) {
         currentState = "GAME";
         
         // Initialize game facade with game data
@@ -239,6 +250,13 @@ public class MainGUIFacade {
         
 
         gameFacade.getMainFrame().setMainGUIFacade(this);
+        
+        // Set the skill trees in GameContext
+        GameContext gameContext = gameFacade.getMainFrame().getGameContext();
+        if (gameContext != null) {
+            gameContext.setPlayer1SkillTree(player1SkillTree);
+            gameContext.setPlayer2SkillTree(player2SkillTree);
+        }
         
         //Initialize pause panel
         pausePanel = gameFacade.getMainFrame().getPausePanel();
@@ -420,6 +438,61 @@ public class MainGUIFacade {
     
     public boolean isPaused() {
         return currentState.equals("PAUSE");
+    }
+    
+    /**
+     * Show the skill tree panel to allow the player to choose a power-up
+     */
+    public void showSkillTreePanel(Player player, SkillTree skillTree, Consumer<Node> callback) {
+        currentState = "SKILL_TREE";
+        
+        // Create the skill tree panel
+        skillTreePanel = new SkillTreePanel(skillTree, player, (selectedNode) -> {
+            // Quando il player conferma la selezione
+            selectedNode.setSkill();
+            player.setLeveledUp(false);
+            
+            // Close the panel and resume the game
+            hideSkillTreePanel();
+            
+            // Callback to notify that the selection is complete
+            if (callback != null) {
+                callback.accept(selectedNode);
+            }
+        });
+        
+        // Get the layered bread
+        JLayeredPane layeredPane = (JLayeredPane) mainFrame.getContentPane().getComponent(0);
+        
+        // Add the skill tree panel above everything
+        skillTreePanel.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
+        layeredPane.add(skillTreePanel, JLayeredPane.POPUP_LAYER);
+        
+        // Focus on the panel
+        skillTreePanel.requestFocusInWindow();
+        
+        mainFrame.revalidate();
+        mainFrame.repaint();
+    }
+    
+    /**
+     * Hides the skill tree panel
+     */
+    public void hideSkillTreePanel() {
+        if (skillTreePanel != null) {
+            JLayeredPane layeredPane = (JLayeredPane) mainFrame.getContentPane().getComponent(0);
+            layeredPane.remove(skillTreePanel);
+            skillTreePanel = null;
+            currentState = "GAME";
+            
+            // Ridai focus al gioco
+            if (gameFacade != null && gameFacade.getMainFrame() != null) {
+                gameFacade.getMainFrame().focusMapPanel();
+            }
+            
+            mainFrame.revalidate();
+            mainFrame.repaint();
+        }
     }
     
     public void exitGame() {
@@ -840,5 +913,3 @@ class CenterPanelFacade {
         return interactionPanel;
     }
 }
-
-

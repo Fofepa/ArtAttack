@@ -116,6 +116,10 @@ public class Player extends ActiveElement {
         this.leveledUp = true;
     }
 
+    public void setLeveledUp(boolean leveledUp) {
+        this.leveledUp = leveledUp;
+    }
+
     public void setMaxWeapons(){
         this.maxWeapons += 1;
     }

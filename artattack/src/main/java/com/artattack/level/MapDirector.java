@@ -1,5 +1,6 @@
 package com.artattack.level;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.artattack.interactions.Give;
@@ -11,6 +12,8 @@ import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.TriggerGroup;
+import com.artattack.moves.Move;
+import com.artattack.moves.Weapon;
 
 public class MapDirector {
     private MapBuilder builder;
@@ -34,7 +37,17 @@ public class MapDirector {
                 List<Coordinates> enemyVisionArea_t = ab_t.getResult();
 
                 //Creating Enemies
-                Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_t, enemyVisionArea_t, null, null, 0);
+                ab_t.addShape("8");
+                List<Coordinates> moveArea = ab_t.getResult();
+                ab_t.addShape("4");
+                List<Coordinates> area4 = ab_t.getResult();
+                Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
+                Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
+                Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
+                Weapon enemyWeapon = new Weapon(" ", " ", 5, List.of(m1,m2, m3), null);
+                Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 20, 20, 2, List.of(enemyWeapon), 10, 10, moveArea_t, enemyVisionArea_t, null, null, 20);
+                List<Enemy> listE = new ArrayList<>();
+                listE.add(e);
 
                 //Creating InteractableElements
                 InteractableElement chest_t = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
@@ -86,7 +99,7 @@ public class MapDirector {
                 //Building Map
                 this.builder.setID(0);
                 this.builder.setDimension(32, 26);
-                this.builder.setEnemies(List.of(e));
+                this.builder.setEnemies(listE);
                 this.builder.setInteractableElements(List.of(npc_t, chest_t, door_t));
                 this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4);
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9);
@@ -110,10 +123,22 @@ public class MapDirector {
                 ab_1.addShape("square", 5, true);
                 List<Coordinates> enemyVisionArea_1 = ab_1.getResult();
 
-                Enemy e0_1 = new Enemy(0, 'E', "Employee", new Coordinates(28, 13), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_1, enemyVisionArea_1, null, null, 0);
-                Enemy e1_1 = new Enemy(0, 'E', "Employee", new Coordinates(20, 21), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_1, enemyVisionArea_1, null, null, 0);
-                Enemy e2_1 = new Enemy(0, 'E', "Employee", new Coordinates(9, 21), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_1, enemyVisionArea_1, null, null, 0);
-                Enemy e3_1 = new Enemy(0, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 0, 0, 0, null, 0, 0, moveArea_1, enemyVisionArea_1, null, null, 0);
+                ab_1.addShape("8");
+                List<Coordinates> mArea = ab_1.getResult();
+                ab_1.addShape("4");
+                List<Coordinates> a4 = ab_1.getResult();
+
+                
+                Move m11 = new Move(); m11.setName("Kick"); m11.setPower(1); m11.setAttackArea(a4); m11.setActionPoints(3); m11.setAreaAttack(false);
+                Move m22 = new Move(); m22.setName("Bump"); m22.setPower(5); m22.setAttackArea(a4); m22.setActionPoints(4); m22.setAreaAttack(false);
+                Move m33 = new Move(); m33.setName("Explode"); m33.setPower(3); m33.setAttackArea(mArea); m33.setAreaAttack(true); m33.setActionPoints(3);
+                Weapon eWeapon = new Weapon(" ", " ", 5, List.of(m11,m22, m33), null);
+                Enemy e0_1 = new Enemy(0, 'E', "Employee", new Coordinates(28, 13), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e1_1 = new Enemy(0, 'E', "Employee", new Coordinates(20, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e2_1 = new Enemy(0, 'E', "Employee", new Coordinates(9, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e3_1 = new Enemy(0, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 40);
+                List<Enemy> listEn = new ArrayList<>();
+                listEn.addAll(List.of(e0_1,e1_1, e2_1, e3_1));
 
                 InteractableElement chest0_1 = new InteractableElement(0, '$', "Chest", new Coordinates(29, 29), List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
@@ -121,7 +146,7 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
 
                 this.builder.setDimension(32, 32);
-                this.builder.setEnemies(List.of(e0_1, e1_1, e2_1, e3_1));
+                this.builder.setEnemies(listEn);
                 this.builder.setInteractableElements(List.of(chest0_1, chest1_1));
                 this.builder.buildBorder();
                 this.builder.buildWall(new Coordinates(11, 1), 8, 25, '#');

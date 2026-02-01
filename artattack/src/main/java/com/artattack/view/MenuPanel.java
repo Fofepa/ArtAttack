@@ -23,6 +23,8 @@ import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.level.TutorialMapBuilder;
+import com.artattack.mapelements.skilltree.SkillTree;
+import com.artattack.mapelements.skilltree.SkillTreeFactory;
 
 /**
  * Facade for managing menu screens
@@ -105,7 +107,11 @@ public class MenuPanel {
         System.out.println(map.getID());
         System.out.println(map2.getID());
 
-        mainFacade.startNewGame(mapManager, map.getPlayerOne(), map.getPlayerTwo());
+        // Create skill trees for both players
+        SkillTree skillTree1 = SkillTreeFactory.createSkillTree(map.getPlayerOne());
+        SkillTree skillTree2 = SkillTreeFactory.createSkillTree(map.getPlayerTwo());
+
+        mainFacade.startNewGame(mapManager, map.getPlayerOne(), map.getPlayerTwo(), skillTree1, skillTree2);
             
         } catch (Exception ex) {
             System.err.println("Error starting game:");

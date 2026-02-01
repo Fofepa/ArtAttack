@@ -15,31 +15,61 @@ public class SkillTreeFactory {
     
     private static SkillTree createZappaSkillTree(Player player) {
         Node root = new RootNode(player);
-        Node node_2 = new HPNODE(player, 0);
-        Node node_3 = new APNODE(player, 0);
-        Node node_4 = new APNODE(player, 0);
-        Node node_5 = new SPNODE(player, 0);
-        Node node_6 = new HPNODE(player, 0);
-        Node node_7 = new MAXWPNODE(player);
-        Node node_8 = new MAXMVNODE(player); 
-        Node node_9 = new APNODE(player, 0);
-        Node node_10 = new MAXMVNODE(player);
-        Node node_11 = new MAXMVNODE(player);
-        Node node_12 = new SpecialMoveNODE(player, null);
-        Node node_13 = new SPNODE(player, 0);
-        Node node_14 = new MANODE(player, null);
-        Node node_15 = new SPNODE(player, 0);
-        Node node_16 = new APNODE(player, 0);
-        Node node_17 = new MANODE(player, null);
-        Node node_18 = new HPNODE(player, 0);
-        Node node_19 = new HPNODE(player, 0);
-        Node node_20 = new MAXMVNODE(player);
-        Node node_21 = new MANODE(player, null);
-        Node node_22 = new MAXMVNODE(player);
-        Node node_23 = new APNODE(player, 0);
-        Node node_24 = new MANODE(player, null);
-        Node node_25 = new SPNODE(player, 0);
-        Node node_26 = new SpecialMoveNODE(player, null);
+        
+        // Tier 1 - Starting nodes
+        Node node_2 = new HPNODE(player, 3);        // +3 HP
+        Node node_3 = new APNODE(player, 2);        // +2 AP
+        
+        // Tier 2 - Left branch (HP/Combat focused)
+        Node node_4 = new APNODE(player, 2);        // +2 AP
+        Node node_5 = new SPNODE(player, 1);        // +1 Speed
+        
+        // Tier 3
+        Node node_6 = new HPNODE(player, 5);        // +5 HP
+        
+        // Tier 4
+        Node node_7 = new MAXWPNODE(player);        // +1 Weapon Slot
+        
+        // Tier 5
+        Node node_8 = new MAXMVNODE(player);        // +1 Move per Weapon
+        Node node_9 = new APNODE(player, 3);        // +3 AP
+        
+        // Tier 6
+        Node node_10 = new MAXMVNODE(player);       // +1 Move per Weapon
+        Node node_11 = new MAXMVNODE(player);       // +1 Move per Weapon
+        Node node_13 = new SPNODE(player, 2);       // +2 Speed
+        
+        // Tier 7
+        Node node_12 = new SpecialMoveNODE(player, null);  // Special Move (needs Move object)
+        Node node_14 = new MANODE(player, null);    // Movement Area (needs Coordinates)
+        
+        // Tier 2 - Right branch (Speed/Mobility focused)
+        Node node_15 = new SPNODE(player, 1);       // +1 Speed
+        
+        // Tier 3
+        Node node_16 = new APNODE(player, 2);       // +2 AP
+        
+        // Tier 4
+        Node node_17 = new MANODE(player, null);    // Movement Area
+        Node node_18 = new HPNODE(player, 4);       // +4 HP
+        
+        // Tier 5
+        Node node_19 = new HPNODE(player, 5);       // +5 HP
+        Node node_20 = new MAXMVNODE(player);       // +1 Move per Weapon
+        
+        // Tier 6
+        Node node_21 = new MANODE(player, null);    // Movement Area
+        
+        // Tier 7
+        Node node_22 = new MAXMVNODE(player);       // +1 Move per Weapon
+        Node node_23 = new APNODE(player, 3);       // +3 AP
+        
+        // Tier 8
+        Node node_24 = new MANODE(player, null);    // Movement Area
+        Node node_25 = new SPNODE(player, 2);       // +2 Speed
+        
+        // Tier 9 - Ultimate
+        Node node_26 = new SpecialMoveNODE(player, null);  // Special Move
 
         SkillTree tree = new SkillTree(player, root);
         root.addChildren(List.of(node_2,node_3));
@@ -75,30 +105,59 @@ public class SkillTreeFactory {
     private static SkillTree createLynchSkillTree(Player player) {
         Node root = new RootNode(player);
 
-        Node node_2 = new HPNODE(player, 0);
-        Node node_3 = new APNODE(player, 0);
-        Node node_4 = new APNODE(player, 0);
-        Node node_5 = new MAXMVNODE(player);
-        Node node_6 = new MAXMVNODE(player);
-        Node node_7 = new SPNODE(player, 0);
-        Node node_8 = new MANODE(player, null);
-        Node node_9 = new MAXWPNODE(player);
-        Node node_10 = new HPNODE(player, 0);
-        Node node_11 = new APNODE(player, 0);
-        Node node_12 = new MAXMVNODE(player);
-        Node node_13 = new SpecialMoveNODE(player, null);
-        Node node_14 = new APNODE(player, 0);
-        Node node_15 = new MANODE(player, null);
-        Node node_16 = new SPNODE(player, 0);
-        Node node_17 = new MANODE(player, null);
-        Node node_18 = new HPNODE(player, 0);
-        Node node_19 = new MAXMVNODE(player);
-        Node node_20 = new MAXMVNODE(player);        
-        Node node_21 = new APNODE(player, 0);
-        Node node_22 = new SPNODE(player, 0);
-        Node node_23 = new HPNODE(player, 0);
-        Node node_24 = new SpecialMoveNODE(player, null);
-        Node node_25 = new APNODE(player, 0);
+        // Tier 1 - Starting nodes
+        Node node_2 = new HPNODE(player, 4);        // +4 HP (Lynch è più tank)
+        Node node_3 = new APNODE(player, 2);        // +2 AP
+        
+        // Tier 2 - Left branch (Defensive/Tactical)
+        Node node_4 = new APNODE(player, 2);        // +2 AP
+        
+        // Tier 3
+        Node node_5 = new MAXMVNODE(player);        // +1 Move per Weapon
+        Node node_6 = new MAXMVNODE(player);        // +1 Move per Weapon
+        
+        // Tier 4
+        Node node_7 = new SPNODE(player, 1);        // +1 Speed
+        Node node_8 = new MANODE(player, null);     // Movement Area
+        
+        // Tier 5
+        Node node_9 = new MAXWPNODE(player);        // +1 Weapon Slot
+        
+        // Tier 6
+        Node node_10 = new HPNODE(player, 5);       // +5 HP
+        Node node_11 = new APNODE(player, 3);       // +3 AP
+        
+        // Tier 7
+        Node node_12 = new MAXMVNODE(player);       // +1 Move per Weapon
+        Node node_14 = new APNODE(player, 3);       // +3 AP
+        
+        // Tier 8
+        Node node_13 = new SpecialMoveNODE(player, null);  // Special Move
+        Node node_15 = new MANODE(player, null);    // Movement Area
+        
+        // Tier 2 - Right branch (Mobility/Vision focused)
+        Node node_16 = new SPNODE(player, 1);       // +1 Speed
+        
+        // Tier 3
+        Node node_17 = new MANODE(player, null);    // Movement Area
+        
+        // Tier 4
+        Node node_18 = new HPNODE(player, 4);       // +4 HP
+        
+        // Tier 5
+        Node node_19 = new MAXMVNODE(player);       // +1 Move per Weapon
+        Node node_20 = new MAXMVNODE(player);       // +1 Move per Weapon
+        
+        // Tier 6
+        Node node_21 = new APNODE(player, 3);       // +3 AP
+        
+        // Tier 7
+        Node node_22 = new SPNODE(player, 2);       // +2 Speed
+        
+        // Tier 8 - Ultimate choices
+        Node node_23 = new HPNODE(player, 6);       // +6 HP
+        Node node_24 = new SpecialMoveNODE(player, null);  // Special Move
+        Node node_25 = new APNODE(player, 4);       // +4 AP
         
         SkillTree tree = new SkillTree(player, root);
         root.addChildren(List.of(node_2,node_3));

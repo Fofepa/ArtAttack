@@ -25,4 +25,10 @@ public class  MANODE extends Node{
         }
         System.out.println("No parent has been used before");
     }
+
+    public List<Coordinates> getShape() {
+        return shape;
+    }
+
+    
 }

@@ -76,4 +76,24 @@ public abstract class Node{
         return counter;
     }
 
+
+    public void setSpent(boolean spent) {
+        this.spent = spent;
+    }
+
+    public void setLabel(int label) {
+        this.label = label;
+    }
+
+    public void addParent(Node parent) {
+    this.parents.add(parent);
+}
+
+    public void addChild(Node child) {
+        this.children.add(child);
+    }
+
+
+    
+
 }

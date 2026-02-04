@@ -19,6 +19,12 @@ public class SkillTree{
         this.supportList.add(root);
     }
 
+    public SkillTree(Node root, List<Node> supportList) {
+    this.root = root;
+    this.supportList = supportList;
+}
+
+
     public void buildTree(Node root){
         if(root.getChildren().isEmpty())
             return;
@@ -41,6 +47,10 @@ public class SkillTree{
 
     public List<Node> getSupportList(){
         return this.supportList;
-    }     
+    }
+    
+    public Node getRoot(){
+        return this.root;
+    }
     
 }

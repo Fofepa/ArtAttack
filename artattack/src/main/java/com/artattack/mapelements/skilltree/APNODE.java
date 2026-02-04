@@ -22,4 +22,10 @@ public class  APNODE extends Node{
         }
         System.out.println("No parent has been used before");
     }
+
+    public int getNewAP() {
+        return newAP;
+    }
+
+    
 }

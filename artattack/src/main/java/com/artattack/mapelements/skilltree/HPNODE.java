@@ -23,4 +23,10 @@ public class  HPNODE extends Node{
         }
         System.out.println("No parent has been used before");
     }
+
+    public int getNewHP() {
+        return newHP;
+    }
+
+    
 }

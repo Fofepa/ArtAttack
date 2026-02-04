@@ -33,4 +33,10 @@ public class SpecialMoveNODE extends Node{
         }
         System.out.println("No parent has been used before");
     }
+
+    public Move getSpecialMove() {
+        return specialMove;
+    }
+
+    
 }

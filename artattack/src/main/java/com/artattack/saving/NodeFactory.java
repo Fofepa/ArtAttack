@@ -1,0 +1,29 @@
+package com.artattack.saving;
+
+import com.artattack.mapelements.skilltree.APNODE;
+import com.artattack.mapelements.skilltree.HPNODE;
+import com.artattack.mapelements.skilltree.MANODE;
+import com.artattack.mapelements.skilltree.Node;
+import com.artattack.mapelements.skilltree.SpecialMoveNODE;
+
+public class NodeFactory {
+    public static Node create(NodeData data) {
+
+        if (data instanceof HPNODEData hp) {
+            HPNODE node = new HPNODE(hp.getNewHP());
+            return node;
+
+        } else if (data instanceof APNODEData ap) {
+            return new APNODE(ap.getNewAP());
+
+        } else if (data instanceof MANODEData ma) {
+            return new MANODE(ma.getShape());
+
+        } else if (data instanceof SpecialMoveNodeData sm) {
+            return new SpecialMoveNODE(sm.getSpecialMove());
+        }
+
+        throw new IllegalStateException("Unknown NodeData type");
+    }
+}
+

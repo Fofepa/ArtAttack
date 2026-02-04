@@ -9,10 +9,10 @@ import com.artattack.view.MainFrame;
 public abstract class Interaction {
     //private MainFrame mainFrame;  // CHANGED from InteractionPanel
 
-    InteractionType type;
+    private InteractionType type;
 
-    public Interaction(/*MainFrame mainFrame*/){
-        //this.mainFrame = mainFrame;
+    public Interaction(InteractionType type){
+        this.type = type;
     }
 
     public abstract void doInteraction(GameContext gameContext, Player player);

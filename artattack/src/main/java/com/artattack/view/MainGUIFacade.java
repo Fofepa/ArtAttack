@@ -339,7 +339,7 @@ public class MainGUIFacade {
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
     }
 
-    public void continueGame() {
+    public void loadGame() {
         currentState = "GAME";
 
         SaveManager saveManager = new SaveManager();

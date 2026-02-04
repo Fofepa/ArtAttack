@@ -65,7 +65,8 @@ public class MenuPanel {
         });
         
         loadGameBtn.addActionListener(e -> {
-            System.out.println("Load game not implemented yet");
+            //System.out.println("Load game not implemented yet");
+            mainFacade.loadGame();
         });
         
         settingsBtn.addActionListener(e -> {

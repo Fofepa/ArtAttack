@@ -13,8 +13,7 @@ public class Give extends Interaction {
     private List<Item> item;
 
     public Give(List<String> dialog, List<Item> item){
-        //super(mainFrame);
-        this.type = InteractionType.GIVE;
+        super(InteractionType.GIVE);
         this.dialog = dialog;
         this.item = item;
     }

@@ -17,7 +17,7 @@ public class Enemy extends ActiveElement {
     private int playerOneDemage;
     private int playerTwoDemage;
     private EnemyType enemyType;
-    //private boolean isActive = false;     unused for now
+    private boolean isActive = false;     //unused for now
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType){
         super(ID,mapSymbol,name,coordinates);
@@ -78,17 +78,17 @@ public class Enemy extends ActiveElement {
         this.playerTwoDemage += demage;
     }
 
-/*     public boolean getIsActive(){
+     public boolean getIsActive(){
         return this.isActive;
     }
 
     public void activate(){
-        this.isActive = true;           unused for now ---> for the aggro system
+        this.isActive = true;           //unused for now ---> for the aggro system
     }
 
     public void deactivate(){
         this.isActive = false;
-    } */
+    }
 
     private int calculateDroppedXP(int demage){
         float percentDemage = ((float) demage) / this.getMaxHP();

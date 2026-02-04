@@ -28,7 +28,7 @@ public class Maps {
     private char[][] mapMatrix;
     private int width;
     private int height;
-    private ConcreteTurnHandler turnHandler;
+    private transient ConcreteTurnHandler turnHandler;
 
     
     public Maps(){
@@ -142,6 +142,13 @@ public class Maps {
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
     }
 
+    public void setTurnQueue(List<ActiveElement> elements, int index){
+        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(elements);
+        this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+        this.turnHandler.getConcreteTurnQueue().reorder();
+        this.turnHandler.setIndex(index);
+    }
+
     public int getID(){
         return this.ID;
     }
@@ -198,6 +205,7 @@ public class Maps {
     public Enemy checkAggro(Coordinates coordinates){
         for(Enemy enemy : enemies){
             if(Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates()).contains(coordinates)){
+                enemy.activate();
                 return enemy;
             }
         }

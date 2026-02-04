@@ -3,6 +3,7 @@ package com.artattack.level;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.artattack.interactions.CheckPoint;
 import com.artattack.interactions.Give;
 import com.artattack.interactions.SwitchMap;
 import com.artattack.interactions.Talk;
@@ -144,10 +145,11 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement chest1_1 = new InteractableElement(0, '$', "Chest", new Coordinates(9, 11), List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
+                InteractableElement checkpoint_1 = new InteractableElement(0, 'C', "checkpoint", new Coordinates(30, 30), List.of(new CheckPoint(List.of("OK"))), "");
 
                 this.builder.setDimension(32, 32);
                 this.builder.setEnemies(listEn);
-                this.builder.setInteractableElements(List.of(chest0_1, chest1_1));
+                this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1));
                 this.builder.buildBorder();
                 this.builder.buildWall(new Coordinates(11, 1), 8, 25, '#');
                 this.builder.buildWall(new Coordinates(14, 28), 1, 3, '#');

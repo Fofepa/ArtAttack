@@ -22,6 +22,8 @@ public class InteractionDeserializer implements JsonDeserializer<Interaction>{
         switch (type) {
             case ASK:
                 return context.deserialize(obj, Ask.class);
+            case CHECKPOINT:
+                return context.deserialize(obj, CheckPoint.class);
             case GIVE:
                 return context.deserialize(obj, Give.class);
             case SWITCH_MAP:

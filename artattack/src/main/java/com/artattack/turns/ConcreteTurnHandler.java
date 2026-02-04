@@ -26,6 +26,15 @@ public class ConcreteTurnHandler implements TurnHandler {
         }
     }
 
+    public void start(int index){
+        if(!started){
+            this.started = true;
+            this.index = index;
+            // Notify the first element in the queue
+            this.turnManager.notifyTurn(turnQueue.getTurnQueue().get(index));
+        }
+    }
+
     /**
      * Adds a turn listener to be notified of turn changes
      * Delegates to TurnManager
@@ -81,4 +90,9 @@ public class ConcreteTurnHandler implements TurnHandler {
     public ConcreteTurnQueue getConcreteTurnQueue(){
         return this.turnQueue;
     }
+
+    public void setIndex(int index){
+        this.index = index;
+    }
+
 }

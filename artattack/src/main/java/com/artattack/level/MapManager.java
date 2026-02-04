@@ -5,6 +5,7 @@ import java.util.Map;
 public class MapManager {
     private Map<Integer, Maps> levels;
     private int currMap;
+    private int turnIndex = 0;
     
     public MapManager(Map<Integer, Maps> levels, int currMap){
         this.levels = levels;
@@ -21,6 +22,14 @@ public class MapManager {
 
     public void setCurrMap(int mapID){
         this.currMap = mapID;
+    }
+
+    public int getTurnIndex() {
+        return turnIndex;
+    }
+
+    public void setTurnIndex(int turnIndex){
+        this.turnIndex = turnIndex;
     }
 
     

@@ -1,5 +1,6 @@
 package com.artattack.view;
 
+import java.awt.ActiveEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,6 +34,8 @@ import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 import com.artattack.mapelements.skilltree.Node;
@@ -345,6 +348,22 @@ public class MainGUIFacade {
         SaveManager saveManager = new SaveManager();
         try{
             MapManager mm = saveManager.load();
+
+            for(Maps map : mm.getLevels().values()){
+                map.setDict();
+            }
+
+            //Inizialize turn
+            List<ActiveElement> active = new ArrayList<>();
+            active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerOne());
+            active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerTwo());
+            for(Enemy enemy : mm.getLevels().get(mm.getCurrMap()).getEnemies()){
+                if(enemy.getIsActive())
+                    active.add(enemy);
+            }
+            mm.getLevels().get(mm.getCurrMap()).setTurnQueue(active, mm.getTurnIndex());
+
+
             Player playerOne = mm.getLevels().get(mm.getCurrMap()).getPlayerOne();
             
             // Initialize game facade with game data
@@ -412,12 +431,12 @@ public class MainGUIFacade {
             mainFrame.setFocusable(true);
             mainFrame.revalidate();
             mainFrame.repaint();
-            
-            
-            // Start the turn system
-            //maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
-        } catch(IOException e){
 
+            //Start turn system
+            mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().start(mm.getTurnIndex());
+            
+        } catch(IOException e){
+            e.printStackTrace();
         }
     }
 

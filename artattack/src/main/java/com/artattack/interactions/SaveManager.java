@@ -3,6 +3,7 @@ package com.artattack.interactions;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -13,10 +14,10 @@ import com.google.gson.GsonBuilder;
 public class SaveManager {
     
     private final Gson gson;
-    private final String savePath;
+    private final Path savePath;
 
     public SaveManager(){
-        this.savePath = getSaveFilePath("ArtAttack").toString();
+        this.savePath = getSaveFilePath("ArtAttack");
         this.gson = new GsonBuilder()
             .registerTypeAdapter(Interaction.class, new InteractionDeserializer())
             .setPrettyPrinting()
@@ -24,13 +25,22 @@ public class SaveManager {
     }
 
     public void save(MapManager mapManager) throws IOException{
-        try(FileWriter writer = new FileWriter(savePath)){
+        Files.createDirectories(this.savePath.getParent());
+
+        System.out.println("SAVE PATH: " + this.savePath.toAbsolutePath());
+
+        mapManager.setTurnIndex(
+            mapManager.getLevels().get(mapManager.getCurrMap()).getConcreteTurnHandler().getIndex()
+        );
+
+
+        try(FileWriter writer = new FileWriter(savePath.toFile())){
             gson.toJson(mapManager,  writer);
         }
     }
 
     public MapManager load() throws IOException{
-        try(FileReader reader = new FileReader(savePath)){
+        try(FileReader reader = new FileReader(savePath.toFile())){
             return gson.fromJson(reader, MapManager.class);
         }
     }

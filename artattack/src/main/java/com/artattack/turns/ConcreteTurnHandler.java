@@ -30,10 +30,15 @@ public class ConcreteTurnHandler implements TurnHandler {
         if(!started){
             this.started = true;
             this.index = index;
-            // Notify the first element in the queue
-            this.turnManager.notifyTurn(turnQueue.getTurnQueue().get(index));
         }
     }
+
+    public void updateTurn(){
+        if(turnQueue.getTurnQueue().isEmpty()) 
+            return;
+        this.turnManager.notifyTurn(current());
+}
+
 
     /**
      * Adds a turn listener to be notified of turn changes

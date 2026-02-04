@@ -432,8 +432,13 @@ public class MainGUIFacade {
             mainFrame.revalidate();
             mainFrame.repaint();
 
+            mainFrame.requestFocusInWindow();
+            gameFacade.getGamePanel().requestFocusInWindow();
+
+
             //Start turn system
             mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().start(mm.getTurnIndex());
+            mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().updateTurn();
             
         } catch(IOException e){
             e.printStackTrace();

@@ -3,12 +3,12 @@ package com.artattack.mapelements.skilltree;
 import com.artattack.mapelements.Player;
 
 public class RootNode extends Node{
-    public RootNode(Player player){
-        super(player, NodeType.ROOT);
+    public RootNode(){
+        super(NodeType.ROOT);
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         System.out.println("Root created");
     }
 }

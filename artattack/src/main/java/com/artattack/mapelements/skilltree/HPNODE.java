@@ -6,17 +6,17 @@ import com.artattack.mapelements.Player;
 public class  HPNODE extends Node{
     int newHP;
     
-    public HPNODE(Player player, int newHP){
-        super(player, NodeType.HP);
+    public HPNODE(int newHP){
+        super(NodeType.HP);
         this.newHP = newHP;
         
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                this.getPlayer().setMaxHP(this.getPlayer().getMaxHP()+ newHP);
+                player.setMaxHP(player.getMaxHP()+ newHP);
                 this.setSpent();
                 return;
             }

@@ -6,16 +6,16 @@ import com.artattack.mapelements.Player;
 public class  SPNODE extends Node{
     int newSP;
     
-    public SPNODE(Player player, int newSP){
-        super(player, NodeType.SP);
+    public SPNODE(int newSP){
+        super(NodeType.SP);
         this.newSP = newSP;
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                this.getPlayer().setSpeed(this.getPlayer().getSpeed()+ newSP);
+                player.setSpeed(player.getSpeed()+ newSP);
                 this.setSpent();        
                 return;
             }

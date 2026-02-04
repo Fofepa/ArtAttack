@@ -11,12 +11,12 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-import com.artattack.interactions.SaveManager;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.level.TutorialMapBuilder;
+import com.artattack.saving.SaveManager;
 
 public class savemanagerTest {
     MapDirector director;

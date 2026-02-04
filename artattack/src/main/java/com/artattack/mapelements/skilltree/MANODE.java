@@ -9,16 +9,16 @@ import com.artattack.mapelements.Player;
 public class  MANODE extends Node{
     private List<Coordinates> shape;    // piece of area to add
     
-    public MANODE(Player player, List<Coordinates> shape){
-        super(player, NodeType.MA);
+    public MANODE(List<Coordinates> shape){
+        super(NodeType.MA);
         this.shape = shape;
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                this.getPlayer().getMoveArea().addAll(shape);
+                player.getMoveArea().addAll(shape);
                 this.setSpent();
                 return;
             }

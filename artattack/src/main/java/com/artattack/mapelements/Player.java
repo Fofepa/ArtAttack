@@ -6,6 +6,7 @@ import com.artattack.items.Item;
 import com.artattack.items.Key;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.moves.Weapon;
 
 public class Player extends ActiveElement {
@@ -20,6 +21,7 @@ public class Player extends ActiveElement {
     private List<Item> inventory;
     private List<Key> keys;
     private List<Coordinates> actionArea;
+    private SkillTree skillTree;
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates){
         super(ID,mapSymbol,name,coordinates);
@@ -44,6 +46,18 @@ public class Player extends ActiveElement {
             this.inventory = inventory;
             this.keys = keys;
             this.actionArea = actionArea;
+            this.skillTree = null;
+        }
+
+         public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+        List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea, PlayerType type, SkillTree skillTree){
+            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed, type);
+            this.maxWeapons = maxWeapons;
+            this.inventory = inventory;
+            this.keys = keys;
+            this.actionArea = actionArea;
+            this.skillTree = skillTree;
         }
 
     //primitive methods
@@ -154,5 +168,9 @@ public class Player extends ActiveElement {
         if(!this.getCoordinates().equals(other.getCoordinates())) return false;
         //Aggiungi altri check
         return true;
+    }
+
+    public SkillTree getSkillTree() {
+        return skillTree;
     }
 }

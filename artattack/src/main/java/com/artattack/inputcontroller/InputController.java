@@ -696,12 +696,12 @@ public class InputController implements KeyListener, TurnListener {
         }
         
         // Get the appropriate skill tree based on player ID
-        SkillTree skillTree = null;
-        if (player.getID() == 1) {
+        SkillTree skillTree = player.getSkillTree();
+        /*if (player.getID() == 1) {
             skillTree = context.getPlayer1SkillTree();
         } else if (player.getID() == 2) {
             skillTree = context.getPlayer2SkillTree();
-        }
+        }*/
         
         if (skillTree == null) {
             System.err.println("ERROR: SkillTree not found for player: " + player.getName());

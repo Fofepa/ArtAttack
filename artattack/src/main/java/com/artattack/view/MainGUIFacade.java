@@ -26,7 +26,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
-import com.artattack.interactions.SaveManager;
 import com.artattack.items.Item;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
@@ -43,6 +42,7 @@ import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.mapelements.skilltree.SkillTreeFactory;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
+import com.artattack.saving.SaveManager;
 
 
 /**
@@ -181,10 +181,6 @@ public class MainGUIFacade {
             Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
 
-            //Creating the two Skill trees
-            SkillTree skillTreePlayerOne = SkillTreeFactory.createSkillTree(playerOne);
-            SkillTree skillTreePlayerTwo = SkillTreeFactory.createSkillTree(playerTwo);
-
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
@@ -206,7 +202,7 @@ public class MainGUIFacade {
             mm.getLevels().put(map_1.getID(), map_1);
 
             // Start Game and set skill trees
-            startNewGame(mm, playerOne, playerTwo, skillTreePlayerOne, skillTreePlayerTwo);
+            startNewGame(mm, playerOne, playerTwo);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -227,7 +223,7 @@ public class MainGUIFacade {
                 return new Player(id, '@', type.getName(), coords, 
                     List.of(musicianWeapon), // Esempio arma
                     15, 15, moveArea, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN);
+                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN));
                     
             
             
@@ -236,14 +232,14 @@ public class MainGUIFacade {
                 return new Player(id, '@', type.getName(), coords,
                     List.of(directorWeapon), 
                     15, 15, moveArea, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR);
+                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR));
                     
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
         }
     }
     
-    public void startNewGame(MapManager maps, Player playerOne, Player playerTwo, SkillTree player1SkillTree, SkillTree player2SkillTree) {
+    public void startNewGame(MapManager maps, Player playerOne, Player playerTwo) {
         currentState = "GAME";
         
         // Initialize game facade with game data
@@ -253,13 +249,6 @@ public class MainGUIFacade {
         
 
         gameFacade.getMainFrame().setMainGUIFacade(this);
-        
-        // Set the skill trees in GameContext
-        GameContext gameContext = gameFacade.getMainFrame().getGameContext();
-        if (gameContext != null) {
-            gameContext.setPlayer1SkillTree(player1SkillTree);
-            gameContext.setPlayer2SkillTree(player2SkillTree);
-        }
         
         //Initialize pause panel
         pausePanel = gameFacade.getMainFrame().getPausePanel();
@@ -473,7 +462,7 @@ public class MainGUIFacade {
         // Create the skill tree panel
         skillTreePanel = new SkillTreePanel(skillTree, player, (selectedNode) -> {
             // Quando il player conferma la selezione
-            selectedNode.setSkill();
+            selectedNode.setSkill(player);
             player.setLeveledUp(false);
             
             // Close the panel and resume the game

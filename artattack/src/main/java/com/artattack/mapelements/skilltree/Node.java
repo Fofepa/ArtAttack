@@ -12,13 +12,11 @@ public abstract class Node{
     private static int counter = 0;
     private List<Node> parents;
     private List<Node> children;
-    private Player player;
 
-    public Node(Player player, NodeType type){
+    public Node(NodeType type){
         this.type = type;
         this.spent = false;
         this.children = new ArrayList<>();
-        this.player = player;
         this.parents = new ArrayList<>();
     }
 
@@ -30,12 +28,6 @@ public abstract class Node{
             child.setParent(this);
         }
         this.children = children;
-    }
-
-    
-
-    public Player getPlayer(){
-        return this.player;
     }
 
     public int getLabel(){
@@ -74,7 +66,7 @@ public abstract class Node{
         this.label = counter++;
     }
 
-    public abstract void setSkill();
+    public abstract void setSkill(Player player);
 
     public NodeType getType() {
         return type;

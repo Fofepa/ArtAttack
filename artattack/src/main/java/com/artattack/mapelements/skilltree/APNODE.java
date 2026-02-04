@@ -6,16 +6,16 @@ import com.artattack.mapelements.Player;
 public class  APNODE extends Node{
     int newAP;
     
-    public APNODE(Player player, int newAP){
-        super(player, NodeType.AP);
+    public APNODE(int newAP){
+        super(NodeType.AP);
         this.newAP = newAP;
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                this.getPlayer().setMaxActionPoints(this.getPlayer().getMaxActionPoints()+ newAP);
+                player.setMaxActionPoints(player.getMaxActionPoints()+ newAP);
                 this.setSpent();
                 return;
             }

@@ -6,15 +6,15 @@ import com.artattack.moves.Weapon;
 // type of nodes that increases the maxWeapons
 public class MAXMVNODE extends Node{
     
-    public MAXMVNODE(Player player){
-        super(player, NodeType.MAXMV);
+    public MAXMVNODE(){
+        super(NodeType.MAXMV);
     }
 
     @Override
-    public void setSkill(){
+    public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                for(Weapon weapons : this.getPlayer().getWeapons()){
+                for(Weapon weapons : player.getWeapons()){
                     weapons.setMaxMoves();
                 }
                 this.setSpent();

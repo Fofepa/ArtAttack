@@ -8,12 +8,10 @@ import com.artattack.mapelements.Player;
 
 // N-ary tree
 public class SkillTree{
-    private Player player;
     private Node root;
     private List<Node> supportList;
 
-    public SkillTree(Player player, Node root){
-        this.player = player;
+    public SkillTree(Node root){
         this.root = root;
         this.root.setSpent();
         this.root.setLabel();

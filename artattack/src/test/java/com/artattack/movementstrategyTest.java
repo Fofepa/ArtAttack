@@ -5,26 +5,21 @@ import java.util.List;
 
 import org.junit.After;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 
 import com.artattack.inputcontroller.MovementStrategy;
-import com.artattack.interactions.Talk;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
-import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
-import com.artattack.view.InteractionPanel;
 
 
 
@@ -50,8 +45,7 @@ public class movementstrategyTest {
             new InteractableElement(1, '$', "Batteria", new Coordinates(15, 15),List.of(new Talk(new InteractionPanel(), List.of("Haloa!"))), "",null,null
          ))); */
         tmb.setEnemies(List.of(
-            new Enemy(0, 'E', "Goblin", new Coordinates(4, 7), EnemyType.EMPLOYEE, 10, 10, 1, null, 10,10, null, area, null,null, 0),
-            new Enemy(1, 'E', "Orco", new Coordinates(25, 25), EnemyType.EMPLOYEE, 20, 20, 2, null, 15,15, null, List.of(new Coordinates(10, 10)), null,null ,0)));
+            new Enemy(0, 'E', "Goblin", new Coordinates(4, 7), EnemyType.EMPLOYEE, 10, 10, 1, null, 10,10, null, area, null,null, 0)));
         tmb.setTurnQueue();
         tmb.setDict();
         tmb.startMap();
@@ -76,10 +70,6 @@ public class movementstrategyTest {
         Coordinates t = move.getCursor();
         move.execute(0,-1);
         assertTrue(Coordinates.sum(t, new Coordinates(0, -2)).equals(move.getCursor()));    // it skips the player coordinates since the cursor is always at 0, 1 from the player.
-
-        
-
-
     }
 
     @Test
@@ -90,5 +80,19 @@ public class movementstrategyTest {
         move.execute(0,1);
         move.acceptMovement();
         assertEquals(new Enemy(0, 'E', "Goblin", new Coordinates(2, 3), EnemyType.EMPLOYEE), map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().get(0));
+        assertEquals(3, map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().size());
+
+        move.execute(1,0);
+        move.acceptMovement();
+        move.execute(1,0);
+        move.acceptMovement();
+        move.execute(1,0);
+        move.acceptMovement();
+        move.execute(1,0);
+        move.acceptMovement();
+        move.execute(1,0);
+        move.acceptMovement();
+        assertEquals(2, map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().size());
+
     }
 }

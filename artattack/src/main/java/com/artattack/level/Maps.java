@@ -213,12 +213,16 @@ public class Maps {
     }
 
     public void checkPlayerEscape(Coordinates coordinates){
+        List<Enemy> toRemove = new ArrayList<>();
         for(ActiveElement element : this.turnHandler.getConcreteTurnQueue().getTurnQueue()){
             if(element instanceof Enemy c){
-                if(Coordinates.getDistance(c.getCoordinates(),coordinates) > 7){
-                    this.turnHandler.getConcreteTurnQueue().remove(c);
+                if(Coordinates.getDistance(c.getCoordinates(), coordinates) > 4){
+                    toRemove.add(c);
                 }
             }
+        }
+        for(Enemy e : toRemove){
+            this.turnHandler.getConcreteTurnQueue().remove(e);
         }
     }
 

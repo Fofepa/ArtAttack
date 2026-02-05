@@ -74,6 +74,7 @@ public class MovementStrategy implements PlayerStrategy{
         if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
             map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));
         }
+        map.checkPlayerEscape(cursor);
         if(player.getActionPoints() == 0){
             this.mainFrame.getMap().getConcreteTurnHandler().next();
         }

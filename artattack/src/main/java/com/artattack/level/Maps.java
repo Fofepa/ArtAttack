@@ -212,6 +212,16 @@ public class Maps {
         return null;
     }
 
+    public void checkPlayerEscape(Coordinates coordinates){
+        for(ActiveElement element : this.turnHandler.getConcreteTurnQueue().getTurnQueue()){
+            if(element instanceof Enemy c){
+                if(Coordinates.getDistance(c.getCoordinates(),coordinates) > 7){
+                    this.turnHandler.getConcreteTurnQueue().remove(c);
+                }
+            }
+        }
+    }
+
     public void remove(ActiveElement element){
         if(this.dictionaire.containsValue(element)){
             this.turnHandler.getConcreteTurnQueue().remove(element);

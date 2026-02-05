@@ -7,6 +7,7 @@ import com.artattack.mapelements.skilltree.MAXMVNODE;
 import com.artattack.mapelements.skilltree.MAXWPNODE;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.RootNode;
+import com.artattack.mapelements.skilltree.SPNODE;
 import com.artattack.mapelements.skilltree.SpecialMoveNODE;
 
 public class NodeFactory {
@@ -30,6 +31,9 @@ public class NodeFactory {
         
         } else if (data instanceof MAXWPNODEData) {
             return new MAXWPNODE();
+        
+        } else if (data instanceof SPNODEData sp) {
+            return new SPNODE(sp.getNewSP());
         }
         
         return new RootNode();

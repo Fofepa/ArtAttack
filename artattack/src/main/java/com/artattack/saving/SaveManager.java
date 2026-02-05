@@ -21,6 +21,7 @@ public class SaveManager {
         this.savePath = getSaveFilePath("ArtAttack");
         this.gson = new GsonBuilder()
             .registerTypeAdapter(Interaction.class, new InteractionDeserializer())
+            .registerTypeAdapter(NodeData.class, new NodeDataDeserializer())
             .registerTypeAdapterFactory(new SkillTreeAdapterFactory())
             .setPrettyPrinting()
             .create();

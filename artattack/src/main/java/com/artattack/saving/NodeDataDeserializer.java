@@ -18,9 +18,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-public class NodeDeserializer implements JsonDeserializer<Node> {
+public class NodeDataDeserializer implements JsonDeserializer<NodeData> {
     @Override
-    public Node deserialize(
+    public NodeData deserialize(
             JsonElement json,
             Type typeOfT,
             JsonDeserializationContext context)
@@ -31,21 +31,21 @@ public class NodeDeserializer implements JsonDeserializer<Node> {
 
         switch (type) {
             case AP:
-                return context.deserialize(obj, APNODE.class);
+                return context.deserialize(obj, APNODEData.class);
             case HP:
-                return context.deserialize(obj, HPNODE.class);
+                return context.deserialize(obj, HPNODEData.class);
             case MA:
-                return context.deserialize(obj, MANODE.class);
+                return context.deserialize(obj, MANODEData.class);
             case MAXMV:
-                return context.deserialize(obj, MAXMVNODE.class);
+                return context.deserialize(obj, MAXMVNODEData.class);
             case MAXWP:
-                return context.deserialize(obj, MAXWPNODE.class);
+                return context.deserialize(obj, MAXWPNODEData.class);
             case ROOT:
-                return context.deserialize(obj, RootNode.class);
+                return context.deserialize(obj, RootNodeData.class);
             case SP:
-                return context.deserialize(obj, SPNODE.class);
+                return context.deserialize(obj, SPNODEData.class);
             case SPECIALMOVE:
-                return context.deserialize(obj, SpecialMoveNODE.class);
+                return context.deserialize(obj, SpecialMoveNodeData.class);
             default:
                 throw new JsonParseException("Unknown Node type: " + type);
         }

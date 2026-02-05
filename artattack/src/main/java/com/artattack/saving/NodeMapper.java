@@ -1,9 +1,13 @@
 package com.artattack.saving;
 
 import com.artattack.mapelements.skilltree.Node;
+import com.artattack.mapelements.skilltree.RootNode;
+import com.artattack.mapelements.skilltree.SPNODE;
 import com.artattack.mapelements.skilltree.APNODE;
 import com.artattack.mapelements.skilltree.HPNODE;
 import com.artattack.mapelements.skilltree.MANODE;
+import com.artattack.mapelements.skilltree.MAXMVNODE;
+import com.artattack.mapelements.skilltree.MAXWPNODE;
 import com.artattack.mapelements.skilltree.SpecialMoveNODE;
 
 public final class NodeMapper {
@@ -34,9 +38,20 @@ public final class NodeMapper {
             d.setSpecialMove(sm.getSpecialMove());
             data = d;
 
+        } else if (node instanceof MAXMVNODE) {
+            data = new MAXMVNODEData();
+        
+        } else if (node instanceof MAXWPNODE) {
+            data = new MAXWPNODEData();
+        
+        } else if (node instanceof SPNODE sp) {
+            SPNODEData d = new SPNODEData();
+            d.setNewSP(sp.getNewSP());
+            data = d;
         } else {
-            data = new NodeData() {};
+            data = new RootNodeData(); 
         }
+    
 
         // campi comuni
         data.type = node.getType();

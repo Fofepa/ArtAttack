@@ -7,5 +7,9 @@ public class SPNODEData extends NodeData{
         return newSP;
     }
 
+    public void setNewSP(int newSP) {
+        this.newSP = newSP;
+    }
+
     
 }

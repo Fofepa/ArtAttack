@@ -50,6 +50,12 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
 
+        if (mainFrame.getDialogActive()) {
+            System.out.println("-> Dialog active, forcing Interaction Input");
+            handleInteractionInput(e);
+            return; 
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_F ||
             e.getKeyCode() == KeyEvent.VK_I ||
             e.getKeyCode() == KeyEvent.VK_M) {

@@ -307,6 +307,9 @@ public class MainGUIFacade {
         mainFrame.setFocusable(true);
         mainFrame.revalidate();
         mainFrame.repaint();
+
+        mainFrame.requestFocusInWindow();
+        gameFacade.getGamePanel().requestFocusInWindow();
         
         // Request focus after GUI is built using invokeLater
         SwingUtilities.invokeLater(() -> {
@@ -842,7 +845,12 @@ class CenterPanelFacade {
         mapPanel.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                mapContainer.setBorder(BorderFactory.createLineBorder(Color.CYAN, 2));
+            
+                if (interactionPanel != null && interactionPanel.isVisible()) {
+                    mapContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+                } else {
+                    mapContainer.setBorder(BorderFactory.createLineBorder(Color.CYAN, 2));
+                }
                 mapContainer.repaint();
             }
             
@@ -870,6 +878,26 @@ class CenterPanelFacade {
         interactionContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         interactionContainer.add(interactionPanel, BorderLayout.CENTER);
         interactionContainer.setVisible(false); // Hidden by default
+
+        interactionContainer.addComponentListener(new java.awt.event.ComponentAdapter() {
+            @Override
+            public void componentShown(java.awt.event.ComponentEvent e) {
+                // APPENA il dialogo diventa visibile -> Spegni bordo mappa
+                if (mapContainer != null) {
+                    mapContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
+                    mapContainer.repaint();
+                }
+            }
+
+            @Override
+            public void componentHidden(java.awt.event.ComponentEvent e) {
+                // Quando il dialogo si chiude -> Se la mappa ha il focus, riaccendi bordo
+                if (mapContainer != null && mapPanel != null && mapPanel.hasFocus()) {
+                    mapContainer.setBorder(BorderFactory.createLineBorder(Color.CYAN, 2));
+                    mapContainer.repaint();
+                }
+            }
+        });
         bottomPanel.add(interactionContainer, BorderLayout.CENTER);
         
         // Add focus listener to interaction panel

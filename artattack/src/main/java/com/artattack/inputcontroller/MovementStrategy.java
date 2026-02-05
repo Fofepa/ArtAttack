@@ -1,5 +1,7 @@
 package com.artattack.inputcontroller;
 
+import java.util.List;
+
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
@@ -28,16 +30,17 @@ public class MovementStrategy implements PlayerStrategy{
     public void setMainFrame(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
         // Initialize cursor display
-        updateCursorDisplay();
+        if(isSelected) updateCursorDisplay();
     }
 
     @Override
     public void execute(int dx, int dy){
         if (dx != 0 || dy != 0) {
-            if (!isSelected)
-                isSelected = true;
+            if (!isSelected) {
+                setIsSelected(true);
+            }
             moveCursor(dx, dy); 
-            updateCursorDisplay(); // Update cursor display after movement
+            updateCursorDisplay(); 
         }
     }
 
@@ -77,8 +80,7 @@ public class MovementStrategy implements PlayerStrategy{
         if(player.getActionPoints() == 0){
             this.mainFrame.getMap().getConcreteTurnHandler().next();
         }
-        isSelected = false;
-        clearCursorDisplay(); // Clear cursor after movement
+        setIsSelected(false);
 
     }
 
@@ -122,10 +124,25 @@ public class MovementStrategy implements PlayerStrategy{
 
     public void setIsSelected(boolean isSelected){
         this.isSelected = isSelected;
+        
         if (isSelected) {
             updateCursorDisplay();
+            
+            // MOSTRA L'AREA DI MOVIMENTO (VERDE)
+            if (mainFrame != null && mainFrame.getMapPanel() != null && player != null) {
+                // Calcola le coordinate ASSOLUTE sommando area relativa + posizione player
+                List<Coordinates> absoluteArea = Coordinates.sum(player.getMoveArea(), player.getCoordinates());
+                // Invia l'area assoluta al MapPanel
+                mainFrame.getMapPanel().showMoveArea(absoluteArea, null);
+            }
+            
         } else {
             clearCursorDisplay();
+            
+            // NASCONDI L'AREA DI MOVIMENTO
+            if (mainFrame != null && mainFrame.getMapPanel() != null) {
+                mainFrame.getMapPanel().showMoveArea(null, null);
+            }
         }
     }
 

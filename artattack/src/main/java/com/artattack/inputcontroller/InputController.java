@@ -244,6 +244,38 @@ public class InputController implements KeyListener, TurnListener {
                 mainFrame.repaintInventoryPanel();
                 updateInventorySelectionDisplay(inventoryStrategy, player);
             }
+
+            case KeyEvent.VK_G -> {
+                System.out.println("G pressed in InventoryPanel");
+                inventoryStrategy.giveItem();
+
+                if (mainFrame.getInventoryPanel() != null) {
+                    mainFrame.getInventoryPanel().setSelectedIndex(0); 
+                }
+
+                if (mainFrame.getDialogActive()) {
+                    mainFrame.focusInteractionPanel();
+                }
+                mainFrame.repaintStatsPanel();
+                mainFrame.repaintInventoryPanel();
+                updateInventorySelectionDisplay(inventoryStrategy, player);
+            }
+
+            case KeyEvent.VK_P -> {
+                System.out.println("P pressed in InventoryPanel.");
+                inventoryStrategy.useItemOnOther();
+
+                if (mainFrame.getInventoryPanel() != null) {
+                    mainFrame.getInventoryPanel().setSelectedIndex(0); 
+                }
+
+                if (mainFrame.getDialogActive()) {
+                    mainFrame.focusInteractionPanel();
+                }
+                mainFrame.repaintStatsPanel();
+                mainFrame.repaintInventoryPanel();
+                updateInventorySelectionDisplay(inventoryStrategy, player);
+            }
             
             default -> {
                 handleFocusInput(e);
@@ -782,5 +814,19 @@ public class InputController implements KeyListener, TurnListener {
     public void keyReleased(KeyEvent e) {}
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+        String s = new String();
+        switch (currentState.getType()) {
+            case 0:
+                s = "MovementStrategy";
+                break;
+            case 1:
+                s = "CombatStrategy";
+                break;
+            case 2:
+                s = "InventoryStrategy";
+                break;
+        }
+        System.out.println(e.getKeyChar() + " has been pressed in " + s);
+    }
 }

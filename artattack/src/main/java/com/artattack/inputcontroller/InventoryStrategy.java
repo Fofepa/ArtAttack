@@ -15,6 +15,7 @@ public class InventoryStrategy implements PlayerStrategy {
     private MainFrame mainFrame;
 
     public InventoryStrategy(Maps map, Player player){
+        this.map = map;
         this.player = player;
     }
 
@@ -64,6 +65,36 @@ public class InventoryStrategy implements PlayerStrategy {
         System.out.println("The inventory is empty");
         mainFrame.showDialog(List.of("the inventory is empty"));
         return 0;
+    }
+
+    public void giveItem() {
+        if (!this.player.getInventory().isEmpty()) {
+            Player other = this.player.equals(map.getPlayerOne()) ? map.getPlayerTwo() : map.getPlayerOne();
+            mainFrame.showDialog(List.of(player.getName() + " gave " + player.getInventory().get(this.inventoryIndex).getName() + " to " + other.getName() + "."));
+            other.getInventory().add(player.getInventory().get(this.inventoryIndex));
+            player.getInventory().remove(this.inventoryIndex);
+            this.isSelected = false;
+            this.inventoryIndex = 0;
+        }
+        else {
+            System.out.println(this.player.getName() + "'s inventory is empty: can't give item");
+            mainFrame.showDialog(List.of("Your inventory is empty!"));
+        }
+    }
+
+    public void useItemOnOther() {
+        if (!this.player.getInventory().isEmpty()) {
+            Player other = this.player.equals(map.getPlayerOne()) ? map.getPlayerTwo() : map.getPlayerOne();
+            mainFrame.showDialog(List.of(player.getName() + " used " + player.getInventory().get(this.inventoryIndex).getName() + " on " + other.getName() + "."));
+            player.getInventory().get(this.inventoryIndex).use(other);
+            player.getInventory().remove(this.inventoryIndex);
+            this.isSelected = false;
+            this.inventoryIndex = 0;
+        }
+        else {
+            System.out.println(this.player.getName() + "'s inventory is empty: can't give item");
+            mainFrame.showDialog(List.of("Your inventory is empty!"));
+        }
     }
 
     @Override

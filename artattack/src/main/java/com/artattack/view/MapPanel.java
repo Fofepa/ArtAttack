@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
@@ -35,13 +36,9 @@ public class MapPanel extends JPanel {
         setBackground(Color.BLACK);
         setFocusable(true);
 
-        // Initialize the blinking timer
         initializeBlinkTimer();
     }
 
-    /**
-     * Initializes the timer for cursor blinking
-     */
     private void initializeBlinkTimer() {
         blinkTimer = new Timer(350, e -> {
             cursorVisible = !cursorVisible;
@@ -63,101 +60,121 @@ public class MapPanel extends JPanel {
         
         char[][] matrix = map.getMapMatrix();
 
-        // 1. CALCOLO DELL'OFFSET PER CENTRARE
-        // Calcoliamo quanto è grande la mappa in pixel
         int mapPixelWidth = map.getWidth() * CELL_SIZE;
         int mapPixelHeight = map.getHeight() * CELL_SIZE;
-
-        // Calcoliamo il punto di partenza (Top-Left) per centrarla nel pannello
         int startX = (getWidth() - mapPixelWidth) / 2;
         int startY = (getHeight() - mapPixelHeight) / 2;
 
-        // Ciclo di rendering
+        // --- 1. SFONDO (Caratteri) ---
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
-                char c = matrix[x][y]; // Nota: verifica se è matrix[y][x] o [x][y] in base alla tua impl.
-
-                // Calcoliamo la posizione esatta in pixel di QUESTA cella
+                char c = matrix[x][y]; 
                 int px = startX + (x * CELL_SIZE);
                 int py = startY + (y * CELL_SIZE);
 
-                // --- CURSORE MOVIMENTO ---
-                boolean isCursorPosition = movementCursor != null && 
-                                           movementCursor.getX() == x && 
-                                           movementCursor.getY() == y;
-                
-                if (isCursorPosition && cursorVisible) {
-                    g.setColor(Color.GREEN);
-                    // Disegna il cursore leggermente spostato per centrarlo nel carattere
-                    g.drawString("*", px, py + CELL_SIZE); 
-                }
-                else {
-                    // --- COLORI MAPPA ---
-                    switch (c) {
-                        case '#' -> g.setColor(Color.GRAY);
-                        case '@' -> g.setColor(Color.CYAN);
-                        case '.' -> g.setColor(new Color(50, 50, 50));
-                        case 'E' -> g.setColor(Color.RED);
-                        case 'I' -> g.setColor(Color.YELLOW);
-                        default -> g.setColor(Color.WHITE);
-                    } 
-                }
-                
-                // Disegna il carattere. 
-                // Nota: drawString disegna dalla baseline (basso), quindi aggiungiamo CELL_SIZE a Y
+                switch (c) {
+                    case '#' -> g.setColor(Color.GRAY);
+                    case '@' -> g.setColor(Color.CYAN);
+                    case '.' -> g.setColor(new Color(50, 50, 50));
+                    case 'E' -> g.setColor(Color.RED);
+                    case 'I' -> g.setColor(Color.YELLOW);
+                    default -> g.setColor(Color.WHITE);
+                } 
                 g.drawString(String.valueOf(c), px, py + CELL_SIZE);
             }
         }
         
-        // --- RENDERING OVERLAYS (Cursori e Aree) ---
-        // Usiamo helper method per evitare codice duplicato nel calcolo pixel
-        
-        // 1. Cursore quadrato verde (bordi)
-        if (movementCursor != null) {
-            g.setColor(Color.GREEN);
-            drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false);
+        // --- 2. VISIONE NEMICI ---
+        if (map.getEnemies() != null) {
+            g.setColor(new Color(255, 165, 0, 40)); 
+            for (Enemy enemy : map.getEnemies()) {
+                if ((enemy.getIsActive() || enemy.getCurrHP() > 0) && enemy.getVisionArea() != null) {
+                    // VisionArea è solitamente relativa, quindi qui USIAMO la somma
+                    List<Coordinates> absVision = Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates());
+                    for (Coordinates coord : absVision) {
+                        if (isValidAndNotWall(coord, map, matrix)) {
+                            drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
+                        }
+                    }
+                }
+            }
         }
-        
-        // 2. Area Movimento (Verde trasparente)
-        if (moveArea != null) {
-            g.setColor(new Color(0, 255, 0, 50));
+
+        // --- 3. AREA MOVIMENTO GIOCATORE ---
+        if (moveArea != null && !moveArea.isEmpty()) {
+            // System.out.println("DEBUG PAINT: Drawing " + moveArea.size() + " move tiles.");
+            
+            g.setColor(new Color(0, 70, 0, 10)); // Verde semi-trasparente
+            
             for (Coordinates coord : moveArea) {
-                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
+                // Rimuovi il check del muro per debug se necessario, ma di solito è meglio averlo
+                if(isValidAndNotWall(coord, map, matrix)) {
+                    // Riempimento
+                    g.setColor(new Color(0, 255, 0, 80));
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true); 
+                    
+                    // Bordo evidenziato
+                    g.setColor(Color.GREEN);
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false); 
+                }
             }
         }
         
-        // 3. Area Attacco (Rosso trasparente)
+        // --- 4. AREA ATTACCO ---
         if (attackArea != null) {
             g.setColor(new Color(255, 0, 0, 80)); 
             for (Coordinates coord : attackArea) {
-                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
-                
-                // Bordo rosso opzionale
-                g.setColor(Color.RED);
-                drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false);
-                g.setColor(new Color(255, 0, 0, 80)); // Reset
+                if(isValidAndNotWall(coord, map, matrix)) {
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
+                    g.setColor(Color.RED);
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false);
+                    g.setColor(new Color(255, 0, 0, 80)); 
+                }
             }
+        }
+
+        // --- 5. CURSORE ---
+        if (movementCursor != null && cursorVisible) {
+            g.setColor(Color.GREEN);
+            drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false);
+            
+            int px = startX + (movementCursor.getX() * CELL_SIZE);
+            int py = startY + (movementCursor.getY() * CELL_SIZE);
+            g.drawString("*", px, py + CELL_SIZE);
         }
     }
 
-    /**
-     * Helper per disegnare rettangoli sulle celle calcolando l'offset corretto
-     */
+    private boolean isValidAndNotWall(Coordinates c, Maps map, char[][] matrix) {
+        if (c.getX() < 0 || c.getX() >= map.getWidth() || 
+            c.getY() < 0 || c.getY() >= map.getHeight()) {
+            return false;
+        }
+        return matrix[c.getX()][c.getY()] != '#';
+    }
+
     private void drawCellRect(Graphics g, int gridX, int gridY, int startX, int startY, boolean fill) {
         int px = startX + (gridX * CELL_SIZE);
         int py = startY + (gridY * CELL_SIZE);
         
-        // Aggiustamenti fini per centrare il rettangolo attorno al testo
-        // Il testo drawString è a (px, py + CELL_SIZE).
-        // Il rettangolo deve partire da (px, py) con larghezza CELL_SIZE.
-        
-        // Nota: Nel tuo codice originale usavi offset specifici (-2, -10). 
-        // Qui normalizziamo: il rettangolo copre l'intera cella logica.
         if (fill) {
             g.fillRect(px, py, CELL_SIZE, CELL_SIZE);
         } else {
             g.drawRect(px, py, CELL_SIZE, CELL_SIZE);
         }
+    }
+    
+    public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
+        // System.out.println("DEBUG: showMoveArea called with " + (moveArea != null ? moveArea.size() : "null") + " tiles.");
+        
+        if (moveArea == null || moveArea.isEmpty()) {
+            this.moveArea = null;
+        } else {
+            
+            this.moveArea = moveArea;
+            
+            
+        }
+        repaint();
     }
     
     public void updateMovementCursor(Coordinates cursor) {
@@ -169,13 +186,7 @@ public class MapPanel extends JPanel {
         this.movementCursor = null;
         repaint();
     }
-    
-    public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
-        this.moveArea = Coordinates.sum(moveArea, playerPos);
-        repaint();
-    }
-    
-    // --- IMPLEMENTAZIONE LOGICA AREA ATTACCO ---
+
     public void updateAttackArea(CombatStrategy strategy) {
         if (strategy == null || strategy.getPlayer() == null) {
             this.attackArea = null;
@@ -184,12 +195,9 @@ public class MapPanel extends JPanel {
         }
 
         Player player = strategy.getPlayer();
-        
-        // 1. Recupera gli indici correnti dalla strategia
         int weaponIdx = strategy.getWeaponIndex();
         int moveIdx = strategy.getMoveIndex();
 
-        // 2. Controlli di sicurezza per evitare IndexOutOfBounds
         List<Weapon> weapons = player.getWeapons();
         if (weaponIdx >= 0 && weaponIdx < weapons.size()) {
             Weapon weapon = weapons.get(weaponIdx);
@@ -197,13 +205,10 @@ public class MapPanel extends JPanel {
 
             if (moveIdx >= 0 && moveIdx < moves.size()) {
                 Move move = moves.get(moveIdx);
-
-                // 3. Recupera l'area relativa dalla mossa
                 List<Coordinates> relativeArea = move.getAttackArea();
 
                 if (relativeArea != null && !relativeArea.isEmpty()) {
-                    // 4. Trasforma l'area relativa in assoluta (sommando la posizione del player)
-                    // Questo usa il metodo statico sum() che hai usato anche in MenuPanel
+                    
                     this.attackArea = Coordinates.sum(relativeArea, player.getCoordinates());
                 } else {
                     this.attackArea = null;
@@ -214,8 +219,6 @@ public class MapPanel extends JPanel {
         } else {
             this.attackArea = null;
         }
-
-        // 5. Ridisegna la mappa
         repaint();
     }
     
@@ -229,9 +232,7 @@ public class MapPanel extends JPanel {
     }
     
     public void cleanup() {
-        if (blinkTimer != null) {
-            blinkTimer.stop();
-        }
+        if (blinkTimer != null) blinkTimer.stop();
     }
 
     public void setMap(Maps map){

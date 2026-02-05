@@ -56,12 +56,14 @@ public class MovementStrategy implements PlayerStrategy{
             }
         }
 
+        // cheks if the player goes off the map, or the cursor escapes the MA
         if (new_c.getX() >= 0 && new_c.getX() < this.map.getWidth() &&
-            new_c.getY() >= 0 && new_c.getY() < this.map.getHeight() &&
-            Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
+        new_c.getY() >= 0 && new_c.getY() < this.map.getHeight() &&
+        Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
             
             cursor = new_c;
         }
+        //TODO: checks if the movement area is reachable within one cursor movement
     }
 
     public void acceptMovement() {

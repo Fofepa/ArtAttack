@@ -57,6 +57,7 @@ public class MainGUIFacade {
     private CharacterSelectionPanel characterSelectionPanel;
     private SkillTreePanel skillTreePanel;
     
+    
     private String currentState = "MENU"; // MENU, GAME, PAUSE, SKILL_TREE
     
     public MainGUIFacade() {
@@ -67,10 +68,25 @@ public class MainGUIFacade {
     private void initializeMainFrame() {
         mainFrame = new JFrame("Art Attack");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setSize(1920, 1080);
-        mainFrame.setLocationRelativeTo(null);
+        
+        // --- GESTIONE RESIZE ---
+        // 1. Imposta la dimensione preferita iniziale
+        mainFrame.setPreferredSize(new Dimension(1920, 1080));
+        
+        // 2. Imposta la dimensione MINIMA sotto la quale non si può scendere
+        // Impostiamo 1280x720 come risoluzione minima giocabile
+        mainFrame.setMinimumSize(new Dimension(1280, 720));
+        
+        // 3. Rendi la finestra ridimensionabile (di default è true, ma lo esplicitiamo)
+        mainFrame.setResizable(true);
+        // -----------------------
+
         mainFrame.setLayout(new BorderLayout());
         mainFrame.getContentPane().setBackground(Color.BLACK);
+        
+        // Applica le dimensioni e centra
+        mainFrame.pack(); 
+        mainFrame.setLocationRelativeTo(null);
     }
     
     private void initializeFacades() {
@@ -268,12 +284,18 @@ public class MainGUIFacade {
         // Clear and setup the display
         mainFrame.getContentPane().removeAll();
 
-        JLayeredPane layeredPane = new JLayeredPane();
-        layeredPane.setLayout(null);
-        
+        JLayeredPane layeredPane = new JLayeredPane() {
+            @Override
+            public void doLayout() {
+                // Forza i componenti interni a seguire la dimensione del frame
+                int w = getWidth();
+                int h = getHeight();
+                for (java.awt.Component c : getComponents()) {
+                    c.setBounds(0, 0, w, h);
+                }
+            }
+        };
         JPanel gamePanel = gameFacade.getGamePanel();
-        gamePanel.setBounds(0, 0, 1920, 1080);
-        pausePanel.setBounds(0, 0, 1920, 1080);
         
         layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
         layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
@@ -282,7 +304,7 @@ public class MainGUIFacade {
         
         
         
-        // KEY FIX: Add InputController as KeyListener to multiple components
+        
         mainFrame.addKeyListener(inputController);
         gameFacade.getGamePanel().addKeyListener(inputController);
         pausePanel.addKeyListener(inputController);
@@ -384,16 +406,20 @@ public class MainGUIFacade {
             // Clear and setup the display
             mainFrame.getContentPane().removeAll();
 
-            JLayeredPane layeredPane = new JLayeredPane();
-            layeredPane.setLayout(null);
+            JLayeredPane layeredPane = new JLayeredPane() {
+                @Override
+                public void doLayout() {
+                    int w = getWidth();
+                    int h = getHeight();
+                    for (java.awt.Component c : getComponents()) {
+                        c.setBounds(0, 0, w, h);
+                    }
+                }
+            };
             
             JPanel gamePanel = gameFacade.getGamePanel();
-            gamePanel.setBounds(0, 0, 1920, 1080);
-            pausePanel.setBounds(0, 0, 1920, 1080);
-            
             layeredPane.add(gamePanel, JLayeredPane.DEFAULT_LAYER);
             layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
-            
             mainFrame.add(layeredPane, BorderLayout.CENTER);
             
             
@@ -483,10 +509,7 @@ public class MainGUIFacade {
         // Add the skill tree panel above everything
         skillTreePanel.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
         layeredPane.add(skillTreePanel, JLayeredPane.POPUP_LAYER);
-        
-        // Focus on the panel
         skillTreePanel.requestFocusInWindow();
-        
         mainFrame.revalidate();
         mainFrame.repaint();
     }

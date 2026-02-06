@@ -1,6 +1,7 @@
 package com.artattack.mapelements.skilltree;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import com.artattack.level.Coordinates;
 import com.artattack.mapelements.Player;
@@ -18,7 +19,11 @@ public class  MANODE extends Node{
     public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                player.getMoveArea().addAll(shape);
+                List<Coordinates> newMA = Stream
+                .concat(player.getMoveArea().stream(), shape.stream())
+                .distinct()
+                .toList();
+                player.setMoveArea(newMA);
                 this.setSpent();
                 return;
             }

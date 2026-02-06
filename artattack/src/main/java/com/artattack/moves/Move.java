@@ -137,6 +137,11 @@ public class Move{
     }
 
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
+        if (this.name == "Little Umbrellas") {
+            List<ActiveElement> l = new ArrayList<>();
+            l.addAll(map.getEnemies());
+            return l;
+        }
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates attackCell : this.attackArea) {
             Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));

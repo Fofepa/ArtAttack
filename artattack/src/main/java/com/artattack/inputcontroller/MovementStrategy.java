@@ -55,7 +55,54 @@ public class MovementStrategy implements PlayerStrategy{
                 new_c = Coordinates.sum(new_c, new Coordinates(0, dy));   
             }
         }
-
+        
+        //TODO: checks if the movement area is reachable within one cursor movement
+        if(!Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
+            if(dx == 1){// case S
+                if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(2,0)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(1,0));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(1,-1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,-1));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(1,-1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,1));
+                }
+            }
+            if(dx == -1){// case W
+                if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(-2,0)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(-1,0));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(-1,1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,1));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(-1,-1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,-1));
+                }
+            }
+            if(dy == 1){// case D
+                if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(0,2)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,1));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(-1,1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(-1,0));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(1,1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(1,0));
+                }
+            }
+            if(dy == -1){// case A
+                if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(0,-2)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(0,-1));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(1,-1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(1,0));
+                }
+                else if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(-1,-1)))){
+                    new_c = Coordinates.sum(new_c, new Coordinates(-1,0));
+                }
+            }
+        }
         // cheks if the player goes off the map, or the cursor escapes the MA
         if (new_c.getX() >= 0 && new_c.getX() < this.map.getWidth() &&
         new_c.getY() >= 0 && new_c.getY() < this.map.getHeight() &&
@@ -63,7 +110,6 @@ public class MovementStrategy implements PlayerStrategy{
             
             cursor = new_c;
         }
-        //TODO: checks if the movement area is reachable within one cursor movement
     }
 
     public void acceptMovement() {
@@ -155,7 +201,7 @@ public class MovementStrategy implements PlayerStrategy{
 
     public final void setPlayer(Player player) {
         this.player = player;
-        this.cursor = Coordinates.sum(player.getCoordinates(), new Coordinates(0, 1)); 
+        this.cursor = Coordinates.sum(player.getCoordinates(), new Coordinates(1, 1)); 
     }
 
     @Override

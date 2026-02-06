@@ -215,6 +215,8 @@ public class MainGUIFacade {
         AreaBuilder areaBuilder = new AreaBuilder();
         areaBuilder.addShape("x",2);
         List<Coordinates> zappaMA = areaBuilder.getResult();
+        areaBuilder.addShape("4");
+        zappaMA.addAll(areaBuilder.getResult());
         areaBuilder.addShape("square",1,true);
         List<Coordinates> lynchMA = areaBuilder.getResult();
         areaBuilder.addShape("4");

@@ -79,7 +79,6 @@ public class MainGUIFacade {
         
         // 3. Rendi la finestra ridimensionabile (di default è true, ma lo esplicitiamo)
         mainFrame.setResizable(true);
-        // -----------------------
 
         mainFrame.setLayout(new BorderLayout());
         mainFrame.getContentPane().setBackground(Color.BLACK);
@@ -242,16 +241,16 @@ public class MainGUIFacade {
         switch (type) {
             case MUSICIAN:
                 Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MUSICIAN);
-                return new Player(id, '@', type.getName(), coords, 
-                    List.of(musicianWeapon), // Esempio arma
-                    15, 15, zappaMA, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN));
+                return new Player(id, '♫', type.getName(), coords, 
+                    List.of(musicianWeapon),
+                    15, 15, moveArea, 19, type.getMaxHP(), 10, 
+                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
                     
             
             
             case DIRECTOR:
                 Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MOVIE_DIRECTOR);
-                return new Player(id, '@', type.getName(), coords,
+                return new Player(id, '◉', type.getName(), coords,
                     List.of(directorWeapon), 
                     15, 15, lynchMA, 20, type.getMaxHP(), 
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR));

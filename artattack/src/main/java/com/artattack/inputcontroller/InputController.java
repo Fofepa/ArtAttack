@@ -838,18 +838,18 @@ public class InputController implements KeyListener, TurnListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        String s = new String();
-        switch (currentState.getType()) {
-            case 0:
-                s = "MovementStrategy";
-                break;
-            case 1:
-                s = "CombatStrategy";
-                break;
-            case 2:
-                s = "InventoryStrategy";
-                break;
+
+        if (currentState == null) {
+            return;
         }
+
+        String s = "";
+        s = switch (currentState.getType()) {
+            case 0 -> "MovementStrategy";
+            case 1 -> "CombatStrategy";
+            case 2 -> "InventoryStrategy";
+            default -> "Unknown";
+        };
         System.out.println(e.getKeyChar() + " has been pressed in " + s);
     }
 }

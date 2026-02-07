@@ -72,10 +72,15 @@ public class MapPanel extends JPanel {
                 int px = startX + (x * CELL_SIZE);
                 int py = startY + (y * CELL_SIZE);
 
+                if (c == '@') {
+                    g.setColor(new Color(50, 50, 50));
+                    //g.drawString(".", px, py + CELL_SIZE);
+                    continue; // Salta il resto e passa alla prossima cella
+                }
+
                 switch (c) {
                     case '#' -> g.setColor(Color.GRAY);
-                    case '@' -> g.setColor(Color.CYAN);
-                    case '.' -> g.setColor(new Color(50, 50, 50));
+                    case '.' -> {continue;}//g.setColor(new Color(50, 50, 50));
                     case 'E' -> g.setColor(Color.RED);
                     case 'I' -> g.setColor(Color.YELLOW);
                     default -> g.setColor(Color.WHITE);
@@ -104,17 +109,15 @@ public class MapPanel extends JPanel {
         if (moveArea != null && !moveArea.isEmpty()) {
             // System.out.println("DEBUG PAINT: Drawing " + moveArea.size() + " move tiles.");
             
-            g.setColor(new Color(0, 70, 0, 10)); // Verde semi-trasparente
-            
             for (Coordinates coord : moveArea) {
                 // Rimuovi il check del muro per debug se necessario, ma di solito è meglio averlo
                 if(isValidAndNotWall(coord, map, matrix)) {
                     // Riempimento
-                    g.setColor(new Color(0, 255, 0, 80));
+                    g.setColor(new Color(0, 255, 0, 20));
                     drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true); 
                     
                     // Bordo evidenziato
-                    g.setColor(Color.GREEN);
+                    g.setColor(new Color(0, 255, 0, 40));
                     drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false); 
                 }
             }
@@ -133,7 +136,11 @@ public class MapPanel extends JPanel {
             }
         }
 
-        // --- 5. CURSORE ---
+        // --- 5. DISEGNO GIOCATORI CON SIMBOLI PERSONALIZZATI ---
+        drawPlayerSymbol(g, map.getPlayerOne(), startX, startY);
+        drawPlayerSymbol(g, map.getPlayerTwo(), startX, startY);
+
+        // --- 6. CURSORE ---
         if (movementCursor != null && cursorVisible) {
             g.setColor(Color.GREEN);
             drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false);
@@ -141,6 +148,17 @@ public class MapPanel extends JPanel {
             int px = startX + (movementCursor.getX() * CELL_SIZE);
             int py = startY + (movementCursor.getY() * CELL_SIZE);
             g.drawString("*", px, py + CELL_SIZE);
+        }
+    }
+
+    private void drawPlayerSymbol(Graphics g, Player p, int startX, int startY) {
+        if (p != null) {
+            int px = startX + (p.getCoordinates().getX() * CELL_SIZE);
+            int py = startY + (p.getCoordinates().getY() * CELL_SIZE);
+            
+            g.setColor(Color.CYAN);
+            // Qui prendiamo il simbolo (es. '♫' o '◉') invece di '@'
+            g.drawString(String.valueOf(p.getMapSymbol()), px, py + CELL_SIZE);
         }
     }
 

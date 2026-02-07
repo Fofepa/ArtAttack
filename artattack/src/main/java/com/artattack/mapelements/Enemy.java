@@ -43,6 +43,31 @@ public class Enemy extends ActiveElement {
             this.playerTwoDemage = 0;
     }
 
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType, String spritePath){
+        super(ID,mapSymbol,name,coordinates, spritePath);
+        this.enemyType = enemyType;
+    }
+
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, int maxActionPoints,List<Coordinates> moveArea, String spritePath){
+        super(ID,mapSymbol,name,coordinates,currHP,maxHP,
+            speed,weapons,actionPoints,maxActionPoints,moveArea, spritePath);
+        this.enemyType = enemyType;
+    }
+
+    public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType,
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
+        List<Coordinates> visionArea, List<Item> drops, List<Key> keys, int droppedXP, String spritePath){
+            this(ID,mapSymbol,name,coordinates, enemyType, currHP,maxHP,
+                speed,weapons,actionPoints,maxActionPoints,moveArea, spritePath);
+            this.visionArea = visionArea;
+            this.drops = drops;
+            this.keys = keys;
+            this.droppedXP = droppedXP;
+            this.playerOneDemage = 0;
+            this.playerTwoDemage = 0;
+    }
+
     public List<Coordinates> getVisionArea() {
         return this.visionArea;
     }

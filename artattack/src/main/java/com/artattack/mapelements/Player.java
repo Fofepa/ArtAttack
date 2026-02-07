@@ -30,7 +30,9 @@ public class Player extends ActiveElement {
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
         List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
         int currHP, int maxHP, int currXP, int maxXP, int level,int speed, PlayerType type){
-        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints,maxActionPoints,moveArea);
+        
+        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints,
+            maxActionPoints,moveArea);
         this.type = type;
         this.currXP = currXP;
         this.maxXP = maxXP;
@@ -38,27 +40,48 @@ public class Player extends ActiveElement {
         this.leveledUp = false;
     }
 
-     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
         List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
-        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea, PlayerType type){
-            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed, type);
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, PlayerType type, 
+        String spritePath){
+        
+        super(ID,mapSymbol,name,coordinates,currHP,maxHP,speed,weapons,actionPoints,
+            maxActionPoints,moveArea, spritePath);
+        this.type = type;
+        this.currXP = currXP;
+        this.maxXP = maxXP;
+        this.level = level;
+        this.leveledUp = false;
+    }
+
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+        List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, 
+        List<Item> inventory, List<Key> keys, List<Coordinates> actionArea, PlayerType type){
+            
+            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, 
+                moveArea, currHP, maxHP, currXP, maxXP, level,speed, type);
             this.maxWeapons = maxWeapons;
             this.inventory = inventory;
             this.keys = keys;
             this.actionArea = actionArea;
             this.skillTree = null;
-        }
+    }
 
-         public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
+    public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
         List<Weapon> weapons, int actionPoints,int maxActionPoints, List<Coordinates> moveArea,
-        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, List<Item> inventory, List<Key> keys, List<Coordinates> actionArea, PlayerType type, SkillTree skillTree){
-            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed, type);
+        int currHP, int maxHP, int currXP, int maxXP, int level,int speed, int maxWeapons, 
+        List<Item> inventory, List<Key> keys, List<Coordinates> actionArea, PlayerType type, 
+        SkillTree skillTree, String spritePath){
+            
+            this(ID,mapSymbol,name,coordinates,weapons, actionPoints, maxActionPoints, 
+                moveArea, currHP, maxHP, currXP, maxXP, level,speed, type, spritePath);
             this.maxWeapons = maxWeapons;
             this.inventory = inventory;
             this.keys = keys;
             this.actionArea = actionArea;
             this.skillTree = skillTree;
-        }
+    }
 
     //primitive methods
     //public void move(){;

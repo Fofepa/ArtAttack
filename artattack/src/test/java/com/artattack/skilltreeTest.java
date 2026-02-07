@@ -63,7 +63,7 @@ public class skilltreeTest {
         node_8.addChildren(List.of(node_9));
         this.skillTree.buildTree(root);
 
-        this.player = new Player(1, '@', "Zappa", new Coordinates(0, 1), weapons, 5,5, area, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN, this.skillTree);
+        this.player = new Player(1, '@', "Zappa", new Coordinates(0, 1), weapons, 5,5, area, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN, this.skillTree, "artattack\\src\\main\\resources\\images\\photo_2025-08-28_18-19-04.jpg");
     }
 
     @Test

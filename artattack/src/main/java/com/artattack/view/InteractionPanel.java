@@ -5,13 +5,19 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+
+import com.artattack.mapelements.MapElement;
 
 public class InteractionPanel extends JPanel {
     private List<String> currentDialog;
@@ -36,6 +42,12 @@ public class InteractionPanel extends JPanel {
     private List<String> responseOptions;
     private Consumer<Integer> choiceCallback;
     
+    // ========== IMAGE SYSTEM ==========
+    private Image currentSpeakerImage = null;
+    private Image defaultPlayerImage = null;
+    private static final int IMAGE_SIZE = 180;
+    private static final int IMAGE_PADDING = 10;
+    
     public InteractionPanel() {
         setBackground(Color.BLACK);
         setFocusable(true); 
@@ -43,14 +55,85 @@ public class InteractionPanel extends JPanel {
         lastUsedFontSize = GameSettings.getInstance().getFontSize();
     }
     
+    /**
+     * Sets the default player image to show when no specific speaker is active
+     */
+    public void setDefaultPlayerImage(String imagePath) {
+        try {
+            defaultPlayerImage = ImageIO.read(new File(imagePath));
+            currentSpeakerImage = defaultPlayerImage;
+            repaint();
+        } catch (IOException e) {
+            System.err.println("Failed to load default player image: " + imagePath);
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Sets the speaker's image (overrides default player image)
+     */
+    public void setSpeakerImage(String imagePath) {
+        if (imagePath == null || imagePath.isEmpty()) {
+            // Se non c'è immagine specifica, torna al default
+            currentSpeakerImage = defaultPlayerImage;
+            repaint();
+            return;
+        }
+        
+        try {
+            currentSpeakerImage = ImageIO.read(new File(imagePath));
+            repaint();
+        } catch (IOException e) {
+            System.err.println("Failed to load speaker image: " + imagePath);
+            e.printStackTrace();
+            // Fallback al default
+            currentSpeakerImage = defaultPlayerImage;
+        }
+    }
+    
+    /**
+     * Resets the speaker image to the default player image
+     */
+    public void resetToDefaultImage() {
+        currentSpeakerImage = defaultPlayerImage;
+        repaint();
+    }
+    
     public void showDialog(List<String> messages) {
+        showDialog(messages, (String) null);
+    }
+    
+    /**
+     * Shows dialog with optional speaker image from path
+     */
+    public void showDialog(List<String> messages, String speakerImagePath) {
         this.currentDialog = messages;
         this.currentPhraseIndex = 0;
         this.dialogActive = true;
         this.choiceMode = false;
+        
+        // Set speaker image if provided, otherwise use default
+        if (speakerImagePath != null && !speakerImagePath.isEmpty()) {
+            setSpeakerImage(speakerImagePath);
+        }else {
+           // Ensure we reset to default if no specific image is provided
+           resetToDefaultImage(); 
+       }
+        
         prepareNewPhrase(currentDialog.get(0));
         setVisible(true);
         repaint();
+    }
+    
+    /**
+     * Shows dialog with speaker as MapElement (uses element's sprite if available)
+     */
+    public void showDialog(List<String> messages, com.artattack.mapelements.MapElement speaker) {
+        String speakerImagePath = null;
+        if (speaker != null && speaker.hasSprite()) {
+            speakerImagePath = speaker.getSpritePath();
+        }
+        showDialog(messages, speakerImagePath);
     }
     
     public void activateAndFocus() {
@@ -63,6 +146,13 @@ public class InteractionPanel extends JPanel {
     }
     
     public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback) {
+        showDialogWithChoice(question, options, callback, (String) null);
+    }
+    
+    /**
+     * Shows dialog with choice and optional speaker image from path
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, String speakerImagePath) {
         this.currentDialog = List.of(question);
         this.currentPhraseIndex = 0;
         this.dialogActive = true;
@@ -70,9 +160,29 @@ public class InteractionPanel extends JPanel {
         this.responseOptions = options;
         this.selectedOption = 0;
         this.choiceCallback = callback;
+        
+        // Set speaker image if provided
+        if (speakerImagePath != null && !speakerImagePath.isEmpty()) {
+            setSpeakerImage(speakerImagePath);
+        }
+        
         prepareNewPhrase(question);
         setVisible(true);
         repaint();
+    }
+    
+    /**
+     * Shows dialog with choice and speaker as MapElement (uses element's sprite if available)
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, MapElement speaker) {
+        String speakerImagePath = null;
+        if (speaker != null && speaker.hasSprite()) {
+            speakerImagePath = speaker.getSpritePath();
+        }else {
+           // Ensure we reset to default if no specific image is provided
+           resetToDefaultImage(); 
+        }
+        showDialogWithChoice(question, options, callback, speakerImagePath);
     }
     
     private void prepareNewPhrase(String text) {
@@ -159,10 +269,9 @@ public class InteractionPanel extends JPanel {
     
     public void deactivate() {
         dialogActive = false;
-        setVisible(false);
-        if (getParent() != null) {
-            getParent().setVisible(false);
-        }
+        
+        // Reset to default player image when dialog closes
+        repaint();
     }
     
     public void selectUp() {
@@ -204,24 +313,33 @@ public class InteractionPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        if (!dialogActive || currentDialog == null || currentDialog.isEmpty()) return;
-        
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
         GameSettings.FontSize currentFontSize = GameSettings.getInstance().getFontSize();
         
         // --- CONTROLLO RESIZE E CAMBIO FONT ---
-        // Se il font cambia o la larghezza della finestra cambia, dobbiamo ricalcolare le righe
         int currentWidth = getWidth();
         if (currentFontSize != lastUsedFontSize || currentWidth != lastWidth) {
             wrappedLines = null;
             lastUsedFontSize = currentFontSize;
-            lastWidth = currentWidth; // Aggiorna larghezza
+            lastWidth = currentWidth;
+        }
+
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        
+        // ========== DRAW SPEAKER IMAGE ==========
+        if (currentSpeakerImage != null) {
+            int imageX = getWidth() - IMAGE_SIZE - IMAGE_PADDING;
+            int imageY = IMAGE_PADDING;
+            g2d.drawImage(currentSpeakerImage, imageX, imageY, IMAGE_SIZE, IMAGE_SIZE, this);
             
-            // Se stiamo ridimensionando, assicuriamoci che l'animazione finisca o si adatti
-            // (Opzionale: potremmo ricalcolare charIndex per mantenere la posizione esatta, 
-            // ma resettare il wrap è sufficiente per evitare crash grafici)
+            // Optional: Draw border around image
+            g2d.setColor(Color.WHITE);
+            g2d.drawRect(imageX, imageY, IMAGE_SIZE, IMAGE_SIZE);
+        }
+
+        if (!dialogActive || currentDialog == null || currentDialog.isEmpty()) {
+            return; // Se non c'è dialogo, mi fermo qui (ho disegnato solo l'immagine)
         }
         
         g.setColor(Color.WHITE);
@@ -265,7 +383,7 @@ public class InteractionPanel extends JPanel {
             if (choiceMode && responseOptions != null && isLastPage) {
                 y += 10;
                 g.setColor(Color.GRAY);
-                g.drawLine(20, y - 5, getWidth() - 20, y - 5);
+                g.drawLine(20, y - 5, getWidth() - IMAGE_SIZE - IMAGE_PADDING - 40, y - 5);
                 
                 for (int i = 0; i < responseOptions.size(); i++) {
                     if (y > getHeight() - lineHeight) break; 
@@ -287,12 +405,14 @@ public class InteractionPanel extends JPanel {
                 g.setFont(new Font("Monospaced", Font.ITALIC, 14));
                 g.setColor(new Color(255, 255, 255, 100)); 
                 int hintWidth = g.getFontMetrics().stringWidth(hint);
-                g.drawString(hint, getWidth() - hintWidth - 25, getHeight() - 30);
+                int hintX = getWidth() - IMAGE_SIZE - IMAGE_PADDING - hintWidth - 25;
+                g.drawString(hint, hintX, getHeight() - 30);
                 
                 if (!isLastPage) {
                     g.setColor(Color.CYAN);
                     if ((System.currentTimeMillis() / 500) % 2 == 0) {
-                        int[] xPoints = {getWidth() - 30, getWidth() - 20, getWidth() - 10};
+                        int arrowX = getWidth() - IMAGE_SIZE - IMAGE_PADDING - 30;
+                        int[] xPoints = {arrowX, arrowX + 10, arrowX + 20};
                         int[] yPoints = {getHeight() - 25, getHeight() - 15, getHeight() - 25}; 
                         g.fillPolygon(xPoints, yPoints, 3);
                     }
@@ -312,7 +432,8 @@ public class InteractionPanel extends JPanel {
         List<String> lines = new ArrayList<>();
         String[] words = text.split(" ");
         StringBuilder currentLine = new StringBuilder();
-        int maxWidth = getWidth() - 40; 
+        // Riduciamo la larghezza massima per fare spazio all'immagine
+        int maxWidth = getWidth() - IMAGE_SIZE - IMAGE_PADDING - 60;
         FontMetrics fm = g.getFontMetrics();
 
         for (String word : words) {

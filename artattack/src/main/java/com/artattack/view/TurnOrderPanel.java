@@ -54,7 +54,7 @@ public class TurnOrderPanel extends JPanel {
             }
             
             // Display turn order
-            g.setFont(new Font("Monospaced", Font.PLAIN, 11));
+            g.setFont(new Font("Monospaced", Font.PLAIN, 20));
             int y = 40;
             int position = 1;
             
@@ -77,7 +77,7 @@ public class TurnOrderPanel extends JPanel {
                     }
                     
                     // Display: position. name (HP: curr/max, AP: curr)
-                    String turnInfo = position + ". " + element.getName();
+                  String turnInfo = position + ". [" + element.getMapSymbol() + "] " + element.getName();
                     
                     // Add HP and AP info
                     if (element instanceof Player) {

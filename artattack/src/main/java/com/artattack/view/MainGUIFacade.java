@@ -287,6 +287,10 @@ public class MainGUIFacade {
         inputController = new InputController(gameFacade.getMainFrame());
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
         
+        if (gameFacade.getMainFrame().getInteractionPanel() != null) {
+            gameFacade.getMainFrame().getInteractionPanel().setDefaultPlayerImage(playerOne.getSpritePath());
+        }
+        
         // Clear and setup the display
         mainFrame.getContentPane().removeAll();
 
@@ -906,7 +910,7 @@ class CenterPanelFacade {
         interactionContainer.setBackground(Color.BLACK);
         interactionContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         interactionContainer.add(interactionPanel, BorderLayout.CENTER);
-        interactionContainer.setVisible(false); // Hidden by default
+        interactionContainer.setVisible(true); // Hidden by default
 
         interactionContainer.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override

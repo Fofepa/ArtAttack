@@ -355,9 +355,8 @@ public class InputController implements KeyListener, TurnListener {
     private void returnToGameplay() {
         System.out.println("Dialog finished: Returning to Map Exploration...");
 
-        // 1. Hide the dialog UI container (Facade cleanup)
-        if (mainFrame.getInteractionPanel().getParent() != null) {
-            mainFrame.getInteractionPanel().getParent().setVisible(false);
+        if (mainFrame.getInteractionPanel() != null) {
+            mainFrame.getInteractionPanel().resetToDefaultImage();
         }
         
         // 2. Set the internal controller state back to Movement
@@ -694,14 +693,25 @@ public class InputController implements KeyListener, TurnListener {
             Player player = (Player) activeElement;
             mainFrame.setCurrentPlayer(player);
             
-            // ========== SKILL TREE INTEGRATION ==========
+
+            InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
+            if (interactionPanel != null) {
+                // 1. Update the default fallback image to the current player's sprite
+                interactionPanel.setDefaultPlayerImage(player.getSpritePath());
+                
+                // 2. Force the current image to match the default (unless a dialog is already forcing another)
+                if (!interactionPanel.isDialogActive()) {
+                    interactionPanel.resetToDefaultImage();
+                }
+            }
+            
             // Check if the player leveled up
             if (player.getLeveledUp()) {
                 System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
                 handlePlayerLevelUp(player);
-                return; // Don't continue with normal turn logic until skill is selected
+                return;
             }
-            // ========== END SKILL TREE INTEGRATION ==========
+            
 
             // Verify strategies were created
             System.out.println("MovementStrategy created: " + (mainFrame.getMovementStrategy() != null));
@@ -711,6 +721,13 @@ public class InputController implements KeyListener, TurnListener {
         } else if(activeElement instanceof Enemy){
             System.out.println(">> ENEMY TURN: " + activeElement.getName());
             //handleEnemyTurn()
+
+            /* InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
+            if (interactionPanel != null) {
+                interactionPanel.setSpeakerImage(activeElement.getSpritePath());
+            }
+            */
+
             EnemyChoice enemyChoice = new EnemyChoice(this.mainFrame);
             enemyChoice.setMap(mainFrame.getMap());
             enemyChoice.setEnemy((Enemy) currentElement);

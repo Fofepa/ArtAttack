@@ -25,7 +25,7 @@ public class MapPanel extends JPanel {
     private List<Coordinates> moveArea;
     private List<Coordinates> attackArea;
 
-    private static final int CELL_SIZE = 12;
+   
 
     // Blinking cursor properties
     private boolean cursorVisible = true;
@@ -54,14 +54,19 @@ public class MapPanel extends JPanel {
         if (map == null || map.getMapMatrix() == null) {
             return;
         }
+
+        int cellSize = GameSettings.getInstance().getZoomLevel();
         
         g.setColor(Color.WHITE);
-        g.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        g.setFont(new Font("Monospaced", Font.PLAIN, cellSize));
         
         char[][] matrix = map.getMapMatrix();
 
-        int mapPixelWidth = map.getWidth() * CELL_SIZE;
-        int mapPixelHeight = map.getHeight() * CELL_SIZE;
+        char p1Symbol = (map.getPlayerOne() != null) ? map.getPlayerOne().getMapSymbol() : '\0';
+        char p2Symbol = (map.getPlayerTwo() != null) ? map.getPlayerTwo().getMapSymbol() : '\0';
+
+        int mapPixelWidth = map.getWidth() * cellSize;
+        int mapPixelHeight = map.getHeight() * cellSize;
         int startX = (getWidth() - mapPixelWidth) / 2;
         int startY = (getHeight() - mapPixelHeight) / 2;
 
@@ -69,13 +74,11 @@ public class MapPanel extends JPanel {
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
                 char c = matrix[x][y]; 
-                int px = startX + (x * CELL_SIZE);
-                int py = startY + (y * CELL_SIZE);
+                int px = startX + (x * cellSize);
+                int py = startY + (y * cellSize);
 
-                if (c == '@') {
-                    g.setColor(new Color(50, 50, 50));
-                    //g.drawString(".", px, py + CELL_SIZE);
-                    continue; // Salta il resto e passa alla prossima cella
+               if (c == '@' || c == p1Symbol || c == p2Symbol) {
+                    continue; 
                 }
 
                 switch (c) {
@@ -85,7 +88,7 @@ public class MapPanel extends JPanel {
                     case 'I' -> g.setColor(Color.YELLOW);
                     default -> g.setColor(Color.WHITE);
                 } 
-                g.drawString(String.valueOf(c), px, py + CELL_SIZE);
+                g.drawString(String.valueOf(c), px, py + (int)(cellSize * 0.85));
             }
         }
         
@@ -98,7 +101,7 @@ public class MapPanel extends JPanel {
                     List<Coordinates> absVision = Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates());
                     for (Coordinates coord : absVision) {
                         if (isValidAndNotWall(coord, map, matrix)) {
-                            drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
+                            drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize);
                         }
                     }
                 }
@@ -114,11 +117,11 @@ public class MapPanel extends JPanel {
                 if(isValidAndNotWall(coord, map, matrix)) {
                     // Riempimento
                     g.setColor(new Color(0, 255, 0, 20));
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true); 
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize); 
                     
                     // Bordo evidenziato
                     g.setColor(new Color(0, 255, 0, 40));
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false); 
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize); 
                 }
             }
         }
@@ -128,37 +131,37 @@ public class MapPanel extends JPanel {
             g.setColor(new Color(255, 0, 0, 80)); 
             for (Coordinates coord : attackArea) {
                 if(isValidAndNotWall(coord, map, matrix)) {
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true);
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize);
                     g.setColor(Color.RED);
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false);
+                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize);
                     g.setColor(new Color(255, 0, 0, 80)); 
                 }
             }
         }
 
         // --- 5. DISEGNO GIOCATORI CON SIMBOLI PERSONALIZZATI ---
-        drawPlayerSymbol(g, map.getPlayerOne(), startX, startY);
-        drawPlayerSymbol(g, map.getPlayerTwo(), startX, startY);
+        drawPlayerSymbol(g, map.getPlayerOne(), startX, startY, cellSize);
+        drawPlayerSymbol(g, map.getPlayerTwo(), startX, startY, cellSize);
 
         // --- 6. CURSORE ---
         if (movementCursor != null && cursorVisible) {
             g.setColor(Color.GREEN);
-            drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false);
+            drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false, cellSize);
             
-            int px = startX + (movementCursor.getX() * CELL_SIZE);
-            int py = startY + (movementCursor.getY() * CELL_SIZE);
-            g.drawString("*", px, py + CELL_SIZE);
+            int px = startX + (movementCursor.getX() * cellSize);
+            int py = startY + (movementCursor.getY() * cellSize);
+            g.drawString("*", px, py + cellSize);
         }
     }
 
-    private void drawPlayerSymbol(Graphics g, Player p, int startX, int startY) {
+    private void drawPlayerSymbol(Graphics g, Player p, int startX, int startY, int cellSize) {
         if (p != null) {
-            int px = startX + (p.getCoordinates().getX() * CELL_SIZE);
-            int py = startY + (p.getCoordinates().getY() * CELL_SIZE);
+            int px = startX + (p.getCoordinates().getX() * cellSize);
+            int py = startY + (p.getCoordinates().getY() * cellSize);
             
             g.setColor(Color.CYAN);
             // Qui prendiamo il simbolo (es. '♫' o '◉') invece di '@'
-            g.drawString(String.valueOf(p.getMapSymbol()), px, py + CELL_SIZE);
+            g.drawString(String.valueOf(p.getMapSymbol()), px, py + cellSize);
         }
     }
 
@@ -170,14 +173,14 @@ public class MapPanel extends JPanel {
         return matrix[c.getX()][c.getY()] != '#';
     }
 
-    private void drawCellRect(Graphics g, int gridX, int gridY, int startX, int startY, boolean fill) {
-        int px = startX + (gridX * CELL_SIZE);
-        int py = startY + (gridY * CELL_SIZE);
+    private void drawCellRect(Graphics g, int gridX, int gridY, int startX, int startY, boolean fill, int cellSize) {
+        int px = startX + (gridX * cellSize);
+        int py = startY + (gridY * cellSize);
         
         if (fill) {
-            g.fillRect(px, py, CELL_SIZE, CELL_SIZE);
+            g.fillRect(px, py, cellSize, cellSize);
         } else {
-            g.drawRect(px, py, CELL_SIZE, CELL_SIZE);
+            g.drawRect(px, py, cellSize, cellSize);
         }
     }
     

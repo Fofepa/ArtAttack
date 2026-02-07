@@ -122,12 +122,24 @@ public class MenuPanel {
             fontBtn.setText("Dialog Font: " + settings.getFontSize());
         });
 
+        JButton zoomBtn = createMenuButton("Map Zoom: " + settings.getCurrentZoom());
+        zoomBtn.addActionListener(e -> {
+            settings.cycleZoomLevel();
+            zoomBtn.setText("Map Zoom: " + settings.getCurrentZoom());
+
+            if (mainFacade.getGameFacade() != null) {
+                mainFacade.getGameFacade().getGamePanel().repaint();
+            }
+        });
+
         JButton backBtn = createMenuButton("Back");
         backBtn.addActionListener(e -> showSettingsMenu());
 
         contentContainer.add(titleLabel);
         contentContainer.add(Box.createRigidArea(new Dimension(0, 40)));
         contentContainer.add(fontBtn);
+        contentContainer.add(Box.createRigidArea(new Dimension(0, 20))); 
+        contentContainer.add(zoomBtn);
         contentContainer.add(Box.createRigidArea(new Dimension(0, 40)));
         contentContainer.add(backBtn);
         refreshUI();

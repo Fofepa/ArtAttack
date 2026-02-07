@@ -534,6 +534,10 @@ public class InputController implements KeyListener, TurnListener {
                             mainFrame.repaintMapPanel();
                         }
 
+                        if (movesPanel != null) {
+                            movesPanel.setSelectedMoveIndex(combatStrategy.getMoveIndex());
+                        }
+
                         mainFrame.repaintMovesPanel();
                         mainFrame.repaintTurnOrderPanel();
                         mainFrame.focusMovesPanel();

@@ -55,6 +55,7 @@ public class CombatStrategy implements PlayerStrategy{
             for(ActiveElement element : move.getAttackTargets(player, map)){
                 if(!element.isAlive()){
                     this.mainFrame.showDialog(List.of(element.getName() + ": has been defeated!"));
+                    this.mainFrame.repaintStatsPanel();
                 }
             }
         } 

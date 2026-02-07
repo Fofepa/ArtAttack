@@ -239,7 +239,7 @@ public class MainGUIFacade {
                 return new Player(id, '@', type.getName(), coords, 
                     List.of(musicianWeapon), // Esempio arma
                     15, 15, moveArea, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN));
+                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
                     
             
             
@@ -248,7 +248,7 @@ public class MainGUIFacade {
                 return new Player(id, '@', type.getName(), coords,
                     List.of(directorWeapon), 
                     15, 15, moveArea, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR));
+                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), "artattack\\src\\main\\resources\\images\\ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
@@ -280,6 +280,10 @@ public class MainGUIFacade {
         // Initialize input controller and register it as turn listener
         inputController = new InputController(gameFacade.getMainFrame());
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().addTurnListener(inputController);
+        
+        if (gameFacade.getMainFrame().getInteractionPanel() != null) {
+            gameFacade.getMainFrame().getInteractionPanel().setDefaultPlayerImage(playerOne.getSpritePath());
+        }
         
         // Clear and setup the display
         mainFrame.getContentPane().removeAll();
@@ -900,7 +904,7 @@ class CenterPanelFacade {
         interactionContainer.setBackground(Color.BLACK);
         interactionContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         interactionContainer.add(interactionPanel, BorderLayout.CENTER);
-        interactionContainer.setVisible(false); // Hidden by default
+        interactionContainer.setVisible(true); // Hidden by default
 
         interactionContainer.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override

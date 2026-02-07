@@ -10,6 +10,7 @@ import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
@@ -181,6 +182,55 @@ public class MainFrame implements UIManager {
         movesPanel.setPlayer(player);
         statsPanel.setPlayer(player);
         inventoryPanel.setPlayer(player);
+        
+        // ========== SET DEFAULT PLAYER IMAGE ==========
+        updateCurrentPlayerImage();
+    }
+    
+    /**
+     * Updates the interaction panel to show the current player's image
+     */
+    public void updateCurrentPlayerImage() {
+        if (currentPlayer != null && interactionPanel != null) {
+            String imagePath = getPlayerImagePath(currentPlayer);
+            interactionPanel.setDefaultPlayerImage(imagePath);
+        }
+    }
+    
+    /**
+     * Gets the image path for a given player based on their type or ID
+     */
+    private String getPlayerImagePath(Player player) {
+        // ⭐ PRIORITÀ 1: Se il player ha uno sprite, usa quello
+        if (player != null && player.hasSprite()) {
+            return player.getSpritePath();
+        }
+        
+        // PRIORITÀ 2: Basato sul tipo di player
+        if (player.getType() != null) {
+            return "resources/images/" + player.getType().toString().toLowerCase() + ".png";
+        }
+        
+        // PRIORITÀ 3: Basato sull'ID del player
+        return "resources/images/player" + player.getID() + ".png";
+    }
+    
+    /**
+     * Gets the image path for a MapElement (NPCs, enemies, etc.)
+     */
+    private String getElementImagePath(MapElement element) {
+        // ⭐ PRIORITÀ 1: Se l'elemento ha uno sprite, usa quello
+        if (element != null && element.hasSprite()) {
+            return element.getSpritePath();
+        }
+        
+        // PRIORITÀ 2: Genera path basato sul nome
+        if (element != null) {
+            String cleanName = element.getName().toLowerCase().replaceAll("\\s+", "_");
+            return "resources/images/" + cleanName + ".png";
+        }
+        
+        return null;
     }
     
     public Player getCurrentPlayer() {
@@ -383,22 +433,42 @@ public class MainFrame implements UIManager {
         }
     }
 
-    public void startInteraction(String message, String spriteName) {
-        // 1. Carica lo sprite
+    /**
+     * Starts an interaction with a speaker (NPC, object, etc.)
+     * Shows their sprite image if they have one
+     */
+    public void startInteraction(String message, String spriteName, MapElement speaker) {
+        // 1. Carica lo sprite (vecchio sistema, se ancora lo usi)
         if (spriteName != null && spritePanel != null) {
             spritePanel.loadImage(spriteName);
         } else if (spritePanel != null) {
             spritePanel.clearSprite();
         }
 
-        // 2. Mostra il dialogo
-        showDialog(List.of(message));
+        // 2. Mostra il dialogo con lo sprite del MapElement
+        showDialog(List.of(message), speaker);
+    }
+    
+    /**
+     * Overload for backward compatibility
+     */
+    public void startInteraction(String message, String spriteName) {
+        startInteraction(message, spriteName, null);
     }
 
-    
+    /**
+     * Shows dialog without changing the speaker image (uses default player image)
+     */
     public void showDialog(List<String> messages) {
+        showDialog(messages, (MapElement) null);
+    }
+    
+    /**
+     * Shows dialog with optional speaker image from path
+     */
+    public void showDialog(List<String> messages, String speakerImagePath) {
         if (interactionPanel != null) {
-            interactionPanel.showDialog(messages);
+            interactionPanel.showDialog(messages, speakerImagePath);
             
             // Ensure the panel is visible
             interactionPanel.setVisible(true);
@@ -418,13 +488,64 @@ public class MainFrame implements UIManager {
             interactionPanel.repaint();
         }
     }
+    
+    /**
+     * Shows dialog with speaker as MapElement (uses element's sprite if available)
+     * If speaker is null or has no sprite, uses default player image
+     */
+    public void showDialog(List<String> messages, MapElement speaker) {
+        if (interactionPanel != null) {
+            interactionPanel.showDialog(messages, speaker);
+            
+            interactionPanel.setVisible(true);
+            
+            if (interactionPanel.getParent() != null) {
+                interactionPanel.getParent().setVisible(true);
+                interactionPanel.getParent().revalidate();
+            }
+
+            interactionPanel.activateAndFocus();
+            
+            interactionPanel.revalidate();
+            interactionPanel.repaint();
+        }
+    }
 
     /**
-     * Shows a dialog with multiple choice options
+     * Shows a dialog with multiple choice options (uses default player image)
      */
     public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback) {
+        showDialogWithChoice(question, options, callback, (MapElement) null);
+    }
+    
+    /**
+     * Shows a dialog with multiple choice options and speaker image from path
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, String speakerImagePath) {
         if (interactionPanel != null) {
-            interactionPanel.showDialogWithChoice(question, options, callback);
+            interactionPanel.showDialogWithChoice(question, options, callback, speakerImagePath);
+            
+            interactionPanel.setVisible(true);
+            
+            if (interactionPanel.getParent() != null) {
+                interactionPanel.getParent().setVisible(true);
+                interactionPanel.getParent().revalidate();
+            }
+
+            interactionPanel.activateAndFocus();
+            
+            interactionPanel.revalidate();
+            interactionPanel.repaint();
+        }
+    }
+    
+    /**
+     * Shows a dialog with multiple choice options and speaker as MapElement
+     * Uses element's sprite if available
+     */
+    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, MapElement speaker) {
+        if (interactionPanel != null) {
+            interactionPanel.showDialogWithChoice(question, options, callback, speaker);
             
             interactionPanel.setVisible(true);
             
@@ -584,5 +705,14 @@ public class MainFrame implements UIManager {
         this.combatStrategy.setMap(map); //Same as movementStrategy
         repaintMapPanel();
         repaintTurnOrderPanel();
+    }
+    
+    /**
+     * Called when dialog ends to reset the image back to current player
+     */
+    public void resetDialogImage() {
+        if (interactionPanel != null) {
+            interactionPanel.resetToDefaultImage();
+        }
     }
 }

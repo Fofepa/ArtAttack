@@ -17,12 +17,28 @@ public abstract class ActiveElement extends MapElement implements Comparable<Act
     private List<Coordinates> moveArea;
 
     public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates){
-            super(ID,mapSymbol,name,coordinates);
-        }
+        super(ID,mapSymbol,name,coordinates);
+    }
+
+    public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates, String spritePath){
+        super(ID,mapSymbol,name,coordinates,spritePath);
+    }
 
     public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
         int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, int maxActionPoints ,List<Coordinates> moveArea){
         this(ID,mapSymbol,name,coordinates);
+        this.currHP = currHP;
+        this.maxHP = maxHP;
+        this.speed = speed;
+        this.weapons = weapons;
+        this.actionPoints = actionPoints;
+        this.maxActionPoints = maxActionPoints;
+        this.moveArea = moveArea;
+    }
+
+    public ActiveElement(int ID, char mapSymbol, String name, Coordinates coordinates, 
+        int currHP, int maxHP, int speed, List<Weapon> weapons, int actionPoints, int maxActionPoints ,List<Coordinates> moveArea, String spritePath){
+        this(ID,mapSymbol,name,coordinates, spritePath);
         this.currHP = currHP;
         this.maxHP = maxHP;
         this.speed = speed;

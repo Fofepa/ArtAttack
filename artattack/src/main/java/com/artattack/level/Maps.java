@@ -212,6 +212,21 @@ public class Maps {
         return null;
     }
 
+    public void checkPlayerEscape(Coordinates coordinates){
+        List<Enemy> toRemove = new ArrayList<>();
+        for(ActiveElement element : this.turnHandler.getConcreteTurnQueue().getTurnQueue()){
+            if(element instanceof Enemy c){
+                if(Coordinates.getDistance(c.getCoordinates(), coordinates) > 8){
+                    toRemove.add(c);
+                }
+            }
+        }
+        for(Enemy e : toRemove){
+            if(Coordinates.getDistance(e.getCoordinates(), playerOne.getCoordinates()) > 8 && Coordinates.getDistance(e.getCoordinates(), playerTwo.getCoordinates()) > 8)  // if both players escaped from the enemy
+            this.turnHandler.getConcreteTurnQueue().remove(e);
+        }
+    }
+
     public void remove(ActiveElement element){
         if(this.dictionaire.containsValue(element)){
             this.turnHandler.getConcreteTurnQueue().remove(element);

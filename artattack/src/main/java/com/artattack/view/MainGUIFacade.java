@@ -228,6 +228,12 @@ public class MainGUIFacade {
         
         // Character stats come From the enum class CharacterType
         AreaBuilder areaBuilder = new AreaBuilder();
+        areaBuilder.addShape("x",2);
+        List<Coordinates> zappaMA = areaBuilder.getResult();
+        areaBuilder.addShape("4");
+        zappaMA.addAll(areaBuilder.getResult());
+        areaBuilder.addShape("square",1,true);
+        List<Coordinates> lynchMA = areaBuilder.getResult();
         areaBuilder.addShape("4");
         List<Coordinates> area4 = areaBuilder.getResult();
         Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(area4); m1.setActionPoints(2);
@@ -237,7 +243,7 @@ public class MainGUIFacade {
                 Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MUSICIAN);
                 return new Player(id, '♫', type.getName(), coords, 
                     List.of(musicianWeapon),
-                    15, 15, moveArea, 19, type.getMaxHP(), 10, 
+                    15, 15, zappaMA, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
                     
             
@@ -246,7 +252,7 @@ public class MainGUIFacade {
                 Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MOVIE_DIRECTOR);
                 return new Player(id, '◉', type.getName(), coords,
                     List.of(directorWeapon), 
-                    15, 15, moveArea, 20, type.getMaxHP(), 
+                    15, 15, lynchMA, 20, type.getMaxHP(), 
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), "artattack\\src\\main\\resources\\images\\ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
             default:

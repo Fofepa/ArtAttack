@@ -76,6 +76,10 @@ public abstract class ActiveElement extends MapElement implements Comparable<Act
         return this.moveArea;
     }
 
+    public void setMoveArea(List<Coordinates> moveArea){
+        this.moveArea = moveArea;
+    }
+
     public void setSpeed(int speed){
         this.speed = speed;
     }

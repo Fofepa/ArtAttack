@@ -8,6 +8,7 @@ import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
 
 public class Move{
@@ -193,11 +194,17 @@ public class Move{
         int total = 0;
         boolean works = false;
         //Damage Logic
-        if (this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) {
+        if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name == "Little Umbrellas" && this.power != 0 && this.getAttackTargets(user, map) != null)) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 if (element instanceof Enemy e) {
                     if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
                     else { e.updatePlayerTwoDemage(this.power); }
+                    if(this.name == "ERASERHEAD"){
+                        e.setIsStunned(true);
+                    }
+                    if(this.name == "Wild at Heart"){
+                        e.setEnemyType(EnemyType.DUMMY);
+                    }
                 }
                 element.updateHP(- this.power);
                 total += this.power;

@@ -136,8 +136,10 @@ public class SkillTreeFactory {
         lynchSpecial1.setActionPoints(25);
         lynchSpecial1.setPower(8);
         lynchSpecial1.setAreaAttack(true);
-        Node node_13 = new SpecialMoveNODE(lynchSpecial1);
         AreaBuilder ab = new AreaBuilder();
+        ab.addShape("square",1,true);
+        lynchSpecial1.setAttackArea(ab.getResult());
+        Node node_13 = new SpecialMoveNODE(lynchSpecial1);
         ab.addShape("square",2,false);
         Node node_15 = new MANODE(ab.getResult());
         
@@ -160,9 +162,11 @@ public class SkillTreeFactory {
 
         Move lynchSpecial2 = new Move();
         lynchSpecial2.setName("Wild at Heart");
-        lynchSpecial2.setDescription("Make the enemy say a bad slur to the player, a group of bikers takes care of it... After taking damage if the enemy isn't dead it becomes a Wild at heart!");
+        lynchSpecial2.setDescription("Makes the enemy say a bad slur to the player, a group of thugs takes care of it... After being beaten up if the enemy isn't dead it becomes a Wild at heart!");
         lynchSpecial2.setActionPoints(30);
-        lynchSpecial2.setPower(100);
+        lynchSpecial2.setPower(40);
+        ab.addShape("circle",2,true);
+        lynchSpecial2.setAttackArea(ab.getResult());
         Node node_24 = new SpecialMoveNODE(null);
         Node node_25 = new APNODE(4);
         

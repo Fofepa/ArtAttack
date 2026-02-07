@@ -18,6 +18,7 @@ public class Enemy extends ActiveElement {
     private int playerTwoDemage;
     private EnemyType enemyType;
     private boolean isActive = false;     //unused for now
+    private boolean isStunned = false;
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType){
         super(ID,mapSymbol,name,coordinates);
@@ -70,6 +71,10 @@ public class Enemy extends ActiveElement {
         return this.enemyType;
     }
 
+    public boolean isStunned(){
+        return this.isStunned;
+    }
+
     public void updatePlayerOneDemage(int demage){
         this.playerOneDemage += demage;
     }
@@ -88,6 +93,14 @@ public class Enemy extends ActiveElement {
 
     public void deactivate(){
         this.isActive = false;
+    }
+
+    public void setIsStunned(boolean cond){
+        this.isStunned = cond;
+    }
+
+    public void setEnemyType(EnemyType enemyType){
+        this.enemyType = enemyType;
     }
 
     private int calculateDroppedXP(int demage){

@@ -38,7 +38,11 @@ public class EnemyChoice{   // Our Context class
     }
 
     public void choose(){
-        
+        if(this.enemy.isStunned()){// checks if the enemy is stunned
+            mainFrame.showDialog(List.of("The enemy is stunned! He is now taking a short break!"));
+            setHasFinished();
+            
+        }
         Map<Move,Integer> usable = new HashMap<Move,Integer>();
 
         // checks if there are any player to be hit and what move can hit them
@@ -66,6 +70,28 @@ public class EnemyChoice{   // Our Context class
 
         double r = Math.random();
         switch(this.enemy.getEnemyType()){
+            case DUMMY:
+                if(hasTarget){
+                    if(r < 0.4){
+                        setStrategy(new DumbAttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                else{
+                    if(r > 0.85){
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                break;
             case EMPLOYEE:
                 if(hasTarget){
                     if(r < 0.6){

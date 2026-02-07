@@ -534,9 +534,9 @@ public class InputController implements KeyListener, TurnListener {
                             mainFrame.repaintMapPanel();
                         }
 
-                        mainFrame.repaintMovesPanel();
                         mainFrame.repaintTurnOrderPanel();
                         mainFrame.focusMovesPanel();
+                        mainFrame.repaintMovesPanel();
                     } else {
                         mainFrame.focusMovesPanel();
                         System.out.println("Move failed! (not enough AP or invalid target)");
@@ -712,9 +712,10 @@ public class InputController implements KeyListener, TurnListener {
 
         if (activeElement instanceof Player){ 
             System.out.println(">> PLAYER TURN: " + activeElement.getName());
-
+            
             Player player = (Player) activeElement;
             mainFrame.setCurrentPlayer(player);
+            mainFrame.focusMapPanel();
             
 
             InteractionPanel interactionPanel = mainFrame.getInteractionPanel();

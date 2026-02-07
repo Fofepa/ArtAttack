@@ -1,5 +1,6 @@
 package com.artattack.inputcontroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.artattack.level.Maps;
@@ -42,17 +43,18 @@ public class CombatStrategy implements PlayerStrategy{
 
     public int acceptMove(){
         Move move = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex);
+        List<ActiveElement> l = new ArrayList<>(); l.addAll(move.getAttackTargets(player, map));
         int value = move.useMove(player, map);
         
         if(value != 0){
-            if(move.getName() == "Wild at Heart"){
-                this.mainFrame.showDialog(List.of(move.getAttackTargets(player, map).get(0).getName() + ": What do you want fa***t?!", "*A group of offended thugs goes to the enemy and beats it really bad!"));
+            if("Wild at Heart".equals(move.getName())){
+                this.mainFrame.showDialog(List.of(l.get(0).getName() + ": What do you want fa***t?!", "*A group of offended thugs goes to the enemy and beats it really bad!"));
             }
-            this.mainFrame.showDialog(List.of(player.getName() + ": has done damage " + value + " to " + move.getAttackTargets(player, map).size() + " enemies!"));
+            this.mainFrame.showDialog(List.of(player.getName() + ": has done damage " + value + " to " + l.size() + " enemies!"));
             isSelected = false;
             moveIndex = 0;
             weaponIndex = 0;
-            for(ActiveElement element : move.getAttackTargets(player, map)){
+            for(ActiveElement element : l){
                 if(!element.isAlive()){
                     this.mainFrame.showDialog(List.of(element.getName() + ": has been defeated!"));
                 }

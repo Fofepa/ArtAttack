@@ -349,25 +349,35 @@ public class InputController implements KeyListener, TurnListener {
     }
 
     /**
-     * Resets the game state to Map Exploration and refocuses the Map Panel.
-     * This is called automatically whenever any dialog finishes.
+     * Resets the game state based on previous activity.
      */
     private void returnToGameplay() {
-        System.out.println("Dialog finished: Returning to Map Exploration...");
+        System.out.println("Dialog finished. Checking context...");
 
         if (mainFrame.getInteractionPanel() != null) {
             mainFrame.getInteractionPanel().resetToDefaultImage();
         }
         
-        // 2. Set the internal controller state back to Movement
-        // This ensures keys (I, M, Arrows) control the player on the map again
-        this.currentState = mainFrame.getMovementStrategy();
-        
-        // 3. Physically move the keyboard focus back to the MapPanel
-        mainFrame.focusMapPanel();
-        
-        // 4. Update the visual display
-        mainFrame.repaintMapPanel();
+        // 1. Se stiamo combattendo (CombatStrategy), rimaniamo nel pannello delle mosse
+        if (currentState instanceof CombatStrategy) {
+            System.out.println("Context: Combat -> Returning focus to MovesPanel");
+            // Non resettiamo currentState a MovementStrategy!
+            mainFrame.focusMovesPanel();
+            mainFrame.repaintMovesPanel();
+        }
+        // 2. Se eravamo nell'inventario (InventoryStrategy), torniamo lì (opzionale, se vuoi)
+        else if (currentState instanceof InventoryStrategy) {
+            System.out.println("Context: Inventory -> Returning focus to InventoryPanel");
+            mainFrame.focusInventoryPanel();
+            mainFrame.repaintInventoryPanel();
+        }
+        // 3. Altrimenti (Default), torniamo alla mappa
+        else {
+            System.out.println("Context: Exploration -> Returning to MapPanel");
+            this.currentState = mainFrame.getMovementStrategy();
+            mainFrame.focusMapPanel();
+            mainFrame.repaintMapPanel();
+        }
     }
 
     private void handleWeaponsInput(KeyEvent e) {
@@ -432,6 +442,11 @@ public class InputController implements KeyListener, TurnListener {
 
                     System.out.println("Opened moves for: " + selectedWeapon.getName());
                 }
+            }
+
+            case KeyEvent.VK_SPACE ->{
+                System.out.println("SPACE pressed - Skip turn");
+                mainFrame.getMap().getConcreteTurnHandler().next();
             }
 
             default -> {
@@ -520,10 +535,18 @@ public class InputController implements KeyListener, TurnListener {
                         }
 
                         mainFrame.repaintMovesPanel();
+                        mainFrame.repaintTurnOrderPanel();
+                        mainFrame.focusMovesPanel();
                     } else {
+                        mainFrame.focusMovesPanel();
                         System.out.println("Move failed! (not enough AP or invalid target)");
                     }
                 }
+            }
+
+            case KeyEvent.VK_SPACE ->{
+                System.out.println("SPACE pressed - Skip turn");
+                mainFrame.getMap().getConcreteTurnHandler().next();
             }
 
             default -> {

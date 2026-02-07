@@ -20,22 +20,22 @@ public class SkillTreeFactory {
     private static SkillTree createZappaSkillTree() {
         Node root = new RootNode();
         
-        Node node_2 = new HPNODE(3);
-        Node node_3 = new APNODE(2);
+        Node node_2 = new HPNODE(5);
+        Node node_3 = new APNODE(3);
         
-        Node node_4 = new APNODE(2);
-        Node node_5 = new SPNODE(1);
+        Node node_4 = new APNODE(5);
+        Node node_5 = new SPNODE(3);
         
-        Node node_6 = new HPNODE(5);
+        Node node_6 = new HPNODE(10);
         
         Node node_7 = new MAXWPNODE();
         
         Node node_8 = new MAXMVNODE();
-        Node node_9 = new APNODE(3);
+        Node node_9 = new APNODE(12);
         
         Node node_10 = new MAXMVNODE();
         Node node_11 = new MAXMVNODE();
-        Node node_13 = new SPNODE(2);
+        Node node_13 = new SPNODE(14);
         
         Move zappaSpecial1 = new Move(); 
         zappaSpecial1.setName("Little Umbrellas");
@@ -48,24 +48,24 @@ public class SkillTreeFactory {
                                           new Coordinates(2,0), new Coordinates(3,-1),new Coordinates(3,1),
                                           new Coordinates(0,-2),new Coordinates(-1,-3),new Coordinates(1,-3)));
         
-        Node node_15 = new SPNODE(1);
+        Node node_15 = new SPNODE(5);
         
-        Node node_16 = new APNODE(2);
+        Node node_16 = new APNODE(4);
          new APNODE(2);
         
         Node node_17 = new MANODE(List.of(new Coordinates(-2, 0), new Coordinates(2, 0)));
         Node node_18 = new HPNODE(4);
         
-        Node node_19 = new HPNODE(5);
+        Node node_19 = new HPNODE(7);
         Node node_20 = new MAXMVNODE();
         
         Node node_21 = new MANODE(List.of(new Coordinates(-3, -3), new Coordinates(3, -3), new Coordinates(3, 3), new Coordinates(-3, 3)));
         
         Node node_22 = new MAXMVNODE();
-        Node node_23 = new APNODE(3);
+        Node node_23 = new APNODE(8);
         
         Node node_24 = new MANODE(List.of(new Coordinates(0, -2), new Coordinates(0, 2)));
-        Node node_25 = new SPNODE(2);
+        Node node_25 = new SPNODE(18);
         
         Move zappaSpecial2 = new Move(); zappaSpecial2.setName("ST. Alfonzo's Pancake Breakfast"); 
         zappaSpecial2.setDescription("Music nowdays does miracles, look at this beautiful Pancake Zappa has made! It heals a lot and can be used on the others!!");
@@ -111,24 +111,24 @@ public class SkillTreeFactory {
     private static SkillTree createLynchSkillTree() {
         Node root = new RootNode();
 
-        Node node_2 = new HPNODE(4);
-        Node node_3 = new APNODE(2);
+        Node node_2 = new HPNODE(5);
+        Node node_3 = new APNODE(3);
         
-        Node node_4 = new APNODE(2);
+        Node node_4 = new APNODE(6);
         
         Node node_5 = new MAXMVNODE();
         Node node_6 = new MAXMVNODE();
         
-        Node node_7 = new SPNODE(1);
+        Node node_7 = new SPNODE(8);
         Node node_8 = new MANODE(List.of(new Coordinates(-2, 0), new Coordinates(2, 0), new Coordinates(0, 2), new Coordinates(0, -2)));
         
         Node node_9 = new MAXWPNODE();
         
-        Node node_10 = new HPNODE(5);
-        Node node_11 = new APNODE(3);
+        Node node_10 = new HPNODE(15);
+        Node node_11 = new APNODE(10);
         
         Node node_12 = new MAXMVNODE();
-        Node node_14 = new APNODE(3);
+        Node node_14 = new APNODE(10);
         
         Move lynchSpecial1 = new Move();
         lynchSpecial1.setName("ERASERHEAD");
@@ -143,22 +143,22 @@ public class SkillTreeFactory {
         ab.addShape("square",2,false);
         Node node_15 = new MANODE(ab.getResult());
         
-        Node node_16 = new SPNODE(1);
+        Node node_16 = new SPNODE(3);
         
         Node node_17 = new MANODE(List.of(new Coordinates(-3, 1), new Coordinates(-3, -1), new Coordinates(3, 1)
                                         , new Coordinates(3, -1), new Coordinates(-1, 3), new Coordinates(1, 3)
                                         , new Coordinates(-1, -3), new Coordinates(1, -3)));
         
-        Node node_18 = new HPNODE(4);
+        Node node_18 = new HPNODE(7);
         
         Node node_19 = new MAXMVNODE();
         Node node_20 = new MAXMVNODE();
         
-        Node node_21 = new APNODE(3);
+        Node node_21 = new APNODE(12);
         
-        Node node_22 = new SPNODE(2);
+        Node node_22 = new SPNODE(7);
         
-        Node node_23 = new HPNODE(6);
+        Node node_23 = new HPNODE(20);
 
         Move lynchSpecial2 = new Move();
         lynchSpecial2.setName("Wild at Heart");
@@ -168,7 +168,7 @@ public class SkillTreeFactory {
         ab.addShape("circle",2,true);
         lynchSpecial2.setAttackArea(ab.getResult());
         Node node_24 = new SpecialMoveNODE(null);
-        Node node_25 = new APNODE(4);
+        Node node_25 = new APNODE(15);
         
         SkillTree tree = new SkillTree(root);
         root.addChildren(List.of(node_2,node_3));

@@ -1,5 +1,7 @@
 package com.artattack.enemystrategy;
 
+import java.util.List;
+
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Enemy;
@@ -43,6 +45,7 @@ public class FleeStrategy extends DecisionStrategy {
         }
 
         // sets the new position and decreases the AP
+        this.getMainFrame().showDialog(List.of(enemy.getName() + " is moving away!"));
         map.setCell(enemy.getCoordinates(), '.');
         map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), maxCoord));
         enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), maxCoord));

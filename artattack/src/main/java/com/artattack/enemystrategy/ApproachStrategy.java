@@ -1,5 +1,7 @@
 package com.artattack.enemystrategy;
 
+import java.util.List;
+
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Enemy;
@@ -42,6 +44,7 @@ public class ApproachStrategy extends DecisionStrategy {
 
         // sets the new position and decreases the AP
         if (minCoord != null){
+            this.getMainFrame().showDialog(List.of(enemy.getName() + " is approaching!"));
             map.setCell(enemy.getCoordinates(), '.');
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));

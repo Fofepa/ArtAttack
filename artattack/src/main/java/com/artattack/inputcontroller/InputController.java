@@ -542,6 +542,8 @@ public class InputController implements KeyListener, TurnListener {
                         mainFrame.repaintTurnOrderPanel();
                         mainFrame.focusMovesPanel();
                         mainFrame.repaintMovesPanel();
+                        mainFrame.repaintTurnOrderPanel();
+                        mainFrame.focusMovesPanel();
                     } else {
                         mainFrame.focusMovesPanel();
                         System.out.println("Move failed! (not enough AP or invalid target)");

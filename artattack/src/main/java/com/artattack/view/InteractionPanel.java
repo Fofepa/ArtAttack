@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,8 +35,7 @@ public class InteractionPanel extends JPanel {
     private int currentLineStart = 0; 
     
     private GameSettings.FontSize lastUsedFontSize;
-    
-    // NUOVO: Tiene traccia dell'ultima larghezza per gestire il resize
+
     private int lastWidth = -1;
 
     private int selectedOption = 0;
@@ -50,8 +50,15 @@ public class InteractionPanel extends JPanel {
     
     public InteractionPanel() {
         setBackground(Color.BLACK);
-        setFocusable(true); 
+        setFocusable(true);
+
+        setDoubleBuffered(true);
+
+
         textTimer = new Timer(GameSettings.getInstance().getTextSpeed().getDelay(), e -> revealNextCharacter());
+        textTimer.setCoalesce(false);
+        
+        
         lastUsedFontSize = GameSettings.getInstance().getFontSize();
     }
     
@@ -217,7 +224,10 @@ public class InteractionPanel extends JPanel {
         
         if (charIndex < totalCharsInPage) {
             charIndex++;
-            repaint();
+
+            paintImmediately(0, 0, getWidth(), getHeight());
+
+            Toolkit.getDefaultToolkit().sync();
         } else {
             textFullyRevealed = true;
             textTimer.stop();
@@ -326,6 +336,7 @@ public class InteractionPanel extends JPanel {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
         // ========== DRAW SPEAKER IMAGE ==========
         if (currentSpeakerImage != null) {
@@ -339,7 +350,7 @@ public class InteractionPanel extends JPanel {
         }
 
         if (!dialogActive || currentDialog == null || currentDialog.isEmpty()) {
-            return; // Se non c'è dialogo, mi fermo qui (ho disegnato solo l'immagine)
+            return;
         }
         
         g.setColor(Color.WHITE);

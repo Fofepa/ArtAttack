@@ -109,7 +109,8 @@ public class MovesPanel extends JPanel {
                 g.setColor(Color.WHITE);
             }
             
-            g.drawString(move.getName(), 20, y);
+            String moveLabel = move.getName() + " [" + move.getActionPoints() + " AP]";
+            g.drawString(moveLabel, 20, y);
             y += 15;
         }
         

@@ -152,6 +152,16 @@ public class PausePanel extends JPanel {
             settings.cycleFontSize();
             fontBtn.setText("Dialog Font: " + settings.getFontSize());
         });
+
+        JButton zoomBtn = createPauseButton("Map Zoom: " + settings.getCurrentZoom());
+        zoomBtn.addActionListener(e -> {
+            settings.cycleZoomLevel();
+            zoomBtn.setText("Map Zoom: " + settings.getCurrentZoom());
+
+            if (mainFacade.getGameFacade() != null) {
+                mainFacade.getGameFacade().getGamePanel().repaint();
+            }
+        });
         
         JButton backBtn = createPauseButton("Back");
         backBtn.setBorder(BorderFactory.createCompoundBorder(
@@ -159,11 +169,14 @@ public class PausePanel extends JPanel {
             BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
         backBtn.setForeground(Color.LIGHT_GRAY);
-        backBtn.addActionListener(e -> showSettingsMenu()); 
+        backBtn.addActionListener(e -> showSettingsMenu());
+
+        
         
         gbc.gridy = 1; contentPanel.add(fontBtn, gbc);
+        gbc.gridy = 2; contentPanel.add(zoomBtn, gbc);
         
-        gbc.gridy = 2; 
+        gbc.gridy = 3; 
         gbc.weighty = 1.0; 
         contentPanel.add(javax.swing.Box.createGlue(), gbc);
         gbc.weighty = 0;
@@ -171,14 +184,14 @@ public class PausePanel extends JPanel {
         gbc.gridy = 3; 
         gbc.insets = new Insets(40, 40, 30, 40);
         contentPanel.add(backBtn, gbc);
+        
         refreshPanel();
     }
     
     private void refreshPanel() {
         contentPanel.revalidate();
         contentPanel.repaint();
-        // NON richiedere focus qui al contentPanel se non serve,
-        // ma assicurati che i bottoni non lo rubino.
+        
     }
     
     private JButton createPauseButton(String text) {
@@ -189,11 +202,9 @@ public class PausePanel extends JPanel {
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
         
-        // --- FIX FOCUS ---
-        // Questo impedisce al bottone di prendere il focus della tastiera
-        // Così InputController continua a ricevere gli eventi KEY_PRESSED
+        
         button.setFocusable(false);
-        // -----------------
+        
         
         button.setMinimumSize(BUTTON_SIZE);
         button.setMaximumSize(BUTTON_SIZE);

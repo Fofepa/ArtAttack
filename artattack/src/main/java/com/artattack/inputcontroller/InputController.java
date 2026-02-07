@@ -736,6 +736,7 @@ public class InputController implements KeyListener, TurnListener {
                 }
             }
             
+            
             // Check if the player leveled up
             if (player.getLeveledUp()) {
                 System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");

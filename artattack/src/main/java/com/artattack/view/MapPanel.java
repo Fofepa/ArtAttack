@@ -81,12 +81,6 @@ public class MapPanel extends JPanel {
                     continue; 
                 }
 
-                if (c == '@') {
-                    g.setColor(new Color(50, 50, 50));
-                    //g.drawString(".", px, py + CELL_SIZE);
-                    continue; // Salta il resto e passa alla prossima cella
-                }
-
                 switch (c) {
                     case '#' -> g.setColor(Color.GRAY);
                     case '.' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));

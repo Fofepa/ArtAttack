@@ -138,7 +138,7 @@ public class Move{
     }
 
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
-        if (this.name == "Little Umbrellas") {
+        if (this.name.equals("Little Umbrellas")) {
             List<ActiveElement> l = new ArrayList<>();
             l.addAll(map.getEnemies());
             return l;
@@ -194,15 +194,15 @@ public class Move{
         int total = 0;
         boolean works = false;
         //Damage Logic
-        if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name == "Little Umbrellas" && this.power != 0 && this.getAttackTargets(user, map) != null)) {
+        if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name.equalsIgnoreCase("Little Umbrellas") && this.power != 0 && this.getAttackTargets(user, map) != null)) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 if (element instanceof Enemy e) {
                     if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
                     else { e.updatePlayerTwoDemage(this.power); }
-                    if(this.name == "ERASERHEAD"){
+                    if(this.name.equals("ERASERHEAD")){
                         e.setIsStunned(true);
                     }
-                    if(this.name == "Wild at Heart"){
+                    if(this.name.equals("Wild at Heart")){
                         e.setEnemyType(EnemyType.DUMMY);
                     }
                 }

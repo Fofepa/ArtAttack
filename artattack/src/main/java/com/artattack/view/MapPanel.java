@@ -81,6 +81,12 @@ public class MapPanel extends JPanel {
                     continue; 
                 }
 
+                if (c == '@') {
+                    g.setColor(new Color(50, 50, 50));
+                    //g.drawString(".", px, py + CELL_SIZE);
+                    continue; // Salta il resto e passa alla prossima cella
+                }
+
                 switch (c) {
                     case '#' -> g.setColor(Color.GRAY);
                     case '.' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
@@ -164,6 +170,7 @@ public class MapPanel extends JPanel {
             g.drawString(String.valueOf(p.getMapSymbol()), px, py + cellSize);
         }
     }
+
 
     private boolean isValidAndNotWall(Coordinates c, Maps map, char[][] matrix) {
         if (c.getX() < 0 || c.getX() >= map.getWidth() || 

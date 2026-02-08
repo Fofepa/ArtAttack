@@ -29,7 +29,7 @@ public class moveTest {
     private Move m1, m2, m3, m4, m5;
     private MoveBuilder1 mb1;
     private Player p1, p2;
-    private Enemy e;
+    private Enemy e, e2;
     private MapBuilderTypeOne mb;
     private Maps maps;
 
@@ -46,7 +46,7 @@ public class moveTest {
         mb1.setDescription("TestDescription");
         mb1.setPower(1);
         mb1.setActionPoints(1);
-        mb1.setAttackArea(List.of(new Coordinates(0, 1)));
+        mb1.setAttackArea(List.of(new Coordinates(0, 1), new Coordinates(10, 10)));
         this.m1 = mb1.getResult();
         //Creating m2
         mb1.setName("TestMove");
@@ -87,11 +87,15 @@ public class moveTest {
             new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Item(ItemType.CURE,
                 ".", ".", 1)), 
             List.of(new Key(".", ".", 0)), 100);
+        this.e2 = new Enemy(0, 'i', "TestEnemy", new Coordinates(10, 10), EnemyType.EMPLOYEE, 100, 100, 1, 
+            new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Item(ItemType.CURE,
+                ".", ".", 1)), 
+            List.of(new Key(".", ".", 0)), 100);
         //Creating maps
         mb.setDimension(26, 135);
         mb.setPlayerOne(this.p1);
         mb.setPlayerTwo(this.p2);
-        mb.setEnemies(new ArrayList<>(List.of(this.e)));
+        mb.setEnemies(new ArrayList<>(List.of(this.e, this.e2)));
         mb.setDict();
         mb.setTurnQueue();
         mb.startMap();
@@ -104,6 +108,7 @@ public class moveTest {
         assertNotNull(this.p1);
         assertNotNull(this.p2);
         assertNotNull(this.e);
+        assertNotNull(this.e2);
         assertNotNull(this.maps);
     }
 
@@ -116,6 +121,7 @@ public class moveTest {
         this.p1 = null;
         this.p2 = null;
         this.e = null;
+        this.e2 = null;
         this.maps = null;
 
         assertNull(this.m1);
@@ -125,6 +131,7 @@ public class moveTest {
         assertNull(this.p1);
         assertNull(this.p2);
         assertNull(this.e);
+        assertNull(this.e2);
         assertNull(this.maps);
     }
 
@@ -140,6 +147,13 @@ public class moveTest {
         p2.setActionPoints(m4.getActionPoints());
         m4.useMove(p2,maps);
         assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 98, e.getCurrHP());
+        //Testing getAttackTargets()
+        e.updateHP(1 - e.getCurrHP());
+        m1.setAreaAttack(false);
+        assertEquals(List.of(e), m1.getAttackTargets(this.p1, this.maps));
+        m1.setAreaAttack(true);
+        assertEquals(List.of(e, e2), m1.getAttackTargets(this.p1, this.maps));
+        //TO-DO: getHealTargets()
 
         //Testing droppedXP
         p2.setActionPoints(m4.getActionPoints());
@@ -165,6 +179,7 @@ public class moveTest {
         //Testing insufficient ActionPoints
         p1.setActionPoints(0);
         assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 0, m1.useMove(p1, maps));
+
 
         //Testing healing
         p1.setActionPoints(m5.getActionPoints());

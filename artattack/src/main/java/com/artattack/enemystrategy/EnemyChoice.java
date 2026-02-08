@@ -7,6 +7,7 @@ import javax.lang.model.util.ElementScanner14;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
@@ -44,6 +45,7 @@ public class EnemyChoice{   // Our Context class
             
         }
         Map<Move,Integer> usable = new HashMap<Move,Integer>();
+        Move healMove = null;
 
         // checks if there are any player to be hit and what move can hit them
         for(Move move : enemy.getWeapons().get(0).getMoves()){
@@ -61,8 +63,21 @@ public class EnemyChoice{   // Our Context class
             }
         }
 
+        if(enemy.getEnemyType() == EnemyType.BOB){
+            for(Move move : enemy.getWeapons().get(0).getMoves()){
+                if(move.getHealTargets(this.enemy, this.map) != null){
+                    for(ActiveElement element : move.getHealTargets(this.enemy, this.map)){
+                        if(element instanceof Enemy && enemy.getActionPoints() >= move.getActionPoints()){
+                            healMove = move;
+                        }
+                    }
+                }
+            }
+        }
+
         // checks if the enemy has still some AP
         boolean hasTarget = !usable.isEmpty(); 
+        boolean hasHealTarget = healMove != null;
         if(enemy.getActionPoints() <= 0){
             setHasFinished();   
             return;
@@ -168,13 +183,82 @@ public class EnemyChoice{   // Our Context class
                     }
                 }
                 break;
+
+            case TOOLBOT:
+                if(hasTarget){
+                    if(r < 0.70){
+                        setStrategy(new AttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                else{
+                    if(r < 0.85){
+                        setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                break;
+
+            case BOB:
+                if(hasTarget && hasHealTarget){
+                    if(r<0.50){
+                        setStrategy(new SmartAttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                    setStrategy(new HealStrategy(this.mainFrame), healMove);
+                    this.strategy.execute(enemy, map);
+                }
+                
+                }
+                else if(hasTarget){
+                    if(r< 0.9){
+                        setStrategy(new SmartAttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                    
+                }
+                else if(hasHealTarget){
+                    if(r<0.9){
+                        setStrategy(new HealStrategy(this.mainFrame), healMove);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                else{
+                    if(r<0.8){
+                        setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                break;
+
             default:
                 map.getConcreteTurnHandler().next();
+            }
         }
-    }
-
-    private void setStrategy(DecisionStrategy strategy, Map<Move, Integer> usable){
-        this.strategy = strategy;
+        
+        private void setStrategy(DecisionStrategy strategy, Map<Move, Integer> usable){
+            this.strategy = strategy;
         if(!usable.isEmpty()){
                 Map<Move, Integer> sortedUsable = usable.entrySet().stream().sorted((a,b) -> {
                     return (a.getKey().getPower() * a.getValue()) - (b.getKey().getPower() * b.getValue()); 
@@ -191,6 +275,14 @@ public class EnemyChoice{   // Our Context class
 
     private void setStrategy(DecisionStrategy strategy){
         this.strategy = strategy;
+    }
+
+    public void setStrategy(DecisionStrategy strategy, Move healMove){
+        this.strategy = strategy;
+        if(healMove != null){
+            this.strategy.setHealMove(healMove);
+        }
+        
     }
 
     public void setHasFinished(){

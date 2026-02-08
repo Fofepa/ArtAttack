@@ -143,6 +143,21 @@ public class Move{
             l.addAll(map.getEnemies());
             return l;
         }
+        if (!this.areaAttack) {
+            ActiveElement temp = null;
+            for (Coordinates attackCell : this.attackArea) {
+                Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
+                if (obj instanceof ActiveElement e) {
+                    if ((temp == null || 
+                        Math.abs(temp.getMaxHP() - temp.getCurrHP()) < Math.abs(e.getMaxHP() - e.getCurrHP()))) {
+                        if (user.getClass() != e.getClass()) {
+                            temp = e;
+                        }
+                    }
+                }
+            }
+            return (temp == null) ? null : List.of(temp);
+        }
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates attackCell : this.attackArea) {
             Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
@@ -166,6 +181,20 @@ public class Move{
 
 
     public List<ActiveElement> getHealTargets(ActiveElement user, Maps map) {
+        if (!this.areaHeal){
+            ActiveElement temp = null;
+            for(Coordinates areaCell : this.healArea){
+                Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), areaCell));
+                if (obj instanceof ActiveElement e) {
+                    if ((temp == null || Math.abs(temp.getMaxHP() - temp.getCurrHP()) < Math.abs(e.getMaxHP() - e.getCurrHP()))) {
+                        if (user.getClass() == e.getClass()) {
+                            temp = e;
+                        }
+                    }
+                }
+            }
+            return (temp == null) ? null : List.of(temp);
+        }
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates healCell : this.healArea) {
             Object obj = (ActiveElement)map.getDict().get(Coordinates.sum(user.getCoordinates(), healCell));

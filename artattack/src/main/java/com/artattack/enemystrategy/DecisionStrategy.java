@@ -12,6 +12,7 @@ import com.artattack.view.MainFrame;
 public abstract class DecisionStrategy {
     private MainFrame mainframe;
     private Map<Move,Integer> moves;
+    private Move healMove;
 
     public DecisionStrategy(MainFrame mainframe){
         this.mainframe = mainframe;
@@ -25,6 +26,14 @@ public abstract class DecisionStrategy {
 
     public void setMoves(Map<Move,Integer> moves){
         this.moves = moves; 
+    }
+
+    public void setHealMove(Move move){
+        this.healMove = move;
+    }
+
+    public Move getHealMove(){
+        return this.healMove;
     }
 
     public Map<Move, Integer> getMoves(){

@@ -1,5 +1,6 @@
 package com.artattack.mapelements;
 
 public enum EnemyType {
-    EMPLOYEE, ROBOT, GUARD, DUMMY, BOB, TOOLBOT;
+    EMPLOYEE, ROBOT, GUARD, DUMMY, BOB, TOOLBOT,
+    MOSQUITO, SAM;
 }

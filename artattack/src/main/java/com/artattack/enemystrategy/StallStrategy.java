@@ -37,6 +37,16 @@ public class StallStrategy extends DecisionStrategy {
                 this.getMainFrame().showDialog(List.of("Guard Robot: Processing the better solution..."));
                 enemy.setActionPoints(enemy.getActionPoints()-3);
                 break;
+
+            case EnemyType.TOOLBOT:
+                this.getMainFrame().showDialog(List.of("T.O.O.L.Bot: Time to clean!"));
+                enemy.setActionPoints(enemy.getActionPoints()-3);
+                break;
+
+            case EnemyType.BOB:
+                this.getMainFrame().showDialog(List.of("B.O.B.: Nooo! Let me repair this thing, one moment!"));
+                enemy.setActionPoints(enemy.getActionPoints()-2);
+                break;
         }
     }
 }

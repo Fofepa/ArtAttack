@@ -121,7 +121,7 @@ public abstract class ActiveElement extends MapElement implements Comparable<Act
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         ActiveElement other = (ActiveElement) obj;
-        return this.getID() == other.getID();
+        return this.getCoordinates().equals(other.getCoordinates());
     }
     
     @Override

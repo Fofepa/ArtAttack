@@ -138,6 +138,9 @@ public class Move{
     }
 
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
+        if (this.attackArea == null || this.attackArea.isEmpty()) {
+            return null;
+        }
         if (this.name.equals("Little Umbrellas")) {
             List<ActiveElement> l = new ArrayList<>();
             l.addAll(map.getEnemies());
@@ -181,6 +184,9 @@ public class Move{
 
 
     public List<ActiveElement> getHealTargets(ActiveElement user, Maps map) {
+        if (this.healArea == null || this.healArea.isEmpty()) {
+            return null;
+        }
         if (!this.areaHeal){
             ActiveElement temp = null;
             for(Coordinates areaCell : this.healArea){

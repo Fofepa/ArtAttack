@@ -9,6 +9,7 @@ import com.artattack.interactions.SwitchMap;
 import com.artattack.interactions.Talk;
 import com.artattack.items.Item;
 import com.artattack.items.ItemType;
+import com.artattack.items.Key;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
@@ -149,11 +150,13 @@ public class MapDirector {
                 InteractableElement chest1_1 = new InteractableElement(0, '$', "Chest", new Coordinates(9, 11), List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement checkpoint_1 = new InteractableElement(0, 'C', "checkpoint", new Coordinates(30, 30), List.of(new CheckPoint(List.of("OK"))), "");
+                InteractableElement door_1 = new InteractableElement(0, '\u2339', "Door", new Coordinates(0, 4), 
+                List.of(new SwitchMap(2, List.of(new Coordinates(30, 19), new Coordinates(30, 21)))),"");
                 
                 this.builder.setID(1);
                 this.builder.setDimension(32, 32);
                 this.builder.setEnemies(listEn);
-                this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1));
+                this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1, door_1));
                 this.builder.buildBorder();
                 this.builder.buildWall(new Coordinates(11, 1), 8, 25, '#');
                 this.builder.buildWall(new Coordinates(14, 28), 1, 3, '#');
@@ -172,6 +175,7 @@ public class MapDirector {
                 mb1.setName("Screw Thrust"); mb1.setActionPoints(5); mb1.setPower(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move bossm1 = mb1.getResult();
                 // move2 creation
+                ab.addShape("square", 1, true);
                 mb1.setName("Hammer Swing"); mb1.setActionPoints(6); mb1.setPower(3); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());
                 Move bossm2 = mb1.getResult();
                 // move3 creation
@@ -185,7 +189,8 @@ public class MapDirector {
                 List<Coordinates> bossMA = ab.getResult();
                 ab.addShape("square", 25, true);
                 List<Coordinates> bossVA = ab.getResult();
-                Enemy boss = new Enemy(4, 'B', "B.O.B.", new Coordinates(15, 4), EnemyType.BOB, 35, 35, 5, List.of(bossWeapon), 18, 18, bossMA, bossVA, null, null, 50);
+                Key key = new Key("1st floor key", "Let's you and your party go upstairs!", 5001);
+                Enemy boss = new Enemy(4, 'B', "B.O.B.", new Coordinates(15, 4), EnemyType.BOB, 35, 35, 5, List.of(bossWeapon), 18, 18, bossMA, bossVA, null, List.of(key), 50);
 
                 // minions creation
                 // move1 creation
@@ -193,6 +198,7 @@ public class MapDirector {
                 mb1.setName("Groom Wank"); mb1.setActionPoints(3); mb1.setPower(2); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
                 Move minionM1 = mb1.getResult();
                 // move2 creation
+                ab.addShape("square", 1, true);
                 mb1.setName("Mop Swing"); mb1.setActionPoints(2); mb1.setPower(3); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
                 Move minionM2 = mb1.getResult();
                 // move3 creation
@@ -208,10 +214,12 @@ public class MapDirector {
                 List<Coordinates> minionVA = ab.getResult();
                 Enemy minion1 = new Enemy(5, 'E', "T.O.O.L BOT", new Coordinates(12, 6), EnemyType.TOOLBOT, 15, 15, 4, List.of(minionWeapon), 8, 8, minionMA, minionVA, null, null, 10);
                 Enemy minion2 = new Enemy(6, 'E', "T.O.O.L BOT", new Coordinates(18, 6), EnemyType.TOOLBOT, 15, 15, 4, List.of(minionWeapon), 8, 8, minionMA, minionVA, null, null, 10);
-                // creation of NPCs and Chests
+                // creation of the interactable elements
                 InteractableElement chest2_1 = new InteractableElement(0, '$', "Chest", new Coordinates(30, 36), List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement bossCheckPoint = new InteractableElement(1, 'C', "checkpoint", new Coordinates(9, 34), List.of(new CheckPoint(List.of("OK"))), "");
+                InteractableElement endDoor = new InteractableElement(0, '\u2339', "Door", new Coordinates(16, 0), 
+                List.of(new SwitchMap(5001, List.of(new Coordinates(30, 19), new Coordinates(30, 21)))),"");
                 
                 List<Enemy> enemyBossRoom = new ArrayList<>(); enemyBossRoom.addAll(List.of(boss, minion1, minion2));
                 
@@ -221,7 +229,7 @@ public class MapDirector {
                 this.builder.buildBorder();
 
                 this.builder.setEnemies(enemyBossRoom);
-                this.builder.setInteractableElements(List.of(chest2_1, bossCheckPoint));
+                this.builder.setInteractableElements(List.of(chest2_1, bossCheckPoint, endDoor));
                 
                 // Top big blocks (left)
                 this.builder.buildWall(new Coordinates(3, 4), 4, 4, '#');
@@ -256,8 +264,6 @@ public class MapDirector {
                 
                 // Bottom horizontal wall - RIGHT PART (connected to right border)
                 this.builder.buildWall(new Coordinates(18, 30), 13, 4, '#');
-
-
                 
                 break;
         }

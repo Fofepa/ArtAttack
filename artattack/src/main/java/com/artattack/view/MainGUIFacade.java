@@ -200,7 +200,7 @@ public class MainGUIFacade {
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
-            md.make("Tutorial");
+            /*md.make("Tutorial");
             mb1.setPlayerOne(playerOne);
             mb1.setPlayerTwo(playerTwo);
             mb1.setID(0);
@@ -215,16 +215,16 @@ public class MainGUIFacade {
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_1 = mb1.getResult();
-            mm.getLevels().put(map_1.getID(), map_1);
+            mm.getLevels().put(map_1.getID(), map_1);*/
             md.make("BossRoom1");
             mb1.setPlayerOne(playerOne);
             mb1.setPlayerTwo(playerTwo);
-            mb1.setID(2);
+            mb1.setID(0);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
-            map_t = mb1.getResult();
-            mm.getLevels().put(map_t.getID(), map_t);
+            Maps map_b1 = mb1.getResult();
+            mm.getLevels().put(map_b1.getID(), map_b1);
 
             // Start Game and set skill trees
             startNewGame(mm, playerOne, playerTwo);

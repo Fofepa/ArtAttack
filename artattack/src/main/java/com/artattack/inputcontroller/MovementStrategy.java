@@ -7,6 +7,7 @@ import com.artattack.level.Maps;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.Trigger;
 import com.artattack.view.MainFrame;
+import com.artattack.mapelements.Enemy;
 
 public class MovementStrategy implements PlayerStrategy{
     private Maps map;
@@ -122,10 +123,16 @@ public class MovementStrategy implements PlayerStrategy{
                 t.OnTrigger(this.mainFrame.getGameContext(), this.player);
             }
         }
-        if(map.checkAggro(cursor) != null && !map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(map.checkAggro(cursor))){
-            map.getConcreteTurnHandler().getConcreteTurnQueue().add(map.checkAggro(cursor));
+        if(map.checkAggro(cursor) != null && !map.checkAggro(cursor).isEmpty()){
+            for (Enemy e : map.checkAggro(cursor)) {
+                if (!map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(e)) {
+                    System.out.println("Adding " + e.getName() +  " to the queue");
+                    map.getConcreteTurnHandler().getConcreteTurnQueue().add(e);
+                    e.activate();
+                }
+            }
         }
-        map.checkPlayerEscape(cursor);
+        map.checkPlayerEscape();
         if(player.getActionPoints() == 0){
             this.mainFrame.getMap().getConcreteTurnHandler().next();
         }

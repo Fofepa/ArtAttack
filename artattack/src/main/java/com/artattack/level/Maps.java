@@ -202,28 +202,32 @@ public class Maps {
         this.mapMatrix = mapMatrix;
     }
     
-    public Enemy checkAggro(Coordinates coordinates){
+    public List<Enemy> checkAggro(Coordinates coordinates){
+        List<Enemy> aggroed = new ArrayList<>();
         for(Enemy enemy : enemies){
             if(Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates()).contains(coordinates)){
-                enemy.activate();
-                return enemy;
+                /* enemy.activate(); */
+                aggroed.add(enemy);
             }
         }
-        return null;
+        return aggroed.isEmpty() ? null : aggroed;
     }
 
-    public void checkPlayerEscape(Coordinates coordinates){
+    public void checkPlayerEscape(){
         List<Enemy> toRemove = new ArrayList<>();
         for(ActiveElement element : this.turnHandler.getConcreteTurnQueue().getTurnQueue()){
-            if(element instanceof Enemy c){
-                if(Coordinates.getDistance(c.getCoordinates(), coordinates) > 8){
-                    toRemove.add(c);
+            if(element instanceof Enemy e){
+                if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerOne.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerTwo.getCoordinates())){
+                    toRemove.add(e);
                 }
             }
         }
         for(Enemy e : toRemove){
-            if(Coordinates.getDistance(e.getCoordinates(), playerOne.getCoordinates()) > 8 && Coordinates.getDistance(e.getCoordinates(), playerTwo.getCoordinates()) > 8)  // if both players escaped from the enemy
-            this.turnHandler.getConcreteTurnQueue().remove(e);
+            if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerOne.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerTwo.getCoordinates())) {
+                // if both players escaped from the enemy
+                System.out.println("The party has escaped from " + e.getName() + " and it has been removed from the queue");
+                this.turnHandler.getConcreteTurnQueue().remove(e);
+            }
         }
     }
 

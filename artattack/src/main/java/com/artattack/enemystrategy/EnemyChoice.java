@@ -50,6 +50,7 @@ public class EnemyChoice{   // Our Context class
         // checks if there are any player to be hit and what move can hit them
         for(Move move : enemy.getWeapons().get(0).getMoves()){
             if(move.getAttackTargets(this.enemy, this.map) != null){
+                System.out.println("Found a move to use!\n\n");
                 for(ActiveElement element : move.getAttackTargets(this.enemy, this.map)){
                     if(element instanceof Player && enemy.getActionPoints() >= move.getActionPoints()){
                         if(move.getAreaAttack() && usable.containsKey(move)){
@@ -216,8 +217,7 @@ public class EnemyChoice{   // Our Context class
                     else{
                     setStrategy(new HealStrategy(this.mainFrame), healMove);
                     this.strategy.execute(enemy, map);
-                }
-                
+                    }
                 }
                 else if(hasTarget){
                     if(r< 0.9){
@@ -228,7 +228,6 @@ public class EnemyChoice{   // Our Context class
                         setStrategy(new StallStrategy(this.mainFrame));
                         this.strategy.execute(enemy, map);
                     }
-                    
                 }
                 else if(hasHealTarget){
                     if(r<0.9){

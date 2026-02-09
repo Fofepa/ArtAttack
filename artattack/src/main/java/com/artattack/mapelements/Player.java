@@ -16,7 +16,7 @@ public class Player extends ActiveElement {
     private int currXP;
     private int maxXP;
     private int level;
-    private boolean leveledUp;
+    private int leveledUp;
     private int maxWeapons;
     private List<Item> inventory;
     private List<Key> keys;
@@ -37,7 +37,7 @@ public class Player extends ActiveElement {
         this.currXP = currXP;
         this.maxXP = maxXP;
         this.level = level;
-        this.leveledUp = false;
+        this.leveledUp = 0;
     }
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
@@ -51,7 +51,7 @@ public class Player extends ActiveElement {
         this.currXP = currXP;
         this.maxXP = maxXP;
         this.level = level;
-        this.leveledUp = false;
+        this.leveledUp = 0;
     }
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
@@ -110,7 +110,7 @@ public class Player extends ActiveElement {
         return this.level;
     }
 
-    public boolean getLeveledUp(){
+    public int getLeveledUp(){
         return this.leveledUp;
     }
 
@@ -150,11 +150,15 @@ public class Player extends ActiveElement {
 
     public void setLevel(){
         this.level += 1;
-        this.leveledUp = true;
+        this.leveledUp += 1;
     }
 
-    public void setLeveledUp(boolean leveledUp) {
-        this.leveledUp = leveledUp;
+    public void setLeveledUp() {
+        this.leveledUp -= 1;
+    }
+
+    public void resetLeveledUp(){
+        this.leveledUp = 0;
     }
 
     public void setMaxWeapons(){
@@ -162,7 +166,19 @@ public class Player extends ActiveElement {
     }
 
     public void updateCurrXP(int amount){
-        if(this.currXP + amount < this.maxXP)
+        if(this.currXP + amount >= this.maxXP){
+            int amountFix = amount + this.currXP;
+            while (amountFix >= this.maxXP){
+                this.setLevel();
+                setMaxXP(this.maxXP + (int)((2.5)*this.level));
+                amountFix -= this.maxXP;
+            }
+            this.currXP = amountFix;
+        }
+        else{
+            this.currXP += amount;
+        }
+        /*if(this.currXP + amount < this.maxXP)
             this.currXP += amount;
         else{
             amount = amount - (this.maxXP - this.currXP);
@@ -170,7 +186,7 @@ public class Player extends ActiveElement {
             setMaxXP(this.maxXP + 5);
             this.currXP = amount;
             
-        }
+        }*/
     }
 
     @Override

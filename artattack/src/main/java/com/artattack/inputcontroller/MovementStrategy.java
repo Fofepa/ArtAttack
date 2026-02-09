@@ -4,10 +4,10 @@ import java.util.List;
 
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.Trigger;
 import com.artattack.view.MainFrame;
-import com.artattack.mapelements.Enemy;
 
 public class MovementStrategy implements PlayerStrategy{
     private Maps map;
@@ -114,8 +114,9 @@ public class MovementStrategy implements PlayerStrategy{
     }
 
     public void acceptMovement() {
-        if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '.' || this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == 't'){
+        if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '.'){
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '.';
+            this.map.updateDict(player.getCoordinates(), cursor);
             player.setCoordinates(cursor);
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';

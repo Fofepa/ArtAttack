@@ -139,6 +139,7 @@ public class Move{
 
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
         if (this.attackArea == null || this.attackArea.isEmpty()) {
+            System.out.println(this.getName() + " has no attackArea");
             return null;
         }
         if (this.name.equals("Little Umbrellas")) {
@@ -159,13 +160,17 @@ public class Move{
                     }
                 }
             }
+            if (temp == null) {
+                System.out.println(this.getName() + ": temp is null");
+            }
             return (temp == null) ? null : List.of(temp);
         }
         List<ActiveElement> targets = new ArrayList<>();
-        for (Coordinates attackCell : this.attackArea) {
-            Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
+        for (Coordinates attackCell : Coordinates.sum(this.attackArea, user.getCoordinates())) {
+            Object obj = map.getDict().get(attackCell);
+            System.out.println(map.getDict().containsValue(map.getPlayerOne()));
             if (obj instanceof ActiveElement check) {
-
+                System.out.println("Checking " + ((ActiveElement) obj).getName());
                 // If user is Player, attack Enemies; If user is Enemy, attack Players
                 if (user instanceof Player) {
                     if (check instanceof Enemy enemy) {
@@ -178,6 +183,10 @@ public class Move{
                     }
                 }   
             }
+            else { System.out.println("The object was not a ActiveElement"); }
+        }
+        if (targets.isEmpty()) {
+            System.out.println(this.getName() + ": no targets found");
         }
         return targets.isEmpty() ? null : targets;
     }
@@ -189,8 +198,8 @@ public class Move{
         }
         if (!this.areaHeal){
             ActiveElement temp = null;
-            for(Coordinates areaCell : this.healArea){
-                Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), areaCell));
+            for(Coordinates areaCell : Coordinates.sum(this.healArea, user.getCoordinates())){
+                Object obj = map.getDict().get(areaCell);
                 if (obj instanceof ActiveElement e) {
                     if ((temp == null || Math.abs(temp.getMaxHP() - temp.getCurrHP()) < Math.abs(e.getMaxHP() - e.getCurrHP()))) {
                         if (user.getClass() == e.getClass()) {

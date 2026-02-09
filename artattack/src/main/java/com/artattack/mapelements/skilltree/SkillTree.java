@@ -3,8 +3,6 @@ package com.artattack.mapelements.skilltree;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.artattack.mapelements.Player;
-
 
 // N-ary tree
 public class SkillTree{
@@ -34,6 +32,15 @@ public class SkillTree{
             }
             buildTree(child);
         }
+    }
+
+    public boolean isComplete(){
+        for(Node node : this.supportList){
+            if(node.isSpent()){
+                return false;
+            }
+        }
+        return true;
     }
 
     public Node find(int label){

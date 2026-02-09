@@ -741,7 +741,7 @@ public class InputController implements KeyListener, TurnListener {
             
             
             // Check if the player leveled up
-            if (player.getLeveledUp()) {
+            if(player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()){
                 System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
                 handlePlayerLevelUp(player);
                 return;
@@ -807,28 +807,43 @@ public class InputController implements KeyListener, TurnListener {
             System.err.println("ERROR: SkillTree not found for player: " + player.getName());
             return;
         }
-        
-        // Show the skill tree panel
-        mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
-            // This callback is called when the player confirms their selection
-            System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
-            System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
-            
-            // Update all panels to reflect new stats
-            mainFrame.repaintStatsPanel();
-            mainFrame.repaintWeaponsPanel();
-            mainFrame.repaintMovesPanel();
-            mainFrame.repaintMapPanel();
-            mainFrame.updateTurnDisplay();
-            
-            // Show a confirmation message
-            String nodeType = getNodeTypeName(selectedNode);
-            mainFrame.showDialog(List.of(
-                player.getName() + " has unlocked a new skill!",
-                "Skill: " + nodeType,
-                "Press ENTER to continue..."
-            ));
-        });
+        if(!player.getSkillTree().isComplete()){
+            // Show the skill tree panel
+            mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
+                if (selectedNode == null) {
+                    System.out.println(">>> Skill tree closed (complete or cancelled)");
+                    mainFrame.repaintStatsPanel();
+                    mainFrame.repaintWeaponsPanel();
+                    mainFrame.repaintMovesPanel();
+                    mainFrame.repaintMapPanel();
+                    mainFrame.updateTurnDisplay();
+                    return;
+                }
+                // This callback is called when the player confirms their selection
+                System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
+                System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
+                
+                // Update all panels to reflect new stats
+                mainFrame.repaintStatsPanel();
+                mainFrame.repaintWeaponsPanel();
+                mainFrame.repaintMovesPanel();
+                mainFrame.repaintMapPanel();
+                mainFrame.updateTurnDisplay();
+                
+                // Show a confirmation message
+                String nodeType = getNodeTypeName(selectedNode);
+                mainFrame.showDialog(List.of(
+                    player.getName() + " has unlocked a new skill!",
+                    "Skill: " + nodeType,
+                    "Press ENTER to continue..."
+                ));
+
+                if (player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()) {
+                    System.out.println(">>> Another level up available! Reopening Skill Tree...");
+                    handlePlayerLevelUp(player);
+                }  
+            });
+        }
     }
     
     /**

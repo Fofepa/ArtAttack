@@ -1,8 +1,9 @@
 package com.artattack.enemystrategy;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
-import javax.lang.model.util.ElementScanner14;
 
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
@@ -49,6 +50,7 @@ public class EnemyChoice{   // Our Context class
 
         // checks if there are any player to be hit and what move can hit them
         for(Move move : enemy.getWeapons().get(0).getMoves()){
+            System.out.println("Checking if " + move.getName() + " from " + enemy.getWeapons().get(0).getName() + " is a valid move");
             if(move.getAttackTargets(this.enemy, this.map) != null){
                 System.out.println("Found a move to use!\n\n");
                 for(ActiveElement element : move.getAttackTargets(this.enemy, this.map)){
@@ -59,7 +61,7 @@ public class EnemyChoice{   // Our Context class
                         else{
                             usable.put(move, 1);
                         }
-                    } 
+                    }
                 }
             }
         }

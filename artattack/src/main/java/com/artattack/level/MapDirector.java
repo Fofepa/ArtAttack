@@ -183,7 +183,7 @@ public class MapDirector {
                 mb1.setName("Wrench Repair"); mb1.setActionPoints(7); mb1.setHealAmount(10); mb1.setHealArea(ab.getResult()); mb1.setAreaHeal(false);
                 Move bossm3 = mb1.getResult();
                 //boss weapon creation
-                Weapon bossWeapon = new Weapon(" ", " ", 4, List.of(bossm1,bossm2,bossm3), null);
+                Weapon bossWeapon = new Weapon("BossWeapon", " ", 4, List.of(bossm1,bossm2,bossm3), null);
                 // Boss initialization
                 ab.addShape("circle", 8, true);
                 List<Coordinates> bossMA = ab.getResult();
@@ -219,7 +219,7 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement bossCheckPoint = new InteractableElement(1, 'C', "checkpoint", new Coordinates(9, 34), List.of(new CheckPoint(List.of("OK"))), "");
                 InteractableElement endDoor = new InteractableElement(0, '\u2339', "Door", new Coordinates(16, 0), 
-                List.of(new SwitchMap(5001, List.of(new Coordinates(30, 19), new Coordinates(30, 21)))),"");
+                List.of(new SwitchMap(5001, 1, List.of(new Coordinates(1, 1), new Coordinates(2, 2)))),"");
                 
                 List<Enemy> enemyBossRoom = new ArrayList<>(); enemyBossRoom.addAll(List.of(boss, minion1, minion2));
                 
@@ -264,6 +264,51 @@ public class MapDirector {
                 
                 // Bottom horizontal wall - RIGHT PART (connected to right border)
                 this.builder.buildWall(new Coordinates(18, 30), 13, 4, '#');
+                
+                break;
+            case "Reception":
+                this.builder.setID(10);
+                this.builder.setDimension(26, 40);
+                this.builder.buildBorder();
+                
+                // TOP DOOR (entrance)
+                // Already created by buildBorder at top center
+                
+                // LEFT STAIRCASE - diagonal from top-left corner going inward/downward
+                this.builder.buildWall(new Coordinates(1, 1), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(2, 2), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(3, 3), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(4, 4), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(5, 5), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(6, 6), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(7, 7), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(8, 8), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(9, 9), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(10, 10), 2, 1, '#');
+                
+                // RIGHT STAIRCASE - diagonal from top-right corner going inward/downward (mirrored)
+                this.builder.buildWall(new Coordinates(1, 36), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(2, 35), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(3, 34), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(4, 33), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(5, 32), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(6, 31), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(7, 30), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(8, 29), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(9, 28), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(10, 27), 2, 1, '#');
+                
+                // BOTTOM TABLE/RECEPTION (U-shape connected to bottom wall, opening upward)
+                // Outer walls
+                this.builder.buildWall(new Coordinates(21, 14), 4, 1, '#');  // Left vertical
+                this.builder.buildWall(new Coordinates(24, 14), 1, 12, '#'); // Bottom horizontal
+                this.builder.buildWall(new Coordinates(21, 25), 4, 1, '#');  // Right vertical
+                
+                // Inner hollow (make opening)
+                this.builder.buildWall(new Coordinates(22, 15), 2, 1, '#');  // Left inner
+                this.builder.buildWall(new Coordinates(23, 15), 1, 4, '#');  // Bottom inner left
+                this.builder.buildWall(new Coordinates(23, 20), 1, 5, '#');  // Bottom inner right
+                this.builder.buildWall(new Coordinates(22, 24), 2, 1, '#');  // Right inner
                 
                 break;
         }

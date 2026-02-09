@@ -77,9 +77,11 @@ public class SwitchMap extends Interaction {
     @Override
     public void doInteraction(GameContext gameContext, Player player) {
         if(!this.unloked){
+            System.out.println("Door is locked");
             if(player.getKeys() != null && !player.getKeys().isEmpty()){
                 for(Key k : player.getKeys()){
                     if(k.getID() == key){
+                        System.out.println("Door unlocked");
                         this.unloked = true;
                         break;
                     }
@@ -89,6 +91,9 @@ public class SwitchMap extends Interaction {
         if(this.unloked){
             Maps currMap = gameContext.getMapManager().getLevels().get(gameContext.getMapManager().getCurrMap());
             Maps next = gameContext.getMapManager().getLevels().get(this.nextMap);
+            if (next == null) {
+                return;
+            }
             List<ActiveElement> list = new LinkedList<ActiveElement>();
             list.add(player);
             player.setCoordinates(this.nextCoordinates.get(0));

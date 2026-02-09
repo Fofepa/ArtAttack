@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
 import com.artattack.items.Item;
+import com.artattack.items.Key;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilderTypeOne;
@@ -192,8 +193,8 @@ public class MainGUIFacade {
             List<Coordinates> moveArea = ab.getResult();
             
             // Creating Players
-            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
-            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+            Player p1 = createPlayerFromType(p1Type, 1, new Coordinates(2, 2), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
+            Player p2 = createPlayerFromType(p2Type, 2, new Coordinates(3, 3), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
             /* Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(20, 38), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(22, 38), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 */
 
@@ -201,33 +202,40 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
             /*md.make("Tutorial");
-            mb1.setPlayerOne(playerOne);
-            mb1.setPlayerTwo(playerTwo);
-            mb1.setID(0);
+            mb1.setID(1);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_t = mb1.getResult();
-            mm.getLevels().put(map_t.getID(), map_t);
-            md.make("1");
+            mm.getLevels().put(map_t.getID(), map_t);*/
+            /*md.make("1");
             mb1.setID(1);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_1 = mb1.getResult();
             mm.getLevels().put(map_1.getID(), map_1);*/
-            md.make("BossRoom1");
-            mb1.setPlayerOne(playerOne);
-            mb1.setPlayerTwo(playerTwo);
+            /*md.make("BossRoom1");
+            mb1.setPlayerOne(p1);
+            mb1.setPlayerTwo(p2);
             mb1.setID(0);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_b1 = mb1.getResult();
-            mm.getLevels().put(map_b1.getID(), map_b1);
+            mm.getLevels().put(map_b1.getID(), map_b1);*/
+            md.make("Reception");
+            mb1.setPlayerOne(p1);
+            mb1.setPlayerTwo(p2);
+            mb1.setID(0);
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_r = mb1.getResult();
+            mm.getLevels().put(map_r.getID(), map_r);
 
             // Start Game and set skill trees
-            startNewGame(mm, playerOne, playerTwo);
+            startNewGame(mm, p1, p2);
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -238,32 +246,34 @@ public class MainGUIFacade {
         
         // Character stats come From the enum class CharacterType
         AreaBuilder areaBuilder = new AreaBuilder();
-        areaBuilder.addShape("x",2);
+        /* areaBuilder.addShape("x",2);
         List<Coordinates> zappaMA = areaBuilder.getResult();
-        areaBuilder.addShape("4");
+        areaBuilder.addShape("4"); */
+        List<Coordinates> zappaMA = areaBuilder.getResult();    // For testing 
+        areaBuilder.addShape("square", 10, true);               // TODO: restore the old MA
         zappaMA.addAll(areaBuilder.getResult());
         areaBuilder.addShape("square",1,true);
         List<Coordinates> lynchMA = areaBuilder.getResult();
         areaBuilder.addShape("4");
         List<Coordinates> area4 = areaBuilder.getResult();
-        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(3); m1.setAttackArea(area4); m1.setActionPoints(2);
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(9999); m1.setAttackArea(area4); m1.setActionPoints(2);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(1);
         switch (type) {
             case MUSICIAN:
-                Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MUSICIAN);
+                Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, new ArrayList<>(List.of(m1,m2)), PlayerType.MUSICIAN);
                 return new Player(id, '♫', type.getName(), coords, 
-                    List.of(musicianWeapon), // Esempio arma
+                    new ArrayList<>(List.of(musicianWeapon)), // Esempio arma
                     15, 15, zappaMA, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
+                    20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
                     
             
             
             case DIRECTOR:
-                Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MOVIE_DIRECTOR);
+                Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, new ArrayList<>(List.of(m1,m2)), PlayerType.MOVIE_DIRECTOR);
                 return new Player(id, '◉', type.getName(), coords,
-                    List.of(directorWeapon), 
+                    new ArrayList<>(List.of(directorWeapon)), 
                     15, 15, lynchMA, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), "artattack\\src\\main\\resources\\images\\ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
+                    10, 20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), "artattack\\src\\main\\resources\\images\\ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
@@ -511,7 +521,7 @@ public class MainGUIFacade {
         skillTreePanel = new SkillTreePanel(skillTree, player, (selectedNode) -> {
             // Quando il player conferma la selezione
             selectedNode.setSkill(player);
-            player.setLeveledUp(false);
+            player.setLeveledUp();
             
             // Close the panel and resume the game
             hideSkillTreePanel();

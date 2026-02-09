@@ -444,10 +444,15 @@ public class SkillTreePanel extends JPanel {
     }
     
     private void confirmSelection() {
-        if (selectedNode != null && isNodeAvailable(selectedNode)) {
-            if (onNodeSelected != null) onNodeSelected.accept(selectedNode);
+    if (selectedNode != null && isNodeAvailable(selectedNode)) {
+        if (onNodeSelected != null) onNodeSelected.accept(selectedNode);
+    } else if (availableNodes.isEmpty()) {
+        System.out.println("Skill tree complete - no more nodes available");
+        if (onNodeSelected != null) {
+            onNodeSelected.accept(null);
         }
     }
+}
 
     // --- DRAWING ---
 

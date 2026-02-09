@@ -43,7 +43,10 @@ public class CombatStrategy implements PlayerStrategy{
 
     public int acceptMove(){
         Move move = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex);
-        List<ActiveElement> l = new ArrayList<>(); l.addAll(move.getAttackTargets(player, map));
+        List<ActiveElement> l = new ArrayList<>(); 
+        if(move.getAttackTargets(player, map) != null){
+            l.addAll(move.getAttackTargets(player, map));
+        }
         int value = move.useMove(player, map);
         
         if(value != 0){

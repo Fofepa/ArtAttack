@@ -771,7 +771,7 @@ public class InputController implements KeyListener, TurnListener {
 
             EnemyChoice enemyChoice = new EnemyChoice(this.mainFrame);
             enemyChoice.setMap(mainFrame.getMap());
-            enemyChoice.setEnemy(c);
+            enemyChoice.setEnemy((Enemy) currentElement);
 
             startEnemyTurn(enemyChoice);
         }

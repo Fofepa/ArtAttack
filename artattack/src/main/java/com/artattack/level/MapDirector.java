@@ -14,13 +14,18 @@ import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.TriggerGroup;
 import com.artattack.moves.Move;
+import com.artattack.moves.MoveBuilder1;
 import com.artattack.moves.Weapon;
 
 public class MapDirector {
     private MapBuilder builder;
+    private MoveBuilder1 mb1;
+    private AreaBuilder ab;
 
     public MapDirector(MapBuilder builder) {
         this.builder = builder;
+        this.mb1 = new MoveBuilder1();
+        this.ab = new AreaBuilder();
     }
 
     public void changeBuilder(MapBuilder builder) {
@@ -31,17 +36,16 @@ public class MapDirector {
         switch (type) {
             case "Tutorial":
                 //Creating Areas
-                AreaBuilder ab_t = new AreaBuilder();
-                ab_t.addShape("base");
-                List<Coordinates> moveArea_t = ab_t.getResult();
-                ab_t.addShape("square", 5, true);
-                List<Coordinates> enemyVisionArea_t = ab_t.getResult();
+                ab.addShape("base");
+                List<Coordinates> moveArea_t = ab.getResult();
+                ab.addShape("square", 5, true);
+                List<Coordinates> enemyVisionArea_t = ab.getResult();
 
                 //Creating Enemies
-                ab_t.addShape("8");
-                List<Coordinates> moveArea = ab_t.getResult();
-                ab_t.addShape("4");
-                List<Coordinates> area4 = ab_t.getResult();
+                ab.addShape("8");
+                List<Coordinates> moveArea = ab.getResult();
+                ab.addShape("4");
+                List<Coordinates> area4 = ab.getResult();
                 Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
                 Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
                 Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
@@ -118,26 +122,25 @@ public class MapDirector {
                 break;
             case "1":
                 //Creating Areas
-                AreaBuilder ab_1 = new AreaBuilder();
-                ab_1.addShape("base");
-                List<Coordinates> moveArea_1 = ab_1.getResult();
-                ab_1.addShape("square", 5, true);
-                List<Coordinates> enemyVisionArea_1 = ab_1.getResult();
+                ab.addShape("base");
+                List<Coordinates> moveArea_1 = ab.getResult();
+                ab.addShape("square", 5, true);
+                List<Coordinates> enemyVisionArea_1 = ab.getResult();
 
-                ab_1.addShape("8");
-                List<Coordinates> mArea = ab_1.getResult();
-                ab_1.addShape("4");
-                List<Coordinates> a4 = ab_1.getResult();
+                ab.addShape("8");
+                List<Coordinates> mArea = ab.getResult();
+                ab.addShape("4");
+                List<Coordinates> a4 = ab.getResult();
 
                 
                 Move m11 = new Move(); m11.setName("Kick"); m11.setPower(1); m11.setAttackArea(a4); m11.setActionPoints(3); m11.setAreaAttack(false);
                 Move m22 = new Move(); m22.setName("Bump"); m22.setPower(5); m22.setAttackArea(a4); m22.setActionPoints(4); m22.setAreaAttack(false);
                 Move m33 = new Move(); m33.setName("Explode"); m33.setPower(3); m33.setAttackArea(mArea); m33.setAreaAttack(true); m33.setActionPoints(3);
                 Weapon eWeapon = new Weapon(" ", " ", 5, List.of(m11,m22, m33), null);
-                Enemy e0_1 = new Enemy(0, 'E', "Employee", new Coordinates(28, 13), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
-                Enemy e1_1 = new Enemy(0, 'E', "Employee", new Coordinates(20, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
-                Enemy e2_1 = new Enemy(0, 'E', "Employee", new Coordinates(9, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
-                Enemy e3_1 = new Enemy(0, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 40);
+                Enemy e0_1 = new Enemy(1, 'E', "Employee", new Coordinates(28, 13), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e1_1 = new Enemy(2, 'E', "Employee", new Coordinates(20, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e2_1 = new Enemy(3, 'E', "Employee", new Coordinates(9, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e3_1 = new Enemy(4, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 40);
                 List<Enemy> listEn = new ArrayList<>();
                 listEn.addAll(List.of(e0_1,e1_1, e2_1, e3_1));
 
@@ -146,7 +149,8 @@ public class MapDirector {
                 InteractableElement chest1_1 = new InteractableElement(0, '$', "Chest", new Coordinates(9, 11), List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement checkpoint_1 = new InteractableElement(0, 'C', "checkpoint", new Coordinates(30, 30), List.of(new CheckPoint(List.of("OK"))), "");
-
+                
+                this.builder.setID(1);
                 this.builder.setDimension(32, 32);
                 this.builder.setEnemies(listEn);
                 this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1));
@@ -160,6 +164,102 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(23, 11), 8, 1, '#');
                 this.builder.buildWall(new Coordinates(19, 19), 7, 1, '#');
                 this.builder.buildWall(new Coordinates(2, 19), 9, 1, '#');
+                break;
+            case "BossRoom1":
+                // Boss creation
+                // move1 creation
+                ab.addShape("square", 1, true);
+                mb1.setName("Screw Thrust"); mb1.setActionPoints(5); mb1.setPower(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move bossm1 = mb1.getResult();
+                // move2 creation
+                mb1.setName("Hammer Swing"); mb1.setActionPoints(6); mb1.setPower(3); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());
+                Move bossm2 = mb1.getResult();
+                // move3 creation
+                ab.addShape("square", 1, true);
+                mb1.setName("Wrench Repair"); mb1.setActionPoints(7); mb1.setHealAmount(10); mb1.setHealArea(ab.getResult()); mb1.setAreaHeal(false);
+                Move bossm3 = mb1.getResult();
+                //boss weapon creation
+                Weapon bossWeapon = new Weapon(" ", " ", 4, List.of(bossm1,bossm2,bossm3), null);
+                // Boss initialization
+                ab.addShape("circle", 8, true);
+                List<Coordinates> bossMA = ab.getResult();
+                ab.addShape("square", 25, true);
+                List<Coordinates> bossVA = ab.getResult();
+                Enemy boss = new Enemy(4, 'B', "B.O.B.", new Coordinates(15, 4), EnemyType.BOB, 35, 35, 5, List.of(bossWeapon), 18, 18, bossMA, bossVA, null, null, 50);
+
+                // minions creation
+                // move1 creation
+                ab.addShape("square", 1, true);
+                mb1.setName("Groom Wank"); mb1.setActionPoints(3); mb1.setPower(2); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
+                Move minionM1 = mb1.getResult();
+                // move2 creation
+                mb1.setName("Mop Swing"); mb1.setActionPoints(2); mb1.setPower(3); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
+                Move minionM2 = mb1.getResult();
+                // move3 creation
+                ab.addShape("circle", 4, true);
+                mb1.setName("Bleach Throw"); mb1.setActionPoints(5); mb1.setPower(2); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move minionM3 = mb1.getResult();
+                // minionWeapon creation
+                Weapon minionWeapon = new Weapon(" ", " ", 3, List.of(minionM1, minionM2, minionM3), null);
+                // minions creation
+                ab.addShape("square", 3, true);
+                List<Coordinates> minionMA = ab.getResult();
+                ab.addShape("square", 23, true);
+                List<Coordinates> minionVA = ab.getResult();
+                Enemy minion1 = new Enemy(5, 'E', "T.O.O.L BOT", new Coordinates(12, 6), EnemyType.TOOLBOT, 15, 15, 4, List.of(minionWeapon), 8, 8, minionMA, minionVA, null, null, 10);
+                Enemy minion2 = new Enemy(6, 'E', "T.O.O.L BOT", new Coordinates(18, 6), EnemyType.TOOLBOT, 15, 15, 4, List.of(minionWeapon), 8, 8, minionMA, minionVA, null, null, 10);
+                // creation of NPCs and Chests
+                InteractableElement chest2_1 = new InteractableElement(0, '$', "Chest", new Coordinates(30, 36), List.of(
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
+                InteractableElement bossCheckPoint = new InteractableElement(1, 'C', "checkpoint", new Coordinates(9, 34), List.of(new CheckPoint(List.of("OK"))), "");
+                
+                List<Enemy> enemyBossRoom = new ArrayList<>(); enemyBossRoom.addAll(List.of(boss, minion1, minion2));
+                
+
+                this.builder.setID(2);
+                this.builder.setDimension(32, 40);
+                this.builder.buildBorder();
+
+                this.builder.setEnemies(enemyBossRoom);
+                this.builder.setInteractableElements(List.of(chest2_1, bossCheckPoint));
+                
+                // Top big blocks (left)
+                this.builder.buildWall(new Coordinates(3, 4), 4, 4, '#');
+                
+                // Top big blocks (right) 
+                this.builder.buildWall(new Coordinates(25, 4), 4, 4, '#');
+                
+                // Middle-upper small blocks (left)
+                this.builder.buildWall(new Coordinates(7, 9), 2, 2, '#');
+                
+                // Middle-upper small blocks (right)
+                this.builder.buildWall(new Coordinates(23, 9), 2, 2, '#');
+                
+                // Middle small blocks (left)
+                this.builder.buildWall(new Coordinates(5, 14), 2, 2, '#');
+                
+                // Middle small blocks (right)
+                this.builder.buildWall(new Coordinates(25, 14), 2, 2, '#');
+                
+                // Bottom staircase (left)
+                this.builder.buildWall(new Coordinates(4, 20), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(5, 21), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(6, 22), 2, 1, '#');
+                
+                // Bottom staircase (right)
+                this.builder.buildWall(new Coordinates(26, 20), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(25, 21), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(24, 22), 2, 1, '#');
+                
+                // Bottom horizontal wall - LEFT PART (connected to left border)
+                this.builder.buildWall(new Coordinates(1, 30), 13, 4, '#');
+                
+                // Bottom horizontal wall - RIGHT PART (connected to right border)
+                this.builder.buildWall(new Coordinates(18, 30), 13, 4, '#');
+
+
+                
+                break;
         }
     }
 }

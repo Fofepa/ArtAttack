@@ -1,6 +1,5 @@
 package com.artattack.view;
 
-import java.awt.ActiveEvent;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -195,6 +194,8 @@ public class MainGUIFacade {
             // Creating Players
             Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(29, 23), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(26, 23), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4
+            /* Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(20, 38), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
+            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(22, 38), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 */
 
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
@@ -215,6 +216,15 @@ public class MainGUIFacade {
             mb1.startMap();
             Maps map_1 = mb1.getResult();
             mm.getLevels().put(map_1.getID(), map_1);
+            md.make("BossRoom1");
+            mb1.setPlayerOne(playerOne);
+            mb1.setPlayerTwo(playerTwo);
+            mb1.setID(2);
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            map_t = mb1.getResult();
+            mm.getLevels().put(map_t.getID(), map_t);
 
             // Start Game and set skill trees
             startNewGame(mm, playerOne, playerTwo);

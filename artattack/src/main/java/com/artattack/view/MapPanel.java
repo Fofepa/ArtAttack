@@ -83,7 +83,7 @@ public class MapPanel extends JPanel {
 
                 switch (c) {
                     case '#' -> g.setColor(Color.GRAY);
-                    case '.' -> {continue;}//g.setColor(new Color(50, 50, 50));
+                    case '.' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
                     case 'E' -> g.setColor(Color.RED);
                     case 'I' -> g.setColor(Color.YELLOW);
                     default -> g.setColor(Color.WHITE);

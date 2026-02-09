@@ -8,8 +8,10 @@ import java.util.List;
 import com.artattack.enemystrategy.EnemyChoice;
 import com.artattack.interactions.InteractionStrategy;
 import com.artattack.items.Item;
+import com.artattack.level.AreaBuilder;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.moves.Move;
@@ -747,8 +749,8 @@ public class InputController implements KeyListener, TurnListener {
             System.out.println("CombatStrategy created: " + (mainFrame.getCombatStrategy() != null));
             System.out.println("InventoryStrategy created: " + (mainFrame.getInventoryStrategy() != null));
             
-        } else if(activeElement instanceof Enemy){
-            System.out.println(">> ENEMY TURN: " + activeElement.getName());
+        } else if(activeElement instanceof Enemy c){
+            System.out.println(">> ENEMY TURN: " + c.getName());
             //handleEnemyTurn()
 
             /* InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
@@ -756,10 +758,20 @@ public class InputController implements KeyListener, TurnListener {
                 interactionPanel.setSpeakerImage(activeElement.getSpritePath());
             }
             */
+           
+           // Special case for BOB, when under 50% hp it gains a new move
+            if(c.getEnemyType() == EnemyType.BOB && c.getCurrHP() < (c.getMaxHP() / 2) && c.getWeapons().get(0).getMoves().size() < 4){
+                // move3 creation
+                AreaBuilder ab = new AreaBuilder();
+                ab.addShape("circle", 5, true);
+                Move bossm4 = new Move();
+                bossm4.setName("Steam Wave"); bossm4.setActionPoints(8); bossm4.setPower(7); bossm4.setAreaAttack(true); bossm4.setAttackArea(ab.getResult());
+                c.getWeapons().get(0).getMoves().add(bossm4);
+            }
 
             EnemyChoice enemyChoice = new EnemyChoice(this.mainFrame);
             enemyChoice.setMap(mainFrame.getMap());
-            enemyChoice.setEnemy((Enemy) currentElement);
+            enemyChoice.setEnemy(c);
 
             startEnemyTurn(enemyChoice);
         }

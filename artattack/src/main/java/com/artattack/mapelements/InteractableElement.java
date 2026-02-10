@@ -3,11 +3,8 @@ package com.artattack.mapelements;
 import java.util.List;
 
 import com.artattack.interactions.Interaction;
-import com.artattack.interactions.InteractionFactory;
 import com.artattack.level.Coordinates;
 import com.artattack.view.GameContext;
-import com.artattack.view.MainFrame;
-import com.artattack.view.SpritePanel;
 
 public class InteractableElement extends MapElement {
 
@@ -32,7 +29,7 @@ public class InteractableElement extends MapElement {
         //this.mainFrame = mainFrame;
     }
 
-    public void interact(GameContext gameContext, Player player){
+    public void interact(GameContext gameContext, Player player, String spritePath){
         // Load sprite
         if (gameContext.getUiManager() != null) {
             gameContext.getUiManager().loadSprite(spritePath);
@@ -50,7 +47,7 @@ public class InteractableElement extends MapElement {
         // INJECT the MainFrame before executing
         if (interaction != null) {
             //interaction.setMainFrame(this.mainFrame);
-            interaction.doInteraction(gameContext, player);
+            interaction.doInteraction(gameContext, player, spritePath);
         }
     }
 

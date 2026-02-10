@@ -1,7 +1,5 @@
 package com.artattack.inputcontroller;
 
-import java.util.*;
-
 public interface PlayerStrategy {
     public void execute(int dx, int dy);
     public int getType();   // this method could be useless

@@ -20,7 +20,7 @@ public class InteractionStrategy {
             Math.abs(cursor.getY() - this.movementStrategy.getPlayer().getCoordinates().getY()) <= 1){
                 MapElement element = this.movementStrategy.getMap().getDict().get(cursor);
                     if(element instanceof InteractableElement npc)
-                        npc.interact(this.movementStrategy.getMainFrame().getGameContext(), this.movementStrategy.getPlayer());
+                        npc.interact(this.movementStrategy.getMainFrame().getGameContext(), this.movementStrategy.getPlayer(), npc.getSpritePath());
             movementStrategy.setIsSelected(false);        
         }
     }

@@ -25,23 +25,24 @@ public class Ask extends Interaction {
 	}
 	
 	@Override
-	public void doInteraction(GameContext gameContext, Player player){
+	public void doInteraction(GameContext gameContext, Player player, String spritePath){
 		this.gameContext = gameContext;
 		if (gameContext.getUiManager() != null) {
 			gameContext.getUiManager().showDialogWithChoice(
 				this.question,
 				this.options,
-				choice -> handleChoice(choice, player)
+				choice -> handleChoice(choice, player, spritePath),
+				spritePath
 			);
 		}
 	}
 	
-	private void handleChoice(int choice, Player player){
+	private void handleChoice(int choice, Player player, String spritePath){
 		System.out.println("Player chose option " + choice + ": " + options.get(choice));
 		
 		// Show the answer dialog
 		if (this.gameContext.getMapManager() != null) {
-			this.gameContext.getUiManager().showDialog(this.answers.get(choice));
+			this.gameContext.getUiManager().showDialog(this.answers.get(choice), spritePath);
 		}
 		
 		// Give the item if there is one

@@ -64,14 +64,14 @@ public class interactableelementTest {
 
     @Test
     public void interactTest(){
-        this.npc.interact(this.gameContext, this.player);
+        this.npc.interact(this.gameContext, this.player, null);
         assertTrue("interactableElementTest faild. Item not in player inventory.", 
             this.player.getInventory().contains(this.item)
         );
         assertEquals("interactableElementTest fails. Number of interaction doesn't match.", 1, npc.getCurrInteraction());
-        this.npc.interact(this.gameContext, this.player);
+        this.npc.interact(this.gameContext, this.player,null);
         assertEquals("interactableElementTest fails. Number of interaction doesn't match.", 2, npc.getCurrInteraction());
-        this.npc.interact(this.gameContext,this.player);
+        this.npc.interact(this.gameContext,this.player, null);
         assertEquals("interactableElementTest fails. Number of interaction doesn't match.", 2, npc.getCurrInteraction());
     }
 

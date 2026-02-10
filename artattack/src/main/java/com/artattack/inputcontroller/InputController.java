@@ -161,31 +161,30 @@ public class InputController implements KeyListener, TurnListener {
 
     public void handleFocusInput(KeyEvent e){
         switch(e.getKeyCode()){
-            case KeyEvent.VK_M:
+            case KeyEvent.VK_M -> {
                 System.out.println("Focusing MapPanel");
                 mainFrame.focusMapPanel();
-                break;
-            case KeyEvent.VK_F:
+            }
+            case KeyEvent.VK_F -> {
                 System.out.println("Focusing WeaponsPanel");
                 mainFrame.focusWeaponsPanel();
-                break;
-            case KeyEvent.VK_I:
+            }
+            case KeyEvent.VK_I -> {
                 System.out.println("Focusing InventoryPanel");
-                mainFrame.focusInventoryPanel(); 
-
-
+                mainFrame.focusInventoryPanel();
+                
+                
                 //Force correct Details display
                 if (currentElement instanceof Player && mainFrame.getInventoryStrategy() != null) {
                     setStrategy(mainFrame.getInventoryStrategy()); 
                     updateInventorySelectionDisplay(
-                        mainFrame.getInventoryStrategy(), 
-                        (Player) currentElement
+                            mainFrame.getInventoryStrategy(),
+                            (Player) currentElement
                     );
                 }
-
-                break;
-            default:
-                break;
+            }
+            default -> {
+            }
         }
     }
 
@@ -209,7 +208,6 @@ public class InputController implements KeyListener, TurnListener {
             updateInventorySelectionDisplay(inventoryStrategy, player);
         }
 
-        List<Item> inventory = player.getInventory();
         InventoryPanel inventoryPanel = mainFrame.getInventoryPanel();
         
         if (inventoryPanel == null) {
@@ -302,32 +300,25 @@ public class InputController implements KeyListener, TurnListener {
         if (choiceMode) {
             
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                case KeyEvent.VK_W:
+                case KeyEvent.VK_UP, KeyEvent.VK_W -> {
                     if (textFullyRevealed) {
                         mainFrame.selectUp();  
                     }
-                    break;
-                
-                case KeyEvent.VK_DOWN:
-                case KeyEvent.VK_S:
+                }
+                case KeyEvent.VK_DOWN, KeyEvent.VK_S -> {
                     if (textFullyRevealed) {
                         mainFrame.selectDown();  
                     }
-                    break;
+                }
                 
-                case KeyEvent.VK_ENTER:
-                case KeyEvent.VK_SPACE:
+                case KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> {
                     if (!textFullyRevealed) {
                         mainFrame.skipTextAnimation();   
                     } else {
                         mainFrame.confirmChoice();       
                     }
-                    break;
-                    
-                default:
-                    handleFocusInput(e);
-                    break;
+                }
+                default -> handleFocusInput(e);
             }
         } else {
             
@@ -360,7 +351,7 @@ public class InputController implements KeyListener, TurnListener {
         System.out.println("Dialog finished. Checking context...");
 
         if (mainFrame.getInteractionPanel() != null) {
-            mainFrame.getInteractionPanel().resetToDefaultImage();
+            mainFrame.getInteractionPanel().deactivate();
         }
         
         if (currentState instanceof CombatStrategy) {
@@ -440,6 +431,10 @@ public class InputController implements KeyListener, TurnListener {
                     // Switch focus to MovesPanel
                     mainFrame.focusMovesPanel();
                     mainFrame.updateAttackArea();
+
+                    if (mainFrame.getMapPanel() != null) {
+                        mainFrame.getMapPanel().showMoveArea(null, null);
+                    }
 
                     System.out.println("Opened moves for: " + selectedWeapon.getName());
                 }
@@ -734,7 +729,7 @@ public class InputController implements KeyListener, TurnListener {
                 
                 // 2. Force the current image to match the default (unless a dialog is already forcing another)
                 if (!interactionPanel.isDialogActive()) {
-                    interactionPanel.resetToDefaultImage();
+                    interactionPanel.deactivate();
                 }
             }
             
@@ -890,7 +885,7 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
 
-        String s = "";
+        String s ;
         s = switch (currentState.getType()) {
             case 0 -> "MovementStrategy";
             case 1 -> "CombatStrategy";

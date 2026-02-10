@@ -86,7 +86,7 @@ public class SwitchMap extends Interaction {
     }*/
 
     @Override
-    public void doInteraction(GameContext gameContext, Player player) {
+    public void doInteraction(GameContext gameContext, Player player, String spritePath) {
         if(!this.unlocked){
             if(player.getKeys() != null && !player.getKeys().isEmpty()){
                 for(Key k : player.getKeys()){
@@ -140,7 +140,7 @@ public class SwitchMap extends Interaction {
                 gameContext.getUiManager().switchMap(next);
             }
         } else {
-            gameContext.getUiManager().showDialog(List.of("Door is locked. You need a key."));
+            gameContext.getUiManager().showDialog(List.of("Door is locked. You need a key."), spritePath);
         }
         
     }

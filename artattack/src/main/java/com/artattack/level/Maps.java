@@ -182,6 +182,10 @@ public class Maps {
         return this.enemies;
     }
 
+    public List<InteractableElement> getInteractableElements(){
+        return this.interactableElements;
+    }
+
     public ConcreteTurnHandler getConcreteTurnHandler(){
         return this.turnHandler;
     }

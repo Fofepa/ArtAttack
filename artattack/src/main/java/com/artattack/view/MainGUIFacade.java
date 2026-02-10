@@ -936,7 +936,7 @@ class CenterPanelFacade {
         interactionContainer.setBackground(Color.BLACK);
         interactionContainer.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1));
         interactionContainer.add(interactionPanel, BorderLayout.CENTER);
-        interactionContainer.setVisible(true); // Hidden by default
+        interactionContainer.setVisible(true);
 
         interactionContainer.addComponentListener(new java.awt.event.ComponentAdapter() {
             @Override

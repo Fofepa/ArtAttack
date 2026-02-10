@@ -13,6 +13,9 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -24,11 +27,12 @@ public class PausePanel extends JPanel {
     private MainGUIFacade mainFacade;
     private JPanel contentPanel;
     
-    
+    // Gestione Layout a schede
     private CardLayout cardLayout;
     private static final String CARD_MAIN = "MAIN";
     private static final String CARD_SETTINGS = "SETTINGS";
     private static final String CARD_ACCESS = "ACCESS";
+    private static final String CARD_NO_SAVE = "NO_SAVE";
     
     private static final Dimension PANEL_SIZE = new Dimension(400, 500);
     private static final Dimension BUTTON_SIZE = new Dimension(300, 45); 
@@ -55,11 +59,9 @@ public class PausePanel extends JPanel {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // 1. Background
                 g2.setColor(new Color(20, 20, 20, 230));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 
-                // 2. Border
                 g2.setColor(Color.GREEN);
                 g2.setStroke(new java.awt.BasicStroke(3));
                 g2.drawRect(1, 1, getWidth()-2, getHeight()-2);
@@ -86,6 +88,7 @@ public class PausePanel extends JPanel {
         contentPanel.add(createMainPauseMenu(), CARD_MAIN);
         contentPanel.add(createSettingsMenu(), CARD_SETTINGS);
         contentPanel.add(createAccessibilityMenu(), CARD_ACCESS);
+        contentPanel.add(createNoSavePanel(), CARD_NO_SAVE);
     }
     
     private void showCard(String cardName) {
@@ -93,7 +96,7 @@ public class PausePanel extends JPanel {
         contentPanel.repaint(); 
     }
     
-
+    // --- MENU PRINCIPALE ---
     private JPanel createMainPauseMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false); 
@@ -112,13 +115,11 @@ public class PausePanel extends JPanel {
         JButton continueBtn = createPauseButton("Continue");
         JButton loadBtn = createPauseButton("Load Game");
         JButton settingsBtn = createPauseButton("Settings");
-        JButton saveBtn = createPauseButton("Save Game");
         JButton exitBtn = createPauseButton("Exit to Menu");
         
         gbc.gridy = 1; panel.add(continueBtn, gbc);
         gbc.gridy = 2; panel.add(loadBtn, gbc);
         gbc.gridy = 3; panel.add(settingsBtn, gbc);
-        gbc.gridy = 4; panel.add(saveBtn, gbc);
         gbc.gridy = 5; panel.add(exitBtn, gbc);
         
         JLabel hintLabel = new JLabel("Press ESC to resume", JLabel.CENTER);
@@ -130,12 +131,83 @@ public class PausePanel extends JPanel {
         panel.add(hintLabel, gbc);
         
         continueBtn.addActionListener(e -> mainFacade.hidePauseMenu());
+        
+        // ---  LOAD GAME ---
+        loadBtn.addActionListener(e -> {
+            if (doesSaveFileExist()) {
+                mainFacade.loadGame();
+                mainFacade.hidePauseMenu();
+            } else {
+                showCard(CARD_NO_SAVE);
+            }
+        });
+
         settingsBtn.addActionListener(e -> showCard(CARD_SETTINGS));
         exitBtn.addActionListener(e -> mainFacade.showMenu());
         
         return panel;
     }
+
+
+    private boolean doesSaveFileExist() {
+        String gameName = "ArtAttack";
+        String os = System.getProperty("os.name").toLowerCase();
+        String home = System.getProperty("user.home");
+        Path folder;
+
+        if (os.contains("win")) {
+            String appData = System.getenv("LOCALAPPDATA");
+            if (appData == null) {
+                folder = Paths.get(home, "AppData", "Local", gameName);
+            } else {
+                folder = Paths.get(appData, gameName);
+            }
+        } else if (os.contains("mac")) {
+            folder = Paths.get(home, "Library", "Application Support", gameName);
+        } else {
+            // Linux/Unix
+            folder = Paths.get(home, ".local", "share", gameName);
+        }
+
+        File saveFile = folder.resolve("save.json").toFile();
+        return saveFile.exists() && !saveFile.isDirectory();
+    }
     
+    // --- NO SAVE FOUND ---
+    private JPanel createNoSavePanel() {
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        
+        JLabel titleLabel = new JLabel("NO SAVE FOUND", JLabel.CENTER);
+        titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
+        titleLabel.setForeground(Color.RED); 
+        
+        gbc.gridy = 0;
+        gbc.insets = new Insets(30, 20, 30, 20);
+        panel.add(titleLabel, gbc);
+        
+        JLabel messageLabel = new JLabel("<html><center>No saved game data found<br>in local storage.</center></html>", JLabel.CENTER);
+        messageLabel.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        messageLabel.setForeground(Color.WHITE);
+        
+        gbc.gridy = 1;
+        gbc.insets = new Insets(10, 20, 40, 20);
+        panel.add(messageLabel, gbc);
+        
+        JButton backBtn = createPauseButton("Back");
+        formatBackButton(backBtn);
+        backBtn.addActionListener(e -> showCard(CARD_MAIN));
+        
+        gbc.gridy = 2;
+        gbc.insets = new Insets(20, 20, 20, 20);
+        panel.add(backBtn, gbc);
+        
+        return panel;
+    }
+    
+    // --- SETTINGS ---
     private JPanel createSettingsMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
@@ -180,6 +252,7 @@ public class PausePanel extends JPanel {
         return panel;
     }
 
+    // --- ACCESSIBILITY ---
     private JPanel createAccessibilityMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
@@ -247,7 +320,7 @@ public class PausePanel extends JPanel {
         button.setFocusPainted(false);
         button.setFocusable(false);
         
-        // Uso delle nuove dimensioni ridotte
+        
         button.setMinimumSize(BUTTON_SIZE);
         button.setMaximumSize(BUTTON_SIZE);
         button.setPreferredSize(BUTTON_SIZE);

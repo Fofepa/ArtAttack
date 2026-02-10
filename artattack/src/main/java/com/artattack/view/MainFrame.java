@@ -715,4 +715,13 @@ public class MainFrame implements UIManager {
             interactionPanel.resetToDefaultImage();
         }
     }
+
+
+   
+    @Override
+    public void showLevelComplete(Maps nextMap) {
+        if (mainGUIFacade != null) {
+            mainGUIFacade.showLevelComplete(nextMap);
+        }
+    }
 }

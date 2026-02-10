@@ -55,13 +55,15 @@ public class MainGUIFacade {
     private PausePanel pausePanel;
     private CharacterSelectionPanel characterSelectionPanel;
     private SkillTreePanel skillTreePanel;
-    
+    private LevelCompletePanel levelCompletePanel;
+    private long levelStartTime;
     
     private String currentState = "MENU"; // MENU, GAME, PAUSE, SKILL_TREE
     
     public MainGUIFacade() {
         initializeMainFrame();
         initializeFacades();
+        this.levelStartTime = System.currentTimeMillis();
     }
     
     private void initializeMainFrame() {
@@ -251,8 +253,8 @@ public class MainGUIFacade {
         switch (type) {
             case MUSICIAN:
                 Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, List.of(m1,m2), PlayerType.MUSICIAN);
-                return new Player(id, '@', type.getName(), coords, 
-                    List.of(musicianWeapon), // Esempio arma
+                return new Player(id, '♫', type.getName(), coords, 
+                    List.of(musicianWeapon),
                     15, 15, zappaMA, 19, type.getMaxHP(), 10, 
                     20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
                     
@@ -373,6 +375,7 @@ public class MainGUIFacade {
         
         // Start the turn system
         maps.getLevels().get(maps.getCurrMap()).getConcreteTurnHandler().start();
+        this.levelStartTime = System.currentTimeMillis();
     }
 
     public void loadGame() {
@@ -476,6 +479,7 @@ public class MainGUIFacade {
             //Start turn system
             mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().start(mm.getTurnIndex());
             mm.getLevels().get(mm.getCurrMap()).getConcreteTurnHandler().updateTurn();
+            this.levelStartTime = System.currentTimeMillis();
             
         } catch(IOException e){
             e.printStackTrace();
@@ -552,6 +556,62 @@ public class MainGUIFacade {
             mainFrame.repaint();
         }
     }
+
+    public void showLevelComplete(Maps nextMap) {
+        currentState = "LEVEL_COMPLETE";
+        
+        // 1. Calcola tempo trascorso
+        long elapsedMillis = System.currentTimeMillis() - levelStartTime;
+        long seconds = (elapsedMillis / 1000) % 60;
+        long minutes = (elapsedMillis / (1000 * 60)) % 60;
+        String timeString = String.format("%02d:%02d", minutes, seconds);
+
+        // 2. Pulisci eventuali pannelli vecchi
+        if (levelCompletePanel != null) {
+            mainFrame.getLayeredPane().remove(levelCompletePanel);
+        }
+
+        // 3. Crea il nuovo pannello passando il tempo
+        levelCompletePanel = new LevelCompletePanel(this, nextMap, timeString);
+        levelCompletePanel.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
+        
+        // 4. Aggiungilo al layer POPUP (sopra tutto)
+        JLayeredPane layeredPane = mainFrame.getLayeredPane();
+        layeredPane.add(levelCompletePanel, JLayeredPane.POPUP_LAYER);
+        
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        
+        // Dai il focus al pannello per ricevere l'Enter
+        levelCompletePanel.requestFocusInWindow();
+    }
+
+    public void finalizeMapSwitch(Maps nextMap) {
+        // 1. Rimuovi il pannello level complete
+        if (levelCompletePanel != null) {
+            mainFrame.getLayeredPane().remove(levelCompletePanel);
+            levelCompletePanel = null;
+        }
+
+        // 2. Esegui lo switch della mappa effettivo
+        if (gameFacade != null && gameFacade.getMainFrame() != null) {
+            gameFacade.getMainFrame().switchMap(nextMap);
+        }
+        
+        // 3. Resetta lo stato e il timer per il nuovo livello
+        currentState = "GAME";
+        this.levelStartTime = System.currentTimeMillis();
+        
+        // 4. Rimetti il focus sulla mappa
+        if (gameFacade != null) {
+            gameFacade.focusMapPanel();
+        }
+        
+        mainFrame.revalidate();
+        mainFrame.repaint();
+    }
+
+
     
     public void exitGame() {
         System.exit(0);

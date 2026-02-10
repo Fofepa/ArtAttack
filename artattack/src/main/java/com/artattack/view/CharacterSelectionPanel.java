@@ -7,26 +7,80 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+
 
 public class CharacterSelectionPanel extends JPanel {
     private MainGUIFacade mainFacade;
     private CharacterType[] types = CharacterType.values();
+    
+    // Cache per le immagini
+    private Map<CharacterType, Image> characterImages;
     
     // Stato della selezione
     private int hoverIndex = 0;
     private CharacterType player1Choice = null;
     private boolean isPlayer1Turn = true;
     
+    // Dimensioni carta
+    private final int CARD_WIDTH = 280; // Leggermente più larga per l'immagine
+    private final int CARD_HEIGHT = 400; // Più alta per far stare l'immagine
+    private final int IMAGE_HEIGHT = 180; // Altezza riservata all'immagine
+
     public CharacterSelectionPanel(MainGUIFacade mainFacade) {
         this.mainFacade = mainFacade;
+        loadCharacterImages(); // Carica le immagini all'avvio
         initializePanel();
         setupInput();
+    }
+
+    /**
+     * Carica le immagini usando getResource per compatibilità JAR/Linux
+     */
+    private void loadCharacterImages() {
+        characterImages = new HashMap<>();
+        
+        for (CharacterType type : types) {
+            String path = "";
+            
+            // Definisci i percorsi qui o prendili dall'Enum se hai aggiunto un metodo getImagePath()
+            switch (type) {
+                case MUSICIAN:
+                    path = "/images/frank-zappa-fotor-20260206135640.jpg";
+                    break;
+                case DIRECTOR: // O MOVIE_DIRECTOR a seconda del tuo enum
+                    path = "/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg";
+                    break;
+                default:
+                    // Percorso default o break
+                    break;
+            }
+            
+            try {
+                if (!path.isEmpty()) {
+                    URL imgUrl = getClass().getResource(path);
+                    if (imgUrl != null) {
+                        Image img = ImageIO.read(imgUrl);
+                        characterImages.put(type, img);
+                    } else {
+                        System.err.println("Immagine non trovata per " + type + ": " + path);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void initializePanel() {
@@ -47,6 +101,8 @@ public class CharacterSelectionPanel extends JPanel {
                         moveSelection(1);
                     }
                     case KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> {
+                        CharacterType selected = types[hoverIndex];
+                        // Se è il turno P2 e sta scegliendo lo stesso di P1, confermaSelection lo gestirà
                         confirmSelection();
                     }
                     case KeyEvent.VK_ESCAPE -> {
@@ -83,15 +139,11 @@ public class CharacterSelectionPanel extends JPanel {
         if (isPlayer1Turn) {
             player1Choice = selected;
             isPlayer1Turn = false;
-            // Reset cursore o spostalo automaticamente sul primo disponibile
-            if (types[0] == player1Choice && types.length > 1) hoverIndex = 1;
-            else hoverIndex = 0;
-            
-            System.out.println("P1 selected: " + player1Choice);
+            // Sposta automaticamente la selezione sul prossimo disponibile
+            hoverIndex = (hoverIndex + 1) % types.length;
             repaint();
         } else {
             // Selezione finita, avvia il gioco
-            System.out.println("P2 selected: " + selected);
             mainFacade.finalizeGameSetup(player1Choice, selected);
         }
     }
@@ -100,7 +152,9 @@ public class CharacterSelectionPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
+        // Migliore qualità rendering immagini e testo
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         int width = getWidth();
         int height = getHeight();
@@ -109,28 +163,26 @@ public class CharacterSelectionPanel extends JPanel {
         String title = isPlayer1Turn ? "PLAYER 1: CHOOSE CHARACTER" : "PLAYER 2: CHOOSE CHARACTER";
         g2.setFont(new Font("Monospaced", Font.BOLD, 40));
         g2.setColor(isPlayer1Turn ? Color.GREEN : Color.MAGENTA);
-        drawCenteredString(g2, title, width / 2, 80);
+        drawCenteredString(g2, title, width / 2, 60);
 
-        // 2. Disegna le carte dei personaggi
-        int cardWidth = 250;
-        int cardHeight = 350;
+        // 2. Calcolo posizione carte
         int gap = 50;
-        int totalWidth = (types.length * cardWidth) + ((types.length - 1) * gap);
+        int totalWidth = (types.length * CARD_WIDTH) + ((types.length - 1) * gap);
         int startX = (width - totalWidth) / 2;
-        int startY = (height - cardHeight) / 2;
+        int startY = (height - CARD_HEIGHT) / 2 + 20;
 
         for (int i = 0; i < types.length; i++) {
             CharacterType type = types[i];
-            int x = startX + (i * (cardWidth + gap));
+            int x = startX + (i * (CARD_WIDTH + gap));
             
-            drawCharacterCard(g2, type, x, startY, cardWidth, cardHeight, i == hoverIndex);
+            drawCharacterCard(g2, type, x, startY, CARD_WIDTH, CARD_HEIGHT, i == hoverIndex);
         }
         
         // 3. Istruzioni
         g2.setFont(new Font("Monospaced", Font.ITALIC, 16));
         g2.setColor(Color.GRAY);
-        String instruction = isPlayer1Turn ? "Press ENTER to confirm" : "Cannot select P1's character";
-        drawCenteredString(g2, instruction, width / 2, height - 100);
+        String instruction = isPlayer1Turn ? "Press ENTER to confirm" : "Select a distinct character";
+        drawCenteredString(g2, instruction, width / 2, height - 50);
     }
 
     private void drawCharacterCard(Graphics2D g2, CharacterType type, int x, int y, int w, int h, boolean isHovered) {
@@ -146,11 +198,12 @@ public class CharacterSelectionPanel extends JPanel {
         }
         g2.fillRoundRect(x, y, w, h, 15, 15);
 
+        // Bordo colorato
         if (isHovered) {
             g2.setColor(isPlayer1Turn ? Color.CYAN : Color.MAGENTA);
             g2.setStroke(new BasicStroke(3));
         } else if (isTaken) {
-            g2.setColor(Color.DARK_GRAY);
+            g2.setColor(Color.DARK_GRAY); // Bordo grigio per preso
             g2.setStroke(new BasicStroke(2));
         } else {
             g2.setColor(Color.GRAY);
@@ -158,15 +211,37 @@ public class CharacterSelectionPanel extends JPanel {
         }
         g2.drawRoundRect(x, y, w, h, 15, 15);
 
-        // --- 2. INTESTAZIONE (Nome e Descrizione) ---
-        int currentY = y + 40;
+        // --- 2. IMMAGINE DEL PERSONAGGIO ---
+        Image img = characterImages.get(type);
+        int imgPadding = 10;
+        int imgW = w - (imgPadding * 2);
+        int imgH = IMAGE_HEIGHT;
+        
+        if (img != null) {
+            // Disegna immagine (con clip arrotondata se volessimo fare i fighi, ma semplice per ora)
+            g2.drawImage(img, x + imgPadding, y + imgPadding, imgW, imgH, null);
+            
+            // Cornice attorno all'immagine
+            g2.setColor(new Color(0,0,0,100));
+            g2.drawRect(x + imgPadding, y + imgPadding, imgW, imgH);
+        } else {
+            // Placeholder se immagine non trovata
+            g2.setColor(Color.BLACK);
+            g2.fillRect(x + imgPadding, y + imgPadding, imgW, imgH);
+            g2.setColor(Color.GRAY);
+            drawCenteredString(g2, "NO IMAGE", x + w/2, y + imgH/2);
+        }
+
+        // --- 3. INTESTAZIONE (Nome e Descrizione) ---
+        // Spostiamo tutto sotto l'immagine
+        int currentY = y + IMAGE_HEIGHT + 35;
         
         // Nome
         g2.setColor(isTaken ? Color.GRAY : Color.WHITE);
         g2.setFont(new Font("Monospaced", Font.BOLD, 22));
         drawCenteredString(g2, type.getName(), x + w / 2, currentY);
         
-        currentY += 25;
+        currentY += 20;
         
         // Descrizione
         g2.setFont(new Font("Monospaced", Font.ITALIC, 12));
@@ -178,74 +253,90 @@ public class CharacterSelectionPanel extends JPanel {
         g2.setColor(Color.DARK_GRAY);
         g2.drawLine(x + 20, currentY, x + w - 20, currentY);
 
-        // --- 3. STATISTICHE ---
+        // --- 4. STATISTICHE ---
         currentY += 25;
-        int barX = x + 30;
-        int barWidth = w - 60; // Larghezza barre
+        int barX = x + 20;
+        int barWidth = w - 40; // Larghezza barre
 
         // Arma
         g2.setFont(new Font("Monospaced", Font.PLAIN, 14));
         g2.setColor(Color.WHITE);
-        g2.drawString("Weapon: " + type.getWeaponName(), barX, currentY);
+        g2.drawString("Wpn: " + type.getWeaponName(), barX, currentY);
         
         currentY += 25;
 
-        // Barra HP (Immaginando che 30 sia il massimo assoluto nel gioco per scalare la barra)
+        // Barra HP 
         drawStatBar(g2, "HP", type.getMaxHP(), 30, Color.RED, barX, currentY, barWidth);
         
         currentY += 30;
 
-        // Barra Velocità (Immaginando che 10 sia il massimo assoluto)
-        drawStatBar(g2, "Speed", type.getSpeed(), 10, Color.YELLOW, barX, currentY, barWidth);
+        // Barra Velocità
+        drawStatBar(g2, "Spd", type.getSpeed(), 10, Color.YELLOW, barX, currentY, barWidth);
 
-        // --- 4. STATO (TAKEN / P1 / P2) ---
+        // --- 5. OVERLAY (TAKEN / P1 / P2) ---
+        // Se preso, disegna "TAKEN" sopra tutto
         if (isTaken) {
-            g2.setColor(new Color(255, 0, 0, 100)); // Rosso semitrasparente
-            g2.setFont(new Font("Monospaced", Font.BOLD, 40));
-            AffineTransform orig = g2.getTransform();
+            // Sfondo semi-trasparente sopra l'intera carta
+            g2.setColor(new Color(0, 0, 0, 150));
+            g2.fillRoundRect(x, y, w, h, 15, 15);
             
-            // Ruota la scritta TAKEN
+            g2.setColor(new Color(255, 50, 50)); 
+            g2.setFont(new Font("Monospaced", Font.BOLD, 40));
+            
+            AffineTransform orig = g2.getTransform();
             g2.rotate(Math.toRadians(-20), x + w/2, y + h/2);
             drawCenteredString(g2, "TAKEN", x + w / 2, y + h / 2);
             g2.setTransform(orig);
+            
+            // Mostra chi l'ha preso
+            g2.setFont(new Font("Monospaced", Font.BOLD, 16));
+            g2.setColor(Color.WHITE);
+            drawCenteredString(g2, "by Player 1", x + w/2, y + h/2 + 30);
         }
         
+        // Indicatore selezione
         if (isHovered && !isTaken) {
             g2.setColor(isPlayer1Turn ? Color.CYAN : Color.MAGENTA);
             String label = isPlayer1Turn ? "P1 Select" : "P2 Select";
             g2.setFont(new Font("Monospaced", Font.BOLD, 14));
-            drawCenteredString(g2, label, x + w/2, y + h - 20);
+            // Disegna sotto la carta
+            drawCenteredString(g2, "▲ " + label + " ▲", x + w/2, y + h + 20);
         }
     }
 
     private void drawStatBar(Graphics2D g2, String label, int value, int max, Color color, int x, int y, int width) {
-        int height = 10;
+        int height = 8;
+        int labelWidth = 30;
         
-        // Etichetta (es. "HP: 20")
+        // Etichetta (es. "HP")
         g2.setColor(Color.LIGHT_GRAY);
-        g2.setFont(new Font("Monospaced", Font.PLAIN, 10));
-        g2.drawString(label + " " + value, x, y - 3);
+        g2.setFont(new Font("Monospaced", Font.BOLD, 12));
+        g2.drawString(label, x, y + height);
+
+        int barStartX = x + labelWidth + 5;
+        int actualBarWidth = width - labelWidth - 5;
 
         // Sfondo barra (grigio scuro)
-        g2.setColor(new Color(20, 20, 20));
-        g2.fillRect(x, y, width, height);
+        g2.setColor(new Color(50, 50, 50));
+        g2.fillRect(barStartX, y, actualBarWidth, height);
 
         // Parte piena
-        int fillWidth = (int) (((double) value / max) * width);
-        if (fillWidth > width) fillWidth = width;
+        int fillWidth = (int) (((double) value / max) * actualBarWidth);
+        if (fillWidth > actualBarWidth) fillWidth = actualBarWidth;
         
         g2.setColor(color);
-        g2.fillRect(x, y, fillWidth, height);
+        g2.fillRect(barStartX, y, fillWidth, height);
         
         // Bordo sottile
-        g2.setColor(new Color(60, 60, 60));
-        g2.drawRect(x, y, width, height);
+        g2.setColor(new Color(100, 100, 100));
+        g2.drawRect(barStartX, y, actualBarWidth, height);
     }
 
     private void drawCenteredString(Graphics g, String text, int x, int y) {
+        if (text == null) return;
         FontMetrics metrics = g.getFontMetrics();
         int dX = x - (metrics.stringWidth(text) / 2);
-        int dY = y + (metrics.getAscent() - metrics.getDescent()) / 2; // Vertical center approx
+        int dY = y + (metrics.getAscent() - metrics.getDescent()) / 2;
         g.drawString(text, dX, dY);
     }
 }

@@ -19,8 +19,8 @@ public class StatsPanel extends JPanel {
     private static final int BAR_HEIGHT = 10;
     private static final int START_X = 10;
     private static final int START_Y = 20;
-    private static final int GAP_Y = 35; // Vertical space between bars
-    
+    private static final int GAP_Y = 35; 
+
     public StatsPanel(Player player) {
         this.player = player;
         setBackground(Color.BLACK);
@@ -52,12 +52,12 @@ public class StatsPanel extends JPanel {
         String nameText = player.getName() + " (Lvl: " + player.getLevel() + ")";
         g.drawString(nameText, START_X, currentY);
         
-        currentY += 20; // Move down for the first bar
+        currentY += 20; 
 
         // 3. Draw HP Bar (Red)
         drawBar(g, "HP", player.getCurrHP(), player.getMaxHP(), Color.RED, START_X, currentY);
         
-        currentY += GAP_Y; // Move down for the second bar
+        currentY += GAP_Y; 
 
         // 4. Draw AP Bar (Cyan)
         
@@ -68,21 +68,12 @@ public class StatsPanel extends JPanel {
 
         // 5. Draw XP Bar (Yellow)
         int currentExp = player.getCurrXP();
-        int maxExp = player.getMaxHP();
+        int maxExp = player.getMaxXP();
 
         drawBar(g, "XP", currentExp, maxExp, Color.YELLOW, START_X, currentY);
     }
 
-    /**
-     * Helper method to draw a generic statistic bar.
-     * * @param g The graphics context
-     * @param label The text label (e.g., "HP")
-     * @param current The current value
-     * @param max The maximum value
-     * @param barColor The color of the filled portion
-     * @param x X position
-     * @param y Y position
-     */
+    
     private void drawBar(Graphics g, String label, int current, int max, Color barColor, int x, int y) {
         // Avoid division by zero
         if (max <= 0) max = 1; 

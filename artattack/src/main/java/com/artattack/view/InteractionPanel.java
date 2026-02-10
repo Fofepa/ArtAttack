@@ -10,6 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -67,11 +68,19 @@ public class InteractionPanel extends JPanel {
      */
     public void setDefaultPlayerImage(String imagePath) {
         try {
-            defaultPlayerImage = ImageIO.read(new File(imagePath));
+           
+            URL imageUrl = getClass().getResource(imagePath);
+            
+            if (imageUrl == null) {
+                System.err.println("ERRORE CRITICO: Immagine non trovata nel JAR: " + imagePath);
+                return;
+            }
+            
+            defaultPlayerImage = ImageIO.read(imageUrl);
             currentSpeakerImage = defaultPlayerImage;
             repaint();
         } catch (IOException e) {
-            System.err.println("Failed to load default player image: " + imagePath);
+            System.err.println("Errore caricamento immagine: " + imagePath);
             e.printStackTrace();
         }
     }
@@ -81,19 +90,25 @@ public class InteractionPanel extends JPanel {
      */
     public void setSpeakerImage(String imagePath) {
         if (imagePath == null || imagePath.isEmpty()) {
-            // Se non c'è immagine specifica, torna al default
             currentSpeakerImage = defaultPlayerImage;
             repaint();
             return;
         }
-        
+
         try {
-            currentSpeakerImage = ImageIO.read(new File(imagePath));
+            URL imageUrl = getClass().getResource(imagePath);
+
+            if (imageUrl == null) {
+                System.err.println("Immagine speaker non trovata: " + imagePath);
+                currentSpeakerImage = defaultPlayerImage;
+                return;
+            }
+
+            currentSpeakerImage = ImageIO.read(imageUrl);
             repaint();
         } catch (IOException e) {
-            System.err.println("Failed to load speaker image: " + imagePath);
+            System.err.println("Errore IO immagine speaker: " + imagePath);
             e.printStackTrace();
-            // Fallback al default
             currentSpeakerImage = defaultPlayerImage;
         }
     }

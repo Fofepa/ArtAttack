@@ -9,9 +9,12 @@ import com.artattack.interactions.SwitchMap;
 import com.artattack.interactions.Talk;
 import com.artattack.items.Item;
 import com.artattack.items.ItemType;
+import com.artattack.mapelements.ConcreteEnemyBuilder;
+import com.artattack.mapelements.ConcreteInteractableElementBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.InteractableElementDirector;
 import com.artattack.mapelements.TriggerGroup;
 import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
@@ -21,11 +24,17 @@ public class MapDirector {
     private MapBuilder builder;
     private MoveBuilder1 mb1;
     private AreaBuilder ab;
+    private ConcreteEnemyBuilder eBuilder;
+    private ConcreteInteractableElementBuilder ieBuilder;
+    private InteractableElementDirector ieDirector;
 
     public MapDirector(MapBuilder builder) {
         this.builder = builder;
         this.mb1 = new MoveBuilder1();
         this.ab = new AreaBuilder();
+        this.eBuilder = new ConcreteEnemyBuilder();
+        this.ieBuilder = new ConcreteInteractableElementBuilder();
+        this.ieDirector = new InteractableElementDirector();
     }
 
     public void changeBuilder(MapBuilder builder) {
@@ -50,13 +59,17 @@ public class MapDirector {
                 Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
                 Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
                 Weapon enemyWeapon = new Weapon(" ", " ", 5, List.of(m1,m2, m3), null);
-                Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 20, 20, 2, List.of(enemyWeapon), 10, 10, moveArea_t, enemyVisionArea_t, null, null, 20);
+                eBuilder.setID(0); eBuilder.setMapSymbol('E'); eBuilder.setName("Employee"); eBuilder.setEnemyType(EnemyType.EMPLOYEE); eBuilder.setCoordinates(new Coordinates(6, 3)); eBuilder.setCurrHP(20); eBuilder.setVisionArea(enemyVisionArea_t);
+                eBuilder.setMaxHP(20); eBuilder.setSpeed(2); eBuilder.setWeapons(List.of(enemyWeapon)); eBuilder.setActionPoints(10); eBuilder.setMaxActionPoints(10); eBuilder.setMoveArea(moveArea); eBuilder.setDroppedXP(20);
+                Enemy e = eBuilder.getResult();
                 List<Enemy> listE = new ArrayList<>();
                 listE.add(e);
 
                 //Creating InteractableElements
-                InteractableElement chest_t = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
-                    new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))),"");
+                ieBuilder.setID(0); ieBuilder.setName("Chest"); ieBuilder.setMapSymbol('O'); ieBuilder.setCoordinates(new Coordinates(1, 23)); 
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty.")))); 
+                InteractableElement chest_t = ieBuilder.getResult();
                 InteractableElement npc_t = new InteractableElement(0, 'T', "John Belushi", new Coordinates(29, 22), List.of(new Talk(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",

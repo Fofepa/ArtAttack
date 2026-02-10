@@ -36,7 +36,7 @@ public class SkillTree{
 
     public boolean isComplete(){
         for(Node node : this.supportList){
-            if(node.isSpent()){
+            if(!node.isSpent()){
                 return false;
             }
         }

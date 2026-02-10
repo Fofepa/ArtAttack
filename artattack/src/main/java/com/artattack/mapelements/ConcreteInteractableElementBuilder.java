@@ -37,4 +37,9 @@ public class ConcreteInteractableElementBuilder implements InteractableElementBu
     public void setInteractions(List<Interaction> interactions){
         this.interactions = interactions;
     }
+
+    @Override
+    public InteractableElement getResult(){
+        return new InteractableElement(ID, mapSymbol, name, coordinates,interactions,spritePath);
+    }
 }

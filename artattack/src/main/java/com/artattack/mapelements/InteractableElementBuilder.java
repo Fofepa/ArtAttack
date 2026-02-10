@@ -12,5 +12,6 @@ public interface InteractableElementBuilder {
     public abstract void setCoordinates(Coordinates coordinates);
     public abstract void setSpritePath(String spritePath);
     public abstract void setInteractions(List<Interaction> interactions);
+    public abstract InteractableElement getResult();
     
 }

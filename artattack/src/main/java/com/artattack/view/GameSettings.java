@@ -2,7 +2,6 @@ package com.artattack.view;
 
 public class GameSettings {
     
-    // Enum per la velocità del testo
     public enum TextSpeed {
         SLOW(100), NORMAL(40), FAST(10), INSTANT(0);
         private final int delay;
@@ -13,7 +12,6 @@ public class GameSettings {
         }
     }
 
-    // Enum per la grandezza del testo
     public enum FontSize {
         SMALL(14),
         MEDIUM(18),
@@ -67,10 +65,9 @@ public class GameSettings {
     public void cycleFontSize() { this.fontSize = this.fontSize.next(); }
 
 
-    // Restituisce direttamente la dimensione in pixel per il MapPanel
+    // pixel
     public int getZoomLevel() { return mapZoom.getSize(); }
     
-    // Restituisce l'enum per scriverlo nel bottone
     public MapZoom getCurrentZoom() { return mapZoom; }
     
     public void cycleZoomLevel() { this.mapZoom = this.mapZoom.next(); }

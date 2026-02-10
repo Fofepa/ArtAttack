@@ -59,7 +59,7 @@ public class MainGUIFacade {
     private LevelCompletePanel levelCompletePanel;
     private long levelStartTime;
     
-    private String currentState = "MENU"; // MENU, GAME, PAUSE, SKILL_TREE
+    private String currentState = "MENU"; 
     
     public MainGUIFacade() {
         initializeMainFrame();
@@ -71,21 +71,16 @@ public class MainGUIFacade {
         mainFrame = new JFrame("Art Attack");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        // --- GESTIONE RESIZE ---
-        // 1. Imposta la dimensione preferita iniziale
+        // --- RESIZE MANAGER---
         mainFrame.setPreferredSize(new Dimension(1920, 1080));
         
-        // 2. Imposta la dimensione MINIMA sotto la quale non si può scendere
-        // Impostiamo 1280x720 come risoluzione minima giocabile
         mainFrame.setMinimumSize(new Dimension(1280, 720));
         
-        // 3. Rendi la finestra ridimensionabile (di default è true, ma lo esplicitiamo)
         mainFrame.setResizable(true);
 
         mainFrame.setLayout(new BorderLayout());
         mainFrame.getContentPane().setBackground(Color.BLACK);
         
-        // Applica le dimensioni e centra
         mainFrame.pack(); 
         mainFrame.setLocationRelativeTo(null);
     }
@@ -125,66 +120,6 @@ public class MainGUIFacade {
 
     private void createGameFromSelection(CharacterType p1Type, CharacterType p2Type) {
          try {
-            /*MoveBuilder1 mb1= new MoveBuilder1();
-            /*mb1.setName("prova");
-            mb1.setPower(20);
-            mb1.setActionPoints(1);
-            mb1.setAreaAttack(false);
-            
-        
-
-           
-        
-            // Build the map using your MapBuilder pattern
-            MapBuilder builder = new TestMapBuilder();
-            
-            // Create players (adjust based on your actual Player constructors)
-            AreaBuilder areaBuilder = new AreaBuilder();
-            areaBuilder.addShape("8");
-            List<Coordinates> moveArea = areaBuilder.getResult();
-            areaBuilder.addShape("4");
-            List<Coordinates> area4 = areaBuilder.getResult();
-            mb1.setAttackArea(area4);
-            Move mossa = mb1.getResult();
-            Weapon hoe = new Weapon("hoe", "", List.of(mossa), 0);
-            List<Item> items = new ArrayList<>();
-            /*List<InteractableElement> npcs = new ArrayList<>(); npcs.add(new InteractableElement(2, 'F', "Gurlukovich", 
-                                            new Coordinates(8, 18), List.of(new TalkFactory(List.of("Hi Zappa. ", "I might need some help!")).createInteraction()), null, null, null));
-            items.add(new Cure("Potion", " ", 10));
-            items.add(new Cure("SuperPotion", " ", 2));
-            items.add(new Cure("IperPotion", "Sex on the beach ", 1));
-
-            // --- Dynamic Character Creation ---
-            Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(8, 8), moveArea, items);
-            Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(5, 5), moveArea, items);
-            
-            Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
-            Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
-            Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
-            /*Weapon enemyWeapon = new Weapon(" ", " ", List.of(m1,m2, m3), 0);*/
-
-            /*// Create enemies (optional)
-            Enemy enemy = new Enemy(
-                3, 'E', "C17", 
-                new Coordinates(10, 10),
-                EnemyType.EMPLOYEE, 20, 20, 3,
-                List.of(enemyWeapon), 15, 15, moveArea, 
-                moveArea, null, null, 0
-            );
-            ArrayList<Enemy> enemies = new ArrayList<>();
-            enemies.add(enemy);
-            
-            // Build the map
-            builder.setDimension(40, 140);
-            builder.setPlayerOne(playerOne);
-            builder.setPlayerTwo(playerTwo);
-            builder.setEnemies(enemies);
-            builder.setInteractableElements(npcs);
-            builder.setDict();
-            builder.setTurnQueue();
-            builder.startMap();
-            
-            Maps map = builder.getResult();*/
 
             //Creating MapManager
             MapManager mm = new MapManager(new HashMap<Integer, Maps>(), 0);
@@ -285,8 +220,7 @@ public class MainGUIFacade {
                     10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), 
                     "/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
-            default:
-                throw new IllegalArgumentException("Unknown type: " + type);
+            default -> throw new IllegalArgumentException("Unknown type: " + type);
         }
     }
     
@@ -326,7 +260,7 @@ public class MainGUIFacade {
         JLayeredPane layeredPane = new JLayeredPane() {
             @Override
             public void doLayout() {
-                // Forza i componenti interni a seguire la dimensione del frame
+                // Internal components size
                 int w = getWidth();
                 int h = getHeight();
                 for (java.awt.Component c : getComponents()) {
@@ -407,7 +341,7 @@ public class MainGUIFacade {
                 map.setDict();
             }
 
-            //Inizialize turn
+            //Initialize turn
             List<ActiveElement> active = new ArrayList<>();
             active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerOne());
             active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerTwo());
@@ -462,9 +396,6 @@ public class MainGUIFacade {
             layeredPane.add(pausePanel, JLayeredPane.PALETTE_LAYER);
             mainFrame.add(layeredPane, BorderLayout.CENTER);
             
-            
-            
-            // KEY FIX: Add InputController as KeyListener to multiple components
             mainFrame.addKeyListener(inputController);
             gameFacade.getGamePanel().addKeyListener(inputController);
             pausePanel.addKeyListener(inputController);
@@ -540,7 +471,7 @@ public class MainGUIFacade {
         
         // Create the skill tree panel
         skillTreePanel = new SkillTreePanel(skillTree, player, (selectedNode) -> {
-            // Quando il player conferma la selezione
+            
             selectedNode.setSkill(player);
             player.setLeveledUp();
             
@@ -587,49 +518,48 @@ public class MainGUIFacade {
     public void showLevelComplete(Maps nextMap) {
         currentState = "LEVEL_COMPLETE";
         
-        // 1. Calcola tempo trascorso
+        // 1. Get  elapsed time
         long elapsedMillis = System.currentTimeMillis() - levelStartTime;
         long seconds = (elapsedMillis / 1000) % 60;
         long minutes = (elapsedMillis / (1000 * 60)) % 60;
         String timeString = String.format("%02d:%02d", minutes, seconds);
 
-        // 2. Pulisci eventuali pannelli vecchi
+        // 2. clean old panels
         if (levelCompletePanel != null) {
             mainFrame.getLayeredPane().remove(levelCompletePanel);
         }
 
-        // 3. Crea il nuovo pannello passando il tempo
+        // 3. Create new panels
         levelCompletePanel = new LevelCompletePanel(this, nextMap, timeString);
         levelCompletePanel.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
         
-        // 4. Aggiungilo al layer POPUP (sopra tutto)
+        // 4. Add to the layer
         JLayeredPane layeredPane = mainFrame.getLayeredPane();
         layeredPane.add(levelCompletePanel, JLayeredPane.POPUP_LAYER);
         
         mainFrame.revalidate();
         mainFrame.repaint();
         
-        // Dai il focus al pannello per ricevere l'Enter
         levelCompletePanel.requestFocusInWindow();
     }
 
     public void finalizeMapSwitch(Maps nextMap) {
-        // 1. Rimuovi il pannello level complete
+        // 1. Remove level complete panel
         if (levelCompletePanel != null) {
             mainFrame.getLayeredPane().remove(levelCompletePanel);
             levelCompletePanel = null;
         }
 
-        // 2. Esegui lo switch della mappa effettivo
+        // 2. Switch maps
         if (gameFacade != null && gameFacade.getMainFrame() != null) {
             gameFacade.getMainFrame().switchMap(nextMap);
         }
         
-        // 3. Resetta lo stato e il timer per il nuovo livello
+        // 3. Reset timer and state
         currentState = "GAME";
         this.levelStartTime = System.currentTimeMillis();
         
-        // 4. Rimetti il focus sulla mappa
+        // 4.Five focus to the map
         if (gameFacade != null) {
             gameFacade.focusMapPanel();
         }

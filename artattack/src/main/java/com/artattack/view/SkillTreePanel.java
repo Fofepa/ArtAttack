@@ -49,7 +49,7 @@ public class SkillTreePanel extends JPanel {
     
     // Tree layout settings
     private Map<Node, NodePosition> nodePositions;
-    private int nodeRadius = 30; // Increased node size (was 24)
+    private int nodeRadius = 30; 
     
     // Navigation
     private List<Node> availableNodes;
@@ -92,10 +92,7 @@ public class SkillTreePanel extends JPanel {
         }
     }
 
-    /**
-     * ZAPPA LAYOUT (Musician)
-     * Structure: Wide branching "lungs" shape, merges in center, special moves at bottom corners.
-     */
+    
     private void layoutZappaTree(Node root, int cx, int y) {
         putPos(root, cx, y);
 
@@ -104,7 +101,7 @@ public class SkillTreePanel extends JPanel {
         Node n3 = root.getChildren().get(1); 
 
         // --- LEFT BRANCH (Zappa) ---
-        // Increased X offset (140) and Y step (80) for spacing
+       
         putPos(n2, cx - 140, y + 80); 
 
         if (n2.getChildren().size() >= 2) {
@@ -121,7 +118,7 @@ public class SkillTreePanel extends JPanel {
                 
                 if (!n6.getChildren().isEmpty()) {
                     Node n7 = n6.getChildren().get(0);
-                    putPos(n7, cx - 150, y + 310); // WP Slot
+                    putPos(n7, cx - 150, y + 310); 
                     
                     if (n7.getChildren().size() >= 2) {
                         Node n8 = n7.getChildren().get(0);
@@ -138,7 +135,7 @@ public class SkillTreePanel extends JPanel {
                             putPos(n11, cx - 210, y + 480); 
                             
                             if (!n10.getChildren().isEmpty()) {
-                                Node n12 = n10.getChildren().get(0); // SPECIAL MOVE (Left)
+                                Node n12 = n10.getChildren().get(0); 
                                 putPos(n12, cx - 270, y + 560); 
                             }
                         }
@@ -157,7 +154,6 @@ public class SkillTreePanel extends JPanel {
             }
         }
 
-        // --- RIGHT BRANCH (Zappa) ---
         putPos(n3, cx + 140, y + 80);
 
         if (!n3.getChildren().isEmpty()) {
@@ -226,10 +222,7 @@ public class SkillTreePanel extends JPanel {
         }
     }
 
-    /**
-     * LYNCH LAYOUT (Movie Director)
-     * Structure: Diamond shapes (DNA helix style), splits and merges repeatedly.
-     */
+    
     private void layoutLynchTree(Node root, int cx, int y) {
         putPos(root, cx, y);
         if (root.getChildren().size() < 2) return;
@@ -249,8 +242,8 @@ public class SkillTreePanel extends JPanel {
                 Node n5 = n4.getChildren().get(0);
                 Node n6 = n4.getChildren().get(1);
                 
-                putPos(n5, cx - 200, y + 200); // Outer
-                putPos(n6, cx - 100, y + 200); // Inner
+                putPos(n5, cx - 200, y + 200); 
+                putPos(n6, cx - 100, y + 200); 
                 
                 Node n9 = null;
                 
@@ -282,7 +275,7 @@ public class SkillTreePanel extends JPanel {
                             putPos(n12, cx - 220, y + 510);
                             if (!n12.getChildren().isEmpty()) {
                                 Node n13 = n12.getChildren().get(0);
-                                putPos(n13, cx - 220, y + 590); // SPECIAL MOVE
+                                putPos(n13, cx - 220, y + 590); 
                             }
                         }
                         
@@ -478,14 +471,14 @@ public class SkillTreePanel extends JPanel {
     }
     
     private void drawTitle(Graphics2D g2, int width) {
-        g2.setFont(new Font("Monospaced", Font.BOLD, 42)); // Increased Title Font
+        g2.setFont(new Font("Monospaced", Font.BOLD, 42)); 
         g2.setColor(COLOR_SELECTED);
         String title = player.getName() + " TREE";
-        drawCenteredString(g2, title, width / 2, 50); // Fixed position at top
+        drawCenteredString(g2, title, width / 2, 50); 
     }
     
     private void drawConnections(Graphics2D g2) {
-        g2.setStroke(new BasicStroke(3)); // Thicker connections
+        g2.setStroke(new BasicStroke(3)); 
         for (Node node : skillTree.getSupportList()) {
             NodePosition parentPos = nodePositions.get(node);
             if (parentPos == null) continue;

@@ -24,22 +24,21 @@ public class PausePanel extends JPanel {
     private MainGUIFacade mainFacade;
     private JPanel contentPanel;
     
-    // Gestione Layout a schede
+    
     private CardLayout cardLayout;
     private static final String CARD_MAIN = "MAIN";
     private static final String CARD_SETTINGS = "SETTINGS";
     private static final String CARD_ACCESS = "ACCESS";
     
-    // DIMENSIONI RIDOTTE
-    private static final Dimension PANEL_SIZE = new Dimension(400, 500); // Era 480x550
-    private static final Dimension BUTTON_SIZE = new Dimension(300, 45); // Era 380x50
+    private static final Dimension PANEL_SIZE = new Dimension(400, 500);
+    private static final Dimension BUTTON_SIZE = new Dimension(300, 45); 
     
     public PausePanel(MainGUIFacade mainFacade) {
         this.mainFacade = mainFacade;
-        // Ottimizzazioni per ridurre il flickering
+        
         setDoubleBuffered(true);
         setOpaque(false);
-        setBackground(new Color(0, 0, 0, 0)); // Sfondo invisibile, lo disegniamo noi
+        setBackground(new Color(0, 0, 0, 0)); 
         
         initializeBaseLayout();
         initializeCards(); 
@@ -49,10 +48,6 @@ public class PausePanel extends JPanel {
     private void initializeBaseLayout() {
         setLayout(new GridBagLayout());
         
-        // --- FIX FLICKERING ---
-        // Invece di un normale JPanel, usiamo una classe anonima per disegnare
-        // lo sfondo semi-trasparente manualmente. Questo evita che Swing "pulisca"
-        // l'area mostrando la mappa sottostante durante il repaint.
         cardLayout = new CardLayout();
         contentPanel = new JPanel(cardLayout) {
             @Override
@@ -60,21 +55,20 @@ public class PausePanel extends JPanel {
                 Graphics2D g2 = (Graphics2D) g.create();
                 g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 
-                // 1. Sfondo semi-trasparente scuro
+                // 1. Background
                 g2.setColor(new Color(20, 20, 20, 230));
                 g2.fillRect(0, 0, getWidth(), getHeight());
                 
-                // 2. Bordo Verde
+                // 2. Border
                 g2.setColor(Color.GREEN);
                 g2.setStroke(new java.awt.BasicStroke(3));
                 g2.drawRect(1, 1, getWidth()-2, getHeight()-2);
                 
                 g2.dispose();
-                // NON chiamare super.paintComponent(g) se setOpaque è false e disegni tutto tu
             }
         };
         
-        contentPanel.setOpaque(false); // Importante: lascia gestire la trasparenza al paintComponent
+        contentPanel.setOpaque(false);
         contentPanel.setPreferredSize(PANEL_SIZE);
         contentPanel.setMinimumSize(PANEL_SIZE);
         contentPanel.setMaximumSize(PANEL_SIZE);
@@ -96,10 +90,9 @@ public class PausePanel extends JPanel {
     
     private void showCard(String cardName) {
         cardLayout.show(contentPanel, cardName);
-        contentPanel.repaint(); // Forza un repaint pulito
+        contentPanel.repaint(); 
     }
     
-    // --- CREAZIONE PANNELLI ---
 
     private JPanel createMainPauseMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
@@ -108,13 +101,13 @@ public class PausePanel extends JPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         
         JLabel titleLabel = new JLabel("PAUSED", JLabel.CENTER);
-        titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32)); // Font leggermente più piccolo
+        titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
         titleLabel.setForeground(Color.GREEN);
         
         gbc.gridy = 0;
-        gbc.insets = new Insets(20, 20, 20, 20); // Margini ridotti
+        gbc.insets = new Insets(20, 20, 20, 20); 
         panel.add(titleLabel, gbc);
-        gbc.insets = new Insets(8, 20, 8, 20); // Spazio tra i bottoni ridotto
+        gbc.insets = new Insets(8, 20, 8, 20); 
         
         JButton continueBtn = createPauseButton("Continue");
         JButton loadBtn = createPauseButton("Load Game");
@@ -248,7 +241,7 @@ public class PausePanel extends JPanel {
     private JButton createPauseButton(String text) {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
-        button.setFont(new Font("Monospaced", Font.BOLD, 14)); // Font leggermente ridotto per stare nel bottone più piccolo
+        button.setFont(new Font("Monospaced", Font.BOLD, 14)); 
         button.setForeground(Color.WHITE);
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
@@ -304,7 +297,7 @@ public class PausePanel extends JPanel {
     
     @Override
     protected void paintComponent(Graphics g) {
-        // Disegna lo sfondo scuro su tutto lo schermo (il dimmer)
+        
         Graphics2D g2 = (Graphics2D) g.create();
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setColor(new Color(0, 0, 0, 150)); 

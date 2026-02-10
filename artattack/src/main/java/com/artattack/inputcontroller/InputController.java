@@ -65,12 +65,12 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
 
-        // enemy turn case
+        
         if(isEnemyTurn){
             if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE){
                 continueEnemyTurn();
             }
-            return; // blocks the other inputs during enemy turn
+            return; 
         }
         
         System.out.println("=== KEY PRESSED: " + KeyEvent.getKeyText(e.getKeyCode()) + " ===");
@@ -97,7 +97,6 @@ public class InputController implements KeyListener, TurnListener {
             handleInventoryInput(e);
         }else{
             System.out.println("-> No specific panel focused, treating as map input");
-            // Default to map input if nothing specific is focused
             handleMapInput(e);
         }
     }
@@ -206,12 +205,10 @@ public class InputController implements KeyListener, TurnListener {
         Player player = (Player) currentElement;
 
         if (e.getID() == KeyEvent.KEY_PRESSED) { 
-        // Note: Update Details regardless of key pressed, 
-        // Ensure panel sync.
+        
             updateInventorySelectionDisplay(inventoryStrategy, player);
         }
 
-        /* int selectedItemIndex = inventoryStrategy.getInventoryIndex(); */
         List<Item> inventory = player.getInventory();
         InventoryPanel inventoryPanel = mainFrame.getInventoryPanel();
         
@@ -244,7 +241,6 @@ public class InputController implements KeyListener, TurnListener {
                     mainFrame.getInventoryPanel().setSelectedIndex(0); 
                 }
 
-                //If a dialogue is triggered after using the item, pass the focus to it.
                 if (mainFrame.getDialogActive()) {
                     mainFrame.focusInteractionPanel();
                 }
@@ -309,14 +305,14 @@ public class InputController implements KeyListener, TurnListener {
                 case KeyEvent.VK_UP:
                 case KeyEvent.VK_W:
                     if (textFullyRevealed) {
-                        mainFrame.selectUp();  // CHANGED: Use MainFrame method
+                        mainFrame.selectUp();  
                     }
                     break;
                 
                 case KeyEvent.VK_DOWN:
                 case KeyEvent.VK_S:
                     if (textFullyRevealed) {
-                        mainFrame.selectDown();  // CHANGED: Use MainFrame method
+                        mainFrame.selectDown();  
                     }
                     break;
                 
@@ -334,7 +330,7 @@ public class InputController implements KeyListener, TurnListener {
                     break;
             }
         } else {
-            // Simple dialog mode
+            
             if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
                 if (!textFullyRevealed) {
                     mainFrame.skipTextAnimation();
@@ -343,7 +339,14 @@ public class InputController implements KeyListener, TurnListener {
 
                     // Check if dialog finished
                     if (!mainFrame.getDialogActive()) {
-                        returnToGameplay();
+                        if (isEnemyTurn) {
+                           
+                            System.out.println("Dialog closed during enemy turn -> Continuing execution immediately");
+                            continueEnemyTurn();
+                        } else {
+                            
+                            returnToGameplay();
+                        }
                     }
                 }
             }
@@ -360,20 +363,16 @@ public class InputController implements KeyListener, TurnListener {
             mainFrame.getInteractionPanel().resetToDefaultImage();
         }
         
-        // 1. Se stiamo combattendo (CombatStrategy), rimaniamo nel pannello delle mosse
         if (currentState instanceof CombatStrategy) {
             System.out.println("Context: Combat -> Returning focus to MovesPanel");
-            // Non resettiamo currentState a MovementStrategy!
             mainFrame.focusMovesPanel();
             mainFrame.repaintMovesPanel();
         }
-        // 2. Se eravamo nell'inventario (InventoryStrategy), torniamo lì (opzionale, se vuoi)
         else if (currentState instanceof InventoryStrategy) {
             System.out.println("Context: Inventory -> Returning focus to InventoryPanel");
             mainFrame.focusInventoryPanel();
             mainFrame.repaintInventoryPanel();
         }
-        // 3. Altrimenti (Default), torniamo alla mappa
         else {
             System.out.println("Context: Exploration -> Returning to MapPanel");
             this.currentState = mainFrame.getMovementStrategy();

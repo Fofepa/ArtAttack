@@ -28,30 +28,30 @@ public class LevelCompletePanel extends JPanel {
 
     private void initializeUI(String timeString) {
         setLayout(new GridBagLayout());
-        setBackground(new Color(0, 0, 0, 230)); // Sfondo nero quasi opaco
+        setBackground(new Color(0, 0, 0, 230)); 
         
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(20, 0, 40, 0); // Spaziatura verticale
+        gbc.insets = new Insets(20, 0, 40, 0); 
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Titolo
+        // Title
         JLabel titleLabel = new JLabel("LEVEL COMPLETE");
         titleLabel.setFont(new Font("Monospaced", Font.BOLD, 50));
         titleLabel.setForeground(Color.GREEN);
         add(titleLabel, gbc);
 
-        // Tempo Impiegato
+        // Time
         gbc.gridy++;
         JLabel timeLabel = new JLabel("Time: " + timeString);
         timeLabel.setFont(new Font("Monospaced", Font.PLAIN, 32));
         timeLabel.setForeground(Color.WHITE);
         add(timeLabel, gbc);
 
-        // Istruzioni
+        // Instructions
         gbc.gridy++;
-        gbc.insets = new Insets(80, 0, 20, 0); // Spazio extra prima del tasto
+        gbc.insets = new Insets(80, 0, 20, 0); 
         JLabel continueLabel = new JLabel("Press ENTER to continue...");
         continueLabel.setFont(new Font("Monospaced", Font.ITALIC, 20));
         continueLabel.setForeground(Color.CYAN);
@@ -64,7 +64,6 @@ public class LevelCompletePanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // Chiude il pannello e cambia mappa
                     mainFacade.finalizeMapSwitch(nextMap);
                 }
             }

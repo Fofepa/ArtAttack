@@ -158,9 +158,9 @@ public class MenuPanel {
         button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
         
-        // --- FIX FOCUS ---
+        
         button.setFocusable(false);
-        // -----------------
+        
         
         button.setMinimumSize(BUTTON_SIZE);
         button.setMaximumSize(BUTTON_SIZE);

@@ -26,7 +26,7 @@ public class DetailsPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        // Bordo semplice
+        // Simple Border
         g.setColor(Color.DARK_GRAY);
         g.drawRect(0, 0, getWidth()-1, getHeight()-1);
 
@@ -37,20 +37,20 @@ public class DetailsPanel extends JPanel {
             return;
         }
 
-        // 1. Disegna Nome Oggetto (Bianco Brillante)
+        // 1. Obj name
         g.setFont(new Font("Monospaced", Font.BOLD, 12));
         g.setColor(Color.WHITE);
         g.drawString(itemName, 10, 20);
 
         
 
-        // 3. Disegna Descrizione con Text Wrapping (Grigio Chiaro)
+        // 2. Description
         g.setColor(Color.LIGHT_GRAY);
         g.setFont(new Font("Monospaced", Font.ITALIC, 12));
         
         int y = 45;
         int lineHeight = 15;
-        List<String> wrappedDesc = wrapText(itemDesc, 30); // 30 caratteri per riga circa
+        List<String> wrappedDesc = wrapText(itemDesc, 30);
         
         for (String line : wrappedDesc) {
             g.drawString(line, 10, y);

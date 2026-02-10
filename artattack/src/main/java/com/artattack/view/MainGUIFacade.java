@@ -272,7 +272,8 @@ public class MainGUIFacade {
                 return new Player(id, '♫', type.getName(), coords, 
                     new ArrayList<>(List.of(musicianWeapon)), // Esempio arma
                     15, 15, zappaMA, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),"artattack\\src\\main\\resources\\images\\frank-zappa-fotor-20260206135640.jpg" );
+                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),
+                    "/images/frank-zappa-fotor-20260206135640.jpg" );
                     
             
             
@@ -281,7 +282,8 @@ public class MainGUIFacade {
                 return new Player(id, '◉', type.getName(), coords,
                     new ArrayList<>(List.of(directorWeapon)), 
                     15, 15, lynchMA, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), "artattack\\src\\main\\resources\\images\\ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
+                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), 
+                    "/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
             default:
                 throw new IllegalArgumentException("Unknown type: " + type);
@@ -511,9 +513,18 @@ public class MainGUIFacade {
     }
     
     public void hidePauseMenu() {
+        
         if (pausePanel != null) {
+        
             pausePanel.hidePauseMenu();
+
             currentState = "GAME";
+
+            if (gameFacade != null) {
+                SwingUtilities.invokeLater(() -> {
+                    gameFacade.focusMapPanel(); 
+                });
+            }
         }
     }
     

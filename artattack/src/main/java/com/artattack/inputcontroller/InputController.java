@@ -794,6 +794,8 @@ public class InputController implements KeyListener, TurnListener {
             System.err.println("ERROR: GameContext is null!");
             return;
         }
+
+        mainFrame.repaintStatsPanel();
         
         // Get the appropriate skill tree based on player ID
         SkillTree skillTree = player.getSkillTree();
@@ -868,6 +870,7 @@ public class InputController implements KeyListener, TurnListener {
         if(mainFrame.isPauseMenuVisible()){
             System.out.println("Resuming game");
             mainFrame.hidePauseMenu();
+            mainFrame.focusMapPanel();
         }else{
             System.out.println("Pausing game");
             mainFrame.showPauseMenu();

@@ -11,6 +11,7 @@ import javax.swing.Timer;
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
@@ -24,8 +25,6 @@ public class MapPanel extends JPanel {
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
     private List<Coordinates> attackArea;
-
-   
 
     // Blinking cursor properties
     private boolean cursorVisible = true;
@@ -70,7 +69,7 @@ public class MapPanel extends JPanel {
         int startX = (getWidth() - mapPixelWidth) / 2;
         int startY = (getHeight() - mapPixelHeight) / 2;
 
-        // --- 1. SFONDO (Caratteri) ---
+        // --- 1. BACKGROUND ---
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
                 char c = matrix[x][y]; 
@@ -96,12 +95,21 @@ public class MapPanel extends JPanel {
             }
         }
         
-        // --- 2. VISIONE NEMICI ---
+        // --- 2. ENEMY VISION ---
         if (map.getEnemies() != null) {
             g.setColor(new Color(255, 165, 0, 40)); 
+
+            
+            List<ActiveElement> activeQueue = map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue();
+        
             for (Enemy enemy : map.getEnemies()) {
-                if ((enemy.getIsActive() || enemy.getCurrHP() > 0) && enemy.getVisionArea() != null) {
-                    // VisionArea è solitamente relativa, quindi qui USIAMO la somma
+                //Draw vision ONLY if the enemy is alive AND NOT already in the turn queue
+                boolean isAlreadyInQueue = activeQueue.contains(enemy);
+            
+                if ((enemy.getIsActive() || enemy.getCurrHP() > 0) && 
+                    !isAlreadyInQueue && 
+                    enemy.getVisionArea() != null) {
+                    
                     List<Coordinates> absVision = Coordinates.sum(enemy.getVisionArea(), enemy.getCoordinates());
                     for (Coordinates coord : absVision) {
                         if (isValidAndNotWall(coord, map, matrix)) {
@@ -112,12 +120,11 @@ public class MapPanel extends JPanel {
             }
         }
 
-        // --- 3. AREA MOVIMENTO GIOCATORE ---
+        // --- 3. PLAYER MOVEMENT AREA ---
         if (moveArea != null && !moveArea.isEmpty()) {
             // System.out.println("DEBUG PAINT: Drawing " + moveArea.size() + " move tiles.");
             
             for (Coordinates coord : moveArea) {
-                // Rimuovi il check del muro per debug se necessario, ma di solito è meglio averlo
                 if(isValidAndNotWall(coord, map, matrix)) {
                     // Riempimento
                     g.setColor(new Color(0, 255, 0, 20));
@@ -130,7 +137,7 @@ public class MapPanel extends JPanel {
             }
         }
         
-        // --- 4. AREA ATTACCO ---
+        // --- 4. ATTACK AREA ---
         if (attackArea != null) {
             g.setColor(new Color(255, 0, 0, 80)); 
             for (Coordinates coord : attackArea) {
@@ -143,11 +150,11 @@ public class MapPanel extends JPanel {
             }
         }
 
-        // --- 5. DISEGNO GIOCATORI CON SIMBOLI PERSONALIZZATI ---
+        
         drawPlayerSymbol(g, map.getPlayerOne(), startX, startY, cellSize);
         drawPlayerSymbol(g, map.getPlayerTwo(), startX, startY, cellSize);
 
-        // --- 6. CURSORE ---
+        
         if (movementCursor != null && cursorVisible) {
             g.setColor(Color.GREEN);
             drawCellRect(g, movementCursor.getX(), movementCursor.getY(), startX, startY, false, cellSize);
@@ -164,7 +171,7 @@ public class MapPanel extends JPanel {
             int py = startY + (p.getCoordinates().getY() * cellSize);
             
             g.setColor(Color.CYAN);
-            // Qui prendiamo il simbolo (es. '♫' o '◉') invece di '@'
+
             g.drawString(String.valueOf(p.getMapSymbol()), px, py + cellSize);
         }
     }

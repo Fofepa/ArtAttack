@@ -12,26 +12,37 @@ import com.artattack.view.GameContext;
 
 public class SwitchMap extends Interaction {
 
-    private boolean unloked;
+    private boolean unlocked;
     private int key;
     private int nextMap;
     private List<Coordinates> nextCoordinates;
+    private boolean isLevelFinish;
 
     public SwitchMap(int key, int nextMap, List<Coordinates> nextCoordinates){
+        this(key, nextMap, nextCoordinates, false);
+    }
+
+    public SwitchMap(int key, int nextMap, List<Coordinates> nextCoordinates, boolean isLevelFinish){
         super(InteractionType.SWITCH_MAP);
-        this.unloked = false;
+        this.unlocked = false;
         this.key = key;
         this.nextMap = nextMap;
         this.nextCoordinates = nextCoordinates;
+        this.isLevelFinish = isLevelFinish;
+    }
+
+    public SwitchMap(int nextMap, List<Coordinates> nextCoordinates){
+        this(nextMap, nextCoordinates, false);
     }
 
 
 
-    public SwitchMap(int nextMap, List<Coordinates> nextCoordinates){
+    public SwitchMap(int nextMap, List<Coordinates> nextCoordinates, boolean isLevelFinish){
         super(InteractionType.SWITCH_MAP);
-        this.unloked = true;
+        this.unlocked = true;
         this.nextMap = nextMap;
         this.nextCoordinates = nextCoordinates;
+        this.isLevelFinish = isLevelFinish;
     }
 
    /* @Override
@@ -76,19 +87,18 @@ public class SwitchMap extends Interaction {
 
     @Override
     public void doInteraction(GameContext gameContext, Player player) {
-        if(!this.unloked){
-            System.out.println("Door is locked");
+        if(!this.unlocked){
             if(player.getKeys() != null && !player.getKeys().isEmpty()){
                 for(Key k : player.getKeys()){
                     if(k.getID() == key){
-                        System.out.println("Door unlocked");
-                        this.unloked = true;
+                        this.unlocked = true;
                         break;
                     }
                 }
             }
         }
-        if(this.unloked){
+
+        if(this.unlocked){
             Maps currMap = gameContext.getMapManager().getLevels().get(gameContext.getMapManager().getCurrMap());
             Maps next = gameContext.getMapManager().getLevels().get(this.nextMap);
             if (next == null) {
@@ -98,6 +108,7 @@ public class SwitchMap extends Interaction {
             list.add(player);
             player.setCoordinates(this.nextCoordinates.get(0));
             next.getDict().put(this.nextCoordinates.get(0), player);
+            
             if(player.equals(currMap.getPlayerOne())){
                 next.setPlayerOne(player);
                 currMap.getPlayerTwo().setCoordinates(this.nextCoordinates.get(1));
@@ -122,8 +133,14 @@ public class SwitchMap extends Interaction {
             currMap.remove(player);
             currMap.setCell(player.getCoordinates(), '.');
             gameContext.getMapManager().getLevels().get(nextMap).setCell(player.getCoordinates(), player.getMapSymbol());
-            gameContext.getUiManager().switchMap(next);
+            
             gameContext.getMapManager().setCurrMap(this.nextMap);
+
+            if (this.isLevelFinish) {
+                gameContext.getUiManager().showLevelComplete(next);
+            } else {
+                gameContext.getUiManager().switchMap(next);
+            }
         } else {
             gameContext.getUiManager().showDialog(List.of("Door is locked. You need a key."));
         }

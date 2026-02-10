@@ -47,10 +47,10 @@ public class MapDirector {
                 List<Coordinates> moveArea = ab.getResult();
                 ab.addShape("4");
                 List<Coordinates> area4 = ab.getResult();
-                Move m1 = new Move(); m1.setName("Kick"); m1.setPower(1); m1.setAttackArea(area4); m1.setActionPoints(3); m1.setAreaAttack(false);
-                Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(4); m2.setAreaAttack(false);
-                Move m3 = new Move(); m3.setName("Explode"); m3.setPower(3); m3.setAttackArea(moveArea); m3.setAreaAttack(true); m3.setActionPoints(3);
-                Weapon enemyWeapon = new Weapon(" ", " ", 5, List.of(m1,m2, m3), null);
+                ab.addShape("square", 1, true);
+                mb1.setName("Scared Punch"); mb1.setPower(1); mb1.setActionPoints(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move m1 = mb1.getResult();
+                Weapon enemyWeapon = new Weapon(" ", " ", 5, List.of(m1), null);
                 Enemy e = new Enemy(0, 'E', "Employee", new Coordinates(6, 3), EnemyType.EMPLOYEE, 20, 20, 2, List.of(enemyWeapon), 10, 10, moveArea_t, enemyVisionArea_t, null, null, 20);
                 List<Enemy> listE = new ArrayList<>();
                 listE.add(e);
@@ -58,7 +58,7 @@ public class MapDirector {
                 //Creating InteractableElements
                 InteractableElement chest_t = new InteractableElement(0, 'O', "Chest", new Coordinates(1, 23), List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))),"");
-                InteractableElement npc_t = new InteractableElement(0, 'T', "John Belushi", new Coordinates(29, 22), List.of(new Talk(
+                InteractableElement npc_t = new InteractableElement(0, 'M', "George Melies", new Coordinates(29, 22), List.of(new Talk(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
                             "Each one of you has a CURSOR. It has many uses, like moving!",
@@ -74,7 +74,8 @@ public class MapDirector {
                 TriggerGroup firstDialogue = new TriggerGroup(new Talk( 
                     List.of("Hey, over here! Mr. Zappa! Mr. Lynch!", 
                             "What a mess! Look at what they've done to our peaceful resting place! It's now a soul-harvesting data center! You need to do something about this, or else we'll never be able to return to our well-earned slumber!",
-                            "Me? Oh, I'm nowhere near as powerful as you guys, I wouldn't last a second against these guys.",
+                            "Me? I'm George Melies? You gentlemen surely know who I am! I hate this place, last century the world wasn't nothing like this!", 
+                            "I hate this place with all my heart!", "Oh, I'm nowhere near as powerful as you guys, I wouldn't last a second against these guys.",
                             "You guys don't look so good... What happened to you?",
                             "Oh! Right! You two were dead, just like me! Hahahaha!",
                             "What's that? You don't remember how to do things? Oh yeah, I guess it makes sense considering you were six feet deep just a few moments ago... You must be rusty on what it takes to walk the earth.",
@@ -133,15 +134,21 @@ public class MapDirector {
                 ab.addShape("4");
                 List<Coordinates> a4 = ab.getResult();
 
+                // creation of the enemies
+                // move creation for employee
+                ab.addShape("square", 1, true);
+                mb1.setName("Scared Punch"); mb1.setActionPoints(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult()); mb1.setPower(1);
+                Move employeeMove = mb1.getResult();
+                // move creation for guard
+                ab.addShape("square", 1, true);
+                mb1.setName("Legal Bat"); mb1.setActionPoints(2); mb1.setPower(4); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
+                Move guardMove1 = mb1.getResult();
                 
-                Move m11 = new Move(); m11.setName("Kick"); m11.setPower(1); m11.setAttackArea(a4); m11.setActionPoints(3); m11.setAreaAttack(false);
-                Move m22 = new Move(); m22.setName("Bump"); m22.setPower(5); m22.setAttackArea(a4); m22.setActionPoints(4); m22.setAreaAttack(false);
-                Move m33 = new Move(); m33.setName("Explode"); m33.setPower(3); m33.setAttackArea(mArea); m33.setAreaAttack(true); m33.setActionPoints(3);
-                Weapon eWeapon = new Weapon(" ", " ", 5, List.of(m11,m22, m33), null);
+                Weapon eWeapon = new Weapon(" ", " ", 5, List.of(employeeMove), null);
                 Enemy e0_1 = new Enemy(1, 'E', "Employee", new Coordinates(28, 13), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
-                Enemy e1_1 = new Enemy(2, 'E', "Employee", new Coordinates(20, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
+                Enemy e1_1 = new Enemy(2, 'G', "Guard", new Coordinates(20, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
                 Enemy e2_1 = new Enemy(3, 'E', "Employee", new Coordinates(9, 21), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 30);
-                Enemy e3_1 = new Enemy(4, 'E', "Employee", new Coordinates(2, 11), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 40);
+                Enemy e3_1 = new Enemy(4, 'G', "Guard", new Coordinates(2, 11), EnemyType.EMPLOYEE, 10, 10, 2, List.of(eWeapon), 5, 5, moveArea_1, enemyVisionArea_1, null, null, 40);
                 List<Enemy> listEn = new ArrayList<>();
                 listEn.addAll(List.of(e0_1,e1_1, e2_1, e3_1));
 
@@ -219,7 +226,7 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))), null);
                 InteractableElement bossCheckPoint = new InteractableElement(1, 'C', "checkpoint", new Coordinates(9, 34), List.of(new CheckPoint(List.of("OK"))), "");
                 InteractableElement endDoor = new InteractableElement(0, '\u2339', "Door", new Coordinates(16, 0), 
-                List.of(new SwitchMap(5001, 1, List.of(new Coordinates(1, 1), new Coordinates(2, 2)))),"");
+                List.of(new SwitchMap(5001, 3, List.of(new Coordinates(19, 1), new Coordinates(20, 1)))),"");
                 
                 List<Enemy> enemyBossRoom = new ArrayList<>(); enemyBossRoom.addAll(List.of(boss, minion1, minion2));
                 
@@ -267,49 +274,155 @@ public class MapDirector {
                 
                 break;
             case "Reception":
-                this.builder.setID(10);
-                this.builder.setDimension(26, 40);
+                this.builder.setDimension(40, 15);
                 this.builder.buildBorder();
                 
-                // TOP DOOR (entrance)
-                // Already created by buildBorder at top center
+                //right corner
+                this.builder.buildWall(new Coordinates(1, 1), 4, 2, '#');
+                this.builder.buildWall(new Coordinates(1, 3), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(1, 5), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(3, 3), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(5, 1), 1, 1, '#');
                 
-                // LEFT STAIRCASE - diagonal from top-left corner going inward/downward
-                this.builder.buildWall(new Coordinates(1, 1), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(2, 2), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(3, 3), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(4, 4), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 5), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(6, 6), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(7, 7), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(8, 8), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(9, 9), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(10, 10), 2, 1, '#');
+                //left corner
+                this.builder.buildWall(new Coordinates(35, 1), 4, 2, '#');
+                this.builder.buildWall(new Coordinates(37, 3), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(38, 5), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(36, 3), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(34, 1), 1, 1, '#');
+
+                //counter
+                this.builder.buildWall(new Coordinates(17, 11), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(17, 12), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(23, 12), 1, 2, '#');
+
+                //decoration
+                this.builder.buildWall(new Coordinates(2, 12), 1, 1, '\u2318');
+                this.builder.buildWall(new Coordinates(37, 12), 1, 1, '\u2318');
+
+                //doors
+                InteractableElement bossDoor_r = new InteractableElement(0, 'H', "Door", new Coordinates(0, 10), new ArrayList<>(), null);
+                InteractableElement arenaDoor_r = new InteractableElement(0, 'H', "Door", new Coordinates(39, 10), new ArrayList<>(), null);
+                InteractableElement floor0door_r0 = new InteractableElement(0, 'H', "Door", new Coordinates(19, 0), new ArrayList<>(), null);
+                InteractableElement floor0door_r1 = new InteractableElement(0, 'H', "Door", new Coordinates(20, 0), new ArrayList<>(), null);
                 
-                // RIGHT STAIRCASE - diagonal from top-right corner going inward/downward (mirrored)
-                this.builder.buildWall(new Coordinates(1, 36), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(2, 35), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(3, 34), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(4, 33), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 32), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(6, 31), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(7, 30), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(8, 29), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(9, 28), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(10, 27), 2, 1, '#');
+                //chests
+                InteractableElement chest_r0 = new InteractableElement(0, '$', "Chest", new Coordinates(4, 12), List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))), 
+                    "");
+                InteractableElement chest_r1 = new InteractableElement(0, '$', "Chest", new Coordinates(35, 12), List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))), 
+                    "");
+
+                //receptionist
+                InteractableElement receptionist = new InteractableElement(0, 'R', "R.E.N.E. 3000", new Coordinates(20, 11), List.of(
+                    new Talk(List.of("Welcome to the I.A.A.I. Facility 52, I'm R.E.N.E 30000 at your service!", "What!?!? You're here to stop Sam Altman? I don't think I can help you with that...",
+                     "I mean, I'm not even from the I.A.A.I. To be honest, the place I come from is Milan, in Italy", "You know, I was one of the first AI movie directors, I even won a Cannes festival!", 
+                     "Back in the days when people were enthusiastic about my Italian accent! I used to say things like \"DAI! DAI! DAI!\" or \"Azione!\" but now I'm just an AI receptionist...",
+                     "But thats all! If you guys want to meet Sam I'm afraid he might be unavailable for the whole day!", "What?!? Are you sure you are his cousin? I mean, you don't look so much alive...",
+                     "I don't mean to offend you of course! Can I get some ID?", "WHAT?!? 01 20 1946?!?! Sam never told me about an old cousin...", "Sorry guys, I cannot let you in...", 
+                     "Wait... YOU ARE DAVID LYNCH?!?!", "HOW ARE YOU HERE!! I MUST BE DRUNK OR SOMETHING!", "Wait... I am an AI, surely I cannot get drunk...", 
+                     "SO YOU ARE THE REAL LYNCH?!?! Like Blue Velvet real? OH MY GOD... What a pleasure to meet you sir, I trained my model on you...", 
+                     "Sorry but I still can't get the appointment with mr. Altman, maybe I can help you with something else!", "A key to the door on the left? Mhmm... Oh the key is just after the Waiting room for the staff!",
+                     "You don't know how to get there? Go in the room to my left, proceed through the hallway and then take the door right in front of you.",
+                     "The keys to the office area should be there!", "Thank you!", "Good luck with the meeting then!")), new Talk(List.of("Thank you!", "Good luck with the meeting then!"))
+                ), null);
+
+                this.builder.setInteractableElements(List.of(bossDoor_r, arenaDoor_r, floor0door_r0, floor0door_r1, receptionist, chest_r0, chest_r1));
+                this.builder.setEnemies(new ArrayList<>());
+                break;
+            case "BigEnemyArea":
+                AreaBuilder ab_B = new AreaBuilder();
+                ab_B.addShape("square", 3, false);
+                List<Coordinates> mosquitoMA = ab_B.getResult();
+                ab_B.addShape("diamond", 10, true);
+                List<Coordinates> mosquitoVA = ab_B.getResult();
+                ab_B.addShape("square", 2, true);
+                List<Coordinates> roboguardMA = ab_B.getResult();
+                ab_B.addShape("diamond", 6, true);
+                List<Coordinates> roboguardVA = ab_B.getResult();
+
+                this.builder.setDimension(25, 25);
+                this.builder.buildBorder();
+
+                //top wall
+                this.builder.buildWall(new Coordinates(13, 1), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(12, 2), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(11, 3), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(10, 4), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(11, 5), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(12, 6), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(13, 7), 1, 1, '#');
+
+                //left wall
+                this.builder.buildWall(new Coordinates(1, 19), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 18), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 17), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 16), 4, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 15), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 14), 6, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 13), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(2, 12), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(3, 11), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(4, 10), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(5, 9), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(6, 8), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(7, 7), 1, 1, '#');
+
+                //barriers
+                this.builder.buildWall(new Coordinates(14, 12), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(13, 13), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(12, 14), 1, 1, '#');
                 
-                // BOTTOM TABLE/RECEPTION (U-shape connected to bottom wall, opening upward)
-                // Outer walls
-                this.builder.buildWall(new Coordinates(21, 14), 4, 1, '#');  // Left vertical
-                this.builder.buildWall(new Coordinates(24, 14), 1, 12, '#'); // Bottom horizontal
-                this.builder.buildWall(new Coordinates(21, 25), 4, 1, '#');  // Right vertical
+                this.builder.buildWall(new Coordinates(18, 8), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(17, 9), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(16, 10), 1, 1, '#');
+
+                //benches
+                this.builder.buildWall(new Coordinates(5, 23), 4, 1, '=');
+                this.builder.buildWall(new Coordinates(13, 23), 4, 1, '=');
+
+                //enemies
+                Enemy mosquito = new Enemy(0, 'M', "Mosquito", new Coordinates(9, 6), EnemyType.MOSQUITO, 
+                10, 10, 10, new ArrayList<>(), 8, 8, mosquitoMA, mosquitoVA, new ArrayList<>(), new ArrayList<>(), 1);
+                Enemy roboguard_0 = new Enemy(0, 'G', "Roboguard", new Coordinates(18, 10), EnemyType.GUARD,
+                18, 18, 5, new ArrayList<>(), 20, 20, roboguardMA, roboguardVA, new ArrayList<>(), new ArrayList<>(), 8);
+                Enemy roboguard_1 = new Enemy(0, 'G', "Roboguard", new Coordinates(14, 14), EnemyType.GUARD,
+                18, 18, 5, new ArrayList<>(), 20, 20, roboguardMA, roboguardVA, new ArrayList<>(), new ArrayList<>(), 8);
+
+                this.builder.setEnemies(new ArrayList<>(List.of(mosquito, roboguard_0, roboguard_1)));
+
+                //interactable elements
+                InteractableElement receptionDoor_B = new InteractableElement(0, 'H', "Door", new Coordinates(0, 2), List.of(
+                new SwitchMap(3, List.of(new Coordinates(19, 1), new Coordinates(20, 1)))), 
+                "");
+                InteractableElement keyRoomDoor_B = new InteractableElement(0, 'H', "Door", new Coordinates(24, 3), List.of(
+                new SwitchMap(10, List.of(new Coordinates(1, 1), new Coordinates(2, 1)))), 
+                "");
+                InteractableElement chestRoomDoor_B = new InteractableElement(0, 'H', "Door", new Coordinates(10, 24), List.of(
+                new SwitchMap(10, List.of(new Coordinates(1, 1), new Coordinates(2, 1)))),
+                "");
+
+                this.builder.setInteractableElements(List.of(receptionDoor_B, keyRoomDoor_B, chestRoomDoor_B));
+                break;
+            case "PreBoss":
+                this.builder.setDimension(32, 10);
+                this.builder.buildBorder();
+
+                this.builder.buildWall(new Coordinates(1, 1), 17, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 2), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 3), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(13, 2), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(15, 3), 3, 1, '#');
                 
-                // Inner hollow (make opening)
-                this.builder.buildWall(new Coordinates(22, 15), 2, 1, '#');  // Left inner
-                this.builder.buildWall(new Coordinates(23, 15), 1, 4, '#');  // Bottom inner left
-                this.builder.buildWall(new Coordinates(23, 20), 1, 5, '#');  // Bottom inner right
-                this.builder.buildWall(new Coordinates(22, 24), 2, 1, '#');  // Right inner
-                
+                this.builder.buildWall(new Coordinates(1, 6), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 7), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 8), 17, 1, '#');
+                this.builder.buildWall(new Coordinates(15, 6), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(13, 7), 5, 1, '#');
+
+                this.builder.buildWall(new Coordinates(22, 6), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(22, 2), 1, 2, '#');
                 break;
         }
     }

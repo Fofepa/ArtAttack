@@ -85,7 +85,11 @@ public class MapPanel extends JPanel {
                     case '#' -> g.setColor(Color.GRAY);
                     case '.' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
                     case 'E' -> g.setColor(Color.RED);
+                    case 'G' -> g.setColor(Color.RED);
+                    case 'M' -> g.setColor(Color.RED);
                     case 'I' -> g.setColor(Color.YELLOW);
+                    case '=' -> g.setColor(new Color(150, 100, 60));
+                    case '\u2318' -> g.setColor(new Color(131, 244, 74)); 
                     default -> g.setColor(Color.WHITE);
                 } 
                 g.drawString(String.valueOf(c), px, py + (int)(cellSize * 0.85));

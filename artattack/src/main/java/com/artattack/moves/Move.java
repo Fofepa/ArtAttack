@@ -26,7 +26,15 @@ public class Move{
 
     //Constructors
     public Move() {
-
+        this.name = "";
+        this.description = "";
+        this.power = 0;
+        this.healAmount = 0;
+        this.actionPoints = 0;
+        this.attackArea = new ArrayList<>();
+        this.healArea = new ArrayList<>();
+        this.areaAttack = false;
+        this.areaHeal = false;
     }
 
     //Getters

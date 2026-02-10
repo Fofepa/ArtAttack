@@ -10,9 +10,12 @@ import com.artattack.interactions.Talk;
 import com.artattack.items.Item;
 import com.artattack.items.ItemType;
 import com.artattack.items.Key;
+import com.artattack.mapelements.ConcreteEnemyBuilder;
+import com.artattack.mapelements.ConcreteInteractableElementBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
+import com.artattack.mapelements.InteractableElementDirector;
 import com.artattack.mapelements.TriggerGroup;
 import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
@@ -22,11 +25,17 @@ public class MapDirector {
     private MapBuilder builder;
     private MoveBuilder1 mb1;
     private AreaBuilder ab;
+    private ConcreteEnemyBuilder eBuilder;
+    private ConcreteInteractableElementBuilder ieBuilder;
+    private InteractableElementDirector ieDirector;
 
     public MapDirector(MapBuilder builder) {
         this.builder = builder;
         this.mb1 = new MoveBuilder1();
         this.ab = new AreaBuilder();
+        this.eBuilder = new ConcreteEnemyBuilder();
+        this.ieBuilder = new ConcreteInteractableElementBuilder();
+        this.ieDirector = new InteractableElementDirector();
     }
 
     public void changeBuilder(MapBuilder builder) {

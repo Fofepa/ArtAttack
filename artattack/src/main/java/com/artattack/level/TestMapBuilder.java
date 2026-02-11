@@ -114,7 +114,7 @@ public class TestMapBuilder implements MapBuilder {
             }
         }
 
-        this.map.startMap(charMatrix);
+        this.map.startMap();
 }
 
 

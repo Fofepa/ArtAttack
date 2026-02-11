@@ -181,6 +181,8 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest2_1 = ieBuilder.getResult();
                 ieDirector.createCheckPoint(this.ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
+                ieBuilder.setInteractions(List.of(new CheckPoint(List.of("Hey there! It's me Aretha Franklin didn't you recognise me? Oh come on!", "You guys don't look so good... ",
+                "I can help you guys! If something goes bad you'll get to me! Just talk to me whenever you see me around!", "Just don't get yourselves killed, I hate those things!"))));
                 InteractableElement bossCheckPoint = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 3, 5001, new Coordinates(16, 0)); ieBuilder.setID(9);
                 InteractableElement endDoor = ieBuilder.getResult();
@@ -263,7 +265,7 @@ public class MapDirector {
                 //doors
                 ieDirector.createDoor(ieBuilder, 4, new Coordinates(39, 10)); ieBuilder.setID(10);
                 InteractableElement arenaDoor_r = ieBuilder.getResult();
-                ieDirector.createDoor(ieBuilder, 5, new Coordinates(0, 10)); ieBuilder.setID(11);
+                ieDirector.createDoor(ieBuilder, 5, 5002, new Coordinates(0, 10)); ieBuilder.setID(11);
                 InteractableElement preBossDoor_r = ieBuilder.getResult();
                 
                 //chests
@@ -275,6 +277,10 @@ public class MapDirector {
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
                 InteractableElement chest_r1 = ieBuilder.getResult();
+
+                //checkpoints
+                ieDirector.createCheckPoint(ieBuilder, new Coordinates(16, 7));
+                InteractableElement checkpoint = ieBuilder.getResult();
 
                 //receptionist
                 ieBuilder.setID(14); ieBuilder.setMapSymbol('\u22B7'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000"); ieBuilder.setSpritePath("/images/bobinatro-fotor-2026021023422.jpg");
@@ -292,7 +298,7 @@ public class MapDirector {
                 ));
                 InteractableElement receptionist = ieBuilder.getResult();
 
-                this.builder.setInteractableElements(List.of(preBossDoor_r, arenaDoor_r, receptionist, chest_r0, chest_r1));
+                this.builder.setInteractableElements(List.of(preBossDoor_r, arenaDoor_r, receptionist, chest_r0, chest_r1, checkpoint));
                 this.builder.setEnemies(new ArrayList<>());
                 break;
             case "BigEnemyArea":

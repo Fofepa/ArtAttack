@@ -142,8 +142,7 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
 
-            md.make("KeyRoom");
-            mb1.setID(0);
+            md.make("Tutorial");
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);
             mb1.setDict();
@@ -533,6 +532,7 @@ SwingUtilities.invokeLater(() -> {
     }
 
     public void finalizeMapSwitch(Maps nextMap) {
+        System.out.println("finalizeMapSwitch called");
         if (levelCompletePanel != null) {
             mainFrame.getLayeredPane().remove(levelCompletePanel);
             levelCompletePanel = null;

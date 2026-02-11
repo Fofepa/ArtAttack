@@ -75,7 +75,7 @@ public class EnemyDirector {
                 ab.addShape("square", 25, true);
                 List<Coordinates> bobVA = ab.getResult();
                 Key key = new Key("1st floor key", "Let's you and your party go upstairs!", 5001);
-                builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(30);
+                builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(30); builder.setKeys(List.of(new Key("1st floor key", "Lets you go upstairs!", 5001)));
                 builder.setSpeed(6);builder.setName("B.O.B"); builder.setWeapons(List.of(bobWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA);
             }
             
@@ -167,7 +167,7 @@ public class EnemyDirector {
                 builder.setCurrHP(10);
                 builder.setCoordinates(coordinates);
                 builder.setKeys(List.of(new Key("Key", "Key", 5002)));
-                builder.setDroppedXP(200);
+                builder.setDroppedXP(1);
                 builder.setSpeed(3);
             }
         }

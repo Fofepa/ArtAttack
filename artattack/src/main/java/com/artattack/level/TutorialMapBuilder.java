@@ -83,7 +83,7 @@ public class TutorialMapBuilder implements MapBuilder {
         for (Coordinates key : this.map.getDict().keySet()) {
             this.charMatrix[key.getX()][key.getY()] = this.map.getDict().get(key).getMapSymbol();
         }
-        this.map.startMap(charMatrix);
+        this.map.startMap();
     }
 
     public void buildWall(Coordinates offset, int width, int height, char mapSymbol) {

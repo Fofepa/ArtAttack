@@ -259,6 +259,7 @@ public class MainFrame implements UIManager {
     }
 
     public void switchMap(Maps map){
+        System.out.println("MainFrame.switchMap called");
         this.map = map;
         this.mapPanel.setMap(map); 
         this.map.getConcreteTurnHandler().addTurnListener(this.mainGUIFacade.getInputController());

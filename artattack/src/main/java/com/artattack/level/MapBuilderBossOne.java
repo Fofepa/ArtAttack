@@ -52,7 +52,7 @@ public class MapBuilderBossOne implements MapBuilder{
             for (Coordinates key : this.map.getDict().keySet()) {
                 this.charMatrix[key.getX()][key.getY()] = this.map.getDict().get(key).getMapSymbol();
             }
-            this.map.startMap(this.charMatrix);
+            this.map.startMap();
         } catch (NullPointerException e) {
             System.err.println("dictionary and//or charMatrix has not been initialized ");
         }

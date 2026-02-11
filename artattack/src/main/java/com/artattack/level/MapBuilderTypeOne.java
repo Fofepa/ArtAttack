@@ -9,7 +9,6 @@ import com.artattack.mapelements.TriggerGroup;
 
 public class MapBuilderTypeOne implements MapBuilder {
     private Maps map;
-    private char[][] charMatrix;
 
     public MapBuilderTypeOne() {
         this.map = new Maps();
@@ -38,7 +37,6 @@ public class MapBuilderTypeOne implements MapBuilder {
     @Override
     public void setDimension(int width, int height) {
         this.map.setDimension(width, height);
-        this.charMatrix = new char[this.map.getWidth()][this.map.getHeight()];
     }
 
     @Override
@@ -48,30 +46,23 @@ public class MapBuilderTypeOne implements MapBuilder {
 
     @Override
     public void startMap() {
-        try {
-            for (Coordinates key : this.map.getDict().keySet()) {
-                this.charMatrix[key.getX()][key.getY()] = this.map.getDict().get(key).getMapSymbol();
-            }
-            this.map.startMap(this.charMatrix);
-        } catch (NullPointerException e) {
-            System.err.println("dictionary and/or charMatrix has not been initialized ");
-        }
+        this.map.startMap();
     }
 
     @Override
     public void buildBorder() {
         try {
-            for (char[] charMatrix1 : this.charMatrix) {
+            for (char[] charMatrix1 : this.map.getMapMatrix()) {
                 charMatrix1[0] = '#';
-                charMatrix1[this.charMatrix[0].length - 1] = '#';
+                charMatrix1[this.map.getMapMatrix()[0].length - 1] = '#';
             }
-            for (int i = 1; i < this.charMatrix[0].length - 1; i++) {
-                this.charMatrix[0][i] = '#';
-                this.charMatrix[charMatrix.length - 1][i] = '#';
+            for (int i = 1; i < this.map.getMapMatrix()[0].length - 1; i++) {
+                this.map.getMapMatrix()[0][i] = '#';
+                this.map.getMapMatrix()[this.map.getMapMatrix().length - 1][i] = '#';
             }
-            for (int i = 1; i < this.charMatrix.length - 1; i++) {
-                for (int j = 1; j < this.charMatrix[0].length - 1; j++) {
-                    this.charMatrix[i][j] = '.';
+            for (int i = 1; i < this.map.getMapMatrix().length - 1; i++) {
+                for (int j = 1; j < this.map.getMapMatrix()[0].length - 1; j++) {
+                    this.map.getMapMatrix()[i][j] = '.';
                 }
             }
         } catch (NullPointerException e) {
@@ -88,7 +79,7 @@ public class MapBuilderTypeOne implements MapBuilder {
             }
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    this.charMatrix[i + offset.getX()][j + offset.getY()] = mapSymbol;
+                    this.map.getMapMatrix()[i + offset.getX()][j + offset.getY()] = mapSymbol;
                 }
             }
         } catch (NullPointerException e) {

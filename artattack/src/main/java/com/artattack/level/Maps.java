@@ -98,6 +98,7 @@ public class Maps {
     public void setDimension(int width, int height) {
         this.width = width;
         this.height = height;
+        this.mapMatrix = new char[width][height];
     }
 
     public void setTurnHandler(ConcreteTurnHandler turnHandler){
@@ -223,8 +224,14 @@ public class Maps {
             return ' ';
     }
 
-    public void startMap(char[][] mapMatrix){
-        this.mapMatrix = mapMatrix;
+    public void startMap() {
+        try {
+            for (Coordinates key : this.getDict().keySet()) {
+                this.mapMatrix[key.getX()][key.getY()] = this.getDict().get(key).getMapSymbol();
+            }
+        } catch (NullPointerException e) {
+            System.err.println("Map ID: " + this.ID + " - dictionary and/or charMatrix has not been initialized ");
+        }
     }
     
     public List<Enemy> checkAggro(Coordinates coordinates){

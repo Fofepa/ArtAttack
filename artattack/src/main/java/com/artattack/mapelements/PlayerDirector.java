@@ -18,7 +18,7 @@ public class PlayerDirector {
         PlayerType playerType = charachterType.getPlayerType();
         switch(playerType){
             case MUSICIAN ->{
-                ab.addShape("x",2);
+                ab.addShape("square",30, true);
                 List<Coordinates> zappaMA = ab.getResult();
                 ab.addShape("4");
                 zappaMA.addAll(ab.getResult());

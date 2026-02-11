@@ -52,7 +52,8 @@ public class SwitchMap extends Interaction {
             }
         }
 
-        if(this.unlocked){
+        if(this.unlocked) {
+            System.out.println("SwitchMap.doInteraction called");
             Maps currMap = gameContext.getMapManager().getLevels().get(gameContext.getMapManager().getCurrMap());
             Maps next = gameContext.getMapManager().getLevels().get(this.nextMap);
             if (next == null) {
@@ -60,33 +61,16 @@ public class SwitchMap extends Interaction {
             }
             List<ActiveElement> list = new LinkedList<ActiveElement>();
             list.add(player);
-            player.setCoordinates(next.getP1Spawn());
-            next.getDict().put(next.getP1Spawn(), player);
-            
-            if(player.equals(currMap.getPlayerOne())){
-                next.setPlayerOne(player);
-                currMap.getPlayerTwo().setCoordinates(next.getP2Spawn());
-                next.setPlayerTwo(currMap.getPlayerTwo());
-                next.setTurnQueue(player, next.getPlayerTwo());
-                next.getDict().put(next.getP2Spawn(), next.getPlayerTwo());
-                currMap.setCell(currMap.getPlayerTwo().getCoordinates(), '.');
-                gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerTwo().getCoordinates(), currMap.getPlayerTwo().getMapSymbol());
-                currMap.remove(currMap.getPlayerTwo());
-            } else{
-                next.setPlayerTwo(player);
-                currMap.getPlayerOne().setCoordinates(next.getP2Spawn());
-                next.setPlayerOne(currMap.getPlayerOne());
-                next.setTurnQueue(player, next.getPlayerOne());
-                next.getDict().put(next.getP2Spawn(), next.getPlayerOne());
-                currMap.setCell(currMap.getPlayerOne().getCoordinates(), '.');
-                gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerOne().getCoordinates(), currMap.getPlayerOne().getMapSymbol());
-                currMap.remove(currMap.getPlayerOne());
-            }
-            //next.setDict();
-            //next.startMap();
-            currMap.remove(player);
-            currMap.setCell(player.getCoordinates(), '.');
-            gameContext.getMapManager().getLevels().get(nextMap).setCell(player.getCoordinates(), player.getMapSymbol());
+
+            Player tmp1 = currMap.getPlayerOne();
+            Player tmp2 = currMap.getPlayerTwo();
+
+            currMap.remove(tmp1);
+            currMap.remove(tmp2);
+
+            next.setPlayerOne(tmp1);
+            next.setPlayerTwo(tmp2);
+            next.setTurnQueue(player, (player.equals(next.getPlayerOne()) ? next.getPlayerTwo() : next.getPlayerOne()));
             gameContext.getUiManager().switchMap(next);
             gameContext.getMapManager().setCurrMap(this.nextMap);
 

@@ -36,7 +36,7 @@ public class InventoryStrategy implements PlayerStrategy {
     }
 
     private void moveInventoryIndex(int index){
-        this.inventoryIndex =  (index + this.inventoryIndex) % (player.getInventory().size());
+        this.inventoryIndex =  (index + this.inventoryIndex + player.getInventory().size()) % (player.getInventory().size());
     }
 
     /* private void movePlayerIndex(int index){

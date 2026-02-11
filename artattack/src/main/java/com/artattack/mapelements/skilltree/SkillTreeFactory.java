@@ -1,5 +1,6 @@
 package com.artattack.mapelements.skilltree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.artattack.level.AreaBuilder;
@@ -41,6 +42,8 @@ public class SkillTreeFactory {
         zappaSpecial1.setName("Little Umbrellas");
         zappaSpecial1.setDescription("With his skills zappa makes a nebula of acid rain appear in all the map that does damage, but helps himself and the other player by giving him a little umbrella.");
         zappaSpecial1.setActionPoints(20);
+        zappaSpecial1.setAttackArea(new ArrayList<>());
+        zappaSpecial1.setAreaAttack(true);
         zappaSpecial1.setPower(8);
         Node node_12 = new SpecialMoveNODE(zappaSpecial1);
         Node node_14 = new MANODE(List.of(new Coordinates(-2,0), new Coordinates(-3,-1), new Coordinates(-3,1),
@@ -51,7 +54,6 @@ public class SkillTreeFactory {
         Node node_15 = new SPNODE(5);
         
         Node node_16 = new APNODE(4);
-         new APNODE(2);
         
         Node node_17 = new MANODE(List.of(new Coordinates(-2, 0), new Coordinates(2, 0)));
         Node node_18 = new HPNODE(4);

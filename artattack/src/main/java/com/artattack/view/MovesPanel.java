@@ -95,7 +95,7 @@ public class MovesPanel extends JPanel {
         FontMetrics fm = g.getFontMetrics();
         int lineHeight = fm.getHeight(); 
 
-        for (int i = 0; i < selectedWeapon.getMoves().size(); i++) { 
+        for (int i = 0; i < selectedWeapon.getInitMoves(); i++) { 
             Move move = moves.get(i);
             
             // Colore selezione
@@ -118,7 +118,6 @@ public class MovesPanel extends JPanel {
             y += 5;
         }
         
-        // Instruction
         g.setColor(Color.GRAY);
         g.setFont(new Font("Monospaced", Font.PLAIN, 10));
         g.drawString("Press « to go back", 10, getHeight() - 10);
@@ -129,7 +128,8 @@ public class MovesPanel extends JPanel {
         g.setFont(new Font("Monospaced", Font.PLAIN, 12));
         g.drawString(text, 10, 20);
     }
-    
+  
+
     private List<String> getWrappedLines(Graphics g, String text, int maxWidth) {
         List<String> lines = new ArrayList<>();
         FontMetrics fm = g.getFontMetrics();

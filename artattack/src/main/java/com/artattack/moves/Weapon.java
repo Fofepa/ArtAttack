@@ -9,26 +9,24 @@ public class Weapon{
     //Attributes
     private final String name;
     private final String description;
-    private int maxMoves;
+    private int initMoves;
     private List<Move> moves;
     private PlayerType compatibility;
 
     //Constructors
-    public Weapon(String name, String description, int maxMoves, PlayerType compatibility) {
+    public Weapon(String name, String description, int initMoves, PlayerType compatibility) {
         this.name = name;
         this.description = description;
-        this.maxMoves = maxMoves;
+        this.initMoves = initMoves;
         this.moves = new ArrayList<>();
         this.compatibility = compatibility;
     }
 
-    public Weapon(String name, String description, int maxMoves, List<Move> moves, PlayerType compatibility) {
+    public Weapon(String name, String description, int initMoves, List<Move> moves, PlayerType compatibility) {
         this.name = name;
         this.description = description;
-        this.maxMoves = maxMoves;
-        if (moves.size() <= this.maxMoves) {
-            this.moves = moves;
-        }
+        this.initMoves = initMoves;
+        this.moves = moves;
         this.compatibility = compatibility;
     }
 
@@ -41,8 +39,8 @@ public class Weapon{
         return this.description;
     }
 
-    public int getMaxMoves() {
-        return this.maxMoves;
+    public int getInitMoves() {
+        return this.initMoves;
     }
     
     public List<Move> getMoves() {
@@ -54,13 +52,13 @@ public class Weapon{
     }
 
     //Setters
-    public void setMaxMoves() {
-        this.maxMoves++;
+    public void setInitMoves() {
+        this.initMoves++;
     }
 
     //Methods
     public boolean addMove(Move move) {
-        if (this.moves.contains(move) || this.moves.size() >= this.maxMoves) {
+        if (this.moves.contains(move) || this.moves.size() >= this.initMoves) {
             return false;
         }
         moves.add(move);

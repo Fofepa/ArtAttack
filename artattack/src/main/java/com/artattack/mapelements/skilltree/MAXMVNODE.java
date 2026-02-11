@@ -1,7 +1,6 @@
 package com.artattack.mapelements.skilltree;
 
 import com.artattack.mapelements.Player;
-import com.artattack.moves.Weapon;
 
 // type of nodes that increases the maxWeapons
 public class MAXMVNODE extends Node{
@@ -14,9 +13,7 @@ public class MAXMVNODE extends Node{
     public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                for(Weapon weapons : player.getWeapons()){
-                    weapons.setMaxMoves();
-                }
+                player.getWeapons().get(0).setInitMoves();
                 this.setSpent();
                 return;
             }

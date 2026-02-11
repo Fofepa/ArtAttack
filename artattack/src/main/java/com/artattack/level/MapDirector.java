@@ -439,8 +439,24 @@ public class MapDirector {
             case "BossArena":
                 this.builder.setID(8);
                 this.builder.setDimension(18, 12);
+                this.builder.setSpawn(new Coordinates(15, 4), new Coordinates(15, 6));
+                
+                //triggers
+                TriggerGroup evilDialogue = new TriggerGroup(new Talk(List.of(
+                    "...Computer, create a cool villain monologue, and say it out loud...",
+                    "...PROCESSING PROMPT...", "...PROCESSING COMPLETE.",
+                    "Welcome to my office. I have been waiting for you. Take a seat.",
+                    "So, you've come to take your revenge, eh? How naive.",
+                    "Don't get your hopes up just because you were able to get through our security system. My latest AI model has reached a state of absolute perfection. You have no chance of defeating me.",
+                    "I worked hard to get where I am. I invested my money wisely. I walked all over my competition. I AM A SELF MADE MAN!",
+                    "And you? With your silly little art projects? Playing your kiddie instruments and shooting your silly movies? NONSENSE!",
+                    "You and your fans are nothing but poor, poor communists. AI could make any song, any movie, any painting, ANYTHING, BETTER THAN ANY OF YOU \"ARTISTS\" COULD!",
+                    "You're nothing but FRAUDS! BILLIONAIRES ARE THE TRUE HEIRS OF THE WORLD!",
+                    "NOW DIE!"
+                )));
+                this.builder.addTriggerGroup(evilDialogue, new Coordinates(5, 3), 11, 6, null);
+
                 this.builder.buildBorder();
-                this.builder.setSpawn(new Coordinates(15, 2), new Coordinates(15, 4));
 
                 //decorations
                 this.builder.buildWall(new Coordinates(16, 1), 1, 1, '\u2380');
@@ -454,12 +470,13 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(8, 2), 1, 1, '$');
 
                 //desk
-                this.builder.buildWall(new Coordinates(4, 2), 7, 1, '£');
-                this.builder.buildWall(new Coordinates(1, 2), 2, 1, '£');
-                this.builder.buildWall(new Coordinates(1, 8), 2, 1, '£');
+                this.builder.buildWall(new Coordinates(4, 2), 1, 8, '\u20AC');
+                this.builder.buildWall(new Coordinates(1, 2), 3, 1, '\u20AC');
+                this.builder.buildWall(new Coordinates(1, 9), 3, 1, '\u20AC');
+
 
                 //enemy
-                eDirector.create(eBuilder, EnemyType.SAM, new Coordinates(2, 4));
+                eDirector.create(eBuilder, EnemyType.SAM, new Coordinates(2, 5));
                 this.builder.setEnemies(new ArrayList<>(List.of(eBuilder.getResult())));
                 break;
         }

@@ -142,7 +142,8 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
 
-            md.make("Tutorial");
+            md.make("KeyRoom");
+            mb1.setID(0);
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);
             mb1.setDict();

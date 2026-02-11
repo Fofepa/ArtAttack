@@ -145,8 +145,9 @@ public class EnemyDirector {
                 Weapon samWeapon = new Weapon(" ", " ", 3, List.of(samMove1, samMove2), null);
                 ab.addShape("square", 5, true);
                 List<Coordinates> samMA = ab.getResult();
-                ab.addShape("square", 5, true);
-                List<Coordinates> samVA =  ab.getResult();
+                ab.addShape("square", 7, true);
+                List<Coordinates> samVA = Coordinates.sum(ab.getResult(), new Coordinates(6, 0));
+                samVA.add(new Coordinates(6, 0));
 
                 builder.setMapSymbol('S'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(80); builder.setMaxHP(80); builder.setDroppedXP(50);
                 builder.setSpeed(50); builder.setName("Sam Altman"); builder.setWeapons(List.of(samWeapon)); builder.setActionPoints(15); builder.setMaxActionPoints(15); builder.setMoveArea(samMA); builder.setVisionArea(samVA);

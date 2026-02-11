@@ -11,6 +11,7 @@ import com.artattack.moves.Weapon;
 
 public class Player extends ActiveElement {
     
+    //Attributes
     private PlayerType type;
     private int currXP;
     private int maxXP;
@@ -78,11 +79,6 @@ public class Player extends ActiveElement {
             this.keys = keys;
             this.skillTree = skillTree;
     }
-
-
-
-    
-    //getters
 
     public int getCurrXP() {
         return this.currXP;
@@ -160,15 +156,6 @@ public class Player extends ActiveElement {
         else{
             this.currXP += amount;
         }
-        /*if(this.currXP + amount < this.maxXP)
-            this.currXP += amount;
-        else{
-            amount = amount - (this.maxXP - this.currXP);
-            this.setLevel();
-            setMaxXP(this.maxXP + 5);
-            this.currXP = amount;
-            
-        }*/
     }
 
     @Override
@@ -187,6 +174,7 @@ public class Player extends ActiveElement {
         if(this.getMapSymbol() != other.getMapSymbol()) return false;
         if(!this.getName().equals(other.getName())) return false;
         if(!this.getCoordinates().equals(other.getCoordinates())) return false;
+        //Aggiungi altri check
         return true;
     }
 

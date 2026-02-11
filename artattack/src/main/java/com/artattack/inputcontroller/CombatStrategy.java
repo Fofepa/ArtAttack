@@ -38,7 +38,7 @@ public class CombatStrategy implements PlayerStrategy{
     }
 
     private void moveMoveIndex(int index){
-        this.moveIndex = (this.moveIndex + index + player.getWeapons().get(weaponIndex).getMoves().size()) % player.getWeapons().get(weaponIndex).getMoves().size();
+        this.moveIndex = (this.moveIndex + index + player.getWeapons().get(weaponIndex).getMoves().size()) % player.getWeapons().get(weaponIndex).getInitMoves();
     }
 
     public int acceptMove(){

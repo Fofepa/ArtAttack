@@ -47,6 +47,20 @@ public class StallStrategy extends DecisionStrategy {
                 this.getMainFrame().showDialog(List.of("B.O.B.: Nooo! Let me repair this thing, one moment!"));
                 enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
+            case EnemyType.SAM:
+                this.getMainFrame().showDialog(List.of("Sam Altman: I'm in a Deep Learning state!"));
+                enemy.setActionPoints(enemy.getActionPoints()-5);
+                this.getMainFrame().showDialog(List.of("Sam Altman recovered 12 hp"));
+                enemy.updateHP(enemy.getCurrHP()+12);
+                break;
+            case EnemyType.MOSQUITO:
+                this.getMainFrame().showDialog(List.of("MosquitoBot: BZZZZZZZZZZ!!"));
+                enemy.setActionPoints(enemy.getActionPoints()-2);
+                break;
+            case EnemyType.ATTENDANT:
+                this.getMainFrame().showDialog(List.of("Attendant: I have no Keys I swear!!!"));
+                enemy.setActionPoints(enemy.getActionPoints()-4);
+                break;
         }
     }
 }

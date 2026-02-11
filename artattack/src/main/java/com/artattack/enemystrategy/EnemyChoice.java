@@ -66,7 +66,7 @@ public class EnemyChoice{   // Our Context class
             }
         }
 
-        if(enemy.getEnemyType() == EnemyType.BOB){
+        if(enemy.getEnemyType() == EnemyType.BOB || enemy.getEnemyType() == EnemyType.MOSQUITO){
             for(Move move : enemy.getWeapons().get(0).getMoves()){
                 if(move.getHealTargets(this.enemy, this.map) != null){
                     for(ActiveElement element : move.getHealTargets(this.enemy, this.map)){
@@ -252,10 +252,58 @@ public class EnemyChoice{   // Our Context class
                     }
                 }
                 break;
+            case SAM:
+                if(hasTarget){
+                    if(r <0.95){
+                        setStrategy(new SmartAttackStrategy(this.mainFrame), usable);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                else if(!hasTarget && this.enemy.getActionPoints()> 5){
+                    setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                }
+                else{
+                    setStrategy(new ApproachStrategy(this.mainFrame));
+                    this.strategy.execute(enemy, map);
+                }
+                break;
+
+            case MOSQUITO:
+                if(hasHealTarget){
+                    if(r<0.9){
+                        setStrategy(new HealStrategy(this.mainFrame), healMove);
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                else{
+                    if(r<0.95){
+                        setStrategy(new RetreatStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new StallStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
+                }
+                break;
+            
+            case ATTENDANT: // once per turn he just talks
+                setStrategy(new StallStrategy(this.mainFrame));
+                this.strategy.execute(enemy, map);
 
             default:
                 map.getConcreteTurnHandler().next();
             }
+
         }
         
         private void setStrategy(DecisionStrategy strategy, Map<Move, Integer> usable){

@@ -19,8 +19,8 @@ import com.artattack.turns.ConcreteTurnQueue;
 
 public class Maps {
     private  int ID;
-    private Player playerOne;
-    private Player playerTwo;
+    private Player p1;
+    private Player p2;
     private List<Enemy> enemies;
     private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
@@ -42,11 +42,17 @@ public class Maps {
     }
 
     public void setPlayerOne(Player player){
-        this.playerOne = player;
+        this.p1 = player;
+        if (this.p1spawn != null) {
+            this.p1.setCoordinates(this.p1spawn);
+        }
     }
 
     public void setPlayerTwo(Player player){
-        this.playerTwo = player;
+        this.p2 = player;
+        if (this.p2spawn != null) {
+            this.p2.setCoordinates(this.p2spawn);
+        }
     }
 
     public void setEnemies(List<Enemy> enemies){
@@ -101,12 +107,12 @@ public class Maps {
 
     public void setDict(){
          this.dictionaire = new HashMap<>();
-        if (this.playerOne != null && this.playerOne.getCoordinates() != null) {
-            this.dictionaire.put(this.playerOne.getCoordinates(), this.playerOne);
+        if (this.p1 != null && this.p1.getCoordinates() != null) {
+            this.dictionaire.put(this.p1.getCoordinates(), this.p1);
         }
 
-        if (this.playerTwo != null && this.playerTwo.getCoordinates() != null) {
-            this.dictionaire.put(this.playerTwo.getCoordinates(), this.playerTwo);
+        if (this.p2 != null && this.p2.getCoordinates() != null) {
+            this.dictionaire.put(this.p2.getCoordinates(), this.p2);
         }
         if (this.interactableElements != null) {
             for (InteractableElement i : this.interactableElements) {
@@ -142,8 +148,8 @@ public class Maps {
 
     public void setTurnQueue(){
         List<ActiveElement>list = new LinkedList<ActiveElement>();
-        list.add(this.playerOne);
-        list.add(this.playerTwo);
+        list.add(this.p1);
+        list.add(this.p2);
         ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
         
@@ -186,11 +192,11 @@ public class Maps {
     }
 
     public Player getPlayerOne(){
-        return this.playerOne;
+        return this.p1;
     }
 
     public Player getPlayerTwo(){
-        return this.playerTwo;
+        return this.p2;
     }
 
     public List<Enemy> getEnemies(){
@@ -232,13 +238,13 @@ public class Maps {
         List<Enemy> toRemove = new ArrayList<>();
         for(ActiveElement element : this.turnHandler.getConcreteTurnQueue().getTurnQueue()){
             if(element instanceof Enemy e){
-                if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerOne.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerTwo.getCoordinates())){
+                if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p1.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p2.getCoordinates())){
                     toRemove.add(e);
                 }
             }
         }
         for(Enemy e : toRemove){
-            if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerOne.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(playerTwo.getCoordinates())) {
+            if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p1.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p2.getCoordinates())) {
                 // if both players escaped from the enemy
                 System.out.println("The party has escaped from " + e.getName() + " and it has been removed from the queue");
                 this.turnHandler.getConcreteTurnQueue().remove(e);
@@ -251,9 +257,9 @@ public class Maps {
             this.turnHandler.getConcreteTurnQueue().remove(element);
             this.mapMatrix[element.getCoordinates().getX()][element.getCoordinates().getY()] = '.';
             if(element instanceof Player){
-                if(element.equals(this.playerOne))
-                    this.playerOne = null;
-                else this.playerTwo = null;
+                if(element.equals(this.p1))
+                    this.p1 = null;
+                else this.p2 = null;
             } //else this.enemies.remove(this.enemies.indexOf(element)) doesn't work if List<Enemy> is unmodifiable (like List.of())
             this.dictionaire.remove(element.getCoordinates());
         }

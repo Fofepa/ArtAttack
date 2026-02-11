@@ -105,6 +105,7 @@ public class MapDirector {
                 //Building Map
                 this.builder.setID(0);
                 this.builder.setDimension(32, 26);
+                this.builder.setSpawn(new Coordinates(29, 23), new Coordinates(26, 23));
                 this.builder.setEnemies(listE);
                 this.builder.setInteractableElements(List.of(npc_t, chest_t, door_t));
                 this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4);
@@ -455,6 +456,7 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(1, 2), 2, 1, '£');
                 this.builder.buildWall(new Coordinates(1, 8), 2, 1, '£');
 
+                //enemy
                 eDirector.create(eBuilder, EnemyType.SAM, new Coordinates(2, 4));
                 this.builder.setEnemies(new ArrayList<>(List.of(eBuilder.getResult())));
                 break;

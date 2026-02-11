@@ -60,16 +60,23 @@ public class ConcreteTurnHandler implements TurnHandler {
         index++;
         
         if(hasNext()){ 
-            this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            // Get the element BEFORE reordering
+            ActiveElement nextElement = this.getConcreteTurnQueue().getTurnQueue().get(index);
+            this.turnManager.notifyTurn(nextElement);
             this.getConcreteTurnQueue().reorder();
-            return turnQueue.getTurnQueue().get(index);
+            // After reorder, find where the element moved to and update index
+            index = this.getConcreteTurnQueue().getTurnQueue().indexOf(nextElement);
+            return nextElement;
         }
         else{
             // Loop back to beginning
             resetIndex();
-            this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            ActiveElement nextElement = this.getConcreteTurnQueue().getTurnQueue().get(index);
+            this.turnManager.notifyTurn(nextElement);
             this.getConcreteTurnQueue().reorder();
-            return turnQueue.getTurnQueue().get(index);
+            // After reorder, find where the element moved to and update index
+            index = this.getConcreteTurnQueue().getTurnQueue().indexOf(nextElement);
+            return nextElement;
         }
     }
 
@@ -92,6 +99,16 @@ public class ConcreteTurnHandler implements TurnHandler {
 
     public int getIndex(){
         return this.index;
+    }
+
+    /**
+     * Updates the index to point to the given element after queue reordering
+     * This is crucial when elements are added mid-turn and the queue is reordered
+     */
+    public void updateIndexForElement(ActiveElement element) {
+        if (element != null && turnQueue.getTurnQueue().contains(element)) {
+            index = turnQueue.getTurnQueue().indexOf(element);
+        }
     }
 
     public ConcreteTurnQueue getConcreteTurnQueue(){

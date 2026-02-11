@@ -128,10 +128,18 @@ public class MovementStrategy implements PlayerStrategy{
             for (Enemy e : map.checkAggro(cursor)) {
                 if (!map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(e)) {
                     System.out.println("Adding " + e.getName() +  " to the queue");
+                    
+                    // Store current player before adding enemy
+                    Player currentPlayer = this.player;
+                    
                     int currSpeed = player.getSpeed();
                     this.player.setSpeed(200);
                     map.getConcreteTurnHandler().getConcreteTurnQueue().add(e);
                     this.player.setSpeed(currSpeed);
+                    
+                    // After reorder, update the index to track where the current player moved to
+                    map.getConcreteTurnHandler().updateIndexForElement(currentPlayer);
+                    
                     this.mainFrame.repaintTurnOrderPanel();
                     e.activate();
                 }

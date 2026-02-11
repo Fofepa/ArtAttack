@@ -15,7 +15,9 @@ import org.junit.Test;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
+import com.artattack.mapelements.ConcreteEnemyBuilder;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyDirector;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
@@ -30,11 +32,14 @@ public class enemyTest {
     @Before
     public void setUp() throws Exception{
         //Creating enemy
-        this.enemy = new Enemy(0,'+'," ", new Coordinates(0,0),EnemyType.GUARD,0,35,0,null,5,5,null,null,null,null,10);
+        ConcreteEnemyBuilder eb = new ConcreteEnemyBuilder();
+        EnemyDirector ed = new EnemyDirector();
+        ed.create(eb, EnemyType.GUARD, new Coordinates(0,0)); eb.setCurrHP(35); eb.setMaxHP(35); eb.setDroppedXP(20);
+        this.enemy = eb.getResult();
         //Creating player1
-        this.player1 = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
+        this.player1 = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 1, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Creating player2
-        this.player2 = new Player(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
+        this.player2 = new Player(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 1, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Initializing tmb
         this.tmb = new TestMapBuilder();
         assertNotNull(this.tmb);
@@ -69,11 +74,12 @@ public class enemyTest {
 
     @Test
     public void dropxpTest(){
-        enemy.updatePlayerOneDamage(25);
-        enemy.updatePlayerTwoDamage(10);
+        enemy.updatePlayerOneDamage(35);
+        enemy.updatePlayerTwoDamage(0);
         enemy.dropXP(player1, player2);
-        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 7, player1.getCurrXP());
-        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 3, player2.getCurrXP());
+        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 0, player1.getCurrXP());
+        assertEquals(2, player1.getLevel());
+        assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 0, player2.getCurrXP());
     
     
     }

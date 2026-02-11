@@ -43,29 +43,52 @@ public class CombatStrategy implements PlayerStrategy{
 
     public int acceptMove(){
         Move move = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex);
-        List<ActiveElement> l = new ArrayList<>(); 
-        if(move.getAttackTargets(player, map) != null){
-            l.addAll(move.getAttackTargets(player, map));
-        }
+        List<ActiveElement> targets = move.getAttackTargets(player, map); 
+
+        List<String> allMessages = new ArrayList<>();
+
         int value = move.useMove(player, map);
-        
+
         if(value != 0){
             if("Wild at Heart".equals(move.getName())){
-                this.mainFrame.showDialog(List.of(l.get(0).getName() + ": What do you want fa***t?!", "*A group of offended thugs goes to the enemy and beats it really bad!"));
+                 if (targets != null && !targets.isEmpty()) {
+                    allMessages.add(targets.get(0).getName() + ": What do you want fa***t?!");
+                 }
+                 allMessages.add("*A group of offended thugs goes to the enemy and beats it really bad!");
             }
-            this.mainFrame.showDialog(List.of(player.getName()+ " used " + move.getName() ,player.getName() + ": has done damage " + value + " to " + l.size() + " enemies!"));
+
+            allMessages.add(player.getName()+ " used " + move.getName());
+
+            String damageMsg = player.getName() + ": has done damage " + value;
+            if (targets != null) {
+                damageMsg += " to " + targets.size() + " enemies!";
+            }
+            allMessages.add(damageMsg);
+
             isSelected = false;
             moveIndex = 0;
             weaponIndex = 0;
-            for(ActiveElement element : l){
-                if(!element.isAlive()){
-                    this.mainFrame.showDialog(List.of(element.getName() + ": has been defeated!"));
-                    this.mainFrame.repaintStatsPanel();
+
+            if (targets != null) {
+                boolean repainted = false;
+                for(ActiveElement element : targets){
+                    if(!element.isAlive()){
+                        allMessages.add(element.getName() + ": has been defeated!");
+
+                        if (!repainted) {
+                            this.mainFrame.repaintStatsPanel(); 
+                            repainted = true;
+                        }
+                    }
                 }
             }
         } 
         else{
-            this.mainFrame.showDialog(List.of("Not enough AP or no one to be hit"));
+            allMessages.add("Not enough AP or no one to be hit");
+        }
+
+        if (!allMessages.isEmpty()) {
+            this.mainFrame.showDialog(allMessages);
         }
 
         if(player.getActionPoints() == 0){

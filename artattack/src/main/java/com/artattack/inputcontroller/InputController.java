@@ -382,6 +382,7 @@ public class InputController implements KeyListener, TurnListener {
 
         List<Weapon> weapons = currentElement.getWeapons();
         WeaponsPanel weaponsPanel = mainFrame.getWeaponsPanel();
+        MovesPanel movesPanel = mainFrame.getMovesPanel();
 
         if (weaponsPanel == null || weapons.isEmpty()) {
             System.out.println("WeaponsPanel not initialized or no weapons available");
@@ -392,6 +393,8 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_UP -> {
                 combatStrategy.execute(1, 0);
                 weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                movesPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                mainFrame.repaintMovesPanel();
                 System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 mainFrame.clearAttackArea();
                 mainFrame.repaintWeaponsPanel();
@@ -400,6 +403,8 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_DOWN -> {
                 combatStrategy.execute(-1, 0);
                 weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                movesPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
+                mainFrame.repaintMovesPanel();
                 System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 mainFrame.clearAttackArea();
                 mainFrame.repaintWeaponsPanel();

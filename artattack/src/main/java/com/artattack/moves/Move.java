@@ -146,14 +146,14 @@ public class Move{
     }
 
     public List<ActiveElement> getAttackTargets(ActiveElement user, Maps map) {
-        if (this.attackArea == null || this.attackArea.isEmpty()) {
-            System.out.println(this.getName() + " has no attackArea");
-            return null;
-        }
         if (this.name.equals("Little Umbrellas")) {
             List<ActiveElement> l = new ArrayList<>();
             l.addAll(map.getEnemies());
             return l;
+        }
+        if (this.attackArea == null || this.attackArea.isEmpty()) {
+            System.out.println(this.getName() + " has no attackArea");
+            return null;
         }
         if (!this.areaAttack) {
             ActiveElement temp = null;
@@ -246,7 +246,7 @@ public class Move{
         int total = 0;
         boolean works = false;
         //Damage Logic
-        if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name.equalsIgnoreCase("Little Umbrellas") && this.power != 0 && this.getAttackTargets(user, map) != null)) {
+        if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name.equals("Little Umbrellas") && this.power != 0 && this.getAttackTargets(user, map) != null)) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 if (element instanceof Enemy e) {
                     if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDamage(this.power); }

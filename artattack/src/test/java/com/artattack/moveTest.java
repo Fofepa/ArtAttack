@@ -160,8 +160,8 @@ public class moveTest {
         e.updateHP(-e.getCurrHP() + m4.getPower());
         m4.useMove(p2, maps);
         assertEquals(0, e.getCurrHP());
-        e.updatePlayerOneDemage(-e.getPlayerOneDemage() + 8);
-        e.updatePlayerTwoDemage(-e.getPlayerTwoDemage() + 2);
+        e.updatePlayerOneDamage(-e.getPlayerOneDamage() + 8);
+        e.updatePlayerTwoDamage(-e.getPlayerTwoDamage() + 2);
         p1.updateCurrXP(-p1.getCurrXP());
         p2.updateCurrXP(-p2.getCurrXP());
         e.dropXP(p1, p2);

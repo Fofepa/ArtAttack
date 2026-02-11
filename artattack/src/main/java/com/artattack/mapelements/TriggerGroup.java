@@ -12,7 +12,7 @@ public class TriggerGroup {
         this.consumed = false;
     }
 
-    public void OnTrigger(GameContext gameContext, Player player,String spritePath ) {
+    public void OnTrigger(GameContext gameContext, Player player, String spritePath) {
         if (!this.consumed) {
             this.interaction.doInteraction(gameContext, player, spritePath);
             this.consumed = true;

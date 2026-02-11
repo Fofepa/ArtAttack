@@ -14,8 +14,8 @@ public class Enemy extends ActiveElement {
     private List<Item> drops;
     private List<Key> keys;
     private int droppedXP;
-    private int playerOneDemage;
-    private int playerTwoDemage;
+    private int PlayerOneDamage;
+    private int PlayerTwoDamage;
     private EnemyType enemyType;
     private boolean isActive = false;     //unused for now
     private boolean isStunned = false;
@@ -39,8 +39,8 @@ public class Enemy extends ActiveElement {
             this.drops = drops;
             this.keys = keys;
             this.droppedXP = droppedXP;
-            this.playerOneDemage = 0;
-            this.playerTwoDemage = 0;
+            this.PlayerOneDamage = 0;
+            this.PlayerTwoDamage = 0;
     }
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType, String spritePath){
@@ -64,8 +64,8 @@ public class Enemy extends ActiveElement {
             this.drops = drops;
             this.keys = keys;
             this.droppedXP = droppedXP;
-            this.playerOneDemage = 0;
-            this.playerTwoDemage = 0;
+            this.PlayerOneDamage = 0;
+            this.PlayerTwoDamage = 0;
     }
 
     public List<Coordinates> getVisionArea() {
@@ -84,12 +84,12 @@ public class Enemy extends ActiveElement {
         return this.droppedXP;
     }
 
-    public int getPlayerOneDemage(){
-        return this.playerOneDemage;
+    public int getPlayerOneDamage(){
+        return this.PlayerOneDamage;
     }
 
-    public int getPlayerTwoDemage(){
-        return this.playerTwoDemage;
+    public int getPlayerTwoDamage(){
+        return this.PlayerTwoDamage;
     }
 
     public EnemyType getEnemyType(){
@@ -100,12 +100,23 @@ public class Enemy extends ActiveElement {
         return this.isStunned;
     }
 
-    public void updatePlayerOneDemage(int demage){
-        this.playerOneDemage += demage;
+    public void updatePlayerOneDamage(int damage){
+        if (damage > this.getCurrHP()) {
+            this.PlayerOneDamage += this.getCurrHP();
+        }
+        else {
+            this.PlayerOneDamage += damage;
+        }
+        System.out.println(damage);
     }
 
-    public void updatePlayerTwoDemage(int demage){
-        this.playerTwoDemage += demage;
+    public void updatePlayerTwoDamage(int damage){
+        if(damage > this.getCurrHP()){
+            this.PlayerTwoDamage += this.getCurrHP();
+        }
+        else{
+        this.PlayerTwoDamage += damage;   
+        }
     }
 
      public boolean getIsActive(){
@@ -128,14 +139,14 @@ public class Enemy extends ActiveElement {
         this.enemyType = enemyType;
     }
 
-    private int calculateDroppedXP(int demage){
-        float percentDemage = ((float) demage) / this.getMaxHP();
-        return Math.round(percentDemage * this.droppedXP);
+    private int calculateDroppedXP(int damage){
+        float percentdamage = ((float) damage) / this.getMaxHP();
+        return Math.round(percentdamage * this.droppedXP);
     }
 
-    public void dropXP(Player playerOne, Player playerTwo){
-        playerOne.updateCurrXP(this.calculateDroppedXP(this.playerOneDemage));
-        playerTwo.updateCurrXP(this.calculateDroppedXP(this.playerTwoDemage));
+    public void dropXP(Player PlayerOne, Player PlayerTwo){
+        PlayerOne.updateCurrXP(this.calculateDroppedXP(this.PlayerOneDamage));
+        PlayerTwo.updateCurrXP(this.calculateDroppedXP(this.PlayerTwoDamage));
     }
 
     public void remove(Maps map){

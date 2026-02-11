@@ -6,8 +6,8 @@ import com.artattack.view.GameContext;
 public class Trigger extends MapElement {
     private TriggerGroup triggerGroup;
 
-    public Trigger(int ID, char mapSymbol, String name, Coordinates coordinates, TriggerGroup triggerGroup) {
-        super(ID, mapSymbol, name, coordinates);
+    public Trigger(int ID, char mapSymbol, String name, Coordinates coordinates, TriggerGroup triggerGroup, String spritePath) {
+        super(ID, mapSymbol, name, coordinates, spritePath);
         this.triggerGroup = triggerGroup;
     }
 

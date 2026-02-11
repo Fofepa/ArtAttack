@@ -19,7 +19,7 @@ public class ConcreteEnemyBuilder implements EnemyBuilder{
     private int maxActionPoints;
     private List<Coordinates> moveArea;
     private Coordinates coordinates;
-    private String spritePath; 
+    private String spritePath = null; 
     private List<Coordinates> visionArea;
     private List<Item> drops;
     private List<Key> keys;

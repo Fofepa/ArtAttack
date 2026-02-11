@@ -16,7 +16,7 @@ public interface MapBuilder {
     public void setInteractableElements(List<InteractableElement> elements);
     public void setEnemies(List<Enemy> enemies);
     public void setDimension(int width, int height);
-    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height);
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height, String spritePath);
     public void startMap();     // only for the view part
     public void buildBorder();
     public void buildWall(Coordinates offset, int width, int height, char mapSymbol);

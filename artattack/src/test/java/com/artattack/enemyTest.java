@@ -69,8 +69,8 @@ public class enemyTest {
 
     @Test
     public void dropxpTest(){
-        enemy.updatePlayerOneDemage(25);
-        enemy.updatePlayerTwoDemage(10);
+        enemy.updatePlayerOneDamage(25);
+        enemy.updatePlayerTwoDamage(10);
         enemy.dropXP(player1, player2);
         assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 7, player1.getCurrXP());
         assertEquals("dropxpTest faild. PlayerOne currXP not as expected.", 3, player2.getCurrXP());

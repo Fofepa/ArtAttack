@@ -81,61 +81,76 @@ public class InteractionPanel extends JPanel {
     }
     
     /**
-     * Logica centrale per gestire l'immagine.
-     * Se path esiste -> carica NPC.
-     * Se path null/errore -> carica Default Player.
+     * Speaker image manager:
+     * 1. NULL -> load "thevoid.jpg"
+     * 2. Path  -> load the image
+     * 3. else -> load Default Player
      */
     private void updateSpeakerImage(String imagePath) {
-        // CASO 1: Nessun path fornito -> Mostra Player di default
-        if (imagePath == null || imagePath.isEmpty()) {
-            currentSpeakerImage = defaultPlayerImage;
+        
+        
+        if (imagePath == null) {
+            try {
+                
+                URL voidUrl = getClass().getResource("/images/thevoid.jpg");
+                
+                if (voidUrl != null) {
+                    currentSpeakerImage = ImageIO.read(voidUrl);
+                } else {
+                    System.err.println("ATTENZIONE: 'thevoid.jpg' non trovata nelle risorse.");
+                    currentSpeakerImage = defaultPlayerImage; 
+                }
+            } catch (IOException e) {
+                System.err.println("Errore I/O caricando thevoid.jpg");
+                currentSpeakerImage = defaultPlayerImage;
+            }
             repaint();
-            return;
+            return; 
         }
 
-        // CASO 2: Path fornito -> Provo a caricare
+        
         Image loadedImage = null;
-        try {
-            // Tentativo 1: Stream (Migliore per risorse compilate)
-            InputStream is = getClass().getResourceAsStream(imagePath);
-            
-            // Tentativo 2: Classloader (senza slash iniziale)
-            if (is == null && imagePath.startsWith("/")) {
-                String pathNoSlash = imagePath.substring(1);
-                is = getClass().getClassLoader().getResourceAsStream(pathNoSlash);
-            }
+        
+        if (!imagePath.isEmpty()) {
+            try {
+                
+                InputStream is = getClass().getResourceAsStream(imagePath);
+                
+                
+                if (is == null && imagePath.startsWith("/")) {
+                    is = getClass().getClassLoader().getResourceAsStream(imagePath.substring(1));
+                }
 
-            if (is != null) {
-                loadedImage = ImageIO.read(is);
-                is.close();
-            } else {
-                System.err.println("Immagine non trovata nel classpath: " + imagePath);
-            }
+                if (is != null) {
+                    loadedImage = ImageIO.read(is);
+                    is.close();
+                } else {
+                    System.err.println("Sprite non trovato: " + imagePath + " (Uso default)");
+                }
 
-        } catch (IOException e) {
-            System.err.println("Errore IO immagine speaker: " + imagePath);
-            e.printStackTrace();
+            } catch (IOException e) {
+                System.err.println("Errore caricamento sprite: " + imagePath);
+                e.printStackTrace();
+            }
         }
 
-        // Se il caricamento ha avuto successo usa quella, altrimenti fallback sul player
+        
         if (loadedImage != null) {
             currentSpeakerImage = loadedImage;
         } else {
             currentSpeakerImage = defaultPlayerImage;
         }
+        
         repaint();
     }
 
-    // =================================================================================
-    // UNICO METODO SHOW DIALOG (Standard)
-    // =================================================================================
+
     public void showDialog(List<String> messages, String spritePath) {
         this.currentDialog = messages;
         this.currentPhraseIndex = 0;
         this.dialogActive = true;
         this.choiceMode = false;
         
-        // Aggiorna l'immagine in base al path (NPC o Default)
         updateSpeakerImage(spritePath);
         
         if (currentDialog != null && !currentDialog.isEmpty()) {
@@ -145,9 +160,6 @@ public class InteractionPanel extends JPanel {
         activateAndFocus();
     }
     
-    // =================================================================================
-    // UNICO METODO SHOW DIALOG WITH CHOICE
-    // =================================================================================
     public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, String spritePath) {
         this.currentDialog = List.of(question);
         this.currentPhraseIndex = 0;
@@ -157,7 +169,6 @@ public class InteractionPanel extends JPanel {
         this.selectedOption = 0;
         this.choiceCallback = callback;
         
-        // Aggiorna l'immagine in base al path (NPC o Default)
         updateSpeakerImage(spritePath);
         
         prepareNewPhrase(question);

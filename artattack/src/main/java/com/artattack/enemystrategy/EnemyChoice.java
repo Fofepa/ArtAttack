@@ -142,7 +142,8 @@ public class EnemyChoice{   // Our Context class
                 break;
 
             case GUARD:
-                if(hasTarget){ 
+                if(hasTarget){
+                    System.out.println("Target acquired");
                     if(r < 0.7){
                         setStrategy(new AttackStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);

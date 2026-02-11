@@ -15,9 +15,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
 
-/**
- * Adapter bridging the GUI Facade and InputController.
- */
+// Adapter bridging the GUI Facade and InputController.
 public class MainFrame implements UIManager {
     private Maps map;
     private Player currentPlayer;
@@ -63,9 +61,7 @@ public class MainFrame implements UIManager {
         }
     }
     
-    /**
-     * Identifies which panel currently holds focus.
-     */
+     // Identifies which panel currently holds focus.
     public Component getFocused() {
         if (mapPanel != null && mapPanel.hasFocus()) return mapPanel;
         if (weaponsPanel != null && weaponsPanel.hasFocus()) return weaponsPanel;

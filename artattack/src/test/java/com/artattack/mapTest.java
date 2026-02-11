@@ -83,7 +83,7 @@ public class mapTest {
     @Test
     public void addTriggerGroupTest() {
         TriggerGroup tg = new TriggerGroup(new Talk( List.of("TestDialog")));
-        map.addTriggerGroup(tg, new Coordinates(1, 1), 3, 3);
+        map.addTriggerGroup(tg, new Coordinates(1, 1), 3, 3, "");
         map.setDict();
         for (int q = 1; q < 4; q++) {
             for (int k = 1; k < 4; k++) {

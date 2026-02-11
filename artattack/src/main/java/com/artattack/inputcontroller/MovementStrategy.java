@@ -116,13 +116,14 @@ public class MovementStrategy implements PlayerStrategy{
     public void acceptMovement() {
         if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '.'){
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '.';
+            if (map.getDict().get(cursor) instanceof Trigger t) {
+                t.OnTrigger(this.mainFrame.getGameContext(), this.player, t.getSpritePath());
+            }
             this.map.updateDict(player.getCoordinates(), cursor);
             player.setCoordinates(cursor);
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';
-            if (map.getDict().get(player.getCoordinates()) instanceof Trigger t) {
-                t.OnTrigger(this.mainFrame.getGameContext(), this.player, t.getSpritePath());
-            }
+            
         }
         if(map.checkAggro(cursor) != null && !map.checkAggro(cursor).isEmpty()){
             for (Enemy e : map.checkAggro(cursor)) {

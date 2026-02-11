@@ -132,52 +132,79 @@ public class MainGUIFacade {
             List<Coordinates> moveArea = ab.getResult();
             
             // Creating Players
-            Player p1 = createPlayerFromType(p1Type, 1, new Coordinates(1, 1), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2 | BossRoom1: 14, 37 | Reception: 19, 1 | BigEnemyArea: 1, 1
-            Player p2 = createPlayerFromType(p2Type, 2, new Coordinates(1, 3), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 | BossRoom1: 17, 37 | Reception: 20, 1 | BigEnemyArea: 1, 3
+            Player p1 = createPlayerFromType(p1Type, 1, new Coordinates(0, 0), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2 | BossRoom1: 14, 37 | Reception: 19, 1 | BigEnemyArea: 1, 1
+            Player p2 = createPlayerFromType(p2Type, 2, new Coordinates(0, 0), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 | BossRoom1: 17, 37 | Reception: 20, 1 | BigEnemyArea: 1, 3
             /* Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(20, 38), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(22, 38), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 */
 
             // Creating Map
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
+
             md.make("Tutorial");
-            mb1.setID(1);
+            mb1.setPlayerOne(p1);
+            mb1.setPlayerTwo(p2);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_t = mb1.getResult();
             mm.getLevels().put(map_t.getID(), map_t);
-            /*md.make("1");
-            mb1.setID(1);
+
+            md.make("1");
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_1 = mb1.getResult();
-            mm.getLevels().put(map_1.getID(), map_1);*/
+            mm.getLevels().put(map_1.getID(), map_1);
+
             md.make("BossRoom1");
-            mb1.setID(2);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_b1 = mb1.getResult();
             mm.getLevels().put(map_b1.getID(), map_b1);
+
             md.make("Reception");
-            mb1.setID(3);
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_r = mb1.getResult();
             mm.getLevels().put(map_r.getID(), map_r);
-            md.make("BossRoom1");
-            mb1.setPlayerOne(p1);
-            mb1.setPlayerTwo(p2);
-            mb1.setID(0);
+
+            md.make("BigEnemyArea");
             mb1.setDict();
             mb1.setTurnQueue();
             mb1.startMap();
             Maps map_B = mb1.getResult();
             mm.getLevels().put(map_B.getID(), map_B);
 
+            md.make("PreBoss");
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_p = mb1.getResult();
+            mm.getLevels().put(map_p.getID(), map_p);
+
+            md.make("ChestRoom");
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_c = mb1.getResult();
+            mm.getLevels().put(map_c.getID(), map_c);
+
+            md.make("KeyRoom");
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_k = mb1.getResult();
+            mm.getLevels().put(map_k.getID(), map_k);
+
+            md.make("BossArena");
+            mb1.setDict();
+            mb1.setTurnQueue();
+            mb1.startMap();
+            Maps map_a = mb1.getResult();
+            mm.getLevels().put(map_a.getID(), map_a);
 
             // Start Game and set skill trees
             startNewGame(mm, p1, p2);
@@ -191,17 +218,15 @@ public class MainGUIFacade {
         
         // Character stats come From the enum class CharacterType
         AreaBuilder areaBuilder = new AreaBuilder();
-        areaBuilder.addShape("x",2);
+        areaBuilder.addShape("square", 30, true);
         List<Coordinates> zappaMA = areaBuilder.getResult();
-        areaBuilder.addShape("4");
         /*List<Coordinates> zappaMA = areaBuilder.getResult();    // For testing 
         areaBuilder.addShape("square", 10, true);               // TODO: restore the old MA*/
-        zappaMA.addAll(areaBuilder.getResult());
         areaBuilder.addShape("square",1,true);
         List<Coordinates> lynchMA = areaBuilder.getResult();
         areaBuilder.addShape("4");
         List<Coordinates> area4 = areaBuilder.getResult();
-        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(8); m1.setAttackArea(area4); m1.setActionPoints(2);
+        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(9999); m1.setAttackArea(area4); m1.setActionPoints(2);
         Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(1);
         switch (type) {
             case MUSICIAN:
@@ -308,30 +333,29 @@ public class MainGUIFacade {
 
         
         Maps currentLevel = maps.getLevels().get(maps.getCurrMap());
-// In MainGUIFacade.java, dentro startNewGame
 
 SwingUtilities.invokeLater(() -> {
     System.out.println("\n--- DEBUG RICERCA NPC ---");
     
-    // 1. Verifichiamo se la lista esiste
+    // Checks if the lis exists
     if (currentLevel.getInteractableElements() == null) {
-        System.out.println("❌ ERRORE GRAVE: La lista getInteractableElements() è NULL!");
+        System.out.println("Error: getInteractableElements() is NULL!");
     } else if (currentLevel.getInteractableElements().isEmpty()) {
-        System.out.println("⚠️ ATTENZIONE: La lista getInteractableElements() è VUOTA!");
+        System.out.println("Warning: getInteractableElements() is EMPTY!");
     } else {
-        System.out.println("✅ La lista contiene " + currentLevel.getInteractableElements().size() + " elementi.");
+        System.out.println("The list contains " + currentLevel.getInteractableElements().size() + " elements.");
         
-        // 2. Stampiamo tutti i nomi per vedere se c'è un errore di battitura
+        // Typo correction
         boolean trovato = false;
         MapElement speaker = null;
 
         for (com.artattack.mapelements.InteractableElement element : currentLevel.getInteractableElements()) {
-            System.out.println(" -> Esamino elemento: '" + element.getName() + "'");
+            System.out.println(" -> Element checked: '" + element.getName() + "'");
             
-            // Confronto esatto stringhe
+            // Sting checking
             if ("Georges Méliès".equals(element.getName())) {
-                System.out.println("   >>> TROVATO! <<<");
-                System.out.println("   Sprite Path associato: '" + element.getSpritePath() + "'");
+                System.out.println("   >>> Found! <<<");
+                System.out.println("   Sprite Path: '" + element.getSpritePath() + "'");
                 speaker = element;
                 trovato = true;
                 break; 
@@ -339,7 +363,7 @@ SwingUtilities.invokeLater(() -> {
         }
         
         if (!trovato) {
-            System.out.println("❌ FALLITO: Nessun elemento corrisponde a 'Georges Méliès'.");
+            System.out.println("Failed: no element corresponds to 'Georges Méliès'.");
         }
 
         // Passiamo quello che abbiamo trovato (o null)

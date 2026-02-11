@@ -51,11 +51,13 @@ public class MapDirector {
                 listE.add(e);
 
                 //Creating InteractableElements
-                ieBuilder.setID(0); ieBuilder.setMapSymbol('O'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
+                ieBuilder.setID(0); ieBuilder.setMapSymbol('i'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
+                ieBuilder.setSpritePath("/images/melies.jpg");
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest_t = ieBuilder.getResult();
-                ieBuilder.setID(1); ieBuilder.setMapSymbol('M'); ieBuilder.setName("George Melies"); ieBuilder.setCoordinates(new Coordinates(29, 22));
+                ieBuilder.setID(1); ieBuilder.setMapSymbol('M'); ieBuilder.setName("Georges Méliès"); ieBuilder.setCoordinates(new Coordinates(29, 22));
+                ieBuilder.setSpritePath("/images/melies.jpg");
                 ieBuilder.setInteractions(List.of(new Talk(
                     List.of("You need me to explain again?",
                             "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
@@ -108,11 +110,11 @@ public class MapDirector {
                 this.builder.setSpawn(new Coordinates(29, 23), new Coordinates(26, 23));
                 this.builder.setEnemies(listE);
                 this.builder.setInteractableElements(List.of(npc_t, chest_t, door_t));
-                this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4);
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9);
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 1), 3, 5);
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(9, 1), 4, 5);
-                this.builder.addTriggerGroup(turnQueueDialogue, new Coordinates(4, 1), 5, 5);
+                this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4, "/images/melies.jpg");
+                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9, "/images/melies.jpg");
+                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 1), 3, 5, "/images/melies.jpg");
+                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(9, 1), 4, 5, "/images/melies.jpg");
+                this.builder.addTriggerGroup(turnQueueDialogue, new Coordinates(4, 1), 5, 5, "/images/melies.jpg");
                 this.builder.buildBorder();
                 this.builder.buildWall(new Coordinates(19, 21), 1, 4, '#');
                 this.builder.buildWall(new Coordinates(22, 20), 9, 1, '#');
@@ -145,7 +147,7 @@ public class MapDirector {
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest1_1 = ieBuilder.getResult();
                 InteractableElement checkpoint_1 = new InteractableElement(0, 'C', "checkpoint", new Coordinates(30, 30), List.of(new CheckPoint(List.of("OK"))), "");
-                ieDirector.createDoor(ieBuilder, 2, new Coordinates(0, 4)); ieBuilder.setID(6);
+                ieDirector.createDoor(this.ieBuilder, 2, new Coordinates(0, 4)); ieBuilder.setID(6);
                 InteractableElement door_1 = ieBuilder.getResult();
                 
                 this.builder.setID(1);
@@ -178,9 +180,9 @@ public class MapDirector {
                 ieBuilder.setInteractions(List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest2_1 = ieBuilder.getResult();
-                ieDirector.createCheckPoint(ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
+                ieDirector.createCheckPoint(this.ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
                 InteractableElement bossCheckPoint = ieBuilder.getResult();
-                ieDirector.createDoor(ieBuilder, 3, 5001, new Coordinates(16, 0)); ieBuilder.setID(9);
+                ieDirector.createDoor(this.ieBuilder, 3, 5001, new Coordinates(16, 0)); ieBuilder.setID(9);
                 InteractableElement endDoor = ieBuilder.getResult();
                 
                 List<Enemy> enemyBossRoom = new ArrayList<>(); enemyBossRoom.addAll(List.of(boss, minion1, minion2));
@@ -275,7 +277,7 @@ public class MapDirector {
                 InteractableElement chest_r1 = ieBuilder.getResult();
 
                 //receptionist
-                ieBuilder.setID(14); ieBuilder.setMapSymbol('R'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000");
+                ieBuilder.setID(14); ieBuilder.setMapSymbol('\u22B7'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000");
                 ieBuilder.setInteractions(List.of(
                     new Talk(List.of("Welcome to the I.A.A.I. Facility 52, I'm R.E.N.E 30000 at your service!", "What!?!? You're here to stop Sam Altman? I don't think I can help you with that...",
                      "I mean, I'm not even from the I.A.A.I. To be honest, the place I come from is Milan, in Italy", "You know, I was one of the first AI movie directors, I even won a Cannes festival!", 

@@ -42,8 +42,8 @@ public class MapBuilderBossOne implements MapBuilder{
     }
 
     @Override
-    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height) {
-        this.map.addTriggerGroup(triggerGroup, offset, width, height);
+    public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height, String spritePath) {
+        this.map.addTriggerGroup(triggerGroup, offset, width, height, spritePath);
     }
 
     @Override

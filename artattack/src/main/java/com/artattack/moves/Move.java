@@ -249,8 +249,8 @@ public class Move{
         if ((this.power != 0 && !this.attackArea.isEmpty() && this.getAttackTargets(user, map) != null) || (this.name.equalsIgnoreCase("Little Umbrellas") && this.power != 0 && this.getAttackTargets(user, map) != null)) {
             for (ActiveElement element : this.getAttackTargets(user, map)) {
                 if (element instanceof Enemy e) {
-                    if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDemage(this.power); }
-                    else { e.updatePlayerTwoDemage(this.power); }
+                    if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDamage(this.power); }
+                    else { e.updatePlayerTwoDamage(this.power); }
                     if(this.name.equals("ERASERHEAD")){
                         e.setIsStunned(true);
                     }

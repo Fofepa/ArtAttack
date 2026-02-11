@@ -22,40 +22,36 @@ import javax.swing.JPanel;
  */
 public class SpritePanel extends JPanel {
     private BufferedImage currentSprite;
-    // Cache per evitare di ricaricare le immagini continuamente
+    // Cache used to buffer the images instead of reloading it every time
     private static final Map<String, BufferedImage> imageCache = new HashMap<>();
     
     public SpritePanel() {
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(200, 200));
-        // Bordo più spesso e colorato per stile RPG
         setBorder(BorderFactory.createCompoundBorder(
             BorderFactory.createLineBorder(Color.WHITE, 1),
             BorderFactory.createLineBorder(Color.BLACK, 4)
         ));
     }
     
-    /**
-     * Loads and displays a sprite image from resources
-     * @param spriteName The name of the file in the resources folder (e.g., "zappa_portrait.png")
-     */
+    //Loads and displays a sprite image from resources
+    //@param spriteName The name of the file in the resources folder (e.g., "zappa_portrait.png")
     public void loadImage(String spriteName) {
         if (spriteName == null || spriteName.isEmpty()) {
             clearSprite();
             return;
         }
 
-        // 1. Controlla nella cache
+        // Chache check
         if (imageCache.containsKey(spriteName)) {
             currentSprite = imageCache.get(spriteName);
             repaint();
             return;
         }
 
-        // 2. Carica dalle risorse (compatibile con JAR)
+        // Loading of the resources
         try {
-            // Assumiamo che le immagini siano in una cartella "src/images/" o "resources/images/"
-            // Se il path è assoluto, usalo, altrimenti cerca nella root o in /images/
+            // the sprites must be in resources
             URL imgUrl = getClass().getResource("/images/" + spriteName);
             if (imgUrl == null) {
                 imgUrl = getClass().getResource("/" + spriteName);
@@ -63,7 +59,7 @@ public class SpritePanel extends JPanel {
             
             if (imgUrl != null) {
                 BufferedImage img = ImageIO.read(imgUrl);
-                imageCache.put(spriteName, img); // Salva in cache
+                imageCache.put(spriteName, img); // Store in chache
                 currentSprite = img;
                 repaint();
             } else {
@@ -78,8 +74,13 @@ public class SpritePanel extends JPanel {
     }
     
     public void clearSprite() {
-        currentSprite = null;
-        repaint();
+        try {
+            currentSprite = ImageIO.read(getClass().getResource("/image/thevoid.jpg"));
+            repaint();
+        } catch (IOException|IllegalArgumentException e) {
+            System.err.println("Error loading the image: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
     
     @Override
@@ -88,9 +89,7 @@ public class SpritePanel extends JPanel {
         
         if (currentSprite != null) {
             Graphics2D g2d = (Graphics2D) g;
-
-            // --- CRUCIALE PER PIXEL ART ---
-            // Disabilita l'interpolazione per mantenere i pixel nitidi quando si ingrandisce
+            // pixel manipulation to make them look great
             g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -100,7 +99,7 @@ public class SpritePanel extends JPanel {
             int imgWidth = currentSprite.getWidth();
             int imgHeight = currentSprite.getHeight();
             
-            // Calcola scala mantenendo aspect ratio
+            // scale with the correct ratio
             double scaleX = (double) (panelWidth - 20) / imgWidth; // -20 per padding
             double scaleY = (double) (panelHeight - 20) / imgHeight;
             double scale = Math.min(scaleX, scaleY);
@@ -113,7 +112,7 @@ public class SpritePanel extends JPanel {
             
             g2d.drawImage(currentSprite, x, y, scaledWidth, scaledHeight, this);
         } else {
-            // Disegna un placeholder elegante se non c'è sprite
+            // if no image is present at all use this placeholder
             g.setColor(new Color(30, 30, 30));
             g.fillRect(10, 10, getWidth()-20, getHeight()-20);
             g.setColor(Color.DARK_GRAY);

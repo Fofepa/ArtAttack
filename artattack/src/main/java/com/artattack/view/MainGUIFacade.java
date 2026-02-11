@@ -25,8 +25,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import com.artattack.inputcontroller.InputController;
-import com.artattack.items.Item;
-import com.artattack.items.Key;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilderTypeOne;
@@ -34,15 +32,14 @@ import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
+import com.artattack.mapelements.ConcretePlayerBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
-import com.artattack.mapelements.PlayerType;
+import com.artattack.mapelements.PlayerBuilder;
+import com.artattack.mapelements.PlayerDirector;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
-import com.artattack.mapelements.skilltree.SkillTreeFactory;
-import com.artattack.moves.Move;
-import com.artattack.moves.Weapon;
 import com.artattack.saving.SaveManager;
 
 
@@ -132,8 +129,12 @@ public class MainGUIFacade {
             List<Coordinates> moveArea = ab.getResult();
             
             //Creating Players
-            Player p1 = createPlayerFromType(p1Type, 1, new Coordinates(0, 0), moveArea, new ArrayList<>()); // Tutorial: 29, 23 | Lv1: 28, 2 | BossRoom1: 14, 37 | Reception: 19, 1 | BigEnemyArea: 1, 1
-            Player p2 = createPlayerFromType(p2Type, 2, new Coordinates(0, 0), moveArea, new ArrayList<>()); // Tutorial: 26, 23 | Lv1: 28, 4 | BossRoom1: 17, 37 | Reception: 20, 1 | BigEnemyArea: 1, 3
+            PlayerBuilder pb = new ConcretePlayerBuilder();
+            PlayerDirector pd = new PlayerDirector();
+            pd.create(pb, p1Type, 0);
+            Player p1 = pb.getResult(); // Tutorial: 29, 23 | Lv1: 28, 2 | BossRoom1: 14, 37 | Reception: 19, 1 | BigEnemyArea: 1, 1
+            pd.create(pb, p2Type, 1);
+            Player p2 = pb.getResult(); // Tutorial: 26, 23 | Lv1: 28, 4 | BossRoom1: 17, 37 | Reception: 20, 1 | BigEnemyArea: 1, 3
             /* Player playerOne = createPlayerFromType(p1Type, 1, new Coordinates(20, 38), moveArea, new ArrayList<>()); / Tutorial: 29, 23 | Lv1: 28, 2
             Player playerTwo = createPlayerFromType(p2Type, 2, new Coordinates(22, 38), moveArea, new ArrayList<>()); / Tutorial: 26, 23 | Lv1: 28, 4 */
 
@@ -211,40 +212,6 @@ public class MainGUIFacade {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private Player createPlayerFromType(CharacterType type, int id, Coordinates coords, List<Coordinates> moveArea, List<Item> items) {
-        
-        AreaBuilder areaBuilder = new AreaBuilder();
-        areaBuilder.addShape("square", 30, true);
-        List<Coordinates> zappaMA = areaBuilder.getResult();
-        /*List<Coordinates> zappaMA = areaBuilder.getResult();    / For testing 
-        areaBuilder.addShape("square", 10, true);               / TODO: restore the old MA*/
-        areaBuilder.addShape("square",1,true);
-        List<Coordinates> lynchMA = areaBuilder.getResult();
-        areaBuilder.addShape("4");
-        List<Coordinates> area4 = areaBuilder.getResult();
-        Move m1 = new Move(); m1.setName("Kick"); m1.setPower(9999); m1.setAttackArea(area4); m1.setActionPoints(2);
-        Move m2 = new Move(); m2.setName("Bump"); m2.setPower(5); m2.setAttackArea(area4); m2.setActionPoints(1);
-        switch (type) {
-            case MUSICIAN:
-                Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, new ArrayList<>(List.of(m1,m2)), PlayerType.MUSICIAN);
-                return new Player(id, '♫', type.getName(), coords, new ArrayList<>(List.of(musicianWeapon)), 
-                    15, 15, zappaMA, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),
-                    "/images/frank-zappa-fotor-20260206135640.jpg");
-            
-            
-            case DIRECTOR:
-                Weapon directorWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, new ArrayList<>(List.of(m1,m2)), PlayerType.MOVIE_DIRECTOR);
-                return new Player(id, '◉', type.getName(), coords,
-                    new ArrayList<>(List.of(directorWeapon)), 
-                    15, 15, lynchMA, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(),PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), 
-                    "/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
-                    
-            default : throw new IllegalArgumentException("Unknown type: " + type);
         }
     }
     

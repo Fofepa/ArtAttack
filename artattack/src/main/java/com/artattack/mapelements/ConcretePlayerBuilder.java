@@ -139,7 +139,8 @@ public class ConcretePlayerBuilder implements PlayerBuilder {
 
     @Override
     public Player getResult(){
-        return new Player(ID, mapSymbol, name, coordinates, weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed, type, spritePath);
+        return new Player(ID, mapSymbol, name, coordinates, weapons, actionPoints, maxActionPoints, moveArea, currHP, maxHP, currXP, maxXP, level,speed, maxWeapons,
+        inventory, keys, type, skillTree, spritePath);
     }
     
     

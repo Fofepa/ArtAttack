@@ -251,7 +251,7 @@ public class Move{
                 if (element instanceof Enemy e) {
                     if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDamage(this.power); }
                     else { e.updatePlayerTwoDamage(this.power); }
-                    if(this.name.equals("ERASERHEAD")){
+                    if(this.name.equals("ERASERHEAD") || this.name.equals("Flash")){
                         e.setIsStunned(true);
                     }
                     if(this.name.equals("Wild at Heart")){

@@ -3,18 +3,34 @@ package com.artattack.interactions;
 import java.util.List;
 
 import com.artattack.items.Item;
+import com.artattack.items.Key;
 import com.artattack.mapelements.Player;
+import com.artattack.moves.Weapon;
 import com.artattack.view.GameContext;
 
 public class Give extends Interaction {
 
     private List<String> dialog;
     private List<Item> item;
+    private Weapon wpn;
+    private Key key;
 
     public Give(List<String> dialog, List<Item> item){
         super(InteractionType.GIVE);
         this.dialog = dialog;
         this.item = item;
+    }
+
+    public Give(List<String> dialog, Weapon wpn) {
+        super(InteractionType.GIVE);
+        this.dialog = dialog;
+        this.wpn = wpn;
+    }
+
+    public Give(List<String> dialog, Key key) {
+        super(InteractionType.GIVE);
+        this.dialog = dialog;
+        this.key = key;
     }
 
     @Override

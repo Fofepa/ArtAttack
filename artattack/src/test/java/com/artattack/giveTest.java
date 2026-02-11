@@ -37,7 +37,7 @@ public class giveTest {
 
     @Test
     public void dointeractionTest(){
-        interaction.doInteraction(new GameContext(null, null), player);
+        interaction.doInteraction(new GameContext(null, null), player, null);
 
         assertTrue("Give dointeractionTest faild. Item not in Player's inventory.",
                     player.getInventory().contains(item));

@@ -22,7 +22,7 @@ public class InteractableElement extends MapElement {
         this.currInteraction = 0;
     }
 
-    public void interact(GameContext gameContext, Player player){
+    public void interact(GameContext gameContext, Player player, String spritePath){
         // Load sprite
         if (gameContext.getUiManager() != null) {
             gameContext.getUiManager().loadSprite(this.getSpritePath());
@@ -40,7 +40,7 @@ public class InteractableElement extends MapElement {
         // INJECT the MainFrame before executing
         if (interaction != null) {
             //interaction.setMainFrame(this.mainFrame);
-            interaction.doInteraction(gameContext, player);
+            interaction.doInteraction(gameContext, player, spritePath);
         }
     }
 

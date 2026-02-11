@@ -15,7 +15,7 @@ public class Trigger extends MapElement {
         return this.triggerGroup;
     }
 
-    public void OnTrigger(GameContext gameContext, Player player) {
-        triggerGroup.OnTrigger(gameContext, player);
+    public void OnTrigger(GameContext gameContext, Player player, String spritePath) {
+        triggerGroup.OnTrigger(gameContext, player, spritePath);
     }
 }

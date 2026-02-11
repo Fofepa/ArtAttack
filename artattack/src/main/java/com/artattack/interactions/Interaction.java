@@ -4,7 +4,6 @@ package com.artattack.interactions;
 
 import com.artattack.mapelements.Player;
 import com.artattack.view.GameContext;
-import com.artattack.view.MainFrame;
 
 public abstract class Interaction {
     //private MainFrame mainFrame;  // CHANGED from InteractionPanel
@@ -15,7 +14,7 @@ public abstract class Interaction {
         this.type = type;
     }
 
-    public abstract void doInteraction(GameContext gameContext, Player player);
+    public abstract void doInteraction(GameContext gameContext, Player player, String spritePath);
 
     public InteractionType getType() {
         return type;

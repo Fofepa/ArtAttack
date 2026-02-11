@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.artattack.mapelements.Player;
 import com.artattack.view.GameContext;
-import com.artattack.view.MainFrame;
 
 public class Talk extends Interaction {
 
@@ -16,9 +15,9 @@ public class Talk extends Interaction {
     }
 
     @Override
-    public void doInteraction(GameContext gameContext, Player player){
+    public void doInteraction(GameContext gameContext, Player player, String spritePath){
         if (gameContext.getUiManager() != null) {
-            gameContext.getUiManager().showDialog(dialog);
+            gameContext.getUiManager().showDialog(dialog, spritePath);
         }
     }
 

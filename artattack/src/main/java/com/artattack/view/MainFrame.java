@@ -208,7 +208,7 @@ public class MainFrame implements UIManager {
         } else if (spritePanel != null) {
             spritePanel.clearSprite();
         }
-        showDialog(List.of(message), speaker);
+        showDialog(List.of(message), null);
     }
     
     public void startInteraction(String message, String spriteName) {
@@ -216,7 +216,7 @@ public class MainFrame implements UIManager {
     }
 
     public void showDialog(List<String> messages) {
-        showDialog(messages, (MapElement) null);
+        showDialog(messages, null);
     }
     
     public void showDialog(List<String> messages, String speakerImagePath) {
@@ -226,12 +226,6 @@ public class MainFrame implements UIManager {
         }
     }
     
-    public void showDialog(List<String> messages, MapElement speaker) {
-        if (interactionPanel != null) {
-            interactionPanel.showDialog(messages, speaker);
-            refreshInteractionVisibility();
-        }
-    }
 
     private void refreshInteractionVisibility() {
         interactionPanel.setVisible(true);
@@ -245,7 +239,7 @@ public class MainFrame implements UIManager {
     }
 
     public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback) {
-        showDialogWithChoice(question, options, callback, (MapElement) null);
+        showDialogWithChoice(question, options, callback, null);
     }
     
     public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, String speakerImagePath) {
@@ -255,12 +249,6 @@ public class MainFrame implements UIManager {
         }
     }
     
-    public void showDialogWithChoice(String question, List<String> options, Consumer<Integer> callback, MapElement speaker) {
-        if (interactionPanel != null) {
-            interactionPanel.showDialogWithChoice(question, options, callback, speaker);
-            refreshInteractionVisibility();
-        }
-    }
 
     public void selectUp() { if (interactionPanel != null) interactionPanel.selectUp(); }
     public void selectDown() { if (interactionPanel != null) interactionPanel.selectDown(); }
@@ -331,9 +319,6 @@ public class MainFrame implements UIManager {
         repaintTurnOrderPanel();
     }
     
-    public void resetDialogImage() {
-        if (interactionPanel != null) interactionPanel.resetToDefaultImage();
-    }
 
     @Override
     public void showLevelComplete(Maps nextMap) {

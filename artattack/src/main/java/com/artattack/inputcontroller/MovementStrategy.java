@@ -121,7 +121,7 @@ public class MovementStrategy implements PlayerStrategy{
             player.setActionPoints(player.getActionPoints() - 1);
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';
             if (map.getDict().get(player.getCoordinates()) instanceof Trigger t) {
-                t.OnTrigger(this.mainFrame.getGameContext(), this.player);
+                t.OnTrigger(this.mainFrame.getGameContext(), this.player, t.getSpritePath());
             }
         }
         if(map.checkAggro(cursor) != null && !map.checkAggro(cursor).isEmpty()){

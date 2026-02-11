@@ -23,27 +23,27 @@ public class PlayerDirector {
                 ab.addShape("4");
                 zappaMA.addAll(ab.getResult());
                 ab.addShape("circle", 3, true);
-                mb1.setName("Riff"); mb1.setActionPoints(2); mb1.setPower(4); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());
+                mb1.setName("Riff"); mb1.setActionPoints(2); mb1.setPower(20); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());  //TODO: power to 4 to reset
                 Move zappaMove1 = mb1.getResult();
                 ab.addShape("base");
                 mb1.setName("Guitar Strike"); mb1.setActionPoints(3); mb1.setPower(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move zappaMove2 = mb1.getResult();
                 List<Coordinates> zappaMove3Area = new ArrayList<Coordinates>();
-                ab.addShape("circle", 1, true); 
+                ab.addShape("circle", 1,false); 
                 zappaMove3Area.addAll(ab.getResult());
-                ab.addShape("circle", 3, true); 
+                ab.addShape("circle", 3, false); 
                 zappaMove3Area.addAll(ab.getResult());
-                ab.addShape("circle", 5, true); 
+                ab.addShape("circle", 5, false); 
                 zappaMove3Area.addAll(ab.getResult());
                 mb1.setName("Melody"); mb1.setActionPoints(4); mb1.setHealAmount(8); mb1.setAreaHeal(true); mb1.setHealArea(zappaMove3Area);
                 Move zappaMove3 = mb1.getResult();
                 ab.addShape("circle", 5, true);
                 mb1.setName("Stink Foot"); mb1.setActionPoints(8); mb1.setPower(10); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move zappaMove4 = mb1.getResult();
-
+                //TODO: reset AP at 15
                 Weapon oldGuitar = new Weapon("Old guitar", "The guitar that Zappa was buried with" ,2, new ArrayList<>(List.of(zappaMove1,zappaMove2,zappaMove3, zappaMove4)), playerType);
                 builder.setID(ID); builder.setName("Frank Zappa"); builder.setMapSymbol('♫'); builder.setCurrHP(20); builder.setMaxHP(20); builder.setLevel(1); builder.setMoveArea(zappaMA); builder.setSpritePath("/images/frank-zappa-fotor-20260206135640.jpg");
-                builder.setCurrXP(0); builder.setCurrXP(20); builder.setActionPoints(15); builder.setMaxActionPoints(15); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
+                builder.setCurrXP(0); builder.setCurrXP(20); builder.setActionPoints(50); builder.setMaxActionPoints(50); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
                 builder.setSpeed(5); builder.setInventory(new ArrayList<>()); builder.setKeys(new ArrayList<>()); builder.setMaxWeapons(1); builder.setWeapons(new ArrayList<>(List.of(oldGuitar))); builder.setCoordinates(new Coordinates(0, 0));
 
             }

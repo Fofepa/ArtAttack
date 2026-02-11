@@ -97,7 +97,7 @@ public class MovesPanel extends JPanel {
         
         // Display moves
         g.setFont(new Font("Monospaced", Font.PLAIN, 11));
-        for (int i = 0; i < moves.size(); i++) {
+        for (int i = 0; i < selectedWeapon.getInitMoves(); i++) {
             Move move = moves.get(i);
             
             if (i == selectedMoveIndex) {

@@ -463,7 +463,7 @@ public class InputController implements KeyListener, TurnListener {
         switch (e.getKeyCode()) {
             case KeyEvent.VK_UP -> {
                 if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
-                    combatStrategy.execute(1, 1);
+                    combatStrategy.execute(-1, 1);
                     if (movesPanel != null) {
                         movesPanel.setSelectedMoveIndex(combatStrategy.getMoveIndex());
                     }
@@ -475,7 +475,7 @@ public class InputController implements KeyListener, TurnListener {
 
             case KeyEvent.VK_DOWN -> {
                 if (!weapons.get(combatStrategy.getWeaponIndex()).getMoves().isEmpty()) {
-                    combatStrategy.execute(-1, 1);
+                    combatStrategy.execute(1, 1);
                     if (movesPanel != null) {
                         movesPanel.setSelectedMoveIndex(combatStrategy.getMoveIndex());
                     }

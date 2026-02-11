@@ -148,8 +148,8 @@ public class Player extends ActiveElement {
             int amountFix = amount + this.currXP;
             while (amountFix >= this.maxXP){
                 this.setLevel();
-                setMaxXP(this.maxXP + (int)((2.5)*this.level));
                 amountFix -= this.maxXP;
+                setMaxXP(this.maxXP + (int)((2.5)*this.level));
             }
             this.currXP = amountFix;
         }

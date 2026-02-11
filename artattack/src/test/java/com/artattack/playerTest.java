@@ -3,7 +3,12 @@ package com.artattack;
 import java.util.ArrayList;
 
 import org.junit.After;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,11 +34,11 @@ public class playerTest {
 
     @Test
     public void updatecurrxpTest(){
-        /* this.player.updateCurrXP(1);
+        this.player.updateCurrXP(1);
         assertEquals("updatecurrxpTest faild. currXP not as expected.", 11, this.player.getCurrXP());
-        assertFalse("updatecurrxpTest faild. leveledUp not as expected.", this.player.getLeveledUp());
+        assertFalse("updatecurrxpTest faild. leveledUp not as expected.", this.player.getLeveledUp() > 0);
         this.player.updateCurrXP(10);
         assertEquals("updatecurrxpTest faild. currXP not as expected.", 1, this.player.getCurrXP());
-        assertTrue("updatecurrxpTest faild. leveledUp not as expected.", this.player.getLeveledUp()); */
+        assertTrue("updatecurrxpTest faild. leveledUp not as expected.", this.player.getLeveledUp() > 0); 
     }
 }

@@ -167,7 +167,7 @@ public class EnemyDirector {
                 builder.setCurrHP(10);
                 builder.setCoordinates(coordinates);
                 builder.setKeys(List.of(new Key("Key", "Key", 5002)));
-                builder.setDroppedXP(1);
+                builder.setDroppedXP(200);
                 builder.setSpeed(3);
             }
         }

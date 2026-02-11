@@ -22,6 +22,7 @@ public class MapPanel extends JPanel {
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
     private List<Coordinates> attackArea;
+    boolean isHeal = false;
 
     private boolean cursorVisible = true;
     private Timer blinkTimer;
@@ -143,13 +144,26 @@ public class MapPanel extends JPanel {
         
         // --- 4. ATTACK AREA ---
         if (attackArea != null) {
-            g.setColor(new Color(255, 0, 0, 80)); 
-            for (Coordinates coord : attackArea) {
-                if(isValidAndNotWall(coord, map, matrix)) {
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize);
-                    g.setColor(Color.RED);
-                    drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize);
-                    g.setColor(new Color(255, 0, 0, 80)); 
+
+            if (isHeal) {
+                g.setColor(new Color(255, 255, 0, 80));
+                for (Coordinates coord : attackArea) {
+                    if(isValidAndNotWall(coord, map, matrix)) {
+                        drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize);
+                        g.setColor(Color.YELLOW);
+                        drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize);
+                        g.setColor(new Color(255, 255, 0, 80)); 
+                    }
+                }
+            }else{
+                g.setColor(new Color(255, 0, 0, 80)); 
+                for (Coordinates coord : attackArea) {
+                    if(isValidAndNotWall(coord, map, matrix)) {
+                        drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize);
+                        g.setColor(Color.RED);
+                        drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize);
+                        g.setColor(new Color(255, 0, 0, 80)); 
+                    }
                 }
             }
         }
@@ -225,6 +239,7 @@ public class MapPanel extends JPanel {
     }
 
     public void updateAttackArea(CombatStrategy strategy) {
+        this.isHeal = false;
         if (strategy == null || strategy.getPlayer() == null) {
             this.attackArea = null;
             repaint();
@@ -243,6 +258,15 @@ public class MapPanel extends JPanel {
             if (moveIdx >= 0 && moveIdx < moves.size()) {
                 Move move = moves.get(moveIdx);
                 List<Coordinates> relativeArea = move.getAttackArea();
+
+                if(relativeArea== null || relativeArea.isEmpty()){
+                    relativeArea = move.getHealArea();
+                    isHeal= true;
+
+                    if (relativeArea != null && !relativeArea.isEmpty()) {
+                        this.isHeal = true;
+                    }
+                }
 
                 if (relativeArea != null && !relativeArea.isEmpty()) {
                     

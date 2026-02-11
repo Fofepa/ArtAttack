@@ -33,7 +33,7 @@ public class specialmoveTest {
     private Maps maps;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws Exception {  //TODO: test the Little Umbrellas move
         //Initializing MoveBuilder1
         this.mb1 = new MoveBuilder1();
         assertNotNull(this.mb1);

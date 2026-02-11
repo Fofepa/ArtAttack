@@ -271,13 +271,13 @@ public class MapDirector {
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
                 InteractableElement chest_r0 = ieBuilder.getResult();
-                ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(4, 12)); ieBuilder.setName("Chest");
+                ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(36, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
                 InteractableElement chest_r1 = ieBuilder.getResult();
 
                 //receptionist
-                ieBuilder.setID(14); ieBuilder.setMapSymbol('\u22B7'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000");
+                ieBuilder.setID(14); ieBuilder.setMapSymbol('\u22B7'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000"); ieBuilder.setSpritePath("/images/bobinatro-fotor-2026021023422.jpg");
                 ieBuilder.setInteractions(List.of(
                     new Talk(List.of("Welcome to the I.A.A.I. Facility 52, I'm R.E.N.E 30000 at your service!", "What!?!? You're here to stop Sam Altman? I don't think I can help you with that...",
                      "I mean, I'm not even from the I.A.A.I. To be honest, the place I come from is Milan, in Italy", "You know, I was one of the first AI movie directors, I even won a Cannes festival!", 

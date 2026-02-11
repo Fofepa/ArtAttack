@@ -18,7 +18,7 @@ public class SpecialMoveNODE extends Node{
     public void setSkill(Player player){
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
-                Weapon specialWeapon = new Weapon("Special", "You got it with tears", 2, PlayerType.MUSICIAN);
+                Weapon specialWeapon = new Weapon("Special", "You got it with tears", 1, PlayerType.MUSICIAN);
                 if(!player.getWeapons().contains(specialWeapon)){
                     specialWeapon.addMove(specialMove);
                     player.setMaxWeapons();

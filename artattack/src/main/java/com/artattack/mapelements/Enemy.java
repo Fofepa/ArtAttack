@@ -145,8 +145,14 @@ public class Enemy extends ActiveElement {
     }
 
     public void dropXP(Player PlayerOne, Player PlayerTwo){
-        PlayerOne.updateCurrXP(this.calculateDroppedXP(this.PlayerOneDamage));
-        PlayerTwo.updateCurrXP(this.calculateDroppedXP(this.PlayerTwoDamage));
+        if(this.PlayerOneDamage > 0){
+            System.out.println("PlayerOne is getting XP beacause he has done damage");
+            PlayerOne.updateCurrXP(this.calculateDroppedXP(this.PlayerOneDamage));
+        }
+        if(this.PlayerTwoDamage > 0){
+            System.out.println("PlayerTwo is getting XP beacause he has done damage");
+            PlayerTwo.updateCurrXP(this.calculateDroppedXP(this.PlayerTwoDamage));
+        }
     }
 
     public void remove(Maps map){

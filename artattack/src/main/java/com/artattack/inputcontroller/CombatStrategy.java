@@ -23,12 +23,12 @@ public class CombatStrategy implements PlayerStrategy{
     }
 
     @Override
-    public void execute(int dx, int dy){    // in this case dx is the weapon index and dy is the move index
+    public void execute(int dx, int dy){    
         
-        if ((dx == 1 || dx == -1) && dy == 0){ // selection of the weapon, dy must be 0
+        if ((dx == 1 || dx == -1) && dy == 0){ 
             moveWeaponIndex(dx);
         }
-        else if ((dx == 1 || dx == -1) && dy == 1){ // selection of the move associated to the dx-weapon dy is 1
+        else if ((dx == 1 || dx == -1) && dy == 1){
             moveMoveIndex(dx);
         }
     }     

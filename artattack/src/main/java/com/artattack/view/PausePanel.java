@@ -27,7 +27,6 @@ public class PausePanel extends JPanel {
     private MainGUIFacade mainFacade;
     private JPanel contentPanel;
     
-    // Gestione Layout a schede
     private CardLayout cardLayout;
     private static final String CARD_MAIN = "MAIN";
     private static final String CARD_SETTINGS = "SETTINGS";
@@ -96,7 +95,6 @@ public class PausePanel extends JPanel {
         contentPanel.repaint(); 
     }
     
-    // --- MENU PRINCIPALE ---
     private JPanel createMainPauseMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false); 
@@ -132,7 +130,6 @@ public class PausePanel extends JPanel {
         
         continueBtn.addActionListener(e -> mainFacade.hidePauseMenu());
         
-        // ---  LOAD GAME ---
         loadBtn.addActionListener(e -> {
             if (doesSaveFileExist()) {
                 mainFacade.loadGame();
@@ -173,7 +170,6 @@ public class PausePanel extends JPanel {
         return saveFile.exists() && !saveFile.isDirectory();
     }
     
-    // --- NO SAVE FOUND ---
     private JPanel createNoSavePanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
@@ -207,7 +203,6 @@ public class PausePanel extends JPanel {
         return panel;
     }
     
-    // --- SETTINGS ---
     private JPanel createSettingsMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
@@ -252,7 +247,6 @@ public class PausePanel extends JPanel {
         return panel;
     }
 
-    // --- ACCESSIBILITY ---
     private JPanel createAccessibilityMenu() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);

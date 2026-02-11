@@ -14,9 +14,6 @@ public class ConcreteTurnHandler implements TurnHandler {
         this.turnManager = new TurnManager();
     }
 
-    /**
-     * Starts the turn system and notifies the first element
-     */
     public void start() {
         if (!started && !turnQueue.getTurnQueue().isEmpty()) {
             started = true;
@@ -37,13 +34,8 @@ public class ConcreteTurnHandler implements TurnHandler {
         if(turnQueue.getTurnQueue().isEmpty()) 
             return;
         this.turnManager.notifyTurn(current());
-}
+    }
 
-
-    /**
-     * Adds a turn listener to be notified of turn changes
-     * Delegates to TurnManager
-     */
     public void addTurnListener(TurnListener listener) {
         this.turnManager.addListener(listener);
     }
@@ -88,7 +80,7 @@ public class ConcreteTurnHandler implements TurnHandler {
         // When start() is called, index = 0, so we want element at index 0
         // After next() is called, index increments, so we want element at current index
         if(index >= turnQueue.getTurnQueue().size()){
-            return turnQueue.getTurnQueue().get(0); // Wrapped around
+            return turnQueue.getTurnQueue().get(0);
         }
         return turnQueue.getTurnQueue().get(index);
     }
@@ -101,10 +93,6 @@ public class ConcreteTurnHandler implements TurnHandler {
         return this.index;
     }
 
-    /**
-     * Updates the index to point to the given element after queue reordering
-     * This is crucial when elements are added mid-turn and the queue is reordered
-     */
     public void updateIndexForElement(ActiveElement element) {
         if (element != null && turnQueue.getTurnQueue().contains(element)) {
             index = turnQueue.getTurnQueue().indexOf(element);

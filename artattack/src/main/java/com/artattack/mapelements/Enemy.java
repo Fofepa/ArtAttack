@@ -9,7 +9,7 @@ import com.artattack.level.Maps;
 import com.artattack.moves.Weapon;
 
 public class Enemy extends ActiveElement {
-    //Attributes
+
     private List<Coordinates> visionArea;
     private List<Item> drops;
     private List<Key> keys;
@@ -17,7 +17,7 @@ public class Enemy extends ActiveElement {
     private int PlayerOneDamage;
     private int PlayerTwoDamage;
     private EnemyType enemyType;
-    private boolean isActive = false;     //unused for now
+    private boolean isActive = false;    
     private boolean isStunned = false;
 
     public Enemy(int ID, char mapSymbol, String name, Coordinates coordinates, EnemyType enemyType){

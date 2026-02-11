@@ -26,7 +26,6 @@ public class DetailsPanel extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         
-        // Simple Border
         g.setColor(Color.DARK_GRAY);
         g.drawRect(0, 0, getWidth()-1, getHeight()-1);
 
@@ -37,14 +36,12 @@ public class DetailsPanel extends JPanel {
             return;
         }
 
-        // 1. Obj name
         g.setFont(new Font("Monospaced", Font.BOLD, 12));
         g.setColor(Color.WHITE);
         g.drawString(itemName, 10, 20);
 
         
 
-        // 2. Description
         g.setColor(Color.LIGHT_GRAY);
         g.setFont(new Font("Monospaced", Font.ITALIC, 12));
         

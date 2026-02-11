@@ -17,16 +17,12 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
-/**
- * MapPanel - Displays the game map with all elements
- */
 public class MapPanel extends JPanel {
     private Maps map;
     private Coordinates movementCursor;
     private List<Coordinates> moveArea;
     private List<Coordinates> attackArea;
 
-    // Blinking cursor properties
     private boolean cursorVisible = true;
     private Timer blinkTimer;
     
@@ -113,7 +109,7 @@ public class MapPanel extends JPanel {
             List<ActiveElement> activeQueue = map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue();
         
             for (Enemy enemy : map.getEnemies()) {
-                //Draw vision ONLY if the enemy is alive AND NOT already in the turn queue
+                
                 boolean isAlreadyInQueue = activeQueue.contains(enemy);
             
                 if ((enemy.getIsActive() || enemy.getCurrHP() > 0) && 
@@ -136,11 +132,9 @@ public class MapPanel extends JPanel {
             
             for (Coordinates coord : moveArea) {
                 if(isValidAndNotWall(coord, map, matrix)) {
-                    // Riempimento
                     g.setColor(new Color(0, 255, 0, 20));
                     drawCellRect(g, coord.getX(), coord.getY(), startX, startY, true, cellSize); 
                     
-                    // Bordo evidenziato
                     g.setColor(new Color(0, 255, 0, 40));
                     drawCellRect(g, coord.getX(), coord.getY(), startX, startY, false, cellSize); 
                 }

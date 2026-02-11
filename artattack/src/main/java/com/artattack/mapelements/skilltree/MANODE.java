@@ -8,7 +8,7 @@ import com.artattack.mapelements.Player;
 
 // type of nodes that creates a new movementArea
 public class  MANODE extends Node{
-    private List<Coordinates> shape;    // piece of area to add
+    private List<Coordinates> shape;
     
     public MANODE(List<Coordinates> shape){
         super(NodeType.MA);

@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.artattack.items.Key;
-import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Player;
@@ -39,47 +38,7 @@ public class SwitchMap extends Interaction {
         this.nextMap = nextMap;
         this.isLevelFinish = isLevelFinish;
     }
-
-   /* @Override
-    public void doInteraction(GameContext gameContext, Player player){
-        if (gameContext.getUiManager() != null) {
-            gameContext.getUiManager().showDialog(dialog);
-        }
-
-        Maps next = setNextMap(gameContext, player);
-
-        getMainFrame().switchMap(this.builder.getResult());
-    }*/
-
-   /* public MapBuilder getBuilder(){
-        return this.builder;
-    }
-
-    public List<String> getDialog(){
-        return this.dialog;
-    }*/
-
-    /*private void setNextMap(Player player){
-        List<ActiveElement> list = new LinkedList<ActiveElement>();
-        list.add(player);
-        player.setCoordinates(this.nextCoordinateses.get(0));
-        if(player.equals(this.playerOne)){
-            this.builder.setPlayerOne(player);
-            this.playerTwo.setCoordinates(this.nextCoordinateses.get(1));
-            this.builder.setPlayerTwo(this.playerTwo);
-            list.add(this.playerTwo);
-            this.builder.setTurnQueue(player, this.playerTwo);
-        } else {
-            this.builder.setPlayerTwo(player);
-            this.playerOne.setCoordinates(this.nextCoordinateses.get(1));
-            this.builder.setPlayerOne(this.playerOne);
-            list.add(this.playerOne);
-            this.builder.setTurnQueue(player, this.playerOne);
-        }
-        this.builder.setDict();
-        this.builder.startMap(); 
-    }*/
-
+    
     @Override
     public void doInteraction(GameContext gameContext, Player player, String spritePath) {
         if(!this.unlocked){

@@ -33,11 +33,11 @@ public SmartAttackStrategy(MainFrame mainFrame){
     private Move chooseWeighted(Map<Move, Integer> moves) {
         if (moves.isEmpty()) return null;
 
-        double factor = 6.53;    // factor for the distribution if > 1 the elements on top of the list are more likely to appear 
+        double factor = 6.53;    
 
         List<Move> orderedMoves = new ArrayList<>(moves.keySet());
 
-        // distribution of the weights inside the list
+       
         int n = orderedMoves.size();
         double[] weights = new double[n];
 
@@ -52,14 +52,13 @@ public SmartAttackStrategy(MainFrame mainFrame){
         for (double w : weights) total += w;
 
     
-        // extraction of the element
         double r = Math.random() * total;
         double cumulative = 0;
 
         for (int i = 0; i < n; i++) {
             cumulative += weights[i];
             if (r < cumulative) {
-                return orderedMoves.get(i);   // 🔥 a little fire to keep us warm
+                return orderedMoves.get(i);
             }
         }
         return orderedMoves.get(n - 1);

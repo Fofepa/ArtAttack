@@ -141,7 +141,7 @@ public class moveTest {
         //assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, e.getCurrHP()); //Player attacks Enemy
         e.setActionPoints(m2.getActionPoints());
         m2.useMove(e, maps);
-        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*/
+        assertEquals("Move.useMove(MapElement attacker, Maps map) has failed", 9, p2.getCurrHP()); //Enemy attacks Player*//
         //p1.setActionPoints(m3.getActionPoints());
         //m3.useMove(p1,maps);
         p2.setActionPoints(m4.getActionPoints());

@@ -23,12 +23,10 @@ public class InteractableElement extends MapElement {
     }
 
     public void interact(GameContext gameContext, Player player, String spritePath){
-        // Load sprite
-        if (gameContext.getUiManager() != null) {
-            gameContext.getUiManager().loadSprite(this.getSpritePath());
-        }
+        /* if (gameContext.getUiManager() != null) {
+            gameContext.getUiManager().loadSprite(spritePath);
+        } */
 
-        // CREATE the interaction from the factory
         Interaction interaction;
         if(this.currInteraction < this.maxInteractions){
             interaction = this.interactions.get(this.currInteraction);
@@ -37,9 +35,7 @@ public class InteractableElement extends MapElement {
             interaction = this.interactions.get(this.lastInteraction);
         }
         
-        // INJECT the MainFrame before executing
         if (interaction != null) {
-            //interaction.setMainFrame(this.mainFrame);
             interaction.doInteraction(gameContext, player, spritePath);
         }
     }
@@ -68,7 +64,7 @@ public class InteractableElement extends MapElement {
     public void setMainFrame(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
         
-        // IMPORTANT: Also inject MainFrame into all interactions
+        / IMPORTANT: Also inject MainFrame into all interactions
         if (this.interactions != null) {
             for (Interaction interaction : this.interactions) {
                 if (interaction != null) {

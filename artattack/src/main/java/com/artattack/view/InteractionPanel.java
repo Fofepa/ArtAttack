@@ -40,7 +40,6 @@ public class InteractionPanel extends JPanel {
     private List<String> responseOptions;
     private Consumer<Integer> choiceCallback;
     
-    // ========== IMAGE SYSTEM ==========
     private Image currentSpeakerImage = null;
     private Image defaultPlayerImage = null;
     private static final int IMAGE_SIZE = 180;
@@ -57,10 +56,6 @@ public class InteractionPanel extends JPanel {
         lastUsedFontSize = GameSettings.getInstance().getFontSize();
     }
     
-    /**
-     * Carica l'immagine di default del giocatore. 
-     * Questa viene usata come fallback se non c'è uno spritePath valido.
-     */
     public void setDefaultPlayerImage(String imagePath) {
         try {
             URL imageUrl = getClass().getResource(imagePath);
@@ -69,7 +64,7 @@ public class InteractionPanel extends JPanel {
                 return;
             }
             defaultPlayerImage = ImageIO.read(imageUrl);
-            // Se non c'è nessuno speaker attivo, mostra subito il player
+
             if (currentSpeakerImage == null) {
                 currentSpeakerImage = defaultPlayerImage;
             }
@@ -184,7 +179,6 @@ public class InteractionPanel extends JPanel {
         this.repaint();
     }
     
-    // ================= LOGICA TESTO E ANIMAZIONE =================
 
     private void prepareNewPhrase(String text) {
         this.currentFullText = text;
@@ -271,7 +265,6 @@ public class InteractionPanel extends JPanel {
     
     public void deactivate() {
         dialogActive = false;
-        // Quando chiudi, resetta al player di default per sicurezza
         currentSpeakerImage = defaultPlayerImage; 
         repaint();
     }
@@ -321,7 +314,6 @@ public class InteractionPanel extends JPanel {
         
         GameSettings.FontSize currentFontSize = GameSettings.getInstance().getFontSize();
         
-        // Controllo resize
         int currentWidth = getWidth();
         if (currentFontSize != lastUsedFontSize || currentWidth != lastWidth) {
             wrappedLines = null;
@@ -333,13 +325,11 @@ public class InteractionPanel extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         
-        // 1. DISEGNA IMMAGINE (NPC o Default)
         if (currentSpeakerImage != null) {
             int imageX = getWidth() - IMAGE_SIZE - IMAGE_PADDING;
             int imageY = IMAGE_PADDING;
             g2d.drawImage(currentSpeakerImage, imageX, imageY, IMAGE_SIZE, IMAGE_SIZE, this);
             
-            // Bordo bianco semplice
             g2d.setColor(Color.WHITE);
             g2d.drawRect(imageX, imageY, IMAGE_SIZE, IMAGE_SIZE);
         }
@@ -348,7 +338,6 @@ public class InteractionPanel extends JPanel {
             return;
         }
         
-        // 2. DISEGNA TESTO
         g.setColor(Color.WHITE);
         g.setFont(new Font("Monospaced", Font.PLAIN, currentFontSize.getSize()));
         FontMetrics fm = g.getFontMetrics();
@@ -383,7 +372,6 @@ public class InteractionPanel extends JPanel {
             y += lineHeight;
         }
         
-        // 3. DISEGNA OPZIONI O HINT
         if (textFullyRevealed) {
             boolean isLastPage = (endIndex >= wrappedLines.size());
             
@@ -450,8 +438,6 @@ public class InteractionPanel extends JPanel {
         String[] words = text.split(" ");
         StringBuilder currentLine = new StringBuilder();
         
-        // Calcoliamo la larghezza disponibile.
-        // Poiché usiamo sempre un'immagine (NPC o Default), sottraiamo sempre lo spazio
         int maxWidth = getWidth() - 60; 
         if (currentSpeakerImage != null) {
             maxWidth -= (IMAGE_SIZE + IMAGE_PADDING);
@@ -472,7 +458,6 @@ public class InteractionPanel extends JPanel {
         return lines;
     }
     
-    // Getters
     public boolean isDialogActive() { return dialogActive; }
     public boolean isChoiceMode() { return choiceMode; }
     public boolean isTextFullyRevealed() { return textFullyRevealed; }

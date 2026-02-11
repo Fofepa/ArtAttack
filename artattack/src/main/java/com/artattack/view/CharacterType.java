@@ -1,7 +1,6 @@
 package com.artattack.view;
 
 public enum CharacterType {
-    // Definition: Name, Description, HP Max, Speed, Weapon
     MUSICIAN("Zappa", "Master of rhythm", 20, 5, "Guitar"),
     DIRECTOR("Lynch", "Surreal visionary", 25, 3, "Camera");
 

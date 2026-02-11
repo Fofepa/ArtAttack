@@ -65,7 +65,7 @@ public class fleestrategyTest {
             Coordinates.getDistance(newPos, map.getPlayerTwo().getCoordinates())
         );
         
-        assertTrue(newDist > oldDist); //Check if the new distance from the player is greater than the old one
+        assertTrue(newDist > oldDist); 
     }
 
     @After

@@ -173,8 +173,6 @@ public class InputController implements KeyListener, TurnListener {
                 System.out.println("Focusing InventoryPanel");
                 mainFrame.focusInventoryPanel();
                 
-                
-                //Force correct Details display
                 if (currentElement instanceof Player && mainFrame.getInventoryStrategy() != null) {
                     setStrategy(mainFrame.getInventoryStrategy()); 
                     updateInventorySelectionDisplay(
@@ -328,7 +326,6 @@ public class InputController implements KeyListener, TurnListener {
                 } else {
                     mainFrame.advanceDialog();
 
-                    // Check if dialog finished
                     if (!mainFrame.getDialogActive()) {
                         if (isEnemyTurn) {
                            
@@ -344,9 +341,6 @@ public class InputController implements KeyListener, TurnListener {
         }
     }
 
-    /**
-     * Resets the game state based on previous activity.
-     */
     private void returnToGameplay() {
         System.out.println("Dialog finished. Checking context...");
 
@@ -419,7 +413,6 @@ public class InputController implements KeyListener, TurnListener {
                     combatStrategy.setIsSelected(true);
                     MovesPanel mp = mainFrame.getMovesPanel();
 
-                    // Update MovesPanel with current weapon
                     if (mp!= null) {
                         mp.setPlayer((Player) currentElement);
                         mp.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
@@ -428,7 +421,6 @@ public class InputController implements KeyListener, TurnListener {
                         mainFrame.updateAttackArea();
                     }
 
-                    // Switch focus to MovesPanel
                     mainFrame.focusMovesPanel();
                     mainFrame.updateAttackArea();
 
@@ -495,7 +487,7 @@ public class InputController implements KeyListener, TurnListener {
 
             case KeyEvent.VK_LEFT -> {
                 combatStrategy.setIsSelected(false);
-                combatStrategy.setMoveIndex(0); // Reset move selection
+                combatStrategy.setMoveIndex(0); 
 
                 if (mainFrame.getMovesPanel()!= null) {
                     mainFrame.getMovesPanel().setActive(false);
@@ -505,9 +497,6 @@ public class InputController implements KeyListener, TurnListener {
                     mainFrame.clearAttackArea();
                 }
 
-                
-
-                // Switch focus back to WeaponsPanel
                 mainFrame.focusWeaponsPanel();
 
                 System.out.println("Back to weapon list");
@@ -630,7 +619,6 @@ public class InputController implements KeyListener, TurnListener {
             }
         }
         
-        // Execute movement strategy with dx, dy
         if (dx != 0 || dy != 0) {
             System.out.println("Executing movement: dx=" + dx + ", dy=" + dy);
             movementStrategy.execute(dx, dy);
@@ -638,7 +626,6 @@ public class InputController implements KeyListener, TurnListener {
         }
     }
 
-    // starts the enemy turn using the enemyChoice
     public void startEnemyTurn(EnemyChoice enemyChoice){
         this.currentEnemyChoice = enemyChoice;
         this.isEnemyTurn = true;
@@ -649,10 +636,9 @@ public class InputController implements KeyListener, TurnListener {
 
         mainFrame.showDialog(List.of("Enemy Turn"));
 
-        continueEnemyTurn();    // start the moves
+        continueEnemyTurn();    
     }
 
-    // does the choice() method until hasFinished is true
     public void continueEnemyTurn(){
         if(this.currentElement == null || this.currentEnemyChoice.getHasFinished()){
             endEnemyTurn();
@@ -674,7 +660,6 @@ public class InputController implements KeyListener, TurnListener {
         }
     }
 
-    // ends the enemy turn
     public void endEnemyTurn(){
         this.isEnemyTurn = false;
         this.currentEnemyChoice = null;
@@ -724,17 +709,15 @@ public class InputController implements KeyListener, TurnListener {
 
             InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
             if (interactionPanel != null) {
-                // 1. Update the default fallback image to the current player's sprite
+                
                 interactionPanel.setDefaultPlayerImage(player.getSpritePath());
                 
-                // 2. Force the current image to match the default (unless a dialog is already forcing another)
                 if (!interactionPanel.isDialogActive()) {
                     interactionPanel.deactivate();
                 }
             }
             
             
-            // Check if the player leveled up
             if(player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()){
                 System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
                 handlePlayerLevelUp(player);
@@ -742,14 +725,13 @@ public class InputController implements KeyListener, TurnListener {
             }
             
 
-            // Verify strategies were created
+            
             System.out.println("MovementStrategy created: " + (mainFrame.getMovementStrategy() != null));
             System.out.println("CombatStrategy created: " + (mainFrame.getCombatStrategy() != null));
             System.out.println("InventoryStrategy created: " + (mainFrame.getInventoryStrategy() != null));
             
         } else if(activeElement instanceof Enemy c){
             System.out.println(">> ENEMY TURN: " + c.getName());
-            //handleEnemyTurn()
 
             /* InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
             if (interactionPanel != null) {
@@ -757,9 +739,7 @@ public class InputController implements KeyListener, TurnListener {
             }
             */
            
-           // Special case for BOB, when under 50% hp it gains a new move
             if(c.getEnemyType() == EnemyType.BOB && c.getCurrHP() < (c.getMaxHP() / 2) && c.getWeapons().get(0).getMoves().size() < 4){
-                // move3 creation
                 AreaBuilder ab = new AreaBuilder();
                 ab.addShape("circle", 5, true);
                 Move bossm4 = new Move();
@@ -767,7 +747,6 @@ public class InputController implements KeyListener, TurnListener {
                 c.getWeapons().get(0).getMoves().add(bossm4);
             }
 
-            // Update cursor to show enemy position
             mainFrame.updateMovementCursor(c.getCoordinates());
 
             EnemyChoice enemyChoice = new EnemyChoice(this.mainFrame);
@@ -782,9 +761,6 @@ public class InputController implements KeyListener, TurnListener {
         System.out.println("=== UPDATE TURN COMPLETE ===\n");
     }
 
-    /**
-     * Handles the player level up by showing the skill tree panel
-     */
     private void handlePlayerLevelUp(Player player) {
         GameContext context = mainFrame.getGameContext();
         if (context == null) {
@@ -794,7 +770,6 @@ public class InputController implements KeyListener, TurnListener {
 
         mainFrame.repaintStatsPanel();
         
-        // Get the appropriate skill tree based on player ID
         SkillTree skillTree = player.getSkillTree();
         /*if (player.getID() == 1) {
             skillTree = context.getPlayer1SkillTree();
@@ -807,7 +782,7 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
         if(!player.getSkillTree().isComplete()){
-            // Show the skill tree panel
+
             mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
                 if (selectedNode == null) {
                     System.out.println(">>> Skill tree closed (complete or cancelled)");
@@ -818,18 +793,16 @@ public class InputController implements KeyListener, TurnListener {
                     mainFrame.updateTurnDisplay();
                     return;
                 }
-                // This callback is called when the player confirms their selection
+
                 System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
                 System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
                 
-                // Update all panels to reflect new stats
                 mainFrame.repaintStatsPanel();
                 mainFrame.repaintWeaponsPanel();
                 mainFrame.repaintMovesPanel();
                 mainFrame.repaintMapPanel();
                 mainFrame.updateTurnDisplay();
                 
-                // Show a confirmation message
                 String nodeType = getNodeTypeName(selectedNode);
                 mainFrame.showDialog(List.of(
                     player.getName() + " has unlocked a new skill!",

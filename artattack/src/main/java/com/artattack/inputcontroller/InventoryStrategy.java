@@ -11,7 +11,6 @@ public class InventoryStrategy implements PlayerStrategy {
     private Player player;
     private boolean isSelected = false;
     private int inventoryIndex = 0;
-    //private int elementIndex = 0;
     private MainFrame mainFrame;
 
     public InventoryStrategy(Maps map, Player player){
@@ -24,14 +23,14 @@ public class InventoryStrategy implements PlayerStrategy {
         if(this.player.getInventory().size() != 0){
             moveInventoryIndex(dx);
         }
-        else{   // checks if the inventory has something inside
+        else{   
             System.out.println("The inventory is empty");
             mainFrame.showDialog(List.of("the inventory is empty"));
         }
-        /* if (dx >=0 && dx <= player.getInventory().size()-1 && dy == 0){ // selection of the item, dy must be 0                   // this is needed if a player can use the item on other entities
+        /* if (dx >=0 && dx <= player.getInventory().size()-1 && dy == 0){ / selection of the item, dy must be 0                   / this is needed if a player can use the item on other entities
             moveInventoryIndex(dx);
         }
-        else if (dx >=0 && dx <= player.getInventory().size()-1 && dy >= 1 && dy <= 2){ // selection of the element we want the item to interact
+        else if (dx >=0 && dx <= player.getInventory().size()-1 && dy >= 1 && dy <= 2){ / selection of the element we want the item to interact
             movePlayerIndex(dy);
         } */
     }
@@ -48,10 +47,10 @@ public class InventoryStrategy implements PlayerStrategy {
         if (this.player.getInventory().size() != 0){
             int value = player.getInventory().get(inventoryIndex).use(player);
     
-            if(value != 0){     // TODO: we have to check what kind of Item it was in order to print the correct message inside the InteractionPanel
+            if(value != 0){     
                 mainFrame.showDialog(List.of(player.getName() + " used " + player.getInventory().get(inventoryIndex).getName()));
                 System.out.println("used the item " + player.getInventory().get(inventoryIndex).getName());
-                player.getInventory().remove(inventoryIndex); // it HAS to be a mutable List.
+                player.getInventory().remove(inventoryIndex);
                 isSelected = false;
                 inventoryIndex = 0;
             }

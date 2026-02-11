@@ -31,7 +31,7 @@ public class AttackStrategy extends DecisionStrategy {
         //this.getMainFrame().gameOver();
     }
 
-    private Move chooseUniform(Map<Move, Integer> moves){   // just selects a move accordingly to the uniform distribution
+    private Move chooseUniform(Map<Move, Integer> moves){
         if (moves.isEmpty()) return null;
         List<Move> moveList = new ArrayList<>(moves.keySet());
         return moveList.get((int)(Math.random() * (moveList.size() - 1)));

@@ -45,7 +45,7 @@ public class Ask extends Interaction {
 			this.gameContext.getUiManager().showDialog(this.answers.get(choice), spritePath);
 		}
 		
-		// Give the item if there is one
+		//s Give the item if there is one
 		if(this.items != null && choice < this.items.size() && this.items.get(choice) != null) {
 			player.addItems(List.of(this.items.get(choice)));
 			System.out.println("Player received: " + this.items.get(choice).getName());

@@ -11,9 +11,7 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 
-/**
- * MovesPanel - Displays moves for the selected weapon
- */
+
 public class MovesPanel extends JPanel {
     private Player player;
     private int selectedWeaponIndex = 0;

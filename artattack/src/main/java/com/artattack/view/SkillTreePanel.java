@@ -72,10 +72,6 @@ public class SkillTreePanel extends JPanel {
         setFocusable(true);
     }
     
-    /**
-     * Calculates node positions based on the player type (Layout Strategy).
-     * Recalculated on paint to handle resizing.
-     */
     private void calculateNodePositions() {
         Node root = findRootNode();
         if (root == null) return;
@@ -83,7 +79,6 @@ public class SkillTreePanel extends JPanel {
         nodePositions.clear();
         int centerX = getWidth() / 2;
         
-        // Start Y moved down significantly to avoid overlapping the large Title
         int startY = 130; 
 
         switch (player.getType()) {
@@ -111,7 +106,6 @@ public class SkillTreePanel extends JPanel {
             putPos(n4, cx - 220, y + 150); 
             putPos(n5, cx - 90,  y + 150);  
             
-            // Merge point
             if (!n4.getChildren().isEmpty()) {
                 Node n6 = n4.getChildren().get(0);
                 putPos(n6, cx - 150, y + 230); 
@@ -127,7 +121,6 @@ public class SkillTreePanel extends JPanel {
                         putPos(n8, cx - 240, y + 380); 
                         putPos(n9, cx - 100, y + 380);  
                         
-                        // Far Left Path
                         if (n8.getChildren().size() >= 2) {
                             Node n11 = n8.getChildren().get(0);
                             Node n10 = n8.getChildren().get(1);
@@ -140,7 +133,6 @@ public class SkillTreePanel extends JPanel {
                             }
                         }
                         
-                        // Inner Left Path
                         if (!n9.getChildren().isEmpty()) {
                             Node n13 = n9.getChildren().get(0);
                             putPos(n13, cx - 100, y + 460);
@@ -173,21 +165,18 @@ public class SkillTreePanel extends JPanel {
                     
                     Node n21 = null; 
                     
-                    // Path 17
                     if (!n17.getChildren().isEmpty()) {
                         Node n19 = n17.getChildren().get(0);
                         putPos(n19, cx + 190, y + 340);
                         if (!n19.getChildren().isEmpty()) n21 = n19.getChildren().get(0);
                     }
                     
-                    // Path 18
                     if (!n18.getChildren().isEmpty()) {
                         Node n20 = n18.getChildren().get(0);
                         putPos(n20, cx + 300, y + 340);
                         if (!n20.getChildren().isEmpty() && n21 == null) n21 = n20.getChildren().get(0);
                     }
                     
-                    // Merge at 21
                     if (n21 != null) {
                         putPos(n21, cx + 240, y + 410);
                         
@@ -213,7 +202,7 @@ public class SkillTreePanel extends JPanel {
                             }
                             
                             if (n26 != null) {
-                                putPos(n26, cx + 260, y + 640); // SPECIAL MOVE (Right)
+                                putPos(n26, cx + 260, y + 640);
                             }
                         }
                     }
@@ -305,7 +294,7 @@ public class SkillTreePanel extends JPanel {
                 
                 if (!n17.getChildren().isEmpty()) {
                     Node n18 = n17.getChildren().get(0);
-                    putPos(n18, cx + 160, y + 290); // Pivot
+                    putPos(n18, cx + 160, y + 290); 
                     
                     if (n18.getChildren().size() >= 2) {
                         Node n19 = n18.getChildren().get(0);
@@ -334,7 +323,7 @@ public class SkillTreePanel extends JPanel {
                                     Node n25 = lastChildren.get(2);
                                     
                                     putPos(n23, cx + 60,  y + 600);
-                                    putPos(n24, cx + 160, y + 610); // SPECIAL MOVE
+                                    putPos(n24, cx + 160, y + 610);
                                     putPos(n25, cx + 260, y + 600);
                                 }
                             }
@@ -364,7 +353,7 @@ public class SkillTreePanel extends JPanel {
         for (Node node : skillTree.getSupportList()) {
             if (isNodeAvailable(node)) availableNodes.add(node);
         }
-        // Auto-select first available node if selection is lost
+        
         if (selectedNode == null || !availableNodes.contains(selectedNode)) {
             if (!availableNodes.isEmpty()) {
                 selectedNode = availableNodes.get(0);
@@ -401,9 +390,7 @@ public class SkillTreePanel extends JPanel {
     private void navigateHorizontal(int direction) { navigate(direction, true); }
     private void navigateVertical(int direction) { navigate(direction, false); }
     
-    /**
-     * Navigates based on visual distance to find the nearest node in the desired direction.
-     */
+    
     private void navigate(int direction, boolean horizontal) {
         if (selectedNode == null || availableNodes.isEmpty()) return;
         NodePosition currentPos = nodePositions.get(selectedNode);
@@ -523,13 +510,13 @@ public class SkillTreePanel extends JPanel {
         g2.setColor(borderColor);
         g2.drawOval(x - nodeRadius, y - nodeRadius, nodeRadius * 2, nodeRadius * 2);
         
-        // Short Label inside the node
+        
         g2.setColor(Color.WHITE);
-        g2.setFont(new Font("Monospaced", Font.BOLD, 12)); // Increased Label Font
+        g2.setFont(new Font("Monospaced", Font.BOLD, 12));
         String nodeTypeLabel = getNodeShortLabel(node);
         drawCenteredString(g2, nodeTypeLabel, x, y + 4);
         
-        // Checkmark for unlocked nodes
+        
         if (isSpent) {
             g2.setColor(COLOR_AVAILABLE);
             g2.setStroke(new BasicStroke(3));
@@ -538,15 +525,11 @@ public class SkillTreePanel extends JPanel {
         }
     }
     
-    /**
-     * DESCRIPTION PANEL 
-     * Positioned Left-Center, larger size.
-     */
     private void drawNodeDescription(Graphics2D g2, Node node, int width, int height) {
-        int boxWidth = 360;  // Wider
-        int boxHeight = 160; // Taller
+        int boxWidth = 360;  
+        int boxHeight = 160; 
+
         
-        // Positioned on the Left (padding 50) and Vertically Centered
         int boxX = 50; 
         int boxY = (height / 2) - (boxHeight / 2);
 

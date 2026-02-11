@@ -64,8 +64,6 @@ public class GameSettings {
     public FontSize getFontSize() { return fontSize; }
     public void cycleFontSize() { this.fontSize = this.fontSize.next(); }
 
-
-    // pixel
     public int getZoomLevel() { return mapZoom.getSize(); }
     
     public MapZoom getCurrentZoom() { return mapZoom; }

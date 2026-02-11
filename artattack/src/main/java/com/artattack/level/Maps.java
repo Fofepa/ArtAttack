@@ -24,7 +24,7 @@ public class Maps {
     private List<Enemy> enemies;
     private List<Trigger> triggers;
     private List<InteractableElement> interactableElements;
-    private transient Map<Coordinates,MapElement> dictionaire; // for now we leave it here
+    private transient Map<Coordinates,MapElement> dictionaire; 
     private char[][] mapMatrix;
     private int width;
     private int height;
@@ -35,7 +35,7 @@ public class Maps {
     
     public Maps(){
         
-    } // now Maps is an empty builder because of the Builder design pattern
+    } 
 
     public void setID(int ID){
         this.ID = ID;
@@ -249,7 +249,6 @@ public class Maps {
         }
         for(Enemy e : toRemove){
             if(!Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p1.getCoordinates()) && !Coordinates.sum(e.getVisionArea(), e.getCoordinates()).contains(p2.getCoordinates())) {
-                // if both players escaped from the enemy
                 System.out.println("The party has escaped from " + e.getName() + " and it has been removed from the queue");
                 this.turnHandler.getConcreteTurnQueue().remove(e);
             }
@@ -264,7 +263,7 @@ public class Maps {
                 if(element.equals(this.p1))
                     this.p1 = null;
                 else this.p2 = null;
-            } //else this.enemies.remove(this.enemies.indexOf(element)) doesn't work if List<Enemy> is unmodifiable (like List.of())
+            } 
             this.dictionaire.remove(element.getCoordinates());
         }
     }

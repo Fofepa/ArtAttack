@@ -54,7 +54,7 @@ public class MapBuilderBossOne implements MapBuilder{
             }
             this.map.startMap(this.charMatrix);
         } catch (NullPointerException e) {
-            System.err.println("dictionary and/or charMatrix has not been initialized ");
+            System.err.println("dictionary and//or charMatrix has not been initialized ");
         }
     }
 
@@ -146,7 +146,6 @@ public class MapBuilderBossOne implements MapBuilder{
 
     @Override
     public void setSpawn(Coordinates p1spawn, Coordinates p2spawn) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setSpawn'");
     }
 }

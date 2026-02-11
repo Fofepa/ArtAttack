@@ -100,7 +100,6 @@ public class CharacterSelectionPanel extends JPanel {
     private void confirmSelection() {
         CharacterType selected = types[hoverIndex];
 
-        // Prevent P2 from picking P1's character
         if (!isPlayer1Turn && selected == player1Choice) {
             return;
         }
@@ -108,7 +107,6 @@ public class CharacterSelectionPanel extends JPanel {
         if (isPlayer1Turn) {
             player1Choice = selected;
             isPlayer1Turn = false;
-            // Move hover to next available
             hoverIndex = (hoverIndex + 1) % types.length;
             repaint();
         } else {
@@ -121,20 +119,17 @@ public class CharacterSelectionPanel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
         
-        // High quality rendering settings
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         int width = getWidth();
         int height = getHeight();
 
-        // Title rendering
         String title = isPlayer1Turn ? "PLAYER 1: CHOOSE CHARACTER" : "PLAYER 2: CHOOSE CHARACTER";
         g2.setFont(new Font("Monospaced", Font.BOLD, 40));
         g2.setColor(isPlayer1Turn ? Color.GREEN : Color.MAGENTA);
         drawCenteredString(g2, title, width / 2, 60);
 
-        // Calculate card layout
         int gap = 50;
         int totalWidth = (types.length * CARD_WIDTH) + ((types.length - 1) * gap);
         int startX = (width - totalWidth) / 2;
@@ -144,7 +139,6 @@ public class CharacterSelectionPanel extends JPanel {
             drawCharacterCard(g2, types[i], startX + (i * (CARD_WIDTH + gap)), startY, i == hoverIndex);
         }
         
-        // Bottom instructions
         g2.setFont(new Font("Monospaced", Font.ITALIC, 16));
         g2.setColor(Color.GRAY);
         String instruction = isPlayer1Turn ? "Press ENTER to confirm" : "Select a distinct character";
@@ -154,11 +148,9 @@ public class CharacterSelectionPanel extends JPanel {
     private void drawCharacterCard(Graphics2D g2, CharacterType type, int x, int y, boolean isHovered) {
         boolean isTaken = (type == player1Choice);
 
-        // Draw card background
         g2.setColor(isTaken ? new Color(20, 20, 20) : (isHovered ? new Color(45, 45, 45) : new Color(30, 30, 30)));
         g2.fillRoundRect(x, y, CARD_WIDTH, CARD_HEIGHT, 15, 15);
 
-        // Draw border
         if (isHovered) {
             g2.setColor(isPlayer1Turn ? Color.CYAN : Color.MAGENTA);
             g2.setStroke(new BasicStroke(3));
@@ -168,7 +160,6 @@ public class CharacterSelectionPanel extends JPanel {
         }
         g2.drawRoundRect(x, y, CARD_WIDTH, CARD_HEIGHT, 15, 15);
 
-        // Draw character image
         Image img = characterImages.get(type);
         int imgPadding = 10;
         int imgW = CARD_WIDTH - (imgPadding * 2);
@@ -182,7 +173,6 @@ public class CharacterSelectionPanel extends JPanel {
             drawCenteredString(g2, "NO IMAGE", x + CARD_WIDTH / 2, y + IMAGE_HEIGHT / 2);
         }
 
-        // Name and Description
         int currentY = y + IMAGE_HEIGHT + 35;
         g2.setColor(isTaken ? Color.GRAY : Color.WHITE);
         g2.setFont(new Font("Monospaced", Font.BOLD, 22));
@@ -193,7 +183,6 @@ public class CharacterSelectionPanel extends JPanel {
         g2.setColor(Color.LIGHT_GRAY);
         drawCenteredString(g2, type.getDescription(), x + CARD_WIDTH / 2, currentY);
 
-        // Stats section
         currentY += 15;
         g2.setColor(Color.DARK_GRAY);
         g2.drawLine(x + 20, currentY, x + CARD_WIDTH - 20, currentY);
@@ -209,12 +198,10 @@ public class CharacterSelectionPanel extends JPanel {
         currentY += 30;
         drawStatBar(g2, "Spd", type.getSpeed(), 10, Color.YELLOW, x + 20, currentY, CARD_WIDTH - 40);
 
-        // Taken overlay
         if (isTaken) {
             renderTakenOverlay(g2, x, y);
         }
         
-        // Hover label
         if (isHovered && !isTaken) {
             g2.setColor(isPlayer1Turn ? Color.CYAN : Color.MAGENTA);
             g2.setFont(new Font("Monospaced", Font.BOLD, 14));

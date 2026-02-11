@@ -10,9 +10,7 @@ import javax.swing.JPanel;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Weapon;
 
-/**
- * WeaponsPanel - Displays available weapons with selection
- */
+
 public class WeaponsPanel extends JPanel {
     private Player player;
     private int selectedWeaponIndex = 0;
@@ -77,7 +75,6 @@ public class WeaponsPanel extends JPanel {
             y += 15;
         }
         
-        // Instruction
         g.setColor(Color.GRAY);
         g.setFont(new Font("Monospaced", Font.PLAIN, 10));
         g.drawString("Press » to view moves", 10, getHeight() - 10);

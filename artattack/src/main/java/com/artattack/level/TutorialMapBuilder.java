@@ -45,7 +45,7 @@ public class TutorialMapBuilder implements MapBuilder {
     }
 
     @Override
-    public void setDimension(int rows, int columns) { //26 x 32
+    public void setDimension(int rows, int columns) { 
         this.map.setDimension(rows, columns);
         this.charMatrix = new char[this.map.getWidth()][this.map.getHeight()];
     }

@@ -13,14 +13,13 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
 
-// getTargets
 /*
     * Distance
     * EnemyType
         * Move or Stall
     *    
 */
-public class EnemyChoice{   // Our Context class 
+public class EnemyChoice{  
     private Enemy enemy;
     private Maps map;
     private DecisionStrategy strategy;

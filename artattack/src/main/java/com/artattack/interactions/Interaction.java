@@ -6,7 +6,6 @@ import com.artattack.mapelements.Player;
 import com.artattack.view.GameContext;
 
 public abstract class Interaction {
-    //private MainFrame mainFrame;  // CHANGED from InteractionPanel
 
     private InteractionType type;
 
@@ -21,11 +20,11 @@ public abstract class Interaction {
     }
     
 
-    /*public MainFrame getMainFrame(){  // CHANGED from getInteractionPanel
+    /*public MainFrame getMainFrame(){  / CHANGED from getInteractionPanel
         return this.mainFrame;
     }
     
-    public void setMainFrame(MainFrame mainFrame) {  // CHANGED from setInteractionPanel
+    public void setMainFrame(MainFrame mainFrame) {  / CHANGED from setInteractionPanel
         this.mainFrame = mainFrame;
     }*/
 

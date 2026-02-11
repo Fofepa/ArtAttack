@@ -25,12 +25,9 @@ public class MovementStrategy implements PlayerStrategy{
         this.map = map;
     }
     
-    /**
-     * Sets the MainFrame reference for UI updates
-     */
+    
     public void setMainFrame(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
-        // Initialize cursor display
         if(isSelected) updateCursorDisplay();
     }
 
@@ -48,7 +45,6 @@ public class MovementStrategy implements PlayerStrategy{
     private void moveCursor(int dx, int dy){
         Coordinates new_c = Coordinates.sum(cursor, new Coordinates(dx, dy));
 
-        // checks if the cursor gets on top of the player and shifts it
         if(Coordinates.getDistance(new_c, player.getCoordinates()) == 0){
             if (dx != 0){
                 new_c = Coordinates.sum(new_c, new Coordinates(dx, 0));
@@ -57,7 +53,6 @@ public class MovementStrategy implements PlayerStrategy{
             }
         }
         
-        //TODO: checks if the movement area is reachable within one cursor movement
         if(!Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
             if(dx == 1){// case S
                 if(Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(Coordinates.sum(cursor, new Coordinates(2,0)))){
@@ -104,7 +99,6 @@ public class MovementStrategy implements PlayerStrategy{
                 }
             }
         }
-        // cheks if the player goes off the map, or the cursor escapes the MA
         if (new_c.getX() >= 0 && new_c.getX() < this.map.getWidth() &&
         new_c.getY() >= 0 && new_c.getY() < this.map.getHeight() &&
         Coordinates.sum(player.getMoveArea(), player.getCoordinates()).contains(new_c)){
@@ -130,7 +124,6 @@ public class MovementStrategy implements PlayerStrategy{
                 if (!map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(e)) {
                     System.out.println("Adding " + e.getName() +  " to the queue");
                     
-                    // Store current player before adding enemy
                     Player currentPlayer = this.player;
                     
                     int currSpeed = player.getSpeed();
@@ -138,7 +131,6 @@ public class MovementStrategy implements PlayerStrategy{
                     map.getConcreteTurnHandler().getConcreteTurnQueue().add(e);
                     this.player.setSpeed(currSpeed);
                     
-                    // After reorder, update the index to track where the current player moved to
                     map.getConcreteTurnHandler().updateIndexForElement(currentPlayer);
                     
                     this.mainFrame.repaintTurnOrderPanel();
@@ -154,18 +146,14 @@ public class MovementStrategy implements PlayerStrategy{
 
     }
 
-    /**
-     * Updates the cursor display in the MapPanel
-     */
+    
     private void updateCursorDisplay() {
         if (mainFrame != null && cursor != null) {
             mainFrame.updateMovementCursor(cursor);
         }
     }
     
-    /**
-     * Clears the cursor display in the MapPanel
-     */
+    
     private void clearCursorDisplay() {
         if (mainFrame != null) {
             mainFrame.clearMovementCursor();
@@ -198,18 +186,14 @@ public class MovementStrategy implements PlayerStrategy{
         if (isSelected) {
             updateCursorDisplay();
             
-            // MOSTRA L'AREA DI MOVIMENTO (VERDE)
             if (mainFrame != null && mainFrame.getMapPanel() != null && player != null) {
-                // Calcola le coordinate ASSOLUTE sommando area relativa + posizione player
                 List<Coordinates> absoluteArea = Coordinates.sum(player.getMoveArea(), player.getCoordinates());
-                // Invia l'area assoluta al MapPanel
                 mainFrame.getMapPanel().showMoveArea(absoluteArea, null);
             }
             
         } else {
             clearCursorDisplay();
             
-            // NASCONDI L'AREA DI MOVIMENTO
             if (mainFrame != null && mainFrame.getMapPanel() != null) {
                 mainFrame.getMapPanel().showMoveArea(null, null);
             }

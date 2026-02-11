@@ -30,14 +30,13 @@ public class DumbAttackStrategy extends DecisionStrategy {
         //this.getMainFrame().gameOver();
     }
     
-    private Move chooseWeighted(Map<Move,Integer> moves) { // function that defines the pb distribution of the usable moves
+    private Move chooseWeighted(Map<Move,Integer> moves) { 
         if (moves.isEmpty()) return null;
 
-        double factor = 0.350;    // factor for the distribution if < 1 the elements on top of the list are less likely to appear 
+        double factor = 0.350;    
 
         List<Move> orderedMoves = new ArrayList<>(moves.keySet());
 
-        // distribution of the weights inside the list
         int n = orderedMoves.size();
         double[] weights = new double[n];
 
@@ -52,14 +51,13 @@ public class DumbAttackStrategy extends DecisionStrategy {
         for (double w : weights) total += w;
 
     
-        // extraction of the element
         double r = Math.random() * total;
         double cumulative = 0;
 
         for (int i = 0; i < n; i++) {
             cumulative += weights[i];
             if (r < cumulative) {
-                return orderedMoves.get(i);   // 🔥 a little fire to keep us warm
+                return orderedMoves.get(i);
             }
         }
         return orderedMoves.get(n - 1);

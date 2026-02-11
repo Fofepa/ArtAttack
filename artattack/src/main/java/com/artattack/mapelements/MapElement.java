@@ -5,7 +5,6 @@ import java.util.Objects;
 import com.artattack.level.Coordinates;
 
 public abstract class MapElement {
-    //Attributes
     private final int ID;
     private final char mapSymbol;
     private final String name;
@@ -26,7 +25,7 @@ public abstract class MapElement {
         this.spritePath = spritePath;
     }
     
-    //getters
+    
     public int getID() {
         return this.ID;
     }

@@ -17,7 +17,7 @@ public class RetreatStrategy extends DecisionStrategy {
         double min = Double.MAX_VALUE;
         Coordinates minCoord = null;
         Enemy e = null;
-        for(Enemy en : map.getEnemies()){ //I'm looking for the nearest enemy on the map
+        for(Enemy en : map.getEnemies()){ 
             if((e == null || Coordinates.getDistance(enemy.getCoordinates(), en.getCoordinates()) < Coordinates.getDistance(enemy.getCoordinates(), e.getCoordinates())) 
                           && !en.equals(enemy)){
                 e = en;

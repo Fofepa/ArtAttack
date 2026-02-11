@@ -12,9 +12,7 @@ import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.Player;
 import com.artattack.turns.ConcreteTurnHandler;
 
-/**
- * TurnOrderPanel - Displays turn order queue
- */
+
 public class TurnOrderPanel extends JPanel {
     private ConcreteTurnHandler turnHandler;
     
@@ -66,7 +64,6 @@ public class TurnOrderPanel extends JPanel {
                 
                 if (element != null) {
                     // Highlight current turn by comparing object references
-                    // This works correctly even when queue is reordered mid-turn
                     if (element == currentTurn) {
                         g.setColor(Color.CYAN);
                         g.drawString("> ", 5, y);
@@ -82,7 +79,7 @@ public class TurnOrderPanel extends JPanel {
                     // Add HP and AP info
                     if (element instanceof Player) {
                         Player player = (Player) element;
-                        turnInfo += " (HP:" + player.getCurrHP() + "/" + player.getMaxHP() + 
+                        turnInfo += " (HP:" + player.getCurrHP() + "//" + player.getMaxHP() + 
                                    " AP:" + player.getActionPoints() + ")";
                     } else if (element instanceof Enemy) {
                         Enemy enemy = (Enemy) element;
@@ -94,7 +91,6 @@ public class TurnOrderPanel extends JPanel {
                     y += 15;
                     position++;
                     
-                    // Don't overflow the panel
                     if (y > getHeight() - 10) {
                         g.setColor(Color.GRAY);
                         g.setFont(new Font("Monospaced", Font.ITALIC, 10));

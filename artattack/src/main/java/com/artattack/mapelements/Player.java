@@ -11,7 +11,6 @@ import com.artattack.moves.Weapon;
 
 public class Player extends ActiveElement {
     
-    //Attributes
     private PlayerType type;
     private int currXP;
     private int maxXP;
@@ -80,19 +79,9 @@ public class Player extends ActiveElement {
             this.skillTree = skillTree;
     }
 
-    //primitive methods
-    //public void move(){;
 
-   // public void attack();
 
-    //public void openInventory();
-    // guys do you remember? you can use the wildcard only in list and such
-    //public abstract  <T extends Item> T getItem(int k);
-
-    //public abstract  void interact(/*InteractableElement dude*/);
-
-    //public abstract  void skipTurn();
-
+    
     //getters
 
     public int getCurrXP() {
@@ -198,7 +187,6 @@ public class Player extends ActiveElement {
         if(this.getMapSymbol() != other.getMapSymbol()) return false;
         if(!this.getName().equals(other.getName())) return false;
         if(!this.getCoordinates().equals(other.getCoordinates())) return false;
-        //Aggiungi altri check
         return true;
     }
 

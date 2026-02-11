@@ -18,7 +18,6 @@ public class ApproachStrategy extends DecisionStrategy {
         double min = Double.MAX_VALUE;
         Coordinates minCoord = null;
         
-        // finds the coordinate that gets the enemy closest to the player (the closest)
         if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates())){
             for(Coordinates coord : enemy.getMoveArea()){
                 if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
@@ -42,7 +41,6 @@ public class ApproachStrategy extends DecisionStrategy {
             }
         }
 
-        // sets the new position and decreases the AP
         if (minCoord != null){
             this.getMainFrame().showDialog(List.of(enemy.getName() + " is approaching!"));
             map.setCell(enemy.getCoordinates(), '.');

@@ -10,19 +10,16 @@ import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
-import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
 
-// Adapter bridging the GUI Facade and InputController.
 public class MainFrame implements UIManager {
     private Maps map;
     private Player currentPlayer;
     private GameContext gameContext = null;
     private MainGUIFacade mainGUIFacade;
     
-    // UI Panels
     private MapPanel mapPanel;
     private MovesPanel movesPanel;
     private InventoryPanel inventoryPanel;
@@ -31,10 +28,8 @@ public class MainFrame implements UIManager {
     private WeaponsPanel weaponsPanel;
     private TurnOrderPanel turnOrderPanel;
     private DetailsPanel detailsPanel;
-    private SpritePanel spritePanel;
     private PausePanel pausePanel;
 
-    // Logic Strategies
     private MovementStrategy movementStrategy;
     private CombatStrategy combatStrategy;
     private InventoryStrategy inventoryStrategy;
@@ -50,7 +45,6 @@ public class MainFrame implements UIManager {
     
     private void initializePanels() {
         if (map != null) mapPanel = new MapPanel(map);
-        spritePanel = new SpritePanel();
         interactionPanel = new InteractionPanel();
     }
 
@@ -61,7 +55,6 @@ public class MainFrame implements UIManager {
         }
     }
     
-     // Identifies which panel currently holds focus.
     public Component getFocused() {
         if (mapPanel != null && mapPanel.hasFocus()) return mapPanel;
         if (weaponsPanel != null && weaponsPanel.hasFocus()) return weaponsPanel;
@@ -77,7 +70,6 @@ public class MainFrame implements UIManager {
     public void setCurrentPlayer(Player player) {
         this.currentPlayer = player;
         
-        // Lazy initialization of player-dependent panels
         if (movesPanel == null && player != null) movesPanel = new MovesPanel(player);
         if (inventoryPanel == null && player != null) inventoryPanel = new InventoryPanel(player);
         if (statsPanel == null && player != null) statsPanel = new StatsPanel(player);
@@ -87,7 +79,6 @@ public class MainFrame implements UIManager {
             turnOrderPanel = new TurnOrderPanel(map.getConcreteTurnHandler());
         }
         
-        // Initialize strategies
         if (map != null && player != null) {
             movementStrategy = new MovementStrategy(map, player);
             movementStrategy.setMainFrame(this);
@@ -112,19 +103,11 @@ public class MainFrame implements UIManager {
     }
     
     private String getPlayerImagePath(Player player) {
-        // 1. Explicit sprite path 2. Character type 3. Player ID
         if (player != null && player.hasSprite()) return player.getSpritePath();
         if (player.getType() != null) return "resources/images/" + player.getType().toString().toLowerCase() + ".png";
         return "resources/images/player" + player.getID() + ".png";
     }
     
-    private String getElementImagePath(MapElement element) {
-        if (element != null && element.hasSprite()) return element.getSpritePath();
-        if (element != null) {
-            return "resources/images/" + element.getName().toLowerCase().replaceAll("\\s+", "_") + ".png";
-        }
-        return null;
-    }
     
     public Player getCurrentPlayer() { return currentPlayer; }
 
@@ -150,7 +133,6 @@ public class MainFrame implements UIManager {
     public WeaponsPanel getWeaponsPanel() { return weaponsPanel; }
     public TurnOrderPanel getTurnOrderPanel() { return turnOrderPanel; }
     public DetailsPanel getDetailsPanel() { return detailsPanel; }
-    public SpritePanel getSpritePanel() { return spritePanel; }
     
     // ========== Strategy Getters ==========
     
@@ -168,7 +150,7 @@ public class MainFrame implements UIManager {
     public void repaintWeaponsPanel() { if (weaponsPanel != null) weaponsPanel.repaint(); }
     public void repaintTurnOrderPanel() { if (turnOrderPanel != null) turnOrderPanel.repaint(); }
     public void repaintDetailsPanel() { if (detailsPanel != null) detailsPanel.repaint(); }
-    public void repaintSpritePanel() { if (spritePanel != null) spritePanel.repaint(); }
+   
     
     // ========== Visual Updates ==========
     
@@ -194,21 +176,7 @@ public class MainFrame implements UIManager {
     public void showInteractionPanel(boolean show) {
         if (interactionPanel != null && interactionPanel.getParent() != null) {
              interactionPanel.getParent().setVisible(show);
-             if (spritePanel != null) spritePanel.setVisible(show);
         }
-    }
-
-    public void startInteraction(String message, String spriteName, MapElement speaker) {
-        if (spriteName != null && spritePanel != null) {
-            spritePanel.loadImage(spriteName);
-        } else if (spritePanel != null) {
-            spritePanel.clearSprite();
-        }
-        showDialog(List.of(message), null);
-    }
-    
-    public void startInteraction(String message, String spriteName) {
-        startInteraction(message, spriteName, null);
     }
 
     public void showDialog(List<String> messages) {
@@ -278,19 +246,6 @@ public class MainFrame implements UIManager {
     
     // ========== Global UI Components ==========
     
-    public void loadSprite(String spritePath) {
-        if (spritePanel != null) {
-            spritePanel.loadImage(spritePath);
-            repaintSpritePanel();
-        }
-    }
-    
-    public void clearSprite() {
-        if (spritePanel != null) {
-            spritePanel.clearSprite();
-            repaintSpritePanel();
-        }
-    }
 
     public PausePanel getPausePanel() { return pausePanel; }
     public void setPausePanel(PausePanel pausePanel){ this.pausePanel = pausePanel; }

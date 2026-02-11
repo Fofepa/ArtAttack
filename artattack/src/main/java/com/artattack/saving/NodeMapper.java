@@ -52,8 +52,6 @@ public final class NodeMapper {
             data = new RootNodeData(); 
         }
     
-
-        // campi comuni
         data.type = node.getType();
         data.spent = node.isSpent();
         data.label = node.getLabel();

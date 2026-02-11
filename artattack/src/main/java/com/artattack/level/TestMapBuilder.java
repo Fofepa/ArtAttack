@@ -137,7 +137,6 @@ public class TestMapBuilder implements MapBuilder {
 
     @Override
     public void setSpawn(Coordinates p1spawn, Coordinates p2spawn) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setSpawn'");
     }
 

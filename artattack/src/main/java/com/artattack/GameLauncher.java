@@ -4,9 +4,6 @@ import javax.swing.SwingUtilities;
 
 import com.artattack.view.MainGUIFacade;
 
-/**
- * Main application entry point demonstrating the Facade pattern integration
- */
 public class GameLauncher {
     
     public static void main(String[] args) {

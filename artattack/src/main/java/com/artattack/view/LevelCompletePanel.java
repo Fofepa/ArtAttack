@@ -36,20 +36,17 @@ public class LevelCompletePanel extends JPanel {
         gbc.insets = new Insets(20, 0, 40, 0); 
         gbc.anchor = GridBagConstraints.CENTER;
 
-        // Title
         JLabel titleLabel = new JLabel("LEVEL COMPLETE");
         titleLabel.setFont(new Font("Monospaced", Font.BOLD, 50));
         titleLabel.setForeground(Color.GREEN);
         add(titleLabel, gbc);
 
-        // Time
         gbc.gridy++;
         JLabel timeLabel = new JLabel("Time: " + timeString);
         timeLabel.setFont(new Font("Monospaced", Font.PLAIN, 32));
         timeLabel.setForeground(Color.WHITE);
         add(timeLabel, gbc);
 
-        // Instructions
         gbc.gridy++;
         gbc.insets = new Insets(80, 0, 20, 0); 
         JLabel continueLabel = new JLabel("Press ENTER to continue...");

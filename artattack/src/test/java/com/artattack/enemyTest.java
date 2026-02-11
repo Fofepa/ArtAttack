@@ -12,7 +12,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
@@ -33,11 +32,9 @@ public class enemyTest {
         //Creating enemy
         this.enemy = new Enemy(0,'+'," ", new Coordinates(0,0),EnemyType.GUARD,0,35,0,null,5,5,null,null,null,null,10);
         //Creating player1
-        this.player1 = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
-            new ArrayList<Coordinates>(), PlayerType.MOVIE_DIRECTOR);
+        this.player1 = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Creating player2
-        this.player2 = new Player(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<Item>(), null, 
-            new ArrayList<Coordinates>(), PlayerType.MOVIE_DIRECTOR);
+        this.player2 = new Player(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 5, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Initializing tmb
         this.tmb = new TestMapBuilder();
         assertNotNull(this.tmb);

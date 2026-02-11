@@ -58,16 +58,16 @@ public class TurnOrderPanel extends JPanel {
             int y = 40;
             int position = 1;
             
-            // Get current turn element and index
+            // Get current turn element
             ActiveElement currentTurn = turnHandler.current();
-            int currentIndex = turnHandler.getIndex();
             
             for (int i = 0; i < turnQueue.size(); i++) {
                 ActiveElement element = turnQueue.get(i);
                 
                 if (element != null) {
-                    // Highlight current turn
-                    if (i == currentIndex) {
+                    // Highlight current turn by comparing object references
+                    // This works correctly even when queue is reordered mid-turn
+                    if (element == currentTurn) {
                         g.setColor(Color.CYAN);
                         g.drawString("> ", 5, y);
                         g.setFont(new Font("Monospaced", Font.BOLD, 11));

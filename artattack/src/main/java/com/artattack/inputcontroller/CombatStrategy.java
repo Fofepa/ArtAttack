@@ -53,7 +53,7 @@ public class CombatStrategy implements PlayerStrategy{
             if("Wild at Heart".equals(move.getName())){
                 this.mainFrame.showDialog(List.of(l.get(0).getName() + ": What do you want fa***t?!", "*A group of offended thugs goes to the enemy and beats it really bad!"));
             }
-            this.mainFrame.showDialog(List.of(player.getName() + ": has done damage " + value + " to " + l.size() + " enemies!"));
+            this.mainFrame.showDialog(List.of(player.getName()+ " used " + move.getName() ,player.getName() + ": has done damage " + value + " to " + l.size() + " enemies!"));
             isSelected = false;
             moveIndex = 0;
             weaponIndex = 0;

@@ -10,55 +10,61 @@ import com.artattack.items.Item;
 import com.artattack.level.Coordinates;
 
 public class InteractableElementDirector {
-    public void createChest(InteractableElementBuilder builder, List<Item> item){
+    public void createChest(InteractableElementBuilder builder, List<Item> item, Coordinates coordinates){
         builder.setMapSymbol('$');
         builder.setName("Chest");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
             List.of(new Give(List.of("You've found new items!"), item), new Talk(List.of("The chest is empty"))
         ));
     }
 
-    public void createCheckPoint(InteractableElementBuilder builder){
+    public void createCheckPoint(InteractableElementBuilder builder, Coordinates coordinates){
         builder.setMapSymbol('C');
         builder.setName("Checkpoint");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
             List.of(new CheckPoint(List.of("Your progress has been saved")))
         );
 
     }
     
-    public void createDoor(InteractableElementBuilder builder, int nextMap, List<Coordinates> nexCoordinates){
+    public void createDoor(InteractableElementBuilder builder, int nextMap, Coordinates coordinates){
         builder.setMapSymbol('\u2339');
         builder.setName("Door");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
-            List.of(new SwitchMap(nextMap, nexCoordinates))
+            List.of(new SwitchMap(nextMap))
         );
         
     }
 
-    public void createDoor(InteractableElementBuilder builder, int nextMap, List<Coordinates> nexCoordinates, boolean isLevelFinish){
+    public void createDoor(InteractableElementBuilder builder, int nextMap, boolean isLevelFinish, Coordinates coordinates){
         builder.setMapSymbol('\u2339');
         builder.setName("Door");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
-            List.of(new SwitchMap(nextMap, nexCoordinates, isLevelFinish))
+            List.of(new SwitchMap(nextMap, isLevelFinish))
         );
         
     }
 
-    public void createDoor(InteractableElementBuilder builder, int nextMap, List<Coordinates> nexCoordinates, int key){
+    public void createDoor(InteractableElementBuilder builder, int nextMap, int key, Coordinates coordinates){
         builder.setMapSymbol('\u2339');
         builder.setName("Door");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
-            List.of(new SwitchMap(key, nextMap, nexCoordinates))
+            List.of(new SwitchMap(key, nextMap))
         );
         
     }
 
-     public void createDoor(InteractableElementBuilder builder, int nextMap, List<Coordinates> nexCoordinates, boolean isLevelFinish, int key){
+     public void createDoor(InteractableElementBuilder builder, int nextMap, boolean isLevelFinish, int key, Coordinates coordinates){
         builder.setMapSymbol('\u2339');
         builder.setName("Door");
+        builder.setCoordinates(coordinates);
         builder.setInteractions(
-            List.of(new SwitchMap(key, nextMap, nexCoordinates, isLevelFinish))
+            List.of(new SwitchMap(key, nextMap, isLevelFinish))
         );
         
     }

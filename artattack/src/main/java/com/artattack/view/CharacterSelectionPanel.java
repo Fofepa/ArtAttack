@@ -204,7 +204,7 @@ public class CharacterSelectionPanel extends JPanel {
         g2.drawString("Wpn: " + type.getWeaponName(), x + 20, currentY);
         
         currentY += 25;
-        drawStatBar(g2, "HP", type.getMaxHP(), 30, Color.RED, x + 20, currentY, CARD_WIDTH - 40);
+        drawStatBar(g2, "HP", 19, type.getMaxHP(), Color.RED, x + 20, currentY, CARD_WIDTH - 40);
         
         currentY += 30;
         drawStatBar(g2, "Spd", type.getSpeed(), 10, Color.YELLOW, x + 20, currentY, CARD_WIDTH - 40);

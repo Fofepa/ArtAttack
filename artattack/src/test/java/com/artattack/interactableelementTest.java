@@ -19,15 +19,10 @@ import com.artattack.items.ItemType;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
-import com.artattack.mapelements.Enemy;
-import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 import com.artattack.view.GameContext;
-import com.artattack.view.InteractionPanel;
-import com.artattack.view.MainFrame;
-import com.artattack.view.SpritePanel;
 
 public class interactableelementTest {
     private InteractableElement npc;
@@ -54,7 +49,7 @@ public class interactableelementTest {
         this.gameContext = new GameContext(null, null);
         assertNotNull(this.gameContext);
         player = new Player(0, '+', "", new Coordinates(0, 0),
-            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<Item>(), null, null, PlayerType.MOVIE_DIRECTOR);
+            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, new ArrayList<Item>(), null, PlayerType.MOVIE_DIRECTOR);
         this.item = new Item(ItemType.CURE, " ", " ", 0);
         this.interactions = new ArrayList<Interaction>();
         this.interactions.add(new Give(List.of(" "), List.of(this.item)));

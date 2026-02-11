@@ -78,10 +78,10 @@ public class moveTest {
         this.m5 = mb1.getResult();
         //Creating p1
         this.p1 = new Player(0, 'i', "TestPlayerOne", new Coordinates(0, 0), 
-        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
         //Creating p2
         this.p2 = new Player(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>() ,null, PlayerType.MOVIE_DIRECTOR);
+        null, 5,5, null, 10, 10, 0, 10, 0, 0, 0, new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
         //Creating e
         this.e = new Enemy(0, 'i', "TestEnemy", new Coordinates(0, 1), EnemyType.EMPLOYEE, 100, 100, 1, 
             new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Item(ItemType.CURE,

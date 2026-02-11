@@ -127,4 +127,9 @@ public class MapBuilderTypeOne implements MapBuilder {
         this.reset();
         return product;
     }
+
+    @Override
+    public void setSpawn(Coordinates p1spawn, Coordinates p2spawn) {
+        this.map.setSpawn(p1spawn, p2spawn);
+    }
 }

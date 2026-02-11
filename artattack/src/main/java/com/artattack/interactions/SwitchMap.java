@@ -15,33 +15,30 @@ public class SwitchMap extends Interaction {
     private boolean unlocked;
     private int key;
     private int nextMap;
-    private List<Coordinates> nextCoordinates;
     private boolean isLevelFinish;
 
-    public SwitchMap(int key, int nextMap, List<Coordinates> nextCoordinates){
-        this(key, nextMap, nextCoordinates, false);
+    public SwitchMap(int key, int nextMap){
+        this(key, nextMap, false);
     }
 
-    public SwitchMap(int key, int nextMap, List<Coordinates> nextCoordinates, boolean isLevelFinish){
+    public SwitchMap(int key, int nextMap, boolean isLevelFinish){
         super(InteractionType.SWITCH_MAP);
         this.unlocked = false;
         this.key = key;
         this.nextMap = nextMap;
-        this.nextCoordinates = nextCoordinates;
         this.isLevelFinish = isLevelFinish;
     }
 
-    public SwitchMap(int nextMap, List<Coordinates> nextCoordinates){
-        this(nextMap, nextCoordinates, false);
+    public SwitchMap(int nextMap){
+        this(nextMap, false);
     }
 
 
 
-    public SwitchMap(int nextMap, List<Coordinates> nextCoordinates, boolean isLevelFinish){
+    public SwitchMap(int nextMap, boolean isLevelFinish){
         super(InteractionType.SWITCH_MAP);
         this.unlocked = true;
         this.nextMap = nextMap;
-        this.nextCoordinates = nextCoordinates;
         this.isLevelFinish = isLevelFinish;
     }
 
@@ -106,24 +103,24 @@ public class SwitchMap extends Interaction {
             }
             List<ActiveElement> list = new LinkedList<ActiveElement>();
             list.add(player);
-            player.setCoordinates(this.nextCoordinates.get(0));
-            next.getDict().put(this.nextCoordinates.get(0), player);
+            player.setCoordinates(next.getP1Spawn());
+            next.getDict().put(next.getP1Spawn(), player);
             
             if(player.equals(currMap.getPlayerOne())){
                 next.setPlayerOne(player);
-                currMap.getPlayerTwo().setCoordinates(this.nextCoordinates.get(1));
+                currMap.getPlayerTwo().setCoordinates(next.getP2Spawn());
                 next.setPlayerTwo(currMap.getPlayerTwo());
                 next.setTurnQueue(player, next.getPlayerTwo());
-                next.getDict().put(this.nextCoordinates.get(1), next.getPlayerTwo());
+                next.getDict().put(next.getP2Spawn(), next.getPlayerTwo());
                 currMap.setCell(currMap.getPlayerTwo().getCoordinates(), '.');
                 gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerTwo().getCoordinates(), currMap.getPlayerTwo().getMapSymbol());
                 currMap.remove(currMap.getPlayerTwo());
             } else{
                 next.setPlayerTwo(player);
-                currMap.getPlayerOne().setCoordinates(this.nextCoordinates.get(1));
+                currMap.getPlayerOne().setCoordinates(next.getP2Spawn());
                 next.setPlayerOne(currMap.getPlayerOne());
                 next.setTurnQueue(player, next.getPlayerOne());
-                next.getDict().put(this.nextCoordinates.get(1), next.getPlayerOne());
+                next.getDict().put(next.getP2Spawn(), next.getPlayerOne());
                 currMap.setCell(currMap.getPlayerOne().getCoordinates(), '.');
                 gameContext.getMapManager().getLevels().get(nextMap).setCell(currMap.getPlayerOne().getCoordinates(), currMap.getPlayerOne().getMapSymbol());
                 currMap.remove(currMap.getPlayerOne());

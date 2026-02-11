@@ -1,13 +1,12 @@
 package com.artattack;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,7 +15,6 @@ import com.artattack.items.ItemType;
 import com.artattack.items.Key;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
-import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
 import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
@@ -76,10 +74,10 @@ public class specialmoveTest {
         this.wah = mb1.getResult();
         //Creating p1
         this.p1 = new Player(0, 'i', "TestPlayerOne", new Coordinates(2, 2), 
-        null, 100,100, null, 20, 20, 10, 10, 5, 5, 4, new ArrayList<>(), new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
+        null, 100,100, null, 20, 20, 10, 10, 5, 5, 4, new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
         //Creating p2
         this.p2 = new Player(0, 'i', "TestPlayerTwo", new Coordinates(1, 1),
-        null, 100,100, null, 1, 40, 10, 10, 5, 5, 4, new ArrayList<>(), new ArrayList<>() ,null, PlayerType.MOVIE_DIRECTOR);
+        null, 100,100, null, 1, 40, 10, 10, 5, 5, 4, new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
         //Creating e
         this.e1 = new Enemy(0, 'i', "TestEnemy", new Coordinates(3, 3), EnemyType.EMPLOYEE, 100, 100, 1, 
             new ArrayList<>(), 5,5, new ArrayList<>(), null, List.of(new Item(ItemType.CURE,

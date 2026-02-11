@@ -12,6 +12,7 @@ public interface MapBuilder {
     public void setID(int ID);
     public void setPlayerOne(Player player);
     public void setPlayerTwo(Player player);
+    public void setSpawn(Coordinates p1spawn, Coordinates p2spawn);
     public void setInteractableElements(List<InteractableElement> elements);
     public void setEnemies(List<Enemy> enemies);
     public void setDimension(int width, int height);

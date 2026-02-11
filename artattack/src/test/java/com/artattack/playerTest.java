@@ -2,11 +2,8 @@ package com.artattack;
 
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.After;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,16 +12,13 @@ import com.artattack.level.Coordinates;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 
-import org.junit.After;
-
 
 public class playerTest {
     private Player player;
 
     @Before
     public void setUp() throws Exception{
-        this.player = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, 
-            new ArrayList<Coordinates>(), PlayerType.MOVIE_DIRECTOR);
+        this.player = new Player(0, 'M', "David Lynch", new Coordinates(0,0), null, 5,5, null, 15, 20, 10, 20, 0, 2, 1, new ArrayList<Item>(), null, PlayerType.MOVIE_DIRECTOR);
     }
 
     @After

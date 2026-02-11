@@ -42,10 +42,10 @@ public class inventorystrategyTest {
         this.i = new Item(ItemType.CURE, "TestCure", "TestDescription", 5);
         assertNotNull(this.i);
         
-        this.p1 = new Player(0, '0', "TestPlayer", new Coordinates(1, 1), new ArrayList<>(), 10, 10, new ArrayList<>(), 5, 10, 0, 5, 1, 1, 5, new ArrayList<>(List.of(this.i, this.i, this.i)), new ArrayList<>(), new ArrayList<>(), PlayerType.MUSICIAN);
+        this.p1 = new Player(0, '0', "TestPlayer", new Coordinates(1, 1), new ArrayList<>(), 10, 10, new ArrayList<>(), 5, 10, 0, 5, 1, 1, 5, new ArrayList<>(List.of(this.i, this.i, this.i)), new ArrayList<>(), PlayerType.MUSICIAN);
         assertNotNull(this.p1);
         
-        this.p2 = new Player(0, '0', "TestPlayer", new Coordinates(1, 1), new ArrayList<>(), 10, 10, new ArrayList<>(), 5, 10, 0, 5, 1, 1, 5, new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
+        this.p2 = new Player(0, '0', "TestPlayer", new Coordinates(1, 1), new ArrayList<>(), 10, 10, new ArrayList<>(), 5, 10, 0, 5, 1, 1, 5, new ArrayList<>(), new ArrayList<>(), PlayerType.MOVIE_DIRECTOR);
         assertNotNull(this.p2);
         
         this.mb.setPlayerOne(this.p1);

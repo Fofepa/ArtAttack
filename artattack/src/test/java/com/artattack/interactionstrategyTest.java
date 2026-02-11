@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.interactions.Give;
 import com.artattack.interactions.InteractionStrategy;
 import com.artattack.interactions.Talk;
@@ -24,9 +23,7 @@ import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 import com.artattack.view.GameContext;
-import com.artattack.view.InteractionPanel;
 import com.artattack.view.MainFrame;
-import com.artattack.view.SpritePanel;
 
 public class interactionstrategyTest {
     private TestMapBuilder tmb;
@@ -46,7 +43,7 @@ public class interactionstrategyTest {
         assertNotNull(this.tmb);
         //Creating player
         player = new Player(0, '@', "", new Coordinates(1, 1),
-            null, 5,5, area, 0, 0, 0, 0, 0, 0, 0, new ArrayList<>(), null, null, PlayerType.MOVIE_DIRECTOR);
+            null, 5,5, area, 0, 0, 0, 0, 0, 0, 0, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Creating map
         tmb.setDimension(26, 150);
         tmb.setPlayerOne(this.player);

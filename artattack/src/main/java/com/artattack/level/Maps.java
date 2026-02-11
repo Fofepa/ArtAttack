@@ -29,6 +29,8 @@ public class Maps {
     private int width;
     private int height;
     private transient ConcreteTurnHandler turnHandler;
+    private Coordinates p1spawn;
+    private Coordinates p2spawn;
 
     
     public Maps(){
@@ -49,6 +51,19 @@ public class Maps {
 
     public void setEnemies(List<Enemy> enemies){
         this.enemies = enemies;
+    }
+
+    public void setSpawn(Coordinates p1spawn, Coordinates p2spawn) {
+        this.p1spawn = p1spawn;
+        this.p2spawn = p2spawn;
+    }
+
+    public Coordinates getP1Spawn() {
+        return this.p1spawn;
+    }
+
+    public Coordinates getP2Spawn() {
+        return this.p2spawn;
     }
 
     public void setInteractableElements(List<InteractableElement> interactableElements){

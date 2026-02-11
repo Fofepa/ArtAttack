@@ -22,7 +22,7 @@ public class AttackStrategy extends DecisionStrategy {
         Move move = chooseUniform(this.getMoves());
 
          int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
-         this.getMainFrame().showDialog(List.of(enemy.getName() + " has done " + damage + " dmg to the player"));
+         this.getMainFrame().showDialog(List.of(enemy.getName() + " used " + move.getName(), enemy.getName() + " has done " + damage + " dmg to the player"));
          for(ActiveElement element : move.getAttackTargets(enemy, map)){
             if(!element.isAlive()){
                this.getMainFrame().showDialog(List.of(element.getName() + " has been defeated!"));

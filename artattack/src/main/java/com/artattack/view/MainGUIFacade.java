@@ -166,7 +166,7 @@ public class MainGUIFacade {
             mb1.startMap();
             Maps map_r = mb1.getResult();
             mm.getLevels().put(map_r.getID(), map_r);
-            md.make("BigEnemyArea");
+            md.make("BossRoom1");
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);
             mb1.setID(0);
@@ -204,12 +204,10 @@ public class MainGUIFacade {
         switch (type) {
             case MUSICIAN:
                 Weapon musicianWeapon = new Weapon(type.getWeaponName(), "Default Weapon", 4, new ArrayList<>(List.of(m1,m2)), PlayerType.MUSICIAN);
-                return new Player(id, '♫', type.getName(), coords, 
-                    new ArrayList<>(List.of(musicianWeapon)), // Esempio arma
+                return new Player(id, '♫', type.getName(), coords, new ArrayList<>(List.of(musicianWeapon)), 
                     15, 15, zappaMA, 19, type.getMaxHP(), 10, 
-                    20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),
-                    "/images/frank-zappa-fotor-20260206135640.jpg" );
-                    
+                    20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(), PlayerType.MUSICIAN, SkillTreeFactory.createSkillTree(PlayerType.MUSICIAN),
+                    "/images/frank-zappa-fotor-20260206135640.jpg");
             
             
             case DIRECTOR:
@@ -217,10 +215,10 @@ public class MainGUIFacade {
                 return new Player(id, '◉', type.getName(), coords,
                     new ArrayList<>(List.of(directorWeapon)), 
                     15, 15, lynchMA, 20, type.getMaxHP(), 
-                    10, 20, 1, type.getSpeed(), 2, items, null, null, PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), 
+                    10, 20, 1, type.getSpeed(), 2, items, new ArrayList<Key>(),PlayerType.MOVIE_DIRECTOR, SkillTreeFactory.createSkillTree(PlayerType.MOVIE_DIRECTOR), 
                     "/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
                     
-            default -> throw new IllegalArgumentException("Unknown type: " + type);
+            default : throw new IllegalArgumentException("Unknown type: " + type);
         }
     }
     

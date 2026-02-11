@@ -61,12 +61,14 @@ public class ConcreteTurnHandler implements TurnHandler {
         
         if(hasNext()){ 
             this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            this.getConcreteTurnQueue().reorder();
             return turnQueue.getTurnQueue().get(index);
         }
         else{
             // Loop back to beginning
             resetIndex();
             this.turnManager.notifyTurn(this.getConcreteTurnQueue().getTurnQueue().get(index));
+            this.getConcreteTurnQueue().reorder();
             return turnQueue.getTurnQueue().get(index);
         }
     }

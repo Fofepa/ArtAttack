@@ -124,5 +124,11 @@ public class TutorialMapBuilder implements MapBuilder {
     public void buildBorder() {
        // throw new UnsupportedOperationException("Not supported yet.");
     }
+
+    @Override
+    public void setSpawn(Coordinates p1spawn, Coordinates p2spawn) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setSpawn'");
+    }
     
 }

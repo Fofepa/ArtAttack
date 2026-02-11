@@ -31,7 +31,7 @@ public class combatstrategyTest {
     @Before
     public void setUp(){
         MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 3, PlayerType.MUSICIAN)), 10,10, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
+        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 3, PlayerType.MUSICIAN)), 10,10, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5)));
         /* mapBuilder.setInteractableElements(List.of(
             new InteractableElement(0, '$', "Chitarra", new Coordinates(10, 10),null, "",null,null),

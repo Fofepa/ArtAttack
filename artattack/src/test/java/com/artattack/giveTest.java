@@ -10,15 +10,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.interactions.Interaction;
 import com.artattack.interactions.Give;
+import com.artattack.interactions.Interaction;
 import com.artattack.items.Item;
 import com.artattack.items.ItemType;
 import com.artattack.level.Coordinates;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
 import com.artattack.view.GameContext;
-import com.artattack.view.InteractionPanel;
 
 public class giveTest {
     
@@ -32,7 +31,7 @@ public class giveTest {
         inventory = new ArrayList<Item>();
         item = new Item(ItemType.CURE,"","",0);
         player = new Player(0, ' ', "", new Coordinates(0, 0),
-            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, inventory,null,null, PlayerType.MOVIE_DIRECTOR);
+            null, 5,5, null, 0, 0, 0, 0, 0, 0, 0, inventory,null, PlayerType.MOVIE_DIRECTOR);
         interaction = new Give(List.of(" "), List.of(item));
     }
 

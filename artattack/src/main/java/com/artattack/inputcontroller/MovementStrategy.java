@@ -128,7 +128,11 @@ public class MovementStrategy implements PlayerStrategy{
             for (Enemy e : map.checkAggro(cursor)) {
                 if (!map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(e)) {
                     System.out.println("Adding " + e.getName() +  " to the queue");
+                    int currSpeed = player.getSpeed();
+                    this.player.setSpeed(200);
                     map.getConcreteTurnHandler().getConcreteTurnQueue().add(e);
+                    this.player.setSpeed(currSpeed);
+                    this.mainFrame.repaintTurnOrderPanel();
                     e.activate();
                 }
             }

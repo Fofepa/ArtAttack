@@ -40,7 +40,7 @@ public class attackstrategyTest {
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(1,1),EnemyType.GUARD, 20, 20, 3,
                                  List.of(enemyWeapon),5,5,null,null,null,null,0);
         MapBuilder mapBuilder = new TestMapBuilder(); 
-        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, null, PlayerType.MUSICIAN));
+        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5)));
         mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);

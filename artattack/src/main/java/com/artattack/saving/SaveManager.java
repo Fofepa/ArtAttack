@@ -7,10 +7,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.artattack.interactions.Interaction;
 import com.artattack.level.MapManager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.artattack.interactions.Interaction;
 
 public class SaveManager {
     
@@ -64,6 +64,10 @@ public class SaveManager {
         }
 
         return folder.resolve("save.json");
+    }
+
+    public Path getSavePath(){
+        return this.savePath;
     }
 
 }

@@ -141,12 +141,15 @@ public class MainFrame implements UIManager {
     public InventoryStrategy getInventoryStrategy() { return inventoryStrategy; }
     
     // ========== Repaint Methods ==========
-    
+    @Override
     public void repaintMapPanel() { if (mapPanel != null) mapPanel.repaint(); }
     public void repaintMovesPanel() { if (movesPanel != null) movesPanel.repaint(); }
+    @Override
     public void repaintInventoryPanel() { if (inventoryPanel != null) inventoryPanel.repaint(); }
     public void repaintInteractionPanel() { if (interactionPanel != null) interactionPanel.repaint(); }
+    
     public void repaintStatsPanel() { if (statsPanel != null) statsPanel.repaint(); }
+    @Override
     public void repaintWeaponsPanel() { if (weaponsPanel != null) weaponsPanel.repaint(); }
     public void repaintTurnOrderPanel() { if (turnOrderPanel != null) turnOrderPanel.repaint(); }
     public void repaintDetailsPanel() { if (detailsPanel != null) detailsPanel.repaint(); }

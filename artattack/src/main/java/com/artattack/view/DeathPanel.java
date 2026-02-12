@@ -19,8 +19,7 @@ public class DeathPanel extends JPanel {
 
     public DeathPanel(MainGUIFacade mainFacade, String timeElapsed) {
         this.mainFacade = mainFacade;
-        
-        File saveFile = new File("save.json"); 
+        File saveFile = mainFacade.getGameFacade().getMainFrame().getGameContext().getSaveManager().getSavePath().toFile();
         this.hasSaveFile = saveFile.exists();
 
         initializeUI(timeElapsed);
@@ -83,17 +82,13 @@ public class DeathPanel extends JPanel {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()) {
-                    case KeyEvent.VK_C:
+                    case KeyEvent.VK_C -> {
                         if (hasSaveFile) {
                             mainFacade.loadGame();
                         }
-                        break;
-                    case KeyEvent.VK_R:
-                        mainFacade.showCharacterSelection();
-                        break;
-                    case KeyEvent.VK_ESCAPE:
-                        mainFacade.exitGame();
-                        break;
+                    }
+                    case KeyEvent.VK_R -> mainFacade.showCharacterSelection();
+                    case KeyEvent.VK_ESCAPE -> mainFacade.exitGame();
                 }
             }
         });

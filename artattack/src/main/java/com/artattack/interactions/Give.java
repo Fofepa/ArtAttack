@@ -45,6 +45,7 @@ public class Give extends Interaction {
                 if(wpn.getCompatibility() == player.getType()){
                     player.getWeapons().add(this.wpn);
                     this.empty = true;
+                    gameContext.getUiManager().repaintWeaponsPanel();
                 }
                 else{
                     gameContext.getUiManager().showDialog(List.of(player.getName() + " couldn't find nothing useful"),spritePath);

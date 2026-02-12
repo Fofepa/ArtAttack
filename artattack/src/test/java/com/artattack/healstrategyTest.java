@@ -15,8 +15,8 @@ import com.artattack.enemystrategy.HealStrategy;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -47,7 +47,7 @@ public class healstrategyTest {
         this.injuredEnemy = new Enemy(0, 'I', "Beaten", new Coordinates(3, 3), EnemyType.DUMMY, 10, 50, 3, null, 0, 10, null, null, null, null, 0);
         // initialization of the even worse injured enemy!
         this.badInjuredEnemy = new Enemy(1, 'B', "Almost dead", new Coordinates(3, 2), EnemyType.DUMMY, 1, 50, 3, null, 0, 10, null, null, null, null, 0);
-        MapBuilder mapBuilder = new TestMapBuilder(); 
+        MapBuilder mapBuilder = new MapBuilderTypeOne(); 
         mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5),List.of(new Weapon("Hoe", "", 1, PlayerType.MOVIE_DIRECTOR)), 5, 5 , null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MOVIE_DIRECTOR));
         mapBuilder.setEnemies(List.of(enemy, injuredEnemy, badInjuredEnemy));

@@ -156,7 +156,7 @@ public class Enemy extends ActiveElement {
     }
 
     public void remove(Maps map){
-        map.getMapMatrix()[this.getCoordinates().getX()][this.getCoordinates().getY()] = '.';
+        map.getMapMatrix()[this.getCoordinates().getX()][this.getCoordinates().getY()] = '\u25EA';
         map.getDict().remove(this.getCoordinates());
     }
 

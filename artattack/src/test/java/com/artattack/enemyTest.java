@@ -13,8 +13,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.ConcreteEnemyBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyDirector;
@@ -26,7 +26,7 @@ public class enemyTest {
     private Enemy enemy;
     private Player player1;
     private Player player2;
-    private TestMapBuilder tmb;
+    private MapBuilderTypeOne tmb;
     private Maps map;
 
     @Before
@@ -41,7 +41,7 @@ public class enemyTest {
         //Creating player2
         this.player2 = new Player(1, 'F', "Frank Zappa", new Coordinates(1,0), null, 5,5, null, 20, 20, 0, 20, 1, 2, 1, new ArrayList<>(), null, PlayerType.MOVIE_DIRECTOR);
         //Initializing tmb
-        this.tmb = new TestMapBuilder();
+        this.tmb = new MapBuilderTypeOne();
         assertNotNull(this.tmb);
         //Creating map
         tmb.setDimension(26, 135);

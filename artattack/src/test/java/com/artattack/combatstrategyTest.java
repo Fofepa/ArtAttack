@@ -14,8 +14,8 @@ import org.junit.Test;
 import com.artattack.inputcontroller.CombatStrategy;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -30,7 +30,7 @@ public class combatstrategyTest {
 
     @Before
     public void setUp(){
-        MapBuilder mapBuilder = new TestMapBuilder(); 
+        MapBuilder mapBuilder = new MapBuilderTypeOne(); 
         mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 3, PlayerType.MUSICIAN)), 10,10, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5)));
         /* mapBuilder.setInteractableElements(List.of(

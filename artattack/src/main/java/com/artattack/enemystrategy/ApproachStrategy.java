@@ -56,7 +56,7 @@ public class ApproachStrategy extends DecisionStrategy {
             
             if (min > Coordinates.getDistance(newPos, targetPlayer.getCoordinates()) 
                 && !newPos.equals(targetPlayer.getCoordinates())
-                && map.getCell(newPos) == '.'
+                && map.getCell(newPos) == '\u25EA'
                 && newPos.getX() < map.getWidth() && newPos.getY() < map.getHeight()
                 && newPos.getX() >= 0 && newPos.getY() >= 0){
                 
@@ -67,7 +67,7 @@ public class ApproachStrategy extends DecisionStrategy {
 
         if (minCoord != null){
             this.getMainFrame().showDialog(List.of(enemy.getName() + " is approaching!"));
-            map.setCell(enemy.getCoordinates(), '.');
+            map.setCell(enemy.getCoordinates(), '\u25EA');
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setActionPoints(enemy.getActionPoints()-1);

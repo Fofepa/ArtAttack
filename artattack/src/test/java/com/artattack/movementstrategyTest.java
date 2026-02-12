@@ -14,8 +14,8 @@ import org.junit.Test;
 import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -24,7 +24,7 @@ import com.artattack.mapelements.PlayerType;
 
 
 public class movementstrategyTest {
-    private TestMapBuilder tmb;
+    private MapBuilderTypeOne tmb;
     private Maps map;
     private MovementStrategy move;
     private Coordinates coord;
@@ -35,7 +35,7 @@ public class movementstrategyTest {
         AreaBuilder areaBuilder = new AreaBuilder();
         areaBuilder.addShape("8");
         List<Coordinates> area = areaBuilder.getResult();
-        this.tmb = new TestMapBuilder();
+        this.tmb = new MapBuilderTypeOne();
         assertNotNull(this.tmb);
         tmb.setDimension(26, 135);
         tmb.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(4,4), null, 20, 20, area, 10, 10, 10, 12, 0, 0, PlayerType.MUSICIAN));

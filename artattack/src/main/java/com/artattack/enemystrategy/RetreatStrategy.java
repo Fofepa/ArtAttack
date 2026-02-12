@@ -27,7 +27,7 @@ public class RetreatStrategy extends DecisionStrategy {
         // finds the coordinate that gets enemy as close as possible to e
         for(Coordinates coord : enemy.getMoveArea()){
             if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), e.getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(e.getCoordinates())
-                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'
+                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '\u25EA'
                     && Coordinates.sum(enemy.getCoordinates(), coord).getX() < map.getWidth() && Coordinates.sum(enemy.getCoordinates(), coord).getY() < map.getHeight()
                     && Coordinates.sum(enemy.getCoordinates(), coord).getX() >= 0 && Coordinates.sum(enemy.getCoordinates(), coord).getY() >= 0){
                     min = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), e.getCoordinates());
@@ -38,7 +38,7 @@ public class RetreatStrategy extends DecisionStrategy {
         // sets the new position and decreases the AP
         if (minCoord != null){
             this.getMainFrame().showDialog(List.of(enemy.getName() + " is retreating!"));
-            map.setCell(enemy.getCoordinates(), '.');
+            map.setCell(enemy.getCoordinates(), '\u25EA');
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setActionPoints(enemy.getActionPoints()-1);

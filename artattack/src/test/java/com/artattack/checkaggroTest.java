@@ -13,8 +13,8 @@ import com.artattack.inputcontroller.MovementStrategy;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -33,7 +33,7 @@ public class checkaggroTest {
         areaBuilder.addShape("8");
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(10,10),EnemyType.GUARD, 20, 20, 3,
                                  null,5,5,null,areaBuilder.getResult(),null,null,0);
-        MapBuilder mapBuilder = new TestMapBuilder(); 
+        MapBuilder mapBuilder = new MapBuilderTypeOne(); 
         areaBuilder.addShape("8");
         mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(12, 10), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, areaBuilder.getResult(), 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5), List.of(new Weapon("Hoe", "", 1, PlayerType.MOVIE_DIRECTOR)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MOVIE_DIRECTOR));

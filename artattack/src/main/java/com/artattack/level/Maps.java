@@ -81,16 +81,16 @@ public class Maps {
             this.triggers = new ArrayList<>();
         }
         for (int i = 0; i < width; i++) {
-            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup, spritePath));
-            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup, spritePath));
+            this.triggers.add(new Trigger(0, '\u25EA', "Trigger", new Coordinates(i + offset.getX(), offset.getY()), triggerGroup, spritePath));
+            this.triggers.add(new Trigger(0, '\u25EA', "Trigger", new Coordinates(i + offset.getX(), height - 1 + offset.getY()), triggerGroup, spritePath));
         }
         for (int i = 1; i < height; i++) {
-            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup, spritePath));
-            this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup, spritePath));
+            this.triggers.add(new Trigger(0, '\u25EA', "Trigger", new Coordinates(offset.getX(), i + offset.getY()), triggerGroup, spritePath));
+            this.triggers.add(new Trigger(0, '\u25EA', "Trigger", new Coordinates(width - 1 + offset.getX(), i + offset.getY()), triggerGroup, spritePath));
         }
         for (int i = 1; i < width; i++) {
             for (int j = 1; j < height; j++) {
-                this.triggers.add(new Trigger(0, '.', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup, spritePath));
+                this.triggers.add(new Trigger(0, '\u25EA', "Trigger", new Coordinates(i + offset.getX(), j + offset.getY()), triggerGroup, spritePath));
             }
         }
     }
@@ -265,7 +265,7 @@ public class Maps {
     public void remove(ActiveElement element){
         if(this.dictionaire.containsValue(element)){
             this.turnHandler.getConcreteTurnQueue().remove(element);
-            this.mapMatrix[element.getCoordinates().getX()][element.getCoordinates().getY()] = '.';
+            this.mapMatrix[element.getCoordinates().getX()][element.getCoordinates().getY()] = '\u25EA';
             if(element instanceof Player){
                 if(element.equals(this.p1))
                     this.p1 = null;

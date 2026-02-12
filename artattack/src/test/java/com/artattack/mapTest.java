@@ -13,8 +13,8 @@ import org.junit.Test;
 
 import com.artattack.interactions.Talk;
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
@@ -23,7 +23,7 @@ import com.artattack.mapelements.TriggerGroup;
 import com.artattack.view.MainFrame;
 
 public class mapTest {
-    private TestMapBuilder tmb;
+    private MapBuilderTypeOne tmb;
     private Maps map;
     private MainFrame mainFrame;
     private Player player;
@@ -33,7 +33,7 @@ public class mapTest {
     @Before
     public void setUp() throws Exception{
         //Initializing tmb
-        this.tmb = new TestMapBuilder();
+        this.tmb = new MapBuilderTypeOne();
         assertNotNull(this.tmb);
 
         //Initialazing player and enemy for removeTest
@@ -75,8 +75,8 @@ public class mapTest {
 
     @Test
     public void setcellTest(){
-        map.setCell(new Coordinates(1,1),'#');
-        assertEquals('#', map.getCell(new Coordinates(1,1)));
+        map.setCell(new Coordinates(1,1),'\u2588');
+        assertEquals('\u2588', map.getCell(new Coordinates(1,1)));
 
     }
 

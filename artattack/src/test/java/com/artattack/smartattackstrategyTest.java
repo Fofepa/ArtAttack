@@ -14,8 +14,8 @@ import org.junit.Test;
 import com.artattack.enemystrategy.SmartAttackStrategy;
 import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -39,7 +39,7 @@ public class smartattackstrategyTest {
         Weapon enemyWeapon = new Weapon(" ", " ", 4, List.of(m1,m2, m3), null);
         this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(1,1),EnemyType.GUARD, 20, 20, 3,
                                  List.of(enemyWeapon),5,5,null,null,null,null,0);
-        MapBuilder mapBuilder = new TestMapBuilder(); 
+        MapBuilder mapBuilder = new MapBuilderTypeOne(); 
         mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
         mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(5, 5),List.of(new Weapon("Hoe", "", 1, PlayerType.MOVIE_DIRECTOR)), 5, 5 , null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MOVIE_DIRECTOR));
         mapBuilder.setEnemies(List.of(enemy));

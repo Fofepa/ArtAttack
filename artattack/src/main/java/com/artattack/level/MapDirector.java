@@ -118,13 +118,13 @@ public class MapDirector {
                 this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(9, 1), 4, 5, "/images/melies.jpg");
                 this.builder.addTriggerGroup(turnQueueDialogue, new Coordinates(4, 1), 5, 5, "/images/melies.jpg");
                 this.builder.buildBorder();
-                this.builder.buildWall(new Coordinates(19, 21), 1, 4, '#');
-                this.builder.buildWall(new Coordinates(22, 20), 9, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 19), 12, 2, '#');
-                this.builder.buildWall(new Coordinates(1, 15), 10, 1, '#');
-                this.builder.buildWall(new Coordinates(13, 1), 2, 3, '#');
-                this.builder.buildWall(new Coordinates(14, 12), 3, 2, '#');
-                this.builder.buildWall(new Coordinates(24, 11), 7, 1, '#');
+                this.builder.buildWall(new Coordinates(19, 21), 1, 4, '\u2588');
+                this.builder.buildWall(new Coordinates(22, 20), 9, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 19), 12, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 15), 10, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(13, 1), 2, 3, '\u2588');
+                this.builder.buildWall(new Coordinates(14, 12), 3, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(24, 11), 7, 1, '\u2588');
                 break;
             case "1":
                 //Creating Employee Map 1
@@ -158,15 +158,15 @@ public class MapDirector {
                 this.builder.setEnemies(listEn);
                 this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1, door_1));
                 this.builder.buildBorder();
-                this.builder.buildWall(new Coordinates(11, 1), 8, 25, '#');
-                this.builder.buildWall(new Coordinates(14, 28), 1, 3, '#');
-                this.builder.buildWall(new Coordinates(1, 14), 4, 1, '#');
-                this.builder.buildWall(new Coordinates(8, 8), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(11, 26), 1, 2, '#');
-                this.builder.buildWall(new Coordinates(18, 26), 1, 2, '#');
-                this.builder.buildWall(new Coordinates(23, 11), 8, 1, '#');
-                this.builder.buildWall(new Coordinates(19, 19), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(2, 19), 9, 1, '#');
+                this.builder.buildWall(new Coordinates(11, 1), 8, 25, '\u2588');
+                this.builder.buildWall(new Coordinates(14, 28), 1, 3, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 14), 4, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(8, 8), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(11, 26), 1, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(18, 26), 1, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(23, 11), 8, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(19, 19), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(2, 19), 9, 1, '\u2588');
                 break;
             case "BossRoom1":
                 // Boss creation
@@ -201,38 +201,38 @@ public class MapDirector {
                 this.builder.setInteractableElements(List.of(chest2_1, bossCheckPoint, endDoor));
                 
                 // Top big blocks (left)
-                this.builder.buildWall(new Coordinates(3, 4), 4, 4, '#');
+                this.builder.buildWall(new Coordinates(3, 4), 4, 4, '\u2588');
                 
                 // Top big blocks (right) 
-                this.builder.buildWall(new Coordinates(25, 4), 4, 4, '#');
+                this.builder.buildWall(new Coordinates(25, 4), 4, 4, '\u2588');
                 
                 // Middle-upper small blocks (left)
-                this.builder.buildWall(new Coordinates(7, 9), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(7, 9), 2, 2, '\u2588');
                 
                 // Middle-upper small blocks (right)
-                this.builder.buildWall(new Coordinates(23, 9), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(23, 9), 2, 2, '\u2588');
                 
                 // Middle small blocks (left)
-                this.builder.buildWall(new Coordinates(5, 14), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(5, 14), 2, 2, '\u2588');
                 
                 // Middle small blocks (right)
-                this.builder.buildWall(new Coordinates(25, 14), 2, 2, '#');
+                this.builder.buildWall(new Coordinates(25, 14), 2, 2, '\u2588');
                 
                 // Bottom staircase (left)
-                this.builder.buildWall(new Coordinates(4, 20), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 21), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(6, 22), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(4, 20), 2, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(5, 21), 2, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(6, 22), 2, 1, '\u2588');
                 
                 // Bottom staircase (right)
-                this.builder.buildWall(new Coordinates(26, 20), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(25, 21), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(24, 22), 2, 1, '#');
+                this.builder.buildWall(new Coordinates(26, 20), 2, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(25, 21), 2, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(24, 22), 2, 1, '\u2588');
                 
                 // Bottom horizontal wall - LEFT PART (connected to left border)
-                this.builder.buildWall(new Coordinates(1, 30), 13, 4, '#');
+                this.builder.buildWall(new Coordinates(1, 30), 13, 4, '\u2588');
                 
                 // Bottom horizontal wall - RIGHT PART (connected to right border)
-                this.builder.buildWall(new Coordinates(18, 30), 13, 4, '#');
+                this.builder.buildWall(new Coordinates(18, 30), 13, 4, '\u2588');
                 
                 break;
             case "Reception":
@@ -243,23 +243,23 @@ public class MapDirector {
                 this.builder.buildBorder();
                 
                 //right corner
-                this.builder.buildWall(new Coordinates(1, 1), 4, 2, '#');
-                this.builder.buildWall(new Coordinates(1, 3), 2, 2, '#');
-                this.builder.buildWall(new Coordinates(1, 5), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(3, 3), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 1), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 1), 4, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 3), 2, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 5), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(3, 3), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(5, 1), 1, 1, '\u2588');
                 
                 //left corner
-                this.builder.buildWall(new Coordinates(35, 1), 4, 2, '#');
-                this.builder.buildWall(new Coordinates(37, 3), 2, 2, '#');
-                this.builder.buildWall(new Coordinates(38, 5), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(36, 3), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(34, 1), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(35, 1), 4, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(37, 3), 2, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(38, 5), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(36, 3), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(34, 1), 1, 1, '\u2588');
 
                 //counter
-                this.builder.buildWall(new Coordinates(17, 11), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(17, 12), 1, 2, '#');
-                this.builder.buildWall(new Coordinates(23, 12), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(17, 11), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(17, 12), 1, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(23, 12), 1, 2, '\u2588');
 
                 //decoration
                 this.builder.buildWall(new Coordinates(2, 12), 1, 1, '\u2318');
@@ -320,41 +320,41 @@ public class MapDirector {
                 this.builder.buildBorder();
 
                 //top wall
-                this.builder.buildWall(new Coordinates(13, 1), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(12, 2), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(11, 3), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(10, 4), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(11, 5), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(12, 6), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(13, 7), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(13, 1), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(12, 2), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(11, 3), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(10, 4), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(11, 5), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(12, 6), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(13, 7), 1, 1, '\u2588');
 
                 //left wall
-                this.builder.buildWall(new Coordinates(1, 19), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 18), 2, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 17), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 16), 4, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 15), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 14), 6, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 13), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(2, 12), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(3, 11), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(4, 10), 7, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 9), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(6, 8), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(7, 7), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 19), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 18), 2, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 17), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 16), 4, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 15), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 14), 6, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 13), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(2, 12), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(3, 11), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(4, 10), 7, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(5, 9), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(6, 8), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(7, 7), 1, 1, '\u2588');
 
                 //barriers
-                this.builder.buildWall(new Coordinates(14, 12), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(13, 13), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(12, 14), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(14, 12), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(13, 13), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(12, 14), 1, 1, '\u2588');
                 
-                this.builder.buildWall(new Coordinates(18, 8), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(17, 9), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(16, 10), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(18, 8), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(17, 9), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(16, 10), 1, 1, '\u2588');
 
                 //benches
-                this.builder.buildWall(new Coordinates(5, 23), 4, 1, '=');
-                this.builder.buildWall(new Coordinates(13, 23), 4, 1, '=');
+                this.builder.buildWall(new Coordinates(5, 23), 4, 1, '\u2583');
+                this.builder.buildWall(new Coordinates(13, 23), 4, 1, '\u2583');
 
                 this.builder.setEnemies(new ArrayList<>(List.of(mosquito, roboguard_0, roboguard_1)));
 
@@ -392,22 +392,22 @@ public class MapDirector {
                 this.builder.setSpawn(new Coordinates(30, 3), new Coordinates(30, 5));
                 
                 //top wall
-                this.builder.buildWall(new Coordinates(1, 1), 17, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 2), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 3), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(13, 2), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(15, 3), 3, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 1), 17, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 2), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 3), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(13, 2), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(15, 3), 3, 1, '\u2588');
                 
                 //bottom wall
-                this.builder.buildWall(new Coordinates(1, 6), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 7), 5, 1, '#');
-                this.builder.buildWall(new Coordinates(1, 8), 17, 1, '#');
-                this.builder.buildWall(new Coordinates(15, 6), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(13, 7), 5, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 6), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 7), 5, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 8), 17, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(15, 6), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(13, 7), 5, 1, '\u2588');
                 
                 //barriers
-                this.builder.buildWall(new Coordinates(22, 6), 1, 2, '#');
-                this.builder.buildWall(new Coordinates(22, 2), 1, 2, '#');
+                this.builder.buildWall(new Coordinates(22, 6), 1, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(22, 2), 1, 2, '\u2588');
                 break;
             case "ChestRoom":
                 this.builder.setID(6);
@@ -416,9 +416,9 @@ public class MapDirector {
                 this.builder.buildBorder();
                 
                 //bottom wall
-                this.builder.buildWall(new Coordinates(1, 8), 8, 1, '#');
-                this.builder.buildWall(new Coordinates(2, 7), 6, 1, '#');
-                this.builder.buildWall(new Coordinates(3, 6), 4, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 8), 8, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(2, 7), 6, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(3, 6), 4, 1, '\u2588');
 
                 ab.addShape("base");
                 mb1.setName("Fragile Swing"); mb1.setPower(16); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
@@ -450,13 +450,13 @@ public class MapDirector {
                 this.builder.buildBorder();
                 
                 //closet
-                this.builder.buildWall(new Coordinates(1, 9), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(1, 9), 1, 1, '\u2588');
 
                 //obstacles
-                this.builder.buildWall(new Coordinates(4, 9), 3, 1, '#');
-                this.builder.buildWall(new Coordinates(5, 2), 1, 5, '#');
-                this.builder.buildWall(new Coordinates(4, 3), 1, 1, '#');
-                this.builder.buildWall(new Coordinates(4, 5), 1, 1, '#');
+                this.builder.buildWall(new Coordinates(4, 9), 3, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(5, 2), 1, 5, '\u2588');
+                this.builder.buildWall(new Coordinates(4, 3), 1, 1, '\u2588');
+                this.builder.buildWall(new Coordinates(4, 5), 1, 1, '\u2588');
                 
                 //interactable element
                 ieDirector.createDoor(ieBuilder, 4, new Coordinates(0, 2), new Coordinates(23, 2), new Coordinates(23, 4));

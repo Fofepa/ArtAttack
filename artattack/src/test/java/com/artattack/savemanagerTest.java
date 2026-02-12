@@ -1,32 +1,31 @@
 package com.artattack;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.io.IOException;
 import java.util.HashMap;
 
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.assertEquals;
 
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
 import com.artattack.level.Maps;
-import com.artattack.level.TutorialMapBuilder;
 import com.artattack.saving.SaveManager;
 
 public class savemanagerTest {
     MapDirector director;
-    TutorialMapBuilder builder;
+    MapBuilderTypeOne builder;
     MapManager mapManager;
     SaveManager saveManager;
 
     @Before
     public void setUp() throws Exception{
-        this.builder =  new TutorialMapBuilder();
+        this.builder =  new MapBuilderTypeOne();
         this.director = new MapDirector(builder);
 
         assertNotNull(this.builder);

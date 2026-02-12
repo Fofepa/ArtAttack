@@ -89,8 +89,8 @@ public class MapPanel extends JPanel {
 
 
                 switch (c) {
-                    case '#' -> g.setColor(Color.GRAY);
-                    case '.' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
+                    case '\u2588' -> g.setColor(Color.GRAY);
+                    case '\u25EA' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
                     // enemy cases
                     case 'E' -> g.setColor(Color.RED);
                     case 'G' -> g.setColor(Color.RED);
@@ -105,7 +105,7 @@ public class MapPanel extends JPanel {
                     case 'A' -> g.setColor(new Color(119, 3, 252)); // Aretha
                     case '\u22B7' -> g.setColor(Color.YELLOW);  // RENE
                     case 'I' -> g.setColor(Color.YELLOW);   
-                    case '=' -> g.setColor(new Color(150, 100, 60));
+                    case '\u2583' -> g.setColor(new Color(150, 100, 60));
                     case '\u2318' -> g.setColor(new Color(131, 244, 74)); 
                     default -> g.setColor(Color.WHITE);
                 } 
@@ -215,7 +215,7 @@ public class MapPanel extends JPanel {
             c.getY() < 0 || c.getY() >= map.getHeight()) {
             return false;
         }
-        return matrix[c.getX()][c.getY()] != '#';
+        return matrix[c.getX()][c.getY()] != '\u2588';
     }
 
     private void drawCellRect(Graphics g, int gridX, int gridY, int startX, int startY, boolean fill, int cellSize) {

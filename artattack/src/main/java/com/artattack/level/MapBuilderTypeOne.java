@@ -53,16 +53,37 @@ public class MapBuilderTypeOne implements MapBuilder {
     public void buildBorder() {
         try {
             for (char[] charMatrix1 : this.map.getMapMatrix()) {
-                charMatrix1[0] = '#';
-                charMatrix1[this.map.getMapMatrix()[0].length - 1] = '#';
+                charMatrix1[0] = '\u2588';
+                charMatrix1[this.map.getMapMatrix()[0].length - 1] = '\u2588';
             }
             for (int i = 1; i < this.map.getMapMatrix()[0].length - 1; i++) {
-                this.map.getMapMatrix()[0][i] = '#';
-                this.map.getMapMatrix()[this.map.getMapMatrix().length - 1][i] = '#';
+                this.map.getMapMatrix()[0][i] = '\u2588';
+                this.map.getMapMatrix()[this.map.getMapMatrix().length - 1][i] = '\u2588';
             }
             for (int i = 1; i < this.map.getMapMatrix().length - 1; i++) {
                 for (int j = 1; j < this.map.getMapMatrix()[0].length - 1; j++) {
-                    this.map.getMapMatrix()[i][j] = '.';
+                    this.map.getMapMatrix()[i][j] = '\u25EA';
+                }
+            }
+        } catch (NullPointerException e) {
+            System.err.println("charMatrix has not been initialized");
+        }
+    }
+
+    @Override
+    public void buildBorder(char wall, char floor) {
+        try {
+            for (char[] charMatrix1 : this.map.getMapMatrix()) {
+                charMatrix1[0] = wall;
+                charMatrix1[this.map.getMapMatrix()[0].length - 1] = wall;
+            }
+            for (int i = 1; i < this.map.getMapMatrix()[0].length - 1; i++) {
+                this.map.getMapMatrix()[0][i] = wall;
+                this.map.getMapMatrix()[this.map.getMapMatrix().length - 1][i] = wall;
+            }
+            for (int i = 1; i < this.map.getMapMatrix().length - 1; i++) {
+                for (int j = 1; j < this.map.getMapMatrix()[0].length - 1; j++) {
+                    this.map.getMapMatrix()[i][j] = floor;
                 }
             }
         } catch (NullPointerException e) {

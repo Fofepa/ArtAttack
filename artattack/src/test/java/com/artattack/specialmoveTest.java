@@ -15,8 +15,8 @@ import com.artattack.items.ItemType;
 import com.artattack.items.Key;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
@@ -29,7 +29,7 @@ public class specialmoveTest {
     private MoveBuilder1 mb1;
     private Player p1, p2;
     private Enemy e1,e2,e3;
-    private TestMapBuilder mb;
+    private MapBuilderTypeOne mb;
     private Maps maps;
 
     @Before
@@ -38,7 +38,7 @@ public class specialmoveTest {
         this.mb1 = new MoveBuilder1();
         assertNotNull(this.mb1);
         //Initializing MapBuilder
-        this.mb = new TestMapBuilder();
+        this.mb = new MapBuilderTypeOne();
         //Creating m1
         mb1.setName("Little Umbrellas");
         mb1.setDescription("With his skills zappa makes a nebula of acid rain appear in all the map that does damage, but helps himself and the other player by giving him a little umbrella.");

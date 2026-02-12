@@ -19,6 +19,7 @@ public interface MapBuilder {
     public void addTriggerGroup(TriggerGroup triggerGroup, Coordinates offset, int width, int height, String spritePath);
     public void startMap();    
     public void buildBorder();
+    public void buildBorder(char wall, char floor);
     public void buildWall(Coordinates offset, int width, int height, char mapSymbol);
     public void setDict();
     public void setTurnQueue();

@@ -17,8 +17,8 @@ import com.artattack.items.Item;
 import com.artattack.items.ItemType;
 import com.artattack.level.AreaBuilder;
 import com.artattack.level.Coordinates;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
@@ -26,7 +26,7 @@ import com.artattack.view.GameContext;
 import com.artattack.view.MainFrame;
 
 public class interactionstrategyTest {
-    private TestMapBuilder tmb;
+    private MapBuilderTypeOne tmb;
     private Player player;
     private Maps map;
     private InteractionStrategy interactionStrategy;
@@ -39,7 +39,7 @@ public class interactionstrategyTest {
         areaBuilder.addShape("8");
         List<Coordinates> area = areaBuilder.getResult();
         //Initializing tmb
-        this.tmb = new TestMapBuilder();
+        this.tmb = new MapBuilderTypeOne();
         assertNotNull(this.tmb);
         //Creating player
         player = new Player(0, '@', "", new Coordinates(1, 1),

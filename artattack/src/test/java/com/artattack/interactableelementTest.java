@@ -18,7 +18,7 @@ import com.artattack.items.Item;
 import com.artattack.items.ItemType;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
-import com.artattack.level.TestMapBuilder;
+import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerType;
@@ -34,7 +34,7 @@ public class interactableelementTest {
 
     @Before
     public void setUp(){
-        TestMapBuilder tmb = new TestMapBuilder();
+        MapBuilderTypeOne tmb = new MapBuilderTypeOne();
         tmb.setDimension(26, 135);
         tmb.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(0, 1)));
         tmb.setInteractableElements(List.of(

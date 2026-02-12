@@ -30,7 +30,7 @@ public class EnemyDirector {
                 builder.setMapSymbol('E'); builder.setName("Employee"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(8); builder.setMaxHP(8); builder.setDroppedXP(8);
                 builder.setSpeed(2); builder.setWeapons(List.of(employeeWeapon)); builder.setActionPoints(5); builder.setMaxActionPoints(5); builder.setMoveArea(employeeMA); builder.setVisionArea(employeeVA);
                 if(ID == 0){
-                    builder.setDroppedXP(20); 
+                    builder.setDroppedXP(400); //TODO: reset the XP to 20
                     ab.addShape("square", 5, true);
                     builder.setVisionArea(ab.getResult());
                 } 

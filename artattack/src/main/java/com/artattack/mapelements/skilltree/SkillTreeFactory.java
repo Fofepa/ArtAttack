@@ -31,11 +31,11 @@ public class SkillTreeFactory {
         
         Node node_7 = new MAXWPNODE();
         
-        Node node_8 = new MAXMVNODE();
+        Node node_8 = new MAXMVNODE(); 
         Node node_9 = new APNODE(12);
         
-        Node node_10 = new MAXMVNODE();
-        Node node_11 = new MAXMVNODE();
+        Node node_10 = new APNODE(8); 
+        Node node_11 = new SPNODE(7); 
         Node node_13 = new SPNODE(14);
         
         Move zappaSpecial1 = new Move(); 
@@ -63,7 +63,7 @@ public class SkillTreeFactory {
         
         Node node_21 = new MANODE(List.of(new Coordinates(-3, -3), new Coordinates(3, -3), new Coordinates(3, 3), new Coordinates(-3, 3)));
         
-        Node node_22 = new MAXMVNODE();
+        Node node_22 = new HPNODE(5);
         Node node_23 = new APNODE(8);
         
         Node node_24 = new MANODE(List.of(new Coordinates(0, -2), new Coordinates(0, 2)));
@@ -119,7 +119,7 @@ public class SkillTreeFactory {
         Node node_4 = new APNODE(6);
         
         Node node_5 = new MAXMVNODE();
-        Node node_6 = new MAXMVNODE();
+        Node node_6 = new HPNODE(4);
         
         Node node_7 = new SPNODE(8);
         Node node_8 = new MANODE(List.of(new Coordinates(-2, 0), new Coordinates(2, 0), new Coordinates(0, 2), new Coordinates(0, -2)));
@@ -129,7 +129,7 @@ public class SkillTreeFactory {
         Node node_10 = new HPNODE(15);
         Node node_11 = new APNODE(10);
         
-        Node node_12 = new MAXMVNODE();
+        Node node_12 = new SPNODE(2); 
         Node node_14 = new APNODE(10);
         
         Move lynchSpecial1 = new Move();
@@ -153,7 +153,7 @@ public class SkillTreeFactory {
         
         Node node_18 = new HPNODE(7);
         
-        Node node_19 = new MAXMVNODE();
+        Node node_19 = new APNODE(3);
         Node node_20 = new MAXMVNODE();
         
         Node node_21 = new APNODE(12);

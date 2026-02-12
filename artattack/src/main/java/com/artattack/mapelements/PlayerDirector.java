@@ -57,7 +57,8 @@ public class PlayerDirector {
             }
 
             case MOVIE_DIRECTOR ->{
-                ab.addShape("square",1,true);
+                //ab.addShape("square",1,true);
+                ab.addShape("square",30, true); //for testing
                 List<Coordinates> lynchMA = ab.getResult();
                 ab.addShape("circle", 2, true);
                 mb1.setName("Action!"); mb1.setActionPoints(5); mb1.setPower(6); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());
@@ -78,9 +79,10 @@ public class PlayerDirector {
                 mb1.setName("Do it for the camera"); mb1.setActionPoints(12); mb1.setPower(13); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move lynchMove4 = mb1.getResult();
 
+                //TODO: reset the AP to 12
                 Weapon actionCam = new Weapon("ActionCam", "" ,2, new ArrayList<>(List.of(lynchMove1,lynchMove2,lynchMove3, lynchMove4)), playerType);
                 builder.setID(ID); builder.setName("David Lynch"); builder.setMapSymbol('◉'); builder.setCurrHP(25); builder.setMaxHP(25); builder.setLevel(1); builder.setMoveArea(lynchMA); builder.setSpritePath("/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
-                builder.setCurrXP(0); builder.setCurrXP(20); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
+                builder.setCurrXP(0); builder.setCurrXP(20); builder.setActionPoints(52); builder.setMaxActionPoints(52); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
                 builder.setSpeed(3); builder.setInventory(new ArrayList<>()); builder.setKeys(new ArrayList<>()); builder.setMaxWeapons(1); builder.setWeapons(new ArrayList<>(List.of(actionCam))); builder.setCoordinates(new Coordinates(0,0));
             }
         }

@@ -176,7 +176,7 @@ public class Move{
         List<ActiveElement> targets = new ArrayList<>();
         for (Coordinates attackCell : Coordinates.sum(this.attackArea, user.getCoordinates())) {
             Object obj = map.getDict().get(attackCell);
-            System.out.println(map.getDict().containsValue(map.getPlayerOne()));
+            //System.out.println(map.getDict().containsValue(map.getPlayerOne())); for debug reasons
             if (obj instanceof ActiveElement check) {
                 System.out.println("Checking " + ((ActiveElement) obj).getName());
                 // If user is Player, attack Enemies; If user is Enemy, attack Players
@@ -193,7 +193,7 @@ public class Move{
                     }
                 }   
             }
-            else { System.out.println("The object was not a ActiveElement"); }
+            else { /* System.out.println("The object was not a ActiveElement"); */ }    // for debug reasons
         }
         if (targets.isEmpty()) {
             System.out.println(this.getName() + ": no targets found");
@@ -253,8 +253,9 @@ public class Move{
                 if (element instanceof Enemy e) {
                     if (user.equals(map.getPlayerOne())) { e.updatePlayerOneDamage(this.power); }
                     else { e.updatePlayerTwoDamage(this.power); }
-                    if(this.name.equals("ERASERHEAD") || this.name.equals("Flash")){
+                    if((this.name.equals("ERASERHEAD") || this.name.equals("Flash")) && !e.isStunned()){
                         e.setIsStunned(true);
+                        System.out.println("Enemy is stunned? " + e.isStunned()); //for debug
                     }
                     if(this.name.equals("Wild at Heart")){
                         e.setEnemyType(EnemyType.DUMMY);

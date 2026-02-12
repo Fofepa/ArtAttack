@@ -39,11 +39,6 @@ public class EnemyChoice{
     }
 
     public void choose(){
-        if(this.enemy.isStunned()){// checks if the enemy is stunned
-            mainFrame.showDialog(List.of("The enemy is stunned! He is now taking a short break!"));
-            setHasFinished();
-            
-        }
         Map<Move,Integer> usable = new HashMap<Move,Integer>();
         Move healMove = null;
 
@@ -299,6 +294,7 @@ public class EnemyChoice{
             case ATTENDANT: // once per turn he just talks
                 setStrategy(new StallStrategy(this.mainFrame));
                 this.strategy.execute(enemy, map);
+                break;
 
             default:
                 map.getConcreteTurnHandler().next();

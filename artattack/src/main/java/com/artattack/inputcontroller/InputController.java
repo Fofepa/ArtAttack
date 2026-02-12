@@ -642,8 +642,8 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.repaintMapPanel();
 
         mainFrame.showDialog(List.of("Enemy Turn"));
-
-        continueEnemyTurn();    
+    
+        continueEnemyTurn(); 
     }
 
     public void continueEnemyTurn(){
@@ -662,12 +662,16 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.updateTurnDisplay();
         mainFrame.repaintMapPanel();
 
-        if(this.currentEnemyChoice.getHasFinished()){
+        if(this.currentEnemyChoice.getHasFinished()){// case no more AP
             endEnemyTurn();
         }
     }
 
     public void endEnemyTurn(){
+
+        if(this.currentElement instanceof Enemy){
+            ((Enemy)this.currentElement).setIsStunned(false);
+        }
         this.isEnemyTurn = false;
         this.currentEnemyChoice = null;
 
@@ -684,7 +688,6 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.repaintStatsPanel();
         mainFrame.updateTurnDisplay();
         mainFrame.repaintMapPanel();
-
         mainFrame.showDialog(List.of("Enemy turn ended"));
         System.out.println("enemy turn ended");
     }
@@ -692,7 +695,6 @@ public class InputController implements KeyListener, TurnListener {
     public void setStrategy(PlayerStrategy strategy){
         this.currentState = strategy;
     }
-
     @Override
     public void updateTurn(ActiveElement activeElement){
         System.out.println("\n=== UPDATE TURN CALLED ===");
@@ -712,7 +714,7 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.clearAttackArea();
         mainFrame.clearMovementCursor();
 
-        if (activeElement instanceof Player){ 
+        if (activeElement instanceof Player){ // player turn
             System.out.println(">> PLAYER TURN: " + activeElement.getName());
             
             
@@ -733,7 +735,7 @@ public class InputController implements KeyListener, TurnListener {
             }
             
             
-            if(player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()){
+            if(player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()){   // Level Up check
                 System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
                 handlePlayerLevelUp(player);
                 return;
@@ -747,12 +749,6 @@ public class InputController implements KeyListener, TurnListener {
             
         } else if(activeElement instanceof Enemy c){
             System.out.println(">> ENEMY TURN: " + c.getName());
-
-            /* InteractionPanel interactionPanel = mainFrame.getInteractionPanel();
-            if (interactionPanel != null) {
-                interactionPanel.setSpeakerImage(activeElement.getSpritePath());
-            }
-            */
            
             if(c.getEnemyType() == EnemyType.BOB && c.getCurrHP() < (c.getMaxHP() / 2) && c.getWeapons().get(0).getMoves().size() < 4){
                 AreaBuilder ab = new AreaBuilder();
@@ -768,7 +764,19 @@ public class InputController implements KeyListener, TurnListener {
             enemyChoice.setMap(mainFrame.getMap());
             enemyChoice.setEnemy((Enemy) currentElement);
 
-            startEnemyTurn(enemyChoice);
+            // checks if the enemy is stunned otherwise it continues with the turn
+            if(((Enemy)currentElement).isStunned()){
+                System.out.println("Enemy was stunned!");
+                
+                this.currentEnemyChoice = enemyChoice;
+                this.currentEnemyChoice.setHasFinished();   
+                this.isEnemyTurn = true;
+                
+                mainFrame.showDialog(List.of("The enemy is stunned! He is now taking a short break!"));
+            }
+            else{
+                startEnemyTurn(enemyChoice);
+            }  
         }
         
         mainFrame.updateTurnDisplay();

@@ -58,7 +58,7 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
 
-        if (mainFrame.getDialogActive()) {
+        if (mainFrame.getDialogActive() && !mainFrame.isSkillTreeVisible()) {
             System.out.println("-> Dialog active, forcing Interaction Input");
             handleInteractionInput(e);
             return; 
@@ -326,7 +326,7 @@ public class InputController implements KeyListener, TurnListener {
             }
         } else {
             
-            if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
+            if (e.getKeyCode() == KeyEvent.VK_ENTER /* || e.getKeyCode() == KeyEvent.VK_SPACE */) {
                 if (!textFullyRevealed) {
                     mainFrame.skipTextAnimation();
                 } else {
@@ -662,6 +662,10 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.updateTurnDisplay();
         mainFrame.repaintMapPanel();
 
+        if (checkGameOver()) {
+            return; 
+        }
+        
         if(this.currentEnemyChoice.getHasFinished()){// case no more AP
             endEnemyTurn();
         }
@@ -679,9 +683,6 @@ public class InputController implements KeyListener, TurnListener {
             mainFrame.getInteractionPanel().getParent().setVisible(false);
         }
 
-        if (checkGameOver()) {
-            return; 
-        }
 
         mainFrame.getMap().getConcreteTurnHandler().next();
         
@@ -896,7 +897,7 @@ public class InputController implements KeyListener, TurnListener {
         Player p2 = map.getPlayerTwo();
 
         if (p1 != null && p2 != null) {
-            if (p1.getCurrHP() <= 0 && p2.getCurrHP() <= 0) {
+            if (!p1.isAlive() && !p2.isAlive()) {
                 System.out.println("!!! GAME OVER TRIGGERED: Both players are down !!!");
                 
                 if (mainFrame.getMainGUIFacade() != null) {

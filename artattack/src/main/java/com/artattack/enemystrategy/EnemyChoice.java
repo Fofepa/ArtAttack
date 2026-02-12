@@ -13,12 +13,6 @@ import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
 
-/*
-    * Distance
-    * EnemyType
-        * Move or Stall
-    *    
-*/
 public class EnemyChoice{  
     private Enemy enemy;
     private Maps map;
@@ -106,11 +100,11 @@ public class EnemyChoice{
                 break;
             case EMPLOYEE:
                 if(hasTarget){
-                    if(r < 0.6){
+                    if(r < 0.8){
                         setStrategy(new DumbAttackStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
                     }
-                    else if (r < 0.8){
+                    else if (r < 0.9){
                         setStrategy(new StallStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
                     }
@@ -247,8 +241,9 @@ public class EnemyChoice{
                     }
                 }
                 break;
+                
             case SAM:
-                if(hasTarget){
+                if(hasTarget){ // has someone to hit
                     if(r <0.95){
                         setStrategy(new SmartAttackStrategy(this.mainFrame), usable);
                         this.strategy.execute(enemy, map);
@@ -258,14 +253,21 @@ public class EnemyChoice{
                         this.strategy.execute(enemy, map);
                     }
                 }
-                else if(!hasTarget && this.enemy.getActionPoints()> 5){
-                    setStrategy(new StallStrategy(this.mainFrame));
+                else if(!hasTarget && this.enemy.getActionPoints()> 5){ // can stall, heal or approach
+                    if(r<0.70){
+                        setStrategy(new StallStrategy(this.mainFrame));
                         this.strategy.execute(enemy, map);
+                    }
+                    else{
+                        setStrategy(new ApproachStrategy(this.mainFrame));
+                        this.strategy.execute(enemy, map);
+                    }
                 }
                 else{
                     setStrategy(new ApproachStrategy(this.mainFrame));
                     this.strategy.execute(enemy, map);
                 }
+                
                 break;
 
             case MOSQUITO:

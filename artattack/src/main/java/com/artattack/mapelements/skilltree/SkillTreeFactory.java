@@ -136,7 +136,7 @@ public class SkillTreeFactory {
         lynchSpecial1.setName("ERASERHEAD");
         lynchSpecial1.setDescription("Maybe you don't remember the film, but surely the enemy head got deleted, it loses the aggro, loses a turn and takes damage!");
         lynchSpecial1.setActionPoints(25);
-        lynchSpecial1.setPower(8);
+        lynchSpecial1.setPower(12);
         lynchSpecial1.setAreaAttack(true);
         AreaBuilder ab = new AreaBuilder();
         ab.addShape("square",1,true);
@@ -169,7 +169,7 @@ public class SkillTreeFactory {
         lynchSpecial2.setPower(40);
         ab.addShape("circle",2,true);
         lynchSpecial2.setAttackArea(ab.getResult());
-        Node node_24 = new SpecialMoveNODE(null);
+        Node node_24 = new SpecialMoveNODE(lynchSpecial2);
         Node node_25 = new APNODE(15);
         
         SkillTree tree = new SkillTree(root);

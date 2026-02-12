@@ -106,7 +106,7 @@ public class MovesPanel extends JPanel {
                 g.setColor(Color.WHITE);
             }
             
-            String moveLabel = move.getName() + " [" + move.getActionPoints() + " AP]";
+            String moveLabel = move.getName() + " [" + move.getActionPoints() + " AP]" + " [" + move.getPower() + " DMG]";
             
             List<String> wrappedLines = getWrappedLines(g, moveLabel, maxTextWidth);
             

@@ -144,7 +144,7 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
 
-            md.make("Tutorial");
+            md.make("Tutorial"); //TODO: change in "Tutorial"
             mb1.setID(0);
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);
@@ -298,23 +298,22 @@ SwingUtilities.invokeLater(() -> {
             System.out.println("Failed: no element corresponds to 'Georges Méliès'.");
         }
 
-        gameFacade.getMainFrame().showDialog(List.of(
-            "Hey, over here! Mr. Zappa! Mr. Lynch!", 
-            "What a mess! Look at what they've done to our peaceful resting place! It's now a soul-harvesting data center! You need to do something about this, or else we'll never be able to return to our well-earned slumber!",
-            "Me? Oh, I'm nowhere near as powerful as you guys, I wouldn't last a second against these guys.",
-            "You guys don't look so good... What happened to you?",
-            "Oh! Right! You two were dead, just like me! Hahahaha!",
-            "What's that? You don't remember how to do things? Oh yeah, I guess it makes sense considering you were six feet deep just a few moments ago... You must be rusty on what it takes to walk the earth.",
-            "But it's fine, I can teach you everything you need to know.",
-            "Each one of you has a CURSOR. It has many uses, like moving!",
-            "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
-            "Instead, if you see something that interests you, you can position your CURSOR on it and press the E key to interact with it. You can also talk to people this way!",
-            "Keep in mind that if you want to interact with something, you have to move next to it first!",
-            "That's the basics. If you want me to refresh your memory, just talk to me.",
-            "Now, go! Get to the top floor and defeat these power-hungry nerds!",
-            "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
-            "Press M to shift your focus to the map and go teach him a lesson!"
-        ), speaker.getSpritePath()); 
+        gameFacade.getMainFrame().showDialog(List.of("Hey, over here! Mr. Zappa! Mr. Lynch!", 
+                "What a mess! Look at what they've done to our peaceful resting place! It's now a soul-harvesting data center! You need to do something about this, or else we'll never be able to return to our well-earned slumber!",
+                "Me? I'm George Melies! You gentlemen surely know who I am! I hate this place, last century the world wasn't nothing like this!", 
+                "I hate this place with all my heart!", "Oh, I'm nowhere near as powerful as you guys, I wouldn't last a second against these guys.",
+                "You guys don't look so good... What happened to you?",
+                "Oh! Right! You two were dead, just like me! Hahahaha!",
+                "What's that? You don't remember how to do things? Oh yeah, I guess it makes sense considering you were six feet deep just a few moments ago... You must be rusty on what it takes to walk the earth.",
+                "But it's fine, I can teach you everything you need to know.",
+                "Each one of you has a CURSOR. It has many uses, like moving!",
+                "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
+                "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
+                "That's the basics. If you want me to refresh your memory, just talk to me.",
+                "Now, go! Get to the top floor and defeat these power-hungry nerds!",
+                "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
+                "Go teach him a lesson!"
+    ), speaker.getSpritePath()); 
     }
     System.out.println("-------------------------\n");
 });

@@ -1,5 +1,6 @@
 package com.artattack.enemystrategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.artattack.level.Maps;
@@ -24,7 +25,7 @@ public class StallStrategy extends DecisionStrategy {
                 break;
 
             case EnemyType.EMPLOYEE: 
-                this.getMainFrame().showDialog(List.of("Scientist: AAAAHHH!!!"));
+                this.getMainFrame().showDialog(List.of("Employee: AAAAHHH!!!"));
                 enemy.setActionPoints(enemy.getActionPoints()-1);
                 break;
 
@@ -48,10 +49,13 @@ public class StallStrategy extends DecisionStrategy {
                 enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
             case EnemyType.SAM:
-                this.getMainFrame().showDialog(List.of("Sam Altman: I'm in a Deep Learning state!"));
                 enemy.setActionPoints(enemy.getActionPoints()-5);
-                this.getMainFrame().showDialog(List.of("Sam Altman recovered 12 hp"));
-                enemy.updateHP(enemy.getCurrHP()+12);
+                List<String> support = new ArrayList<>(List.of("Sam Altman: I'm in a Deep Learning state!"));
+                if(enemy.getCurrHP() < enemy.getMaxActionPoints()){
+                    support.add("Sam Altman recovered 10 hp");
+                    enemy.updateHP(10);
+                }
+                this.getMainFrame().showDialog(support);
                 break;
             case EnemyType.MOSQUITO:
                 this.getMainFrame().showDialog(List.of("MosquitoBot: BZZZZZZZZZZ!!"));

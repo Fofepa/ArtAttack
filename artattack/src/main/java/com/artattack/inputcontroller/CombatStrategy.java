@@ -47,7 +47,8 @@ public class CombatStrategy implements PlayerStrategy{
 
     public int acceptMove(){
         Move move = player.getWeapons().get(weaponIndex).getMoves().get(moveIndex);
-        List<ActiveElement> targets = move.getAttackTargets(player, map); 
+        boolean moveType = (move.getHealAmount() == 0 || (move.getHealArea() == null || move.getHealArea().isEmpty())); //true: dmg | false: heal
+        List<ActiveElement> targets = moveType ? move.getAttackTargets(player, map) : move.getHealTargets(player, map);
 
         List<String> allMessages = new ArrayList<>();
 
@@ -67,9 +68,9 @@ public class CombatStrategy implements PlayerStrategy{
 
             allMessages.add(player.getName()+ " used " + move.getName());
 
-            String damageMsg = move.getHealArea() == null ?  player.getName() + ": has done damage " + value : player.getName() + ": healed "  + value;
+            String damageMsg = moveType  ?  player.getName() + ": has done damage " + value : player.getName() + ": healed "  + value;
             if (targets != null) {
-                damageMsg += " to " + targets.size() + " enemies!";
+                damageMsg += " to " + targets.size() + (moveType ? " enemies!" : " allies!");
             }
             allMessages.add(damageMsg);
 

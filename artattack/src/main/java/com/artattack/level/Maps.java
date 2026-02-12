@@ -18,7 +18,7 @@ import com.artattack.turns.ConcreteTurnQueue;
 
 
 public class Maps {
-    private  int ID;
+    private int ID;
     private Player p1;
     private Player p2;
     private List<Enemy> enemies;

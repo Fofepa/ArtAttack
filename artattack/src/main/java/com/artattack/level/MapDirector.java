@@ -276,7 +276,7 @@ public class MapDirector {
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
                 InteractableElement chest_r0 = ieBuilder.getResult();
-                ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(36, 12)); ieBuilder.setName("Chest");
+                ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(35, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
                 InteractableElement chest_r1 = ieBuilder.getResult();
@@ -359,11 +359,11 @@ public class MapDirector {
                 this.builder.setEnemies(new ArrayList<>(List.of(mosquito, roboguard_0, roboguard_1)));
 
                 //interactable elements
-                ieDirector.createDoor(ieBuilder, 3, new Coordinates(0, 2)); ieBuilder.setID(15);
+                ieDirector.createDoor(this.ieBuilder, 3, new Coordinates(0, 2), new Coordinates(38, 8), new Coordinates(38, 10)); this.ieBuilder.setID(15);
                 InteractableElement receptionDoor_B = ieBuilder.getResult();
-                ieDirector.createDoor(ieBuilder, 7, new Coordinates(24, 3)); ieBuilder.setID(16);
+                ieDirector.createDoor(this.ieBuilder, 7, new Coordinates(24, 3)); this.ieBuilder.setID(16);
                 InteractableElement keyRoomDoor_B = ieBuilder.getResult();
-                ieDirector.createDoor(ieBuilder, 6, new Coordinates(10, 24)); ieBuilder.setID(17);
+                ieDirector.createDoor(this.ieBuilder, 6, new Coordinates(10, 24)); this.ieBuilder.setID(17);
                 InteractableElement chestRoomDoor_B = ieBuilder.getResult();
 
                 this.builder.setInteractableElements(List.of(receptionDoor_B, keyRoomDoor_B, chestRoomDoor_B));
@@ -379,7 +379,7 @@ public class MapDirector {
                 Enemy roboguard2 = eBuilder.getResult();
                 this.builder.setEnemies(new ArrayList<>(List.of(guard1, guard2, roboguard1, roboguard2)));
 
-                ieDirector.createDoor(this.ieBuilder, 3, new Coordinates(31, 4)); ieBuilder.setID(18);
+                ieDirector.createDoor(this.ieBuilder, 3, new Coordinates(31, 4), new Coordinates(1, 8), new Coordinates(1, 10)); ieBuilder.setID(18);
                 InteractableElement receptionDoor_p = this.ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 8, new Coordinates(0, 4)); ieBuilder.setID(19);
                 InteractableElement bossDoor_p = this.ieBuilder.getResult();
@@ -436,7 +436,7 @@ public class MapDirector {
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a strange remote!"), strangeRemote)));
                 InteractableElement chest1_c = ieBuilder.getResult();
-                ieDirector.createDoor(this.ieBuilder, 4, new Coordinates(7, 0));
+                ieDirector.createDoor(this.ieBuilder, 4, new Coordinates(7, 0), new Coordinates(10, 23), new Coordinates(11, 23));
                 InteractableElement BDoor_c = ieBuilder.getResult();
 
                 this.builder.setInteractableElements(List.of(chest0_c, chest1_c, BDoor_c));
@@ -459,7 +459,7 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(4, 5), 1, 1, '#');
                 
                 //interactable element
-                ieDirector.createDoor(ieBuilder, 4, new Coordinates(0, 2));
+                ieDirector.createDoor(ieBuilder, 4, new Coordinates(0, 2), new Coordinates(23, 2), new Coordinates(23, 4));
                 this.builder.setInteractableElements(List.of(ieBuilder.getResult()));
 
                 //enemy

@@ -110,17 +110,15 @@ public class MovementStrategy implements PlayerStrategy{
     public void acceptMovement() {
         if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '.'){
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '.';
-            if (map.getDict().get(cursor) instanceof Trigger t) {
+            if (map.getDict().get(this.cursor) instanceof Trigger t) {
                 t.OnTrigger(this.mainFrame.getGameContext(), this.player, t.getSpritePath());
             }
-            this.map.updateDict(player.getCoordinates(), cursor);
-            player.setCoordinates(cursor);
+            this.map.updateDict(player.getCoordinates(), this.cursor);
+            player.setCoordinates(this.cursor);
             player.setActionPoints(player.getActionPoints() - 1);
-            this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '@';
-            
         }
-        if(map.checkAggro(cursor) != null && !map.checkAggro(cursor).isEmpty()){
-            for (Enemy e : map.checkAggro(cursor)) {
+        if(map.checkAggro(this.cursor) != null && !map.checkAggro(this.cursor).isEmpty()){
+            for (Enemy e : map.checkAggro(this.cursor)) {
                 if (!map.getConcreteTurnHandler().getConcreteTurnQueue().getTurnQueue().contains(e)) {
                     System.out.println("Adding " + e.getName() +  " to the queue");
                     

@@ -155,58 +155,34 @@ public class MainGUIFacade {
             mm.getLevels().put(map_t.getID(), map_t);
 
             md.make("1");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_1 = mb1.getResult();
             mm.getLevels().put(map_1.getID(), map_1);
 
             md.make("BossRoom1");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_b1 = mb1.getResult();
             mm.getLevels().put(map_b1.getID(), map_b1);
 
             md.make("Reception");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_r = mb1.getResult();
             mm.getLevels().put(map_r.getID(), map_r);
 
             md.make("BigEnemyArea");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_B = mb1.getResult();
             mm.getLevels().put(map_B.getID(), map_B);
 
             md.make("PreBoss");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_p = mb1.getResult();
             mm.getLevels().put(map_p.getID(), map_p);
 
             md.make("ChestRoom");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_c = mb1.getResult();
             mm.getLevels().put(map_c.getID(), map_c);
 
             md.make("KeyRoom");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_k = mb1.getResult();
             mm.getLevels().put(map_k.getID(), map_k);
 
             md.make("BossArena");
-            mb1.setDict();
-            mb1.setTurnQueue();
-            mb1.startMap();
             Maps map_a = mb1.getResult();
             mm.getLevels().put(map_a.getID(), map_a);
 

@@ -69,4 +69,16 @@ public class InteractableElementDirector {
         );
         
     }
+
+    public void createDoor(InteractableElementBuilder builder, int nextMap, Coordinates coordinates, Coordinates p1Overwrite, Coordinates p2Overwrite) {
+        builder.setMapSymbol('\u2339');
+        builder.setName("Door");
+        builder.setCoordinates(coordinates);
+        SwitchMap sm = new SwitchMap(nextMap);
+        sm.setOverwrite(p1Overwrite, p2Overwrite);
+        System.out.println(sm.getP1Overwrite() + "\n" + sm.getP2Overwrite());
+        builder.setInteractions(
+            List.of(sm)
+        );
+    }
 }

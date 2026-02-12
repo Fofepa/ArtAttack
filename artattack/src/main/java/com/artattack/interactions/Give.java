@@ -14,6 +14,7 @@ public class Give extends Interaction {
     private List<Item> item;
     private Weapon wpn;
     private Key key;
+    private boolean empty = false;
 
     public Give(List<String> dialog, List<Item> item){
         super(InteractionType.GIVE);
@@ -35,24 +36,33 @@ public class Give extends Interaction {
 
     @Override
     public void doInteraction(GameContext gameContext, Player player, String spritePath){
-        if (this.item != null && !this.item.isEmpty()) {
-            player.addItems(this.item);
-        }
-        if (this.wpn != null) {
-            if(wpn.getCompatibility() == player.getType()){
-                player.getWeapons().add(this.wpn);
+        if(!empty){ 
+            if (this.item != null && !this.item.isEmpty()) {
+                this.empty = true;
+                player.addItems(this.item);
             }
-            else{
-                gameContext.getUiManager().showDialog(List.of(player.getName() + "can't take this!"),spritePath);
+            if (this.wpn != null) {
+                if(wpn.getCompatibility() == player.getType()){
+                    player.getWeapons().add(this.wpn);
+                    this.empty = true;
+                }
+                else{
+                    gameContext.getUiManager().showDialog(List.of(player.getName() + " couldn't find nothing useful"),spritePath);
+                    return;
+                }
+                
             }
-            
+            if (this.key != null) {
+                player.getKeys().add(this.key);
+                this.empty = true;
+            }
+            if (gameContext.getUiManager() != null) {
+                gameContext.getUiManager().showDialog(dialog, spritePath);
+                gameContext.getUiManager().repaintInventoryPanel();
+            }
         }
-        if (this.key != null) {
-            player.getKeys().add(this.key);
-        }
-        if (gameContext.getUiManager() != null) {
-            gameContext.getUiManager().showDialog(dialog, spritePath);
-            gameContext.getUiManager().repaintInventoryPanel();
+        else{
+            gameContext.getUiManager().showDialog(List.of("This chest is empty"),spritePath);
         }
     }
 

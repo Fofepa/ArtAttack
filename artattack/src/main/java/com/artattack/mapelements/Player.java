@@ -21,6 +21,7 @@ public class Player extends ActiveElement {
     private List<Item> inventory;
     private List<Key> keys;
     private SkillTree skillTree;
+    private char originalSymbol;
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates){
         super(ID,mapSymbol,name,coordinates);
@@ -51,6 +52,7 @@ public class Player extends ActiveElement {
         this.maxXP = maxXP;
         this.level = level;
         this.leveledUp = 0;
+        this.originalSymbol = mapSymbol;
     }
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
@@ -160,8 +162,13 @@ public class Player extends ActiveElement {
 
     @Override
     public void onDeath(Maps map, ActiveElement killer) {
+        this.setMapSymbol('\u2620');
         map.getConcreteTurnHandler().getConcreteTurnQueue().remove(this);
+    }
 
+    @Override
+    public void updateHP(int amount) {
+        super.updateHP(amount); 
     }
 
     @Override
@@ -180,5 +187,10 @@ public class Player extends ActiveElement {
 
     public SkillTree getSkillTree() {
         return skillTree;
+    }
+
+    public void revive(Maps map){
+        map.getConcreteTurnHandler().getConcreteTurnQueue().add(this);
+        this.setMapSymbol(this.originalSymbol);
     }
 }

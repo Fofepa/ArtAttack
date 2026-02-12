@@ -79,7 +79,7 @@ public class TurnOrderPanel extends JPanel {
                     // Add HP and AP info
                     if (element instanceof Player) {
                         Player player = (Player) element;
-                        turnInfo += " (HP:" + player.getCurrHP() + "//" + player.getMaxHP() + 
+                        turnInfo += " (HP:" + player.getCurrHP() + "/" + player.getMaxHP() + 
                                    " AP:" + player.getActionPoints() + ")";
                     } else if (element instanceof Enemy) {
                         Enemy enemy = (Enemy) element;

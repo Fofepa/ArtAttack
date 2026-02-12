@@ -149,7 +149,7 @@ public class EnemyDirector {
                 List<Coordinates> samVA = Coordinates.sum(ab.getResult(), new Coordinates(6, 0));
                 samVA.add(new Coordinates(6, 0));
 
-                builder.setMapSymbol('S'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(80); builder.setMaxHP(80); builder.setDroppedXP(50);
+                builder.setMapSymbol('S'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(80); builder.setMaxHP(80); builder.setDroppedXP(0);
                 builder.setSpeed(50); builder.setName("Sam Altman"); builder.setWeapons(List.of(samWeapon)); builder.setActionPoints(15); builder.setMaxActionPoints(15); builder.setMoveArea(samMA); builder.setVisionArea(samVA);
             }
             case EnemyType.ATTENDANT -> {

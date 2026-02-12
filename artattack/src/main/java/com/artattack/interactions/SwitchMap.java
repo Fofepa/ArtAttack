@@ -71,6 +71,8 @@ public class SwitchMap extends Interaction {
             next.setPlayerOne(tmp1);
             next.setPlayerTwo(tmp2);
             next.setTurnQueue(player, (player.equals(next.getPlayerOne()) ? next.getPlayerTwo() : next.getPlayerOne()));
+            next.getDict().put(tmp1.getCoordinates(), tmp1);
+            next.getDict().put(tmp2.getCoordinates(), tmp2);
             gameContext.getUiManager().switchMap(next);
             gameContext.getMapManager().setCurrMap(this.nextMap);
 
@@ -84,4 +86,5 @@ public class SwitchMap extends Interaction {
         }
         
     }
+
 }

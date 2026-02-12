@@ -73,9 +73,20 @@ public class MapPanel extends JPanel {
                 int px = startX + (x * cellSize);
                 int py = startY + (y * cellSize);
 
-               if (c == '@' || c == p1Symbol || c == p2Symbol) {
+
+                boolean isP1Here = (map.getPlayerOne() != null && 
+                            map.getPlayerOne().getCoordinates().getX() == x && 
+                            map.getPlayerOne().getCoordinates().getY() == y);
+                            
+                boolean isP2Here = (map.getPlayerTwo() != null && 
+                            map.getPlayerTwo().getCoordinates().getX() == x && 
+                            map.getPlayerTwo().getCoordinates().getY() == y);
+
+                if (isP1Here || isP2Here) {
                     continue; 
                 }
+
+
 
                 switch (c) {
                     case '#' -> g.setColor(Color.GRAY);
@@ -188,7 +199,11 @@ public class MapPanel extends JPanel {
             int px = startX + (p.getCoordinates().getX() * cellSize);
             int py = startY + (p.getCoordinates().getY() * cellSize);
             
-            g.setColor(Color.CYAN);
+            if (p.isAlive()) {
+                g.setColor(Color.CYAN);
+            }else{
+                g.setColor(Color.GRAY);
+            }
 
             g.drawString(String.valueOf(p.getMapSymbol()), px, py + cellSize);
         }

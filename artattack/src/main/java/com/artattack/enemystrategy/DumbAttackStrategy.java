@@ -19,14 +19,31 @@ public class DumbAttackStrategy extends DecisionStrategy {
     @Override
     public void execute(Enemy enemy, Maps map){
         Move move = chooseWeighted(this.getMoves());
+        List<ActiveElement> targets = move.getAttackTargets(enemy, map); 
+
         
         int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
         this.getMainFrame().showDialog(List.of(enemy.getName() + " used " + move.getName(), enemy.getName() + " has done " + damage + " dmg to the player"));
-        for(ActiveElement element : move.getAttackTargets(enemy, map)){
+        /* for(ActiveElement element : move.getAttackTargets(enemy, map)){
             if(!element.isAlive()){
                this.getMainFrame().showDialog(List.of(element.getName() + " has been defeated!"));
             }
+        } */
+        if(targets.size() == 1 && !targets.get(0).isAlive()){
+            this.getMainFrame().showDialog(List.of(targets.get(0).getName() + " has been defeated!"));
         }
+        else if(targets.size() == 2){
+            List<String> support = new ArrayList<>();
+            if(!targets.get(0).isAlive()){
+                support.add(targets.get(0).getName() + " has been defeated!");
+            }
+            if(!targets.get(1).isAlive()){
+                support.add(targets.get(1).getName() + " has been defeated!");
+            }
+            this.getMainFrame().showDialog(support);
+        }
+        this.getMainFrame().repaintMapPanel();
+        this.getMainFrame().repaintTurnOrderPanel();
         //this.getMainFrame().gameOver();
     }
     

@@ -290,7 +290,14 @@ public class MainFrame implements UIManager {
         repaintMapPanel();
         repaintTurnOrderPanel();
     }
+
+    public String getCurrentState() {
+        return mainGUIFacade.getCurrentState();
+    }
     
+    public MainGUIFacade getMainGUIFacade(){
+        return this.mainGUIFacade;
+    }
 
     @Override
     public void showLevelComplete(Maps nextMap) {

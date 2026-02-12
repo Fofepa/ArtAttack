@@ -5,6 +5,7 @@ import java.util.List;
 import com.artattack.level.Coordinates;
 import com.artattack.level.Maps;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.Player;
 import com.artattack.view.MainFrame;
 
 public class ApproachStrategy extends DecisionStrategy {
@@ -18,27 +19,49 @@ public class ApproachStrategy extends DecisionStrategy {
         double min = Double.MAX_VALUE;
         Coordinates minCoord = null;
         
-        if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates()) 
-                                    &&  map.getPlayerOne().isAlive()){
-            for(Coordinates coord : enemy.getMoveArea()){
-                if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
-                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'
-                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() < map.getWidth() && Coordinates.sum(enemy.getCoordinates(), coord).getY() < map.getHeight()
-                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() >= 0 && Coordinates.sum(enemy.getCoordinates(), coord).getY() >= 0){
-                    min = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerOne().getCoordinates());
-                    minCoord = coord;
-                }
+        Player targetPlayer = null;
+        
+        // Determine which player to approach
+        Player p1 = map.getPlayerOne();
+        Player p2 = map.getPlayerTwo();
+        
+        // Check if players exist and are alive
+        boolean p1Valid = p1 != null && p1.isAlive();
+        boolean p2Valid = p2 != null && p2.isAlive();
+        
+        if(p1Valid && p2Valid){
+            // Both alive - choose closer one
+            if(Coordinates.getDistance(enemy.getCoordinates(), p1.getCoordinates()) 
+                <= Coordinates.getDistance(enemy.getCoordinates(), p2.getCoordinates())){
+                targetPlayer = p1;
+            } else {
+                targetPlayer = p2;
             }
         }
-        else if(map.getPlayerTwo().isAlive()){
-            for(Coordinates coord : enemy.getMoveArea()){
-                if (min > Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerTwo().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerTwo().getCoordinates())
-                    && map.getCell(Coordinates.sum(enemy.getCoordinates(), coord)) == '.'
-                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() < map.getWidth() && Coordinates.sum(enemy.getCoordinates(), coord).getY() < map.getHeight()
-                    && Coordinates.sum(enemy.getCoordinates(), coord).getX() >= 0 && Coordinates.sum(enemy.getCoordinates(), coord).getY() >= 0){
-                    min = Coordinates.getDistance(Coordinates.sum(coord, enemy.getCoordinates()), map.getPlayerTwo().getCoordinates());
-                    minCoord = coord;
-                }
+        else if(p1Valid){
+            targetPlayer = p1;
+        }
+        else if(p2Valid){
+            targetPlayer = p2;
+        }
+        else{
+            // No valid target
+            System.out.println("No alive players to approach");
+            return;
+        }
+    
+        // Find best move toward target player
+        for(Coordinates coord : enemy.getMoveArea()){
+            Coordinates newPos = Coordinates.sum(enemy.getCoordinates(), coord);
+            
+            if (min > Coordinates.getDistance(newPos, targetPlayer.getCoordinates()) 
+                && !newPos.equals(targetPlayer.getCoordinates())
+                && map.getCell(newPos) == '.'
+                && newPos.getX() < map.getWidth() && newPos.getY() < map.getHeight()
+                && newPos.getX() >= 0 && newPos.getY() >= 0){
+                
+                min = Coordinates.getDistance(newPos, targetPlayer.getCoordinates());
+                minCoord = coord;
             }
         }
 
@@ -48,10 +71,10 @@ public class ApproachStrategy extends DecisionStrategy {
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setActionPoints(enemy.getActionPoints()-1);
-            map.setCell(enemy.getCoordinates(),enemy.getMapSymbol());
+            map.setCell(enemy.getCoordinates(), enemy.getMapSymbol());
         }
         else{
-            System.out.println("Cannot find  a valid move");
+            System.out.println("Cannot find a valid move");
         }
     }
 }

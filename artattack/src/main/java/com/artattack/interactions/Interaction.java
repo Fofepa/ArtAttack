@@ -18,7 +18,6 @@ public abstract class Interaction {
     public InteractionType getType() {
         return type;
     }
-    
 
     /*public MainFrame getMainFrame(){  / CHANGED from getInteractionPanel
         return this.mainFrame;

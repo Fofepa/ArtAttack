@@ -40,8 +40,16 @@ public class PlayerDirector {
                 ab.addShape("circle", 5, true);
                 mb1.setName("Stink Foot"); mb1.setActionPoints(8); mb1.setPower(10); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move zappaMove4 = mb1.getResult();
+                //For testing
+                Move zappaSpecial2 = new Move(); zappaSpecial2.setName("ST. Alfonzo's Pancake Breakfast"); 
+                zappaSpecial2.setDescription("Music nowdays does miracles, look at this beautiful Pancake Zappa has made! It heals a lot and can be used on the others!!");
+                zappaSpecial2.setActionPoints(1);
+                zappaSpecial2.setHealAmount(25);
+                AreaBuilder ab = new AreaBuilder();
+                ab.addShape("circle", 8, true);
+                zappaSpecial2.setHealArea(ab.getResult());
                 //TODO: reset AP at 15
-                Weapon oldGuitar = new Weapon("Old guitar", "The guitar that Zappa was buried with" ,2, new ArrayList<>(List.of(zappaMove1,zappaMove2,zappaMove3, zappaMove4)), playerType);
+                Weapon oldGuitar = new Weapon("Old guitar", "The guitar that Zappa was buried with" ,2, new ArrayList<>(List.of(zappaMove1,/*zappaMove2,zappaMove3, zappaMove4*/zappaSpecial2)), playerType);
                 builder.setID(ID); builder.setName("Frank Zappa"); builder.setMapSymbol('♫'); builder.setCurrHP(20); builder.setMaxHP(20); builder.setLevel(1); builder.setMoveArea(zappaMA); builder.setSpritePath("/images/frank-zappa-fotor-20260206135640.jpg");
                 builder.setCurrXP(0); builder.setCurrXP(20); builder.setActionPoints(50); builder.setMaxActionPoints(50); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
                 builder.setSpeed(5); builder.setInventory(new ArrayList<>()); builder.setKeys(new ArrayList<>()); builder.setMaxWeapons(1); builder.setWeapons(new ArrayList<>(List.of(oldGuitar))); builder.setCoordinates(new Coordinates(0, 0));

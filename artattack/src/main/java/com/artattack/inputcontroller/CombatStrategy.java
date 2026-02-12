@@ -8,6 +8,10 @@ import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Player;
 import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 
 public class CombatStrategy implements PlayerStrategy{
     private Maps map;
@@ -50,16 +54,20 @@ public class CombatStrategy implements PlayerStrategy{
         int value = move.useMove(player, map);
 
         if(value != 0){
-            if("Wild at Heart".equals(move.getName())){
+            if(move.getName().equals("Wild at Heart")){
                  if (targets != null && !targets.isEmpty()) {
                     allMessages.add(targets.get(0).getName() + ": What do you want fa***t?!");
                  }
                  allMessages.add("*A group of offended thugs goes to the enemy and beats it really bad!");
             }
+             if(move.getName().equals("Button Press")){
+                mainFrame.showDialog(List.of(player.getName()+ " used " + move.getName(), "But nothing happened..."));
+                return 0;
+             }
 
             allMessages.add(player.getName()+ " used " + move.getName());
 
-            String damageMsg = player.getName() + ": has done damage " + value;
+            String damageMsg = move.getHealArea() == null ?  player.getName() + ": has done damage " + value : player.getName() + ": healed "  + value;
             if (targets != null) {
                 damageMsg += " to " + targets.size() + " enemies!";
             }
@@ -71,14 +79,29 @@ public class CombatStrategy implements PlayerStrategy{
 
             if (targets != null) {
                 boolean repainted = false;
+                boolean isBossDefeated = false;
                 for(ActiveElement element : targets){
                     if(!element.isAlive()){
                         allMessages.add(element.getName() + ": has been defeated!");
+
+                        if ("Sam Altman".equals(element.getName())) {
+                            allMessages.add("It's over... The system is shutting down...");
+                            allMessages.add("You have saved the digital world!");
+                            isBossDefeated = true;
+                        }
 
                         if (!repainted) {
                             this.mainFrame.repaintStatsPanel(); 
                             repainted = true;
                         }
+                    }
+                }
+                
+                if (!allMessages.isEmpty()) {
+                    this.mainFrame.showDialog(allMessages);
+                    
+                    if (isBossDefeated) {
+                        waitForDialogAndEndGame();
                     }
                 }
             }
@@ -99,6 +122,22 @@ public class CombatStrategy implements PlayerStrategy{
 
     public Player getPlayer(){
         return this.player;
+    }
+
+    private void waitForDialogAndEndGame() {
+        Timer timer = new Timer(100, null);
+        timer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (!mainFrame.getDialogActive()) {
+                    timer.stop(); 
+                    if (mainFrame.getMainGUIFacade() != null) {
+                        mainFrame.getMainGUIFacade().showGameVictory();
+                    }
+                }
+            }
+        });
+        timer.start();
     }
 
     public void setCurrentPlayer(Player player){

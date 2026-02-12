@@ -160,8 +160,8 @@ public class Move{
             for (Coordinates attackCell : this.attackArea) {
                 Object obj = map.getDict().get(Coordinates.sum(user.getCoordinates(), attackCell));
                 if (obj instanceof ActiveElement e) {
-                    if ((temp == null || 
-                        Math.abs(temp.getMaxHP() - temp.getCurrHP()) < Math.abs(e.getMaxHP() - e.getCurrHP()))) {
+                    if ((e.isAlive() && (temp == null || 
+                        Math.abs(temp.getMaxHP() - temp.getCurrHP()) < Math.abs(e.getMaxHP() - e.getCurrHP())))) {
                         if (user.getClass() != e.getClass()) {
                             temp = e;
                         }
@@ -259,9 +259,13 @@ public class Move{
                     if(this.name.equals("Wild at Heart")){
                         e.setEnemyType(EnemyType.DUMMY);
                     }
+                    
                 }
                 element.updateHP(- this.power);
                 total += this.power;
+                if(this.name.equals("Fragile Swing") && this.power != 0){
+                    this.setPower((int) Math.floor(this.power/2));
+                }
                 if (!element.isAlive()) {
                     element.onDeath(map, user);
                 }
@@ -276,8 +280,21 @@ public class Move{
         //Healing Logic
         if (this.healAmount != 0 && !this.healArea.isEmpty() && this.getHealTargets(user, map) != null) {
             for (ActiveElement element : this.getHealTargets(user, map)) {
+                boolean wasDead = element.getCurrHP() <= 0;
                 element.updateHP(this.healAmount);
                 total += this.healAmount;
+
+
+                if (element.getCurrHP() > 0 && wasDead) { 
+                    
+                    ((Player)element).revive(map);
+                    System.out.println(element.getName() + " is revived and back in the turn queue!");
+                }
+
+                if (!works) {
+                    works = true;
+                }
+
                 if (!this.areaHeal) {
                     break;
                 }

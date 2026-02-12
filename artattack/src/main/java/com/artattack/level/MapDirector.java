@@ -15,8 +15,11 @@ import com.artattack.mapelements.EnemyDirector;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.InteractableElement;
 import com.artattack.mapelements.InteractableElementDirector;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.mapelements.TriggerGroup;
+import com.artattack.moves.Move;
 import com.artattack.moves.MoveBuilder1;
+import com.artattack.moves.Weapon;
 
 public class MapDirector {
     private MapBuilder builder;
@@ -51,12 +54,11 @@ public class MapDirector {
                 listE.add(e);
 
                 //Creating InteractableElements
-                ieBuilder.setID(0); ieBuilder.setMapSymbol('i'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
-                ieBuilder.setSpritePath("/images/melies.jpg");
+                ieBuilder.setID(0); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest_t = ieBuilder.getResult();
-                ieBuilder.setID(1); ieBuilder.setMapSymbol('M'); ieBuilder.setName("Georges Méliès"); ieBuilder.setCoordinates(new Coordinates(29, 22));
+                ieBuilder.setID(1); ieBuilder.setMapSymbol('i'); ieBuilder.setName("Georges Méliès"); ieBuilder.setCoordinates(new Coordinates(29, 22));
                 ieBuilder.setSpritePath("/images/melies.jpg");
                 ieBuilder.setInteractions(List.of(new Talk(
                     List.of("You need me to explain again?",
@@ -417,10 +419,22 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(1, 8), 8, 1, '#');
                 this.builder.buildWall(new Coordinates(2, 7), 6, 1, '#');
                 this.builder.buildWall(new Coordinates(3, 6), 4, 1, '#');
-                
-                ieDirector.createChest(this.ieBuilder, List.of(new Item(ItemType.SPEED_BUFF, "fuck", "should be a weapon", 2)), new Coordinates(4, 6));
+
+                ab.addShape("base");
+                mb1.setName("Fragile Swing"); mb1.setPower(16); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move fragileSwing = mb1.getResult();
+                Weapon glassPanel = new Weapon("Glass Panel", " ", 1, List.of(fragileSwing), PlayerType.MUSICIAN);
+                ieBuilder.setID(20); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(4, 6));
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a glass panel!"), glassPanel), new Talk(List.of("This chest is empty."))));
                 InteractableElement chest0_c = ieBuilder.getResult();
-                ieDirector.createChest(this.ieBuilder, List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)), new Coordinates(5, 6));
+                ab.addShape("circle",5,true);
+                mb1.setName("Button Press"); mb1.setPower(0); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move buttonPress = mb1.getResult();
+                Weapon strangeRemote = new Weapon("Strange Remote", " ", 1, List.of(buttonPress), PlayerType.MOVIE_DIRECTOR);
+                ieBuilder.setID(21); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(5, 6));
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a strange remote!"), strangeRemote)));
                 InteractableElement chest1_c = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 4, new Coordinates(7, 0));
                 InteractableElement BDoor_c = ieBuilder.getResult();

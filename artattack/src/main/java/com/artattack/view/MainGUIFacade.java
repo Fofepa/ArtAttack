@@ -57,6 +57,7 @@ public class MainGUIFacade {
     private LevelCompletePanel levelCompletePanel;
     private GameOverPanel gameOverPanel;
     private long levelStartTime;
+    private DeathPanel deathPanel;
     
     private String currentState = "MENU"; 
     
@@ -143,7 +144,7 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
 
-            md.make("BigEnemyArea");
+            md.make("Tutorial");
             mb1.setID(0);
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);
@@ -566,6 +567,61 @@ SwingUtilities.invokeLater(() -> {
         mainFrame.repaint();
     }
 
+ 
+    public void showGameVictory() {
+        if (gameFacade != null && gameFacade.getMainFrame() != null) {
+            gameFacade.getMainFrame().getInteractionPanel().deactivate();
+        }
+
+        currentState = "GAME_OVER";
+
+        long elapsedMillis = System.currentTimeMillis() - levelStartTime;
+        long seconds = (elapsedMillis / 1000) % 60;
+        long minutes = (elapsedMillis / (1000 * 60)) % 60;
+        long hours = (elapsedMillis / (1000 * 60 * 60));
+        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+
+        mainFrame.getContentPane().removeAll();
+
+        gameOverPanel = new GameOverPanel(this, timeString);
+        mainFrame.add(gameOverPanel, BorderLayout.CENTER);
+
+        mainFrame.revalidate();
+        mainFrame.repaint();
+
+        gameOverPanel.requestFocusInWindow();
+    }
+
+
+    public void showDeathScreen() {
+        if (gameFacade != null && gameFacade.getMainFrame() != null) {
+            if (gameFacade.getMainFrame().getInteractionPanel() != null) {
+                gameFacade.getMainFrame().getInteractionPanel().deactivate();
+            }
+        }
+
+        currentState = "DEATH";
+        
+        long elapsedMillis = System.currentTimeMillis() - levelStartTime;
+        long seconds = (elapsedMillis / 1000) % 60;
+        long minutes = (elapsedMillis / (1000 * 60)) % 60;
+        long hours = (elapsedMillis / (1000 * 60 * 60));
+        String timeString = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+
+        mainFrame.getContentPane().removeAll();
+
+        deathPanel = new DeathPanel(this, timeString);
+        mainFrame.add(deathPanel, BorderLayout.CENTER);
+        
+        mainFrame.revalidate();
+        mainFrame.repaint();
+        
+        deathPanel.requestFocusInWindow();
+    }
+
+    public String getCurrentState() {
+        return currentState;
+    }
 
     
     public void exitGame() {

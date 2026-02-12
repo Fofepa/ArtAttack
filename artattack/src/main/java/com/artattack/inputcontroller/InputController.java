@@ -9,6 +9,7 @@ import com.artattack.enemystrategy.EnemyChoice;
 import com.artattack.interactions.InteractionStrategy;
 import com.artattack.items.Item;
 import com.artattack.level.AreaBuilder;
+import com.artattack.level.Maps;
 import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
@@ -40,6 +41,11 @@ public class InputController implements KeyListener, TurnListener {
 
     @Override
     public void keyPressed(KeyEvent e){
+
+
+        if ("DEATH".equals(mainFrame.getCurrentState()) || "GAME_OVER".equals(mainFrame.getCurrentState())) {
+            return; 
+        }
 
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             System.out.println("ESC pressed (global)");
@@ -547,6 +553,7 @@ public class InputController implements KeyListener, TurnListener {
     }
 
     private void handleMapInput(KeyEvent e){
+        if ("GAME_OVER".equals(mainFrame.getCurrentState())) return;
         mainFrame.clearAttackArea();
         if (currentElement == null) {
             System.out.println("ERROR: Cannot handle map input - currentElement is NULL!");
@@ -668,6 +675,10 @@ public class InputController implements KeyListener, TurnListener {
             mainFrame.getInteractionPanel().getParent().setVisible(false);
         }
 
+        if (checkGameOver()) {
+            return; 
+        }
+
         mainFrame.getMap().getConcreteTurnHandler().next();
         
         mainFrame.repaintStatsPanel();
@@ -685,6 +696,10 @@ public class InputController implements KeyListener, TurnListener {
     @Override
     public void updateTurn(ActiveElement activeElement){
         System.out.println("\n=== UPDATE TURN CALLED ===");
+
+        if (checkGameOver()) {
+            return;
+        }
         System.out.println("ActiveElement: " + (activeElement != null ? activeElement.getName() : "NULL"));
         
         if (activeElement != null) {
@@ -862,6 +877,27 @@ public class InputController implements KeyListener, TurnListener {
         } else {
             mainFrame.updateItemDetails(null);
         }
+    }
+
+
+    private boolean checkGameOver() {
+        if (mainFrame == null || mainFrame.getMap() == null) return false;
+
+        Maps map = mainFrame.getMap();
+        Player p1 = map.getPlayerOne();
+        Player p2 = map.getPlayerTwo();
+
+        if (p1 != null && p2 != null) {
+            if (p1.getCurrHP() <= 0 && p2.getCurrHP() <= 0) {
+                System.out.println("!!! GAME OVER TRIGGERED: Both players are down !!!");
+                
+                if (mainFrame.getMainGUIFacade() != null) {
+                    mainFrame.getMainGUIFacade().showDeathScreen();
+                    return true; 
+                }
+            }
+        }
+        return false;
     }
 
     @Override

@@ -382,7 +382,6 @@ public class InputController implements KeyListener, TurnListener {
 
         List<Weapon> weapons = currentElement.getWeapons();
         WeaponsPanel weaponsPanel = mainFrame.getWeaponsPanel();
-        MovesPanel movesPanel = mainFrame.getMovesPanel();
 
         if (weaponsPanel == null || weapons.isEmpty()) {
             System.out.println("WeaponsPanel not initialized or no weapons available");
@@ -393,8 +392,6 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_UP -> {
                 combatStrategy.execute(1, 0);
                 weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
-                movesPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
-                mainFrame.repaintMovesPanel();
                 System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 mainFrame.clearAttackArea();
                 mainFrame.repaintWeaponsPanel();
@@ -403,8 +400,6 @@ public class InputController implements KeyListener, TurnListener {
             case KeyEvent.VK_DOWN -> {
                 combatStrategy.execute(-1, 0);
                 weaponsPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
-                movesPanel.setSelectedWeaponIndex(combatStrategy.getWeaponIndex());
-                mainFrame.repaintMovesPanel();
                 System.out.println("Selected weapon: " + weapons.get(combatStrategy.getWeaponIndex()).getName());
                 mainFrame.clearAttackArea();
                 mainFrame.repaintWeaponsPanel();
@@ -787,18 +782,18 @@ public class InputController implements KeyListener, TurnListener {
             return;
         }
         if(!player.getSkillTree().isComplete()){
-
+    
             mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
-                if (selectedNode == null) {
+            if (selectedNode == null) {
                     System.out.println(">>> Skill tree closed (complete or cancelled)");
                     mainFrame.repaintStatsPanel();
                     mainFrame.repaintWeaponsPanel();
                     mainFrame.repaintMovesPanel();
                     mainFrame.repaintMapPanel();
                     mainFrame.updateTurnDisplay();
-                    return;
-                }
-
+                return;
+            }
+    
                 System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
                 System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
                 
@@ -814,12 +809,12 @@ public class InputController implements KeyListener, TurnListener {
                     "Skill: " + nodeType,
                     "Press ENTER to continue..."
                 ));
-
+                
                 if (player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()) {
                     System.out.println(">>> Another level up available! Reopening Skill Tree...");
                     handlePlayerLevelUp(player);
-                }  
-            });
+            }
+        });
         }
     }
     

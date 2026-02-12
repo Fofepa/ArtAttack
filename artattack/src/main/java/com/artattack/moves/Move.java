@@ -187,7 +187,9 @@ public class Move{
                 } 
                 else if (user instanceof Enemy) {
                     if (check instanceof Player player) {
-                        targets.add(player);
+                        if (player.isAlive()) {
+                            targets.add(player);
+                        }
                     }
                 }   
             }

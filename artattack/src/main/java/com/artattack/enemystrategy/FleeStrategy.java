@@ -18,7 +18,8 @@ public class FleeStrategy extends DecisionStrategy {
     public void execute(Enemy enemy, Maps map){
         double max = 0;
         Coordinates maxCoord = null;
-        if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates())){
+        if(Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates()) <= Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerTwo().getCoordinates()) 
+                                    &&  map.getPlayerOne().isAlive()){
             maxCoord = map.getPlayerOne().getCoordinates();
             for(Coordinates coord : enemy.getMoveArea()){
                 if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerOne().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerOne().getCoordinates())
@@ -30,7 +31,7 @@ public class FleeStrategy extends DecisionStrategy {
                 }
             }
         }
-        else{
+        else if(map.getPlayerTwo().isAlive()){
             maxCoord = map.getPlayerTwo().getCoordinates();
             for(Coordinates coord : enemy.getMoveArea()){
                 if (max < Coordinates.getDistance(Coordinates.sum(enemy.getCoordinates(), coord), map.getPlayerTwo().getCoordinates()) && !Coordinates.sum(coord, enemy.getCoordinates()).equals(map.getPlayerTwo().getCoordinates())

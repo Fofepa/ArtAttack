@@ -18,10 +18,10 @@ public class PlayerDirector {
         PlayerType playerType = charachterType.getPlayerType();
         switch(playerType){
             case MUSICIAN ->{
-                ab.addShape("square",30, true);
+                /*ab.addShape("base");
+                ab.addShape("x", 2);*/
+                ab.addShape("square",30, true); //for testing
                 List<Coordinates> zappaMA = ab.getResult();
-                ab.addShape("4");
-                zappaMA.addAll(ab.getResult());
                 ab.addShape("circle", 3, true);
                 mb1.setName("Riff"); mb1.setActionPoints(2); mb1.setPower(20); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());  //TODO: power to 4 to reset
                 Move zappaMove1 = mb1.getResult();

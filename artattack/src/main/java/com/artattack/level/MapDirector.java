@@ -234,6 +234,7 @@ public class MapDirector {
                 
                 break;
             case "Reception":
+                
                 this.builder.setID(3);
                 this.builder.setDimension(40, 15);
                 this.builder.setSpawn(new Coordinates(19, 1), new Coordinates(20, 1));
@@ -374,11 +375,19 @@ public class MapDirector {
                 Enemy roboguard1 = eBuilder.getResult();
                 eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 3));
                 Enemy roboguard2 = eBuilder.getResult();
-                this.builder.setEnemies(new ArrayList<Enemy>(List.of(guard1, guard2, roboguard1, roboguard2)));
+                this.builder.setEnemies(new ArrayList<>(List.of(guard1, guard2, roboguard1, roboguard2)));
+
+                ieDirector.createDoor(this.ieBuilder, 3, new Coordinates(31, 4)); ieBuilder.setID(18);
+                InteractableElement receptionDoor_p = this.ieBuilder.getResult();
+                ieDirector.createDoor(this.ieBuilder, 8, new Coordinates(0, 4)); ieBuilder.setID(19);
+                InteractableElement bossDoor_p = this.ieBuilder.getResult();
+
+                this.builder.setInteractableElements(List.of(receptionDoor_p, bossDoor_p));
                 
                 this.builder.setID(5);
                 this.builder.setDimension(32, 10);
                 this.builder.buildBorder();
+                this.builder.setSpawn(new Coordinates(30, 3), new Coordinates(30, 5));
                 
                 //top wall
                 this.builder.buildWall(new Coordinates(1, 1), 17, 1, '#');
@@ -409,16 +418,17 @@ public class MapDirector {
                 this.builder.buildWall(new Coordinates(2, 7), 6, 1, '#');
                 this.builder.buildWall(new Coordinates(3, 6), 4, 1, '#');
                 
-                ieDirector.createChest(ieBuilder, List.of(new Item(ItemType.SPEED_BUFF, "fuck", "should be a weapon", 2)), new Coordinates(4, 6));
+                ieDirector.createChest(this.ieBuilder, List.of(new Item(ItemType.SPEED_BUFF, "fuck", "should be a weapon", 2)), new Coordinates(4, 6));
                 InteractableElement chest0_c = ieBuilder.getResult();
-                ieDirector.createChest(ieBuilder, List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)), new Coordinates(5, 6));
+                ieDirector.createChest(this.ieBuilder, List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)), new Coordinates(5, 6));
                 InteractableElement chest1_c = ieBuilder.getResult();
-                ieDirector.createDoor(ieBuilder, 4, new Coordinates(7, 0));
+                ieDirector.createDoor(this.ieBuilder, 4, new Coordinates(7, 0));
                 InteractableElement BDoor_c = ieBuilder.getResult();
 
                 this.builder.setInteractableElements(List.of(chest0_c, chest1_c, BDoor_c));
                 this.builder.setEnemies(new ArrayList<>());
                 break;
+                
             case "KeyRoom":
                 this.builder.setID(7);
                 this.builder.setDimension(10, 10);

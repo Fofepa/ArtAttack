@@ -258,6 +258,26 @@ public class MainFrame implements UIManager {
         if (mainGUIFacade != null) mainGUIFacade.showSkillTreePanel(player, skillTree, callback);
     }
 
+    public void hideSkillTreePanel(){
+        mainGUIFacade.hideSkillTreePanel();
+    }
+
+    public void focusSkillTreePanel() {
+        mainGUIFacade.focusSkillTreePanel();
+    }
+
+    public SkillTreePanel getSkillTreePanel() {
+        if (mainGUIFacade != null) {
+            return mainGUIFacade.getSkillTreePanel(); 
+        }
+        return null;
+    }
+
+    public boolean isSkillTreeVisible() {
+        SkillTreePanel panel = getSkillTreePanel();
+        return panel != null && panel.isVisible() && panel.getParent() != null;
+    }
+
     public void switchMap(Maps map){
         System.out.println("MainFrame.switchMap called");
         this.map = map;

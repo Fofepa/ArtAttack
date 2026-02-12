@@ -109,7 +109,10 @@ public class AreaBuilder {
     }
 
     public List<Coordinates> getResult() {
-        List<Coordinates> product = this.area;
+        List<Coordinates> newMA = this.area.stream()
+                .distinct()
+                .toList();
+        List<Coordinates> product = newMA;
         reset();
         return product;
     }

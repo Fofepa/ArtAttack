@@ -35,7 +35,21 @@ public class Give extends Interaction {
 
     @Override
     public void doInteraction(GameContext gameContext, Player player, String spritePath){
-        player.addItems(this.item);
+        if (this.item != null && !this.item.isEmpty()) {
+            player.addItems(this.item);
+        }
+        if (this.wpn != null) {
+            if(wpn.getCompatibility() == player.getType()){
+                player.getWeapons().add(this.wpn);
+            }
+            else{
+                gameContext.getUiManager().showDialog(List.of(player.getName() + "can't take this!"),spritePath);
+            }
+            
+        }
+        if (this.key != null) {
+            player.getKeys().add(this.key);
+        }
         if (gameContext.getUiManager() != null) {
             gameContext.getUiManager().showDialog(dialog, spritePath);
             gameContext.getUiManager().repaintInventoryPanel();

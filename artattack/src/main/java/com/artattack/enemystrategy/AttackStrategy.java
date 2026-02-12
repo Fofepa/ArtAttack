@@ -26,6 +26,9 @@ public class AttackStrategy extends DecisionStrategy {
          for(ActiveElement element : move.getAttackTargets(enemy, map)){
             if(!element.isAlive()){
                this.getMainFrame().showDialog(List.of(element.getName() + " has been defeated!"));
+               element.setMapSymbol('\u2620');
+               this.getMainFrame().repaintMapPanel();
+               this.getMainFrame().repaintTurnOrderPanel();
             }
         }
         //this.getMainFrame().gameOver();

@@ -6,7 +6,7 @@ import com.artattack.level.Coordinates;
 
 public abstract class MapElement {
     private final int ID;
-    private final char mapSymbol;
+    private char mapSymbol;
     private final String name;
     private Coordinates coordinates;
     private String spritePath;  
@@ -52,6 +52,10 @@ public abstract class MapElement {
     
     public void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
+    }
+
+    public void setMapSymbol(char c){
+        this.mapSymbol = c;
     }
     
     public boolean hasSprite() {

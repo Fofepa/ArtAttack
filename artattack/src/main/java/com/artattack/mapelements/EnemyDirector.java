@@ -76,7 +76,7 @@ public class EnemyDirector {
                 List<Coordinates> bobVA = ab.getResult();
                 Key key = new Key("1st floor key", "Let's you and your party go upstairs!", 5001);
                 builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(30); builder.setKeys(List.of(new Key("1st floor key", "Lets you go upstairs!", 5001)));
-                builder.setSpeed(6);builder.setName("B.O.B"); builder.setWeapons(List.of(bobWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA);
+                builder.setSpeed(6);builder.setName("B.O.B"); builder.setWeapons(List.of(bobWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA); builder.setSpritePath("/images/boss_tosto.jpg/");
             }
             
             case EnemyType.MOSQUITO ->{
@@ -88,7 +88,7 @@ public class EnemyDirector {
                 mb1.setName("Repair"); mb1.setActionPoints(7); mb1.setHealAmount(6); mb1.setHealArea(ab.getResult()); mb1.setAreaHeal(false);
                 Move mosquitoMove = mb1.getResult();
                 Weapon mosquitoWeapon = new Weapon("MosquitoWeapon", " ", 4, List.of(mosquitoMove), null);
-                builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(7);
+                builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(7); builder.setSpritePath("/images/toolbot_tosto.jpg/");
                 builder.setSpeed(12);builder.setName("MosquitoBot"); builder.setWeapons(List.of(mosquitoWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(mosquitoMA); builder.setVisionArea(mosquitoVA);
             }
             

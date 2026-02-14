@@ -11,17 +11,24 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 
 public class PausePanel extends JPanel {
     private MainGUIFacade mainFacade;
@@ -35,6 +42,15 @@ public class PausePanel extends JPanel {
     
     private static final Dimension PANEL_SIZE = new Dimension(400, 500);
     private static final Dimension BUTTON_SIZE = new Dimension(300, 45); 
+
+    private List<JButton> currentButtons = new ArrayList<>();
+    private int selectedButtonIndex = 0;
+    
+    // Store button lists for each card
+    private final List<JButton> mainButtons = new ArrayList<>();
+    private final List<JButton> settingsButtons = new ArrayList<>();
+    private final List<JButton> accessButtons = new ArrayList<>();
+    private final List<JButton> noSaveButtons = new ArrayList<>();
     
     public PausePanel(MainGUIFacade mainFacade) {
         this.mainFacade = mainFacade;
@@ -44,8 +60,90 @@ public class PausePanel extends JPanel {
         setBackground(new Color(0, 0, 0, 0)); 
         
         initializeBaseLayout();
-        initializeCards(); 
+        initializeCards();
+        setupKeyboardNavigation(); 
         showCard(CARD_MAIN);
+    }
+
+
+    private void setupKeyboardNavigation() {
+        InputMap im = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = getActionMap();
+
+        im.put(KeyStroke.getKeyStroke("UP"), "moveUp");
+        im.put(KeyStroke.getKeyStroke("DOWN"), "moveDown");
+        im.put(KeyStroke.getKeyStroke("ENTER"), "select");
+        im.put(KeyStroke.getKeyStroke("SPACE"), "select");
+
+        am.put("moveUp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeSelection(-1);
+            }
+        });
+
+        am.put("moveDown", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                changeSelection(1);
+            }
+        });
+
+        am.put("select", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (isVisible() && !currentButtons.isEmpty()) {
+                    currentButtons.get(selectedButtonIndex).doClick();
+                }
+            }
+        });
+    }
+
+    private void changeSelection(int direction) {
+        if (currentButtons.isEmpty()) return;
+        
+        updateButtonVisuals(currentButtons.get(selectedButtonIndex), false);
+        
+        selectedButtonIndex += direction;
+        if (selectedButtonIndex < 0) selectedButtonIndex = currentButtons.size() - 1;
+        else if (selectedButtonIndex >= currentButtons.size()) selectedButtonIndex = 0;
+        
+        updateButtonVisuals(currentButtons.get(selectedButtonIndex), true);
+    }
+
+    private void updateButtonVisuals(JButton button, boolean isSelected) {
+        String text = button.getText();
+        if (isSelected) {
+            button.setBackground(new Color(50, 50, 50));
+            if (text.contains("Back")) {
+                button.setForeground(Color.WHITE);
+                button.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.WHITE, 4),
+                    BorderFactory.createEmptyBorder(3, 8, 3, 8)
+                ));
+            } else {
+                button.setForeground(Color.GREEN);
+                button.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GREEN, 4),
+                    BorderFactory.createEmptyBorder(3, 8, 3, 8)
+                ));
+            }
+        } else {
+            button.setBackground(new Color(30, 30, 30));
+            if (text.contains("Back")) {
+                button.setForeground(Color.LIGHT_GRAY);
+                button.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GRAY, 2),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            } else {
+                button.setForeground(Color.WHITE);
+                button.setBorder(BorderFactory.createCompoundBorder(
+                    BorderFactory.createLineBorder(Color.GREEN, 2),
+                    BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
+            }
+        }
     }
     
     private void initializeBaseLayout() {
@@ -91,7 +189,24 @@ public class PausePanel extends JPanel {
     }
     
     private void showCard(String cardName) {
+        if (!currentButtons.isEmpty()) {
+            updateButtonVisuals(currentButtons.get(selectedButtonIndex), false);
+        }
+
         cardLayout.show(contentPanel, cardName);
+        
+        switch (cardName) {
+            case CARD_MAIN -> currentButtons = mainButtons;
+            case CARD_SETTINGS -> currentButtons = settingsButtons;
+            case CARD_ACCESS -> currentButtons = accessButtons;
+            case CARD_NO_SAVE -> currentButtons = noSaveButtons;
+        }
+        
+        selectedButtonIndex = 0;
+        if (!currentButtons.isEmpty()) {
+            updateButtonVisuals(currentButtons.get(0), true);
+        }
+        
         contentPanel.repaint(); 
     }
     
@@ -114,6 +229,11 @@ public class PausePanel extends JPanel {
         JButton loadBtn = createPauseButton("Load Game");
         JButton settingsBtn = createPauseButton("Settings");
         JButton exitBtn = createPauseButton("Exit to Menu");
+
+        mainButtons.add(continueBtn);
+        mainButtons.add(loadBtn);
+        mainButtons.add(settingsBtn);
+        mainButtons.add(exitBtn);
         
         gbc.gridy = 1; panel.add(continueBtn, gbc);
         gbc.gridy = 2; panel.add(loadBtn, gbc);
@@ -180,24 +300,14 @@ public class PausePanel extends JPanel {
         titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
         titleLabel.setForeground(Color.RED); 
         
-        gbc.gridy = 0;
-        gbc.insets = new Insets(30, 20, 30, 20);
+        gbc.gridy = 0; gbc.insets = new Insets(30, 20, 30, 20);
         panel.add(titleLabel, gbc);
         
-        JLabel messageLabel = new JLabel("<html><center>No saved game data found<br>in local storage.</center></html>", JLabel.CENTER);
-        messageLabel.setFont(new Font("Monospaced", Font.PLAIN, 16));
-        messageLabel.setForeground(Color.WHITE);
-        
-        gbc.gridy = 1;
-        gbc.insets = new Insets(10, 20, 40, 20);
-        panel.add(messageLabel, gbc);
-        
         JButton backBtn = createPauseButton("Back");
-        formatBackButton(backBtn);
+        noSaveButtons.add(backBtn);
         backBtn.addActionListener(e -> showCard(CARD_MAIN));
         
-        gbc.gridy = 2;
-        gbc.insets = new Insets(20, 20, 20, 20);
+        gbc.gridy = 2; gbc.insets = new Insets(20, 20, 20, 20);
         panel.add(backBtn, gbc);
         
         return panel;
@@ -213,35 +323,29 @@ public class PausePanel extends JPanel {
         titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
         titleLabel.setForeground(Color.CYAN); 
         
-        gbc.gridy = 0;
-        gbc.insets = new Insets(20, 20, 30, 20);
+        gbc.gridy = 0; gbc.insets = new Insets(20, 20, 30, 20);
         panel.add(titleLabel, gbc);
-        gbc.insets = new Insets(8, 20, 8, 20);
         
         GameSettings settings = GameSettings.getInstance();
         JButton speedBtn = createPauseButton("Text Speed: " + settings.getTextSpeed());
+        JButton accessBtn = createPauseButton("Accessibility >");
+        JButton backBtn = createPauseButton("Back");
+        
+        settingsButtons.add(speedBtn);
+        settingsButtons.add(accessBtn);
+        settingsButtons.add(backBtn);
+
         speedBtn.addActionListener(e -> {
             settings.cycleTextSpeed();
             speedBtn.setText("Text Speed: " + settings.getTextSpeed());
         });
-
-        JButton accessBtn = createPauseButton("Accessibility >");
         accessBtn.addActionListener(e -> showCard(CARD_ACCESS));
-        
-        JButton backBtn = createPauseButton("Back");
-        formatBackButton(backBtn);
         backBtn.addActionListener(e -> showCard(CARD_MAIN));
         
+        gbc.insets = new Insets(8, 20, 8, 20);
         gbc.gridy = 1; panel.add(speedBtn, gbc);
         gbc.gridy = 2; panel.add(accessBtn, gbc); 
-        
-        gbc.gridy = 3; 
-        gbc.weighty = 1.0; 
-        panel.add(Box.createGlue(), gbc);
-        gbc.weighty = 0;
-        
-        gbc.gridy = 4; 
-        gbc.insets = new Insets(30, 20, 20, 20);
+        gbc.gridy = 4; gbc.insets = new Insets(30, 20, 20, 20);
         panel.add(backBtn, gbc);
         
         return panel;
@@ -257,41 +361,33 @@ public class PausePanel extends JPanel {
         titleLabel.setFont(new Font("Monospaced", Font.BOLD, 32));
         titleLabel.setForeground(Color.ORANGE); 
         
-        gbc.gridy = 0;
-        gbc.insets = new Insets(20, 20, 30, 20);
+        gbc.gridy = 0; gbc.insets = new Insets(20, 20, 30, 20);
         panel.add(titleLabel, gbc);
-        gbc.insets = new Insets(8, 20, 8, 20);
         
         GameSettings settings = GameSettings.getInstance();
         JButton fontBtn = createPauseButton("Dialog Font: " + settings.getFontSize());
+        JButton zoomBtn = createPauseButton("Map Zoom: " + settings.getCurrentZoom());
+        JButton backBtn = createPauseButton("Back");
+
+        accessButtons.add(fontBtn);
+        accessButtons.add(zoomBtn);
+        accessButtons.add(backBtn);
+
         fontBtn.addActionListener(e -> {
             settings.cycleFontSize();
             fontBtn.setText("Dialog Font: " + settings.getFontSize());
         });
-
-        JButton zoomBtn = createPauseButton("Map Zoom: " + settings.getCurrentZoom());
         zoomBtn.addActionListener(e -> {
             settings.cycleZoomLevel();
             zoomBtn.setText("Map Zoom: " + settings.getCurrentZoom());
-            if (mainFacade.getGameFacade() != null) {
-                mainFacade.getGameFacade().getGamePanel().repaint();
-            }
+            if (mainFacade.getGameFacade() != null) mainFacade.getGameFacade().getGamePanel().repaint();
         });
-        
-        JButton backBtn = createPauseButton("Back");
-        formatBackButton(backBtn);
         backBtn.addActionListener(e -> showCard(CARD_SETTINGS));
         
+        gbc.insets = new Insets(8, 20, 8, 20);
         gbc.gridy = 1; panel.add(fontBtn, gbc);
         gbc.gridy = 2; panel.add(zoomBtn, gbc);
-        
-        gbc.gridy = 3; 
-        gbc.weighty = 1.0; 
-        panel.add(Box.createGlue(), gbc);
-        gbc.weighty = 0;
-        
-        gbc.gridy = 4; 
-        gbc.insets = new Insets(30, 20, 20, 20);
+        gbc.gridy = 4; gbc.insets = new Insets(30, 20, 20, 20);
         panel.add(backBtn, gbc);
         
         return panel;
@@ -309,52 +405,22 @@ public class PausePanel extends JPanel {
         JButton button = new JButton(text);
         button.setAlignmentX(Component.CENTER_ALIGNMENT);
         button.setFont(new Font("Monospaced", Font.BOLD, 14)); 
-        button.setForeground(Color.WHITE);
-        button.setBackground(new Color(30, 30, 30));
         button.setFocusPainted(false);
-        button.setFocusable(false);
-        
+        button.setFocusable(false); // We handle focus via Key Bindings
         
         button.setMinimumSize(BUTTON_SIZE);
         button.setMaximumSize(BUTTON_SIZE);
         button.setPreferredSize(BUTTON_SIZE);
         
-        button.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.GREEN, 2),
-            BorderFactory.createEmptyBorder(5, 10, 5, 10)
-        ));
+        updateButtonVisuals(button, false);
         
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent evt) {
-                button.setBackground(new Color(50, 50, 50));
-                if(text.equals("Back")) {
-                     button.setForeground(Color.WHITE);
-                     button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.WHITE, 4),
-                        BorderFactory.createEmptyBorder(3, 8, 3, 8)
-                     ));
-                } else {
-                    button.setForeground(Color.GREEN);
-                    button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.GREEN, 4),
-                        BorderFactory.createEmptyBorder(3, 8, 3, 8)
-                     ));
-                }
-            }
-            public void mouseExited(MouseEvent evt) {
-                button.setBackground(new Color(30, 30, 30));
-                if(text.equals("Back")) {
-                    button.setForeground(Color.LIGHT_GRAY);
-                    button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.GRAY, 2),
-                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
-                    ));
-                } else {
-                    button.setForeground(Color.WHITE);
-                    button.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(Color.GREEN, 2),
-                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
-                    ));
+                int idx = currentButtons.indexOf(button);
+                if (idx != -1) {
+                    updateButtonVisuals(currentButtons.get(selectedButtonIndex), false);
+                    selectedButtonIndex = idx;
+                    updateButtonVisuals(button, true);
                 }
             }
         });
@@ -379,6 +445,7 @@ public class PausePanel extends JPanel {
     
     public void showPauseMenu() {
         setVisible(true);
-        requestFocusInWindow(); 
+        requestFocusInWindow();
+        showCard(CARD_MAIN);
     }
 }

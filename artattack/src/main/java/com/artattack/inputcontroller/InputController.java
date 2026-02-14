@@ -204,6 +204,7 @@ public class InputController implements KeyListener, TurnListener {
         switch(e.getKeyCode()){
             case KeyEvent.VK_M -> {
                 System.out.println("Focusing MapPanel");
+                mainFrame.clearAttackArea();
                 mainFrame.focusMapPanel();
             }
             case KeyEvent.VK_F -> {
@@ -283,6 +284,7 @@ public class InputController implements KeyListener, TurnListener {
                 }
                 mainFrame.repaintStatsPanel();
                 mainFrame.repaintInventoryPanel();
+                mainFrame.repaintTurnOrderPanel();
                 updateInventorySelectionDisplay(inventoryStrategy, player);
             }
 

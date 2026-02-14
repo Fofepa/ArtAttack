@@ -231,7 +231,6 @@ public class MapPanel extends JPanel {
     
     public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
         // System.out.println("DEBUG: showMoveArea called with " + (moveArea != null ? moveArea.size() : "null") + " tiles.");
-        
         if (moveArea == null || moveArea.isEmpty()) {
             this.moveArea = null;
         } else {

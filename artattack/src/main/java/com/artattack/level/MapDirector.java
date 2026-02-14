@@ -88,7 +88,9 @@ public class MapDirector {
                     List.of("Okay, now they're mad! As you can see, the enemy has now entered the TURN QUEUE! It tells you what the order of turns is!",
                             "As you can see, the QUEUE is numbered, and the slot belonging to the person who's turn it is will be highlighted.",
                             "When all your ACTION POINTS are depleted, your turn will pass and it'll be the next person in the queue's turn!",
-                            "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know!")));
+                            "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know!",
+                            "Before I forget, once you beat him if you want to level up press the O button to see your skill tree!",
+                            "In that menu you can see your full potential and spend your skill points!", "If you want to go back to the game press the ESCAPE button to return to this view!")));
 
                 //Building Map
                 this.builder.setID(0);

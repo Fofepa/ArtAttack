@@ -61,14 +61,14 @@ public class MapDirector {
                 ieBuilder.setID(1); ieBuilder.setMapSymbol('i'); ieBuilder.setName("Georges Méliès"); ieBuilder.setCoordinates(new Coordinates(29, 22));
                 ieBuilder.setSpritePath("/images/melies.jpg");
                 ieBuilder.setInteractions(List.of(new Talk(
-                    List.of("You need me to explain again?",
-                            "Aw, man... I was hopin' you wouldn't... Anyways, here goes.",
+                    List.of("You see all these panels in front of you? You can access all of them by pressing specific keys. You'll know when you're accessing a panel because it'll be highlighted.",
+                            "If you press M, you'll access the MAP PANEL, where you can see the MAP. By focusing on it, you'll be able to interact with the world!",
                             "Each one of you has a CURSOR. It has many uses, like moving!",
-                            "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
-                            "Instead, if you see something that interests you, you can position your CURSOR on it and press the E key to interact with it. You can also talk to people this way!",
-                            "Keep in mind that if you want to interact with something, you have to move next to it first!",
+                            "You can position your CURSOR using WASD or the Arrow Keys while you're focused on the MAP PANEL. Then, use the ENTER Key to move where the CURSOR is!",
+                            "Or, you can position your CURSOR on something that interests you and INTERACT with it using the E Key. You can also talk to people this way!",
+                            "Keep in mind that you have to be right next to something to INTERACT with it. After all, it has to be within an arm's reach!",
                             "That's the basics. If you want me to refresh your memory, just talk to me.",
-                            "Understood? Alright, go and beat up that fella over there."))));
+                            "Understood? Alright, now go and beat up the bad guys."))));
                 InteractableElement npc_t = ieBuilder.getResult();
                 ieDirector.createDoor(ieBuilder, 1, new Coordinates(0, 2)); ieBuilder.setID(2);
                 InteractableElement door_t = ieBuilder.getResult();
@@ -77,20 +77,30 @@ public class MapDirector {
                 TriggerGroup chestDialogue = new TriggerGroup(new Talk(
                     List.of("Whoa, is that a CHEST?", 
                             "I thought everything was stored in the cloud these days!",
-                            "There might be something valuable inside! Go next to it, position your cursor on top of it then press E!")));
+                            "There might be something valuable inside! You can grab it by INTERACTING with the CHEST.",
+                            "The object inside the chest will be stored in your INVENTORY, displayed in the INVENTORY PANEL, at the top left. You can access it by pressing the I Key.",
+                            "When an object's name in your INVENTORY is highlighted, a short description of its effect will be displayed.",
+                            "If you have multiple objects in your INVENTORY, you can browse them by using WASD or the Arrow Keys. Then, you can USE them anytime by using the ENTER Key.")));
                 TriggerGroup visionAreaDialogue = new TriggerGroup(new Talk(
-                    List.of("Alright, now that you're approaching the enemy, I need you to listen up!",
+                    List.of("Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
+                            "Now that you're approaching an enemy, I need you to listen up!",
                             "You see that red area around him? That's their line of sight! Or VISION AREA, if you'd like!",
                             "If you enter that area, they will notice you and become hostile!",
-                            "So it's important that you get the jump on them by using a RANGED MOVE from your MOVE INVENTORY!",
-                            "Press F to browse your MOVE INVENTORY. Then, after choosing a MOVE, press ENTER to use it!")));
+                            "So it's important that you know how to defend yourself Press the F Key to access your WEAPON INVENTORY, on the left!",
+                            "Every WEAPON has a set of MOVES that you can use. By using the D Key or Right Arrow Key while in the WEAPON INVENTORY, you'll be able to browse through a WEAPON's MOVES and their ATTACK AREA will be displayed in RED on the MAP!",
+                            "You can use a MOVE by using the ENTER Key. If an enemy is within your MOVE's ATTACK AREA, they will be hit and lose HP equal to that MOVE's POWER!",
+                            "However, not all MOVES do damage! In fact, some will heal your party! In that case, their HEAL AREA will be displayed in YELLOW!",
+                            "Now, go teach him a lesson!")));
                 TriggerGroup turnQueueDialogue = new TriggerGroup(new Talk(
-                    List.of("Okay, now they're mad! As you can see, the enemy has now entered the TURN QUEUE! It tells you what the order of turns is!",
+                    List.of("Okay, now they're mad! As you can see, the enemy has now entered the TURN QUEUE, at the bottom right! It tells you what the order of turns is!",
                             "As you can see, the QUEUE is numbered, and the slot belonging to the person who's turn it is will be highlighted.",
                             "When all your ACTION POINTS are depleted, your turn will pass and it'll be the next person in the queue's turn!",
                             "Instead, if it's your turn and you don't want to do anything else, press SPACE to pass your turn! We don't have all day, you know!",
-                            "Before I forget, once you beat him if you want to level up press the O button to see your skill tree!",
-                            "In that menu you can see your full potential and spend your skill points!", "If you want to go back to the game press the ESCAPE button to return to this view!")));
+                            "Oh! And before I forget, once you defeat the enemy, you'll gain SKILL POINTS!",
+                            "SKILL POINTS can be spent on your SKILL TREE, which you can open by using the O Key.",
+                            "Every NODE on the SKILL TREE will grant you newfound power! But before you can spend a SKILL POINT on a NODE, you'll have to acquire the ones that come before it!", 
+                            "You can browse through the available NODES to see what they will give you, then you can acquire its power by using the ENTER Key.",
+                            "If you want to return to action, press the ESCAPE Key!")));
 
                 //Building Map
                 this.builder.setID(0);
@@ -99,17 +109,14 @@ public class MapDirector {
                 this.builder.setEnemies(listE);
                 this.builder.setInteractableElements(List.of(npc_t, chest_t, door_t));
                 this.builder.addTriggerGroup(chestDialogue, new Coordinates(1, 21), 12, 4, "/images/melies.jpg");
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 6), 12, 9, "/images/melies.jpg");
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 1), 3, 5, "/images/melies.jpg");
-                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(9, 1), 4, 5, "/images/melies.jpg");
-                this.builder.addTriggerGroup(turnQueueDialogue, new Coordinates(4, 1), 5, 5, "/images/melies.jpg");
+                this.builder.addTriggerGroup(visionAreaDialogue, new Coordinates(1, 9), 11, 6, "/images/melies.jpg");
+                this.builder.addTriggerGroup(turnQueueDialogue, new Coordinates(1, 1), 11, 8, "/images/melies.jpg");
                 this.builder.buildBorder();
-                this.builder.buildWall(new Coordinates(19, 21), 1, 4, '\u2588');
+                this.builder.buildWall(new Coordinates(18, 21), 2, 4, '\u2588');
                 this.builder.buildWall(new Coordinates(22, 20), 9, 1, '\u2588');
                 this.builder.buildWall(new Coordinates(1, 19), 12, 2, '\u2588');
-                this.builder.buildWall(new Coordinates(1, 15), 10, 1, '\u2588');
-                this.builder.buildWall(new Coordinates(13, 1), 2, 3, '\u2588');
-                this.builder.buildWall(new Coordinates(14, 12), 3, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(1, 15), 12, 2, '\u2588');
+                this.builder.buildWall(new Coordinates(12, 1), 2, 11, '\u2588');
                 this.builder.buildWall(new Coordinates(24, 11), 7, 1, '\u2588');
                 break;
             case "1":

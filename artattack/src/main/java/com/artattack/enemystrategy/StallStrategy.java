@@ -20,32 +20,32 @@ public class StallStrategy extends DecisionStrategy {
         switch (enemy.getEnemyType()){
 
              case EnemyType.DUMMY:
-                this.getMainFrame().showDialog(List.of("Regretful being: I want to apologize to you gentlemen for reffering to you as homosexuals"));
+                this.getMainFrame().showDialog(List.of("Regretful being: I want to apologize to you gentlemen for refering to you as homosexuals"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-3);
                 break;
 
             case EnemyType.EMPLOYEE: 
-                this.getMainFrame().showDialog(List.of("Employee: AAAAHHH!!!"));
+                this.getMainFrame().showDialog(List.of("Employee: AAAAHHH!!!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-1);
                 break;
 
             case EnemyType.GUARD:
-                this.getMainFrame().showDialog(List.of("Guard: I'm reloading! Watch out!"));
+                this.getMainFrame().showDialog(List.of("Guard: I'm reloading! Watch out!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
 
             case EnemyType.ROBOT:
-                this.getMainFrame().showDialog(List.of("Guard Robot: Processing the better solution..."));
+                this.getMainFrame().showDialog(List.of("Guard Robot: Processing the better solution..."), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-3);
                 break;
 
             case EnemyType.TOOLBOT:
-                this.getMainFrame().showDialog(List.of("T.O.O.L.Bot: Time to clean!"));
+                this.getMainFrame().showDialog(List.of("T.O.O.L.Bot: Time to clean!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-3);
                 break;
 
             case EnemyType.BOB:
-                this.getMainFrame().showDialog(List.of("B.O.B.: Nooo! Let me repair this thing, one moment!"));
+                this.getMainFrame().showDialog(List.of("B.O.B.: Nooo! Let me repair this thing, one moment!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
             case EnemyType.SAM:
@@ -55,14 +55,14 @@ public class StallStrategy extends DecisionStrategy {
                     support.add("Sam Altman recovered 10 hp");
                     enemy.updateHP(10);
                 }
-                this.getMainFrame().showDialog(support);
+                this.getMainFrame().showDialog(support, enemy.getSpritePath());
                 break;
             case EnemyType.MOSQUITO:
-                this.getMainFrame().showDialog(List.of("MosquitoBot: BZZZZZZZZZZ!!"));
+                this.getMainFrame().showDialog(List.of("MosquitoBot: BZZZZZZZZZZ!!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-2);
                 break;
             case EnemyType.ATTENDANT:
-                this.getMainFrame().showDialog(List.of("Attendant: I have no Keys I swear!!!"));
+                this.getMainFrame().showDialog(List.of("Attendant: I have no Keys I swear!!!"), enemy.getSpritePath());
                 enemy.setActionPoints(enemy.getActionPoints()-4);
                 break;
         }

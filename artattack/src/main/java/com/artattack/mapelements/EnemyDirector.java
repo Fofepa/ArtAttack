@@ -29,6 +29,7 @@ public class EnemyDirector {
                 Weapon employeeWeapon = new Weapon(" ", " ", 5, List.of(employeeMove), null);
                 builder.setMapSymbol('E'); builder.setName("Employee"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(8); builder.setMaxHP(8); builder.setDroppedXP(8);
                 builder.setSpeed(2); builder.setWeapons(List.of(employeeWeapon)); builder.setActionPoints(5); builder.setMaxActionPoints(5); builder.setMoveArea(employeeMA); builder.setVisionArea(employeeVA);
+                builder.setSpritePath(null);
                 if(ID == 0){
                     builder.setDroppedXP(20); 
                     ab.addShape("square", 5, true);
@@ -50,7 +51,7 @@ public class EnemyDirector {
                 Weapon guardWeapon = new Weapon(" ", " ", 5, List.of(guardMove1, guardMove2), null);
                 builder.setMapSymbol('G');builder.setName("Guard"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(14); builder.setMaxHP(14); builder.setDroppedXP(12);
                 builder.setSpeed(4); builder.setWeapons(List.of(guardWeapon)); builder.setActionPoints(10); builder.setMaxActionPoints(10); builder.setMoveArea(guardMA); builder.setVisionArea(guardVA);
-                
+                builder.setSpritePath(null);
             }
 
             case EnemyType.BOB ->{
@@ -77,7 +78,7 @@ public class EnemyDirector {
                 Key key = new Key("1st floor key", "Let's you and your party go upstairs!", 5001);
                 builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(30); builder.setKeys(List.of(new Key("1st floor key", "Lets you go upstairs!", 5001)));
                 builder.setSpeed(6);builder.setName("B.O.B"); builder.setWeapons(List.of(bobWeapon)); 
-                builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA); builder.setSpritePath("/images/boss_tosto.jpg/");
+                builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA); builder.setSpritePath("/images/boss_tosto.jpg");
             }
             
             case EnemyType.MOSQUITO ->{
@@ -91,6 +92,7 @@ public class EnemyDirector {
                 Weapon mosquitoWeapon = new Weapon("MosquitoWeapon", " ", 4, List.of(mosquitoMove), null);
                 builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(7); 
                 builder.setSpeed(12);builder.setName("MosquitoBot"); builder.setWeapons(List.of(mosquitoWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(mosquitoMA); builder.setVisionArea(mosquitoVA);
+                builder.setSpritePath(null);
             }
             
             case EnemyType.ROBOT ->{
@@ -109,6 +111,7 @@ public class EnemyDirector {
                 Weapon robotWeapon = new Weapon("RobotWeapon", " ", 4, List.of(robotMove1, robotMove2, robotMove3), null);
                 builder.setMapSymbol('R'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(18); builder.setMaxHP(18); builder.setDroppedXP(16);
                 builder.setSpeed(8);builder.setName("RoboGuard"); builder.setWeapons(List.of(robotWeapon)); builder.setActionPoints(16); builder.setMaxActionPoints(16); builder.setMoveArea(roboguardMA); builder.setVisionArea(roboguardVA);
+                builder.setSpritePath(null);
             }
             
             case EnemyType.TOOLBOT ->{
@@ -134,7 +137,7 @@ public class EnemyDirector {
                 List<Coordinates> minionVA = ab.getResult();
                 builder.setMapSymbol('T'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(15); builder.setMaxHP(15); builder.setDroppedXP(8);
                 builder.setSpeed(2);builder.setName("T.O.O.L.Bot"); builder.setWeapons(List.of(minionWeapon)); builder.setActionPoints(8); 
-                builder.setMaxActionPoints(8); builder.setMoveArea(minionMA); builder.setVisionArea(minionVA); builder.setSpritePath("/images/toolbot_tosto.jpg/");
+                builder.setMaxActionPoints(8); builder.setMoveArea(minionMA); builder.setVisionArea(minionVA); builder.setSpritePath("/images/toolbot_tosto.jpg");
             }
 
             case EnemyType.SAM ->{
@@ -151,7 +154,7 @@ public class EnemyDirector {
                 List<Coordinates> samVA = Coordinates.sum(ab.getResult(), new Coordinates(6, 0));
                 samVA.add(new Coordinates(6, 0));
 
-                builder.setMapSymbol('S'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(80); builder.setMaxHP(80); builder.setDroppedXP(0);
+                builder.setMapSymbol('S'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(80); builder.setMaxHP(80); builder.setDroppedXP(0); builder.setSpritePath("/images/saminator-pixel.jpg");
                 builder.setSpeed(50); builder.setName("Sam Altman"); builder.setWeapons(List.of(samWeapon)); builder.setActionPoints(15); builder.setMaxActionPoints(15); builder.setMoveArea(samMA); builder.setVisionArea(samVA);
             }
             case EnemyType.ATTENDANT -> {

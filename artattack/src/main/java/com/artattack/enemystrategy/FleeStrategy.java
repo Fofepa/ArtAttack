@@ -66,7 +66,7 @@ public class FleeStrategy extends DecisionStrategy {
         }
 
         if (maxCoord != null){
-            this.getMainFrame().showDialog(List.of(enemy.getName() + " he's running away!"));
+            this.getMainFrame().showDialog(List.of(enemy.getName() + " he's running away!"), enemy.getSpritePath());
             map.setCell(enemy.getCoordinates(), '\u25EA');
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), maxCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), maxCoord));

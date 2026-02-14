@@ -66,7 +66,7 @@ public class ApproachStrategy extends DecisionStrategy {
         }
 
         if (minCoord != null){
-            this.getMainFrame().showDialog(List.of(enemy.getName() + " is approaching!"));
+            this.getMainFrame().showDialog(List.of(enemy.getName() + " is approaching!"), enemy.getSpritePath());
             map.setCell(enemy.getCoordinates(), '\u25EA');
             map.updateDict(enemy.getCoordinates(), Coordinates.sum(enemy.getCoordinates(), minCoord));
             enemy.setCoordinates(Coordinates.sum(enemy.getCoordinates(), minCoord));

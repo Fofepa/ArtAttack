@@ -185,7 +185,7 @@ public class MainFrame implements UIManager {
     public void showDialog(List<String> messages) {
         showDialog(messages, null);
     }
-    
+    @Override
     public void showDialog(List<String> messages, String speakerImagePath) {
         if (interactionPanel != null) {
             interactionPanel.showDialog(messages, speakerImagePath);

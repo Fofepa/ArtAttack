@@ -57,6 +57,7 @@ public class MapDirector {
                 ieBuilder.setID(0); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                ieBuilder.setSpritePath("/images/melis.jpg");
                 InteractableElement chest_t = ieBuilder.getResult();
                 ieBuilder.setID(1); ieBuilder.setMapSymbol('i'); ieBuilder.setName("Georges Méliès"); ieBuilder.setCoordinates(new Coordinates(29, 22));
                 ieBuilder.setSpritePath("/images/melies.jpg");
@@ -130,11 +131,12 @@ public class MapDirector {
                 ieBuilder.setID(4); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(29, 29)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest0_1 = ieBuilder.getResult();
                 ieBuilder.setID(5); ieBuilder.setCoordinates(new Coordinates(9, 11)); ieBuilder.setInteractions(List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest1_1 = ieBuilder.getResult();
-                InteractableElement checkpoint_1 = new InteractableElement(0, 'C', "checkpoint", new Coordinates(30, 30), List.of(new CheckPoint(List.of("OK"))), "");
                 ieDirector.createDoor(this.ieBuilder, 2, new Coordinates(0, 4)); ieBuilder.setID(6);
                 InteractableElement door_1 = ieBuilder.getResult();
                 
@@ -142,7 +144,7 @@ public class MapDirector {
                 this.builder.setDimension(32, 32);
                 this.builder.setSpawn(new Coordinates(28, 2), new Coordinates(28, 4));
                 this.builder.setEnemies(listEn);
-                this.builder.setInteractableElements(List.of(chest0_1, chest1_1, checkpoint_1, door_1));
+                this.builder.setInteractableElements(List.of(chest0_1, chest1_1, door_1));
                 this.builder.buildBorder();
                 this.builder.buildWall(new Coordinates(11, 1), 8, 25, '\u2588');
                 this.builder.buildWall(new Coordinates(14, 28), 1, 3, '\u2588');
@@ -167,6 +169,7 @@ public class MapDirector {
                 ieBuilder.setID(7); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(30, 36)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                 new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest2_1 = ieBuilder.getResult();
                 ieDirector.createCheckPoint(this.ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
                 ieBuilder.setInteractions(List.of(new CheckPoint(List.of("Hey there! It's me Aretha Franklin didn't you recognise me? Oh come on!", "You guys don't look so good... ",
@@ -261,10 +264,12 @@ public class MapDirector {
                 ieBuilder.setID(12); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(4, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest_r0 = ieBuilder.getResult();
                 ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(35, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest_r1 = ieBuilder.getResult();
 
                 //checkpoints
@@ -413,6 +418,7 @@ public class MapDirector {
                 ieBuilder.setID(20); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(4, 6));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a glass panel!"), glassPanel), new Talk(List.of("This chest is empty."))));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest0_c = ieBuilder.getResult();
                 ab.addShape("circle",5,true);
                 mb1.setName("Button Press"); mb1.setPower(0); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
@@ -421,6 +427,7 @@ public class MapDirector {
                 ieBuilder.setID(21); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(5, 6));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a strange remote!"), strangeRemote)));
+                ieBuilder.setSpritePath(null);
                 InteractableElement chest1_c = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 4, new Coordinates(7, 0), new Coordinates(10, 23), new Coordinates(11, 23));
                 InteractableElement BDoor_c = ieBuilder.getResult();
@@ -470,7 +477,8 @@ public class MapDirector {
                     "You're nothing but FRAUDS! BILLIONAIRES ARE THE TRUE HEIRS OF THE WORLD!",
                     "NOW DIE!"
                 )));
-                this.builder.addTriggerGroup(evilDialogue, new Coordinates(5, 3), 11, 6, null);
+
+                this.builder.addTriggerGroup(evilDialogue, new Coordinates(5, 3), 11, 6, "/images/saminator-pixel.jpg");
 
                 this.builder.buildBorder();
 

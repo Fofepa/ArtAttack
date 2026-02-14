@@ -28,7 +28,7 @@ public class GameSettings {
     }
 
     public enum MapZoom {
-        NORMAL(12),   
+        SMALL(12),   
         MEDIUM(16),   
         LARGE(20),    
         HUGE(24);     
@@ -50,7 +50,7 @@ public class GameSettings {
     private GameSettings() {
         this.textSpeed = TextSpeed.NORMAL;
         this.fontSize = FontSize.MEDIUM; 
-        this.mapZoom = MapZoom.NORMAL;
+        this.mapZoom = MapZoom.MEDIUM;
     }
 
     public static synchronized GameSettings getInstance() {

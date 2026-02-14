@@ -1,13 +1,9 @@
 package com.artattack.enemystrategy;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import com.artattack.level.Maps;
-import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
-import com.artattack.moves.Move;
 import com.artattack.view.MainFrame;
 
 public class HealStrategy extends DecisionStrategy{
@@ -19,7 +15,7 @@ public class HealStrategy extends DecisionStrategy{
     @Override
     public void execute(Enemy enemy, Maps map){
         int heal = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(this.getHealMove())).useMove(enemy, map);
-        this.getMainFrame().showDialog(List.of(enemy.getName() + " is healing his allies! total amount: " + heal ));
+        this.getMainFrame().showDialog(List.of(enemy.getName() + " is healing his allies! total amount: " + heal ), enemy.getSpritePath());
     }
 
 }

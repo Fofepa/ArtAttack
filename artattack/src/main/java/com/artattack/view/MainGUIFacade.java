@@ -144,7 +144,7 @@ public class MainGUIFacade {
             MapBuilderTypeOne mb1 = new MapBuilderTypeOne();
             MapDirector md = new MapDirector(mb1);
 
-            md.make("Tutorial"); //TODO: change in "Tutorial"
+            md.make("BossArena"); 
             mb1.setID(0);
             mb1.setPlayerOne(p1);
             mb1.setPlayerTwo(p2);

@@ -23,7 +23,7 @@ public class AttackStrategy extends DecisionStrategy {
         List<ActiveElement> targets = move.getAttackTargets(enemy, map); 
 
          int damage = enemy.getWeapons().get(0).getMoves().get(enemy.getWeapons().get(0).getMoves().indexOf(move)).useMove(enemy, map);
-         this.getMainFrame().showDialog(List.of(enemy.getName() + " used " + move.getName(), enemy.getName() + " has done " + damage + " dmg to the player"));
+         this.getMainFrame().showDialog(List.of(enemy.getName() + " used " + move.getName(), enemy.getName() + " has done " + damage + " dmg to the player"), enemy.getSpritePath());
          /* for(ActiveElement element : move.getAttackTargets(enemy, map)){
             if(!element.isAlive()){
                this.getMainFrame().showDialog(List.of(element.getName() + " has been defeated!"));
@@ -33,7 +33,7 @@ public class AttackStrategy extends DecisionStrategy {
             }
         } */
         if(targets.size() == 1 && !targets.get(0).isAlive()){
-            this.getMainFrame().showDialog(List.of(targets.get(0).getName() + " has been defeated!"));
+            this.getMainFrame().showDialog(List.of(targets.get(0).getName() + " has been defeated!"), enemy.getSpritePath());
         }
         else if(targets.size() == 2){
             List<String> support = new ArrayList<>();
@@ -44,7 +44,7 @@ public class AttackStrategy extends DecisionStrategy {
                 support.add(targets.get(1).getName() + " has been defeated!");
             }
 
-            this.getMainFrame().showDialog(support);
+            this.getMainFrame().showDialog(support, enemy.getSpritePath());
         }
         this.getMainFrame().repaintMapPanel();
         this.getMainFrame().repaintTurnOrderPanel();

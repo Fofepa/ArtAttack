@@ -40,8 +40,8 @@ public class PlayerDirector {
                 mb1.setName("Stink Foot"); mb1.setActionPoints(14); mb1.setPower(10); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move zappaMove4 = mb1.getResult();
                 Weapon oldGuitar = new Weapon("Old guitar", "The guitar that Zappa was buried with" ,2, new ArrayList<>(List.of(zappaMove1,zappaMove2,zappaMove3, zappaMove4)), playerType);
-                builder.setID(ID); builder.setName("Frank Zappa"); builder.setMapSymbol('♫'); builder.setCurrHP(20); builder.setMaxHP(20); builder.setLevel(1); builder.setMoveArea(zappaMA); builder.setSpritePath("/images/frank-zappa-fotor-20260206135640.jpg");
-                builder.setCurrXP(0); builder.setMaxXP(20); builder.setActionPoints(21); builder.setMaxActionPoints(21); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
+                builder.setID(ID); builder.setName("Frank Zappa"); builder.setMapSymbol('♫'); builder.setLevel(1); builder.setMoveArea(zappaMA); builder.setSpritePath("/images/frank-zappa-fotor-20260206135640.jpg");
+                builder.setCurrXP(0); builder.setMaxXP(20); builder.setCurrHP(20); builder.setMaxHP(20); builder.setActionPoints(21); builder.setMaxActionPoints(21); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
                 builder.setSpeed(5); builder.setInventory(new ArrayList<>()); builder.setKeys(new ArrayList<>()); builder.setMaxWeapons(1); builder.setWeapons(new ArrayList<>(List.of(oldGuitar))); builder.setCoordinates(new Coordinates(0, 0));
 
             }
@@ -68,8 +68,8 @@ public class PlayerDirector {
                 mb1.setName("Do it for the camera"); mb1.setActionPoints(16); mb1.setPower(13); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move lynchMove4 = mb1.getResult();
                 Weapon actionCam = new Weapon("ActionCam", "" ,2, new ArrayList<>(List.of(lynchMove1,lynchMove2,lynchMove3, lynchMove4)), playerType);
-                builder.setID(ID); builder.setName("David Lynch"); builder.setMapSymbol('◉'); builder.setCurrHP(25); builder.setMaxHP(25); builder.setLevel(1); builder.setMoveArea(lynchMA); builder.setSpritePath("/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
-                builder.setCurrXP(0); builder.setMaxXP(20); builder.setActionPoints(25); builder.setMaxActionPoints(25); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
+                builder.setID(ID); builder.setName("David Lynch"); builder.setMapSymbol('◉'); builder.setLevel(1); builder.setMoveArea(lynchMA); builder.setSpritePath("/images/ozxg45isal6ve56l7tl6-fotor-20260206135846.jpg");
+                builder.setCurrXP(0); builder.setMaxXP(20); builder.setCurrHP(25); builder.setMaxHP(25); builder.setActionPoints(25); builder.setMaxActionPoints(25); builder.setType(playerType); builder.setSkillTree(SkillTreeFactory.createSkillTree(playerType));
                 builder.setSpeed(3); builder.setInventory(new ArrayList<>()); builder.setKeys(new ArrayList<>()); builder.setMaxWeapons(1); builder.setWeapons(new ArrayList<>(List.of(actionCam))); builder.setCoordinates(new Coordinates(0,0));
             }
         }

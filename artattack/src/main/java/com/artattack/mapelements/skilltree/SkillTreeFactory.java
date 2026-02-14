@@ -71,7 +71,7 @@ public class SkillTreeFactory {
         
         Move zappaSpecial2 = new Move(); zappaSpecial2.setName("ST. Alfonzo's Pancake Breakfast"); 
         zappaSpecial2.setDescription("Music nowdays does miracles, look at this beautiful Pancake Zappa has made! It heals a lot and can be used on the others!!");
-        zappaSpecial2.setActionPoints(14);
+        zappaSpecial2.setActionPoints(20);
         zappaSpecial2.setHealAmount(25);
         AreaBuilder ab = new AreaBuilder();
         ab.addShape("circle", 8, true);

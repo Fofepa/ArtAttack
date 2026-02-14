@@ -306,13 +306,14 @@ SwingUtilities.invokeLater(() -> {
                 "Oh! Right! You two were dead, just like me! Hahahaha!",
                 "What's that? You don't remember how to do things? Oh yeah, I guess it makes sense considering you were six feet deep just a few moments ago... You must be rusty on what it takes to walk the earth.",
                 "But it's fine, I can teach you everything you need to know.",
+                "You see all these panels in front of you? You can access all of them by pressing specific keys. You'll know when you're accessing a panel because it'll be highlighted.",
+                "If you press M, you'll access the MAP PANEL, where you can see the MAP. By focusing on it, you'll be able to interact with the world!",
                 "Each one of you has a CURSOR. It has many uses, like moving!",
-                "You can position your CURSOR using WASD or the Arrow Keys. Then, use Enter to move where the CURSOR is!",
-                "Or, you can position your CURSOR on something that interests you and interact with it using the E button. You can also talk to people this way!",
+                "You can position your CURSOR using WASD or the Arrow Keys while you're focused on the MAP PANEL. Then, use the ENTER Key to move where the CURSOR is!",
+                "Or, you can position your CURSOR on something that interests you and INTERACT with it using the E Key. You can also talk to people this way!",
+                "Keep in mind that you have to be right next to something to INTERACT with it. After all, it has to be within an arm's reach!",
                 "That's the basics. If you want me to refresh your memory, just talk to me.",
-                "Now, go! Get to the top floor and defeat these power-hungry nerds!",
-                "Wait... Look! That red guy over there! It's an employee! You have to defeat him to get to the next floor!",
-                "Go teach him a lesson!"
+                "Now, go! Get to the top floor and defeat these power-hungry nerds!"
     ), speaker.getSpritePath()); 
     }
     System.out.println("-------------------------\n");

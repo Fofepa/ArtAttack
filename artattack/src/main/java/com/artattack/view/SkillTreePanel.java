@@ -474,25 +474,98 @@ public class SkillTreePanel extends JPanel {
         if (currentPos == null) return;
         
         Node bestNode = null;
-        double minDistance = Double.MAX_VALUE;
         
-        for (Node node : availableNodes) {
-            if (node == selectedNode) continue;
-            NodePosition pos = nodePositions.get(node);
-            if (pos == null) continue;
+        if (horizontal) {
+            // Horizontal: find nodes at similar Y level (siblings/same level)
+            double minDistance = Double.MAX_VALUE;
+            int yTolerance = 50; // Nodes within 50px vertically are considered "same level"
             
-            int dx = pos.x - currentPos.x;
-            int dy = pos.y - currentPos.y;
-            boolean correctDir = horizontal ? ((direction > 0) ? dx > 0 : dx < 0) : ((direction > 0) ? dy > 0 : dy < 0);
+            for (Node node : availableNodes) {
+                if (node == selectedNode) continue;
+                NodePosition pos = nodePositions.get(node);
+                if (pos == null) continue;
+                
+                int dx = pos.x - currentPos.x;
+                int dy = Math.abs(pos.y - currentPos.y);
+                
+                // Check if node is in the correct horizontal direction
+                boolean validDirection = (direction > 0) ? (dx > 0) : (dx < 0);
+                
+                // Check if node is at roughly the same level (similar Y)
+                boolean sameLevel = dy <= yTolerance;
+                
+                if (validDirection && sameLevel) {
+                    double distance = Math.abs(dx);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        bestNode = node;
+                    }
+                }
+            }
             
-            if (correctDir) {
-                double distance = Math.hypot(dx, dy);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    bestNode = node;
+            // If no node found at same level, find closest in that direction
+            if (bestNode == null) {
+                for (Node node : availableNodes) {
+                    if (node == selectedNode) continue;
+                    NodePosition pos = nodePositions.get(node);
+                    if (pos == null) continue;
+                    
+                    int dx = pos.x - currentPos.x;
+                    boolean validDirection = (direction > 0) ? (dx > 0) : (dx < 0);
+                    
+                    if (validDirection) {
+                        double distance = Math.hypot(dx, pos.y - currentPos.y);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            bestNode = node;
+                        }
+                    }
+                }
+            }
+        } else {
+            // Vertical: prefer children, then go to nearest node in that direction
+            List<Node> children = selectedNode.getChildren();
+            double minDistance = Double.MAX_VALUE;
+            
+            // First try to find a child in the correct direction
+            for (Node child : children) {
+                if (!availableNodes.contains(child)) continue;
+                NodePosition childPos = nodePositions.get(child);
+                if (childPos == null) continue;
+                
+                int dy = childPos.y - currentPos.y;
+                boolean validDirection = (direction > 0) ? (dy > 0) : (dy < 0);
+                
+                if (validDirection) {
+                    double distance = Math.hypot(childPos.x - currentPos.x, childPos.y - currentPos.y);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        bestNode = child;
+                    }
+                }
+            }
+            
+            // If no child found, find any node in that direction
+            if (bestNode == null) {
+                for (Node node : availableNodes) {
+                    if (node == selectedNode) continue;
+                    NodePosition pos = nodePositions.get(node);
+                    if (pos == null) continue;
+                    
+                    int dy = pos.y - currentPos.y;
+                    boolean validDirection = (direction > 0) ? (dy > 0) : (dy < 0);
+                    
+                    if (validDirection) {
+                        double distance = Math.hypot(pos.x - currentPos.x, pos.y - currentPos.y);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            bestNode = node;
+                        }
+                    }
                 }
             }
         }
+        
         if (bestNode != null) {
             selectedNode = bestNode;
             currentIndex = availableNodes.indexOf(selectedNode);
@@ -525,8 +598,8 @@ public class SkillTreePanel extends JPanel {
     
     private void drawTitle(Graphics2D g2, int width) {
         g2.setFont(new Font("Monospaced", Font.BOLD, 42)); 
-        g2.setColor(new Color(180, 180, 0));
-        String title = player.getName() + "'s Tree";
+        g2.setColor(COLOR_SELECTED);
+        String title = player.getName() + " TREE";
         drawCenteredString(g2, title, width / 2, 50); 
     }
     
@@ -635,7 +708,7 @@ public class SkillTreePanel extends JPanel {
             }
         }
         
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.LIGHT_GRAY);
         g2.setFont(new Font("Monospaced", Font.ITALIC, 13));
         String statusText;
         if (node.isSpent()) {
@@ -715,7 +788,7 @@ public class SkillTreePanel extends JPanel {
         if (node instanceof MANODE) return "Effect: Increases Attack Area";
         if (node instanceof MAXWPNODE) return "Effect: Unlocks Weapon Slot";
         if (node instanceof MAXMVNODE) return "Effect: +1 Movement Range";
-        if (node instanceof SpecialMoveNODE sm) return "Move: " + getSpecialMoveName(sm);
+        if (node instanceof SpecialMoveNODE sm) return "Ability: " + getSpecialMoveName(sm);
         return "Effect: None";
     }
     

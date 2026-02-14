@@ -525,8 +525,8 @@ public class SkillTreePanel extends JPanel {
     
     private void drawTitle(Graphics2D g2, int width) {
         g2.setFont(new Font("Monospaced", Font.BOLD, 42)); 
-        g2.setColor(COLOR_SELECTED);
-        String title = player.getName() + " TREE";
+        g2.setColor(new Color(180, 180, 0));
+        String title = player.getName() + "'s Tree";
         drawCenteredString(g2, title, width / 2, 50); 
     }
     
@@ -591,14 +591,15 @@ public class SkillTreePanel extends JPanel {
     }
     
     private void drawNodeDescription(Graphics2D g2, Node node, int width, int height) {
+        // Larger box for special moves
         int boxWidth = 360;  
-        int boxHeight = 160;
+        int boxHeight = (node instanceof SpecialMoveNODE) ? 220 : 160;
         int boxX = 50; 
         int boxY = (height / 2) - (boxHeight / 2);
 
         // Skill points above the box
         g2.setFont(new Font("Monospaced", Font.BOLD, 18));
-        g2.setColor(new Color(180, 180, 0)); // Dark yellow
+        g2.setColor(new Color(180, 180, 0));
         String skillPointsText = "Skill points available: " + player.getSkillPoints();
         drawCenteredString(g2, skillPointsText, boxX + boxWidth / 2, boxY - 15);
 
@@ -624,7 +625,17 @@ public class SkillTreePanel extends JPanel {
         g2.setColor(COLOR_AVAILABLE);
         drawCenteredString(g2, getNodeEffect(node), boxX + boxWidth / 2, boxY + 70);
         
-        g2.setColor(Color.LIGHT_GRAY);
+        // Special move description
+        if (node instanceof SpecialMoveNODE sm) {
+            String description = getSpecialMoveDescription(sm);
+            if (!description.isEmpty()) {
+                g2.setFont(new Font("Monospaced", Font.ITALIC, 13));
+                g2.setColor(Color.LIGHT_GRAY);
+                drawWrappedText(g2, description, boxX + 20, boxY + 95, boxWidth - 40, 16);
+            }
+        }
+        
+        g2.setColor(Color.WHITE);
         g2.setFont(new Font("Monospaced", Font.ITALIC, 13));
         String statusText;
         if (node.isSpent()) {
@@ -639,7 +650,32 @@ public class SkillTreePanel extends JPanel {
             statusText = "STATUS: LOCKED (Unlock parent first)";
         }
         
-        drawCenteredString(g2, statusText, boxX + boxWidth / 2, boxY + 115);
+        int statusY = (node instanceof SpecialMoveNODE) ? boxY + 180 : boxY + 115;
+        drawCenteredString(g2, statusText, boxX + boxWidth / 2, statusY);
+    }
+    
+    private void drawWrappedText(Graphics2D g2, String text, int x, int y, int maxWidth, int lineHeight) {
+        FontMetrics metrics = g2.getFontMetrics();
+        String[] words = text.split(" ");
+        StringBuilder line = new StringBuilder();
+        int currentY = y;
+        
+        for (String word : words) {
+            String testLine = line.isEmpty() ? word : line + " " + word;
+            int lineWidth = metrics.stringWidth(testLine);
+            
+            if (lineWidth > maxWidth && !line.isEmpty()) {
+                g2.drawString(line.toString(), x, currentY);
+                currentY += lineHeight;
+                line = new StringBuilder(word);
+            } else {
+                line = new StringBuilder(testLine);
+            }
+        }
+        
+        if (!line.isEmpty()) {
+            g2.drawString(line.toString(), x, currentY);
+        }
     }
     
     // === HELPER METHODS ===
@@ -679,7 +715,7 @@ public class SkillTreePanel extends JPanel {
         if (node instanceof MANODE) return "Effect: Increases Attack Area";
         if (node instanceof MAXWPNODE) return "Effect: Unlocks Weapon Slot";
         if (node instanceof MAXMVNODE) return "Effect: +1 Movement Range";
-        if (node instanceof SpecialMoveNODE sm) return "Ability: " + getSpecialMoveName(sm);
+        if (node instanceof SpecialMoveNODE sm) return "Move: " + getSpecialMoveName(sm);
         return "Effect: None";
     }
     
@@ -707,6 +743,16 @@ public class SkillTreePanel extends JPanel {
             if(m!=null) return (String)m.getClass().getMethod("getName").invoke(m); 
         } catch (Exception e) {} 
         return "Special Ability"; 
+    }
+    
+    private String getSpecialMoveDescription(SpecialMoveNODE node) { 
+        try { 
+            var f = SpecialMoveNODE.class.getDeclaredField("specialMove"); 
+            f.setAccessible(true); 
+            Object m = f.get(node); 
+            if(m!=null) return (String)m.getClass().getMethod("getDescription").invoke(m); 
+        } catch (Exception e) {} 
+        return ""; 
     }
 
     private void drawInstructions(Graphics2D g2, int width, int height) {

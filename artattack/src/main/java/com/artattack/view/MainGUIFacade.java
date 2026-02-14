@@ -442,31 +442,42 @@ SwingUtilities.invokeLater(() -> {
         return currentState.equals("PAUSE");
     }
     
-    /**
-     * Show the skill tree panel to allow the player to choose a power-up
-     */
+    // shows the skillTreePanel of the current player
     public void showSkillTreePanel(Player player, SkillTree skillTree, Consumer<Node> callback) {
         currentState = "SKILL_TREE";
         
         skillTreePanel = new SkillTreePanel(skillTree, player, (selectedNode) -> {
-            
-            selectedNode.setSkill(player);
-            player.setLeveledUp();
-            
-            hideSkillTreePanel();
-            
+            // Just notify - InputController handles the rest
             if (callback != null) {
                 callback.accept(selectedNode);
             }
         });
         
+        // Add InputController as KeyListener to SkillTreePanel
+        if (inputController != null) {
+            skillTreePanel.addKeyListener(inputController);
+        }
+        
         JLayeredPane layeredPane = (JLayeredPane) mainFrame.getContentPane().getComponent(0);
         
         skillTreePanel.setBounds(0, 0, mainFrame.getWidth(), mainFrame.getHeight());
+        skillTreePanel.setVisible(true);
+        skillTreePanel.setFocusable(true);
+        
         layeredPane.add(skillTreePanel, JLayeredPane.POPUP_LAYER);
-        skillTreePanel.requestFocusInWindow();
+        layeredPane.moveToFront(skillTreePanel);
+        
         mainFrame.revalidate();
         mainFrame.repaint();
+        
+        // Request focus after layout - use multiple invocations for reliability
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            if (skillTreePanel != null) {
+                skillTreePanel.requestFocus();
+                skillTreePanel.requestFocusInWindow();
+                System.out.println("Skill tree panel focus requested");
+            }
+        });
     }
     
     public void hideSkillTreePanel() {
@@ -488,7 +499,14 @@ SwingUtilities.invokeLater(() -> {
     public void focusSkillTreePanel() {
         if (this.skillTreePanel != null) {
             this.skillTreePanel.setVisible(true);
-            this.skillTreePanel.requestFocusInWindow();
+            // Use both methods to ensure focus is grabbed
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                if (skillTreePanel != null) {
+                    skillTreePanel.requestFocus();
+                    skillTreePanel.requestFocusInWindow();
+                    System.out.println("Focus forcefully set to SkillTreePanel");
+                }
+            });
         }
     }
 

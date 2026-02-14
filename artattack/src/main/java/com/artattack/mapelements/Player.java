@@ -22,9 +22,11 @@ public class Player extends ActiveElement {
     private List<Key> keys;
     private SkillTree skillTree;
     private char originalSymbol;
+    private int skillPoints;
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates){
         super(ID,mapSymbol,name,coordinates);
+        this.skillPoints = 0;
     } 
 
     public Player(int ID, char mapSymbol, String name, Coordinates coordinates,
@@ -131,6 +133,7 @@ public class Player extends ActiveElement {
     public void setLevel(){
         this.level += 1;
         this.leveledUp += 1;
+        this.skillPoints += 1; // Grant 1 skill point per level
     }
 
     public void setLeveledUp() {
@@ -187,6 +190,19 @@ public class Player extends ActiveElement {
 
     public SkillTree getSkillTree() {
         return skillTree;
+    }
+    
+    // Skill points management
+    public int getSkillPoints() {
+        return this.skillPoints;
+    }
+    
+    public boolean spendSkillPoint() {
+        if (this.skillPoints > 0) {
+            this.skillPoints--;
+            return true;
+        }
+        return false;
     }
 
     public void revive(Maps map){

@@ -27,21 +27,11 @@ public class InventoryStrategy implements PlayerStrategy {
             System.out.println("The inventory is empty");
             mainFrame.showDialog(List.of("the inventory is empty"));
         }
-        /* if (dx >=0 && dx <= player.getInventory().size()-1 && dy == 0){ / selection of the item, dy must be 0                   / this is needed if a player can use the item on other entities
-            moveInventoryIndex(dx);
-        }
-        else if (dx >=0 && dx <= player.getInventory().size()-1 && dy >= 1 && dy <= 2){ / selection of the element we want the item to interact
-            movePlayerIndex(dy);
-        } */
     }
 
     private void moveInventoryIndex(int index){
         this.inventoryIndex =  (index + this.inventoryIndex + player.getInventory().size()) % (player.getInventory().size());
     }
-
-    /* private void movePlayerIndex(int index){
-        this.inventoryIndex = (index-1) % 2;
-    } */
 
     public int acceptItem(Player other){
         if (this.player.getInventory().size() != 0){

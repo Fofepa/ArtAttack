@@ -7,8 +7,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +29,7 @@ import com.artattack.mapelements.skilltree.SpecialMoveNODE;
 
 /**
  * SkillTreePanel - Displays the player's skill tree.
- * Updated with manual layouts for Zappa and Lynch, larger UI elements,
- * and improved description panel positioning.
+ * Key handling is managed by InputController, not this panel.
  */
 public class SkillTreePanel extends JPanel {
     private SkillTree skillTree;
@@ -62,9 +59,14 @@ public class SkillTreePanel extends JPanel {
         this.nodePositions = new HashMap<>();
         this.availableNodes = new ArrayList<>();
         
+        // Ensure tree is built
+        if (skillTree.getRoot() != null) {
+            skillTree.buildTree(skillTree.getRoot());
+        }
+        
         initializePanel();
         updateAvailableNodes();
-        setupInput();
+        // Key handling now managed by InputController
     }
     
     private void initializePanel() {
@@ -74,11 +76,13 @@ public class SkillTreePanel extends JPanel {
     
     private void calculateNodePositions() {
         Node root = findRootNode();
-        if (root == null) return;
+        if (root == null) {
+            System.err.println("ERROR: Root node not found!");
+            return;
+        }
         
         nodePositions.clear();
         int centerX = getWidth() / 2;
-        
         int startY = 130; 
 
         switch (player.getType()) {
@@ -95,7 +99,7 @@ public class SkillTreePanel extends JPanel {
         Node n2 = root.getChildren().get(0); 
         Node n3 = root.getChildren().get(1); 
 
-        // --- LEFT BRANCH (Zappa) ---
+        // LEFT BRANCH (Zappa)
        
         putPos(n2, cx - 140, y + 80); 
 
@@ -202,7 +206,7 @@ public class SkillTreePanel extends JPanel {
                             }
                             
                             if (n26 != null) {
-                                putPos(n26, cx + 260, y + 640);
+                                putPos(n26, cx + 260, y + 630);
                             }
                         }
                     }
@@ -211,7 +215,6 @@ public class SkillTreePanel extends JPanel {
         }
     }
 
-    
     private void layoutLynchTree(Node root, int cx, int y) {
         putPos(root, cx, y);
         if (root.getChildren().size() < 2) return;
@@ -334,62 +337,136 @@ public class SkillTreePanel extends JPanel {
         }
     }
     
-    private void putPos(Node node, int x, int y) {
-        nodePositions.put(node, new NodePosition(x, y));
+    private void putPos(Node n, int x, int y) {
+        nodePositions.put(n, new NodePosition(x, y));
     }
     
-    // --- UTILS ---
-
     private Node findRootNode() {
         for (Node node : skillTree.getSupportList()) {
-            if (node instanceof RootNode) return node;
-        }
-        return skillTree.getSupportList().isEmpty() ? null : skillTree.getSupportList().get(0);
-    }
-
-    private void updateAvailableNodes() {
-        availableNodes.clear();
-        Node root = findRootNode();
-        for (Node node : skillTree.getSupportList()) {
-            if (isNodeAvailable(node)) availableNodes.add(node);
-        }
-        
-        if (selectedNode == null || !availableNodes.contains(selectedNode)) {
-            if (!availableNodes.isEmpty()) {
-                selectedNode = availableNodes.get(0);
-                currentIndex = 0;
+            if (node instanceof RootNode) {
+                return node;
             }
         }
+        return null;
     }
-
-    private boolean isNodeAvailable(Node node) {
-        if (node instanceof RootNode) return false;
+    
+    private void updateAvailableNodes() {
+        availableNodes.clear();
+        
+        // Add ALL nodes except root and already spent ones
+        for (Node node : skillTree.getSupportList()) {
+            if (node.isSpent()) continue;  // Skip already unlocked nodes
+            if (node instanceof RootNode) continue;  // Skip root
+            
+            availableNodes.add(node);
+        }
+        
+        if (!availableNodes.isEmpty()) {
+            currentIndex = 0;
+            selectedNode = availableNodes.get(0);
+        } else {
+            selectedNode = null;
+        }
+        
+        System.out.println("Navigable nodes: " + availableNodes.size());
+    }
+    
+    // Check if a node can be unlocked (has at least one unlocked parent)
+    private boolean isNodeUnlockable(Node node) {
         if (node.isSpent()) return false;
-        if (!node.hasParent()) return false;
-        for (Node parent : node.getParents()) {
-            if (parent.isSpent()) return true;
+        if (node instanceof RootNode) return false;
+        
+        // Check if node has parents and if at least one parent is spent
+        List<Node> parents = node.getParents();
+        if (parents == null || parents.isEmpty()) return false;
+        
+        // Node is unlockable if at least one parent is spent
+        for (Node parent : parents) {
+            if (parent.isSpent()) {
+                return true;
+            }
         }
         return false;
     }
-
-    private void setupInput() {
-        addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                switch (e.getKeyCode()) {
-                    case KeyEvent.VK_LEFT, KeyEvent.VK_A -> navigateHorizontal(-1);
-                    case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> navigateHorizontal(1);
-                    case KeyEvent.VK_UP, KeyEvent.VK_W -> navigateVertical(-1);
-                    case KeyEvent.VK_DOWN, KeyEvent.VK_S -> navigateVertical(1);
-                    case KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> confirmSelection();
-                }
-            }
-        });
-    }
-
-    private void navigateHorizontal(int direction) { navigate(direction, true); }
-    private void navigateVertical(int direction) { navigate(direction, false); }
     
+    // Old method kept for compatibility but now just calls isNodeUnlockable
+    private boolean isNodeAvailable(Node node) {
+        return isNodeUnlockable(node);
+    }
+    
+    // === PUBLIC METHODS FOR INPUT CONTROLLER ===
+    
+    public void selectUp() {
+        navigateVertical(-1);
+    }
+    
+    public void selectDown() {
+        navigateVertical(1);
+    }
+    
+    public void selectLeft() {
+        navigateHorizontal(-1);
+    }
+    
+    public void selectRight() {
+        navigateHorizontal(1);
+    }
+    
+    public boolean confirmSelection() {
+        if (selectedNode == null) {
+            System.out.println("No node selected");
+            return false;
+        }
+        
+        // Check if node can be unlocked (has unlocked parent)
+        if (!isNodeUnlockable(selectedNode)) {
+            System.out.println("Cannot unlock this node - parent nodes must be unlocked first");
+            return false;
+        }
+        
+        // Check skill points
+        if (player.getSkillPoints() <= 0) {
+            System.out.println("No skill points available");
+            return false;
+        }
+        
+        // Spend skill point
+        if (!player.spendSkillPoint()) {
+            System.out.println("Failed to spend skill point");
+            return false;
+        }
+        
+        // Unlock node
+        selectedNode.setSkill(player);
+        selectedNode.setSpent();
+        
+        System.out.println("Node unlocked! Remaining skill points: " + player.getSkillPoints());
+        
+        // Update available nodes
+        updateAvailableNodes();
+        
+        // Trigger callback
+        if (onNodeSelected != null) {
+            onNodeSelected.accept(selectedNode);
+        }
+        
+        repaint();
+        return true;
+    }
+    
+    public boolean hasNodesAvailable() {
+        return !availableNodes.isEmpty() && player.getSkillPoints() > 0;
+    }
+    
+    // === PRIVATE NAVIGATION METHODS ===
+    
+    private void navigateHorizontal(int direction) { 
+        navigate(direction, true); 
+    }
+    
+    private void navigateVertical(int direction) { 
+        navigate(direction, false); 
+    }
     
     private void navigate(int direction, boolean horizontal) {
         if (selectedNode == null || availableNodes.isEmpty()) return;
@@ -422,19 +499,8 @@ public class SkillTreePanel extends JPanel {
             repaint();
         }
     }
-    
-    private void confirmSelection() {
-    if (selectedNode != null && isNodeAvailable(selectedNode)) {
-        if (onNodeSelected != null) onNodeSelected.accept(selectedNode);
-    } else if (availableNodes.isEmpty()) {
-        System.out.println("Skill tree complete - no more nodes available");
-        if (onNodeSelected != null) {
-            onNodeSelected.accept(null);
-        }
-    }
-}
 
-    // --- DRAWING ---
+    // === DRAWING METHODS ===
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -484,23 +550,24 @@ public class SkillTreePanel extends JPanel {
         for (Node node : skillTree.getSupportList()) {
             NodePosition pos = nodePositions.get(node);
             if (pos == null) continue;
-            drawNode(g2, node, pos.x, pos.y, node == selectedNode, isNodeAvailable(node), node.isSpent());
+            drawNode(g2, node, pos.x, pos.y, node == selectedNode, isNodeUnlockable(node), node.isSpent());
         }
     }
     
-    private void drawNode(Graphics2D g2, Node node, int x, int y, boolean isSelected, boolean isAvailable, boolean isSpent) {
+    private void drawNode(Graphics2D g2, Node node, int x, int y, boolean isSelected, boolean isUnlockable, boolean isSpent) {
         Color fillColor;
         Color borderColor;
         
         if (isSpent) {
             fillColor = COLOR_SPENT;
             borderColor = COLOR_SPENT.brighter();
-        } else if (isAvailable) {
+        } else if (isUnlockable) {
             fillColor = isSelected ? COLOR_SELECTED.darker() : COLOR_AVAILABLE.darker().darker();
             borderColor = isSelected ? COLOR_SELECTED : COLOR_AVAILABLE;
         } else {
-            fillColor = COLOR_LOCKED;
-            borderColor = COLOR_LOCKED.brighter();
+            // Locked nodes - show selection with different color
+            fillColor = isSelected ? COLOR_LOCKED.brighter() : COLOR_LOCKED;
+            borderColor = isSelected ? COLOR_SELECTED.darker() : COLOR_LOCKED.brighter();
         }
         
         g2.setColor(fillColor);
@@ -510,12 +577,10 @@ public class SkillTreePanel extends JPanel {
         g2.setColor(borderColor);
         g2.drawOval(x - nodeRadius, y - nodeRadius, nodeRadius * 2, nodeRadius * 2);
         
-        
         g2.setColor(Color.WHITE);
         g2.setFont(new Font("Monospaced", Font.BOLD, 12));
         String nodeTypeLabel = getNodeShortLabel(node);
         drawCenteredString(g2, nodeTypeLabel, x, y + 4);
-        
         
         if (isSpent) {
             g2.setColor(COLOR_AVAILABLE);
@@ -527,22 +592,30 @@ public class SkillTreePanel extends JPanel {
     
     private void drawNodeDescription(Graphics2D g2, Node node, int width, int height) {
         int boxWidth = 360;  
-        int boxHeight = 160; 
-
-        
+        int boxHeight = 160;
         int boxX = 50; 
         int boxY = (height / 2) - (boxHeight / 2);
 
-        // Background
+        // Skill points above the box
+        g2.setFont(new Font("Monospaced", Font.BOLD, 18));
+        g2.setColor(new Color(180, 180, 0)); // Dark yellow
+        String skillPointsText = "Skill points available: " + player.getSkillPoints();
+        drawCenteredString(g2, skillPointsText, boxX + boxWidth / 2, boxY - 15);
+
         g2.setColor(new Color(20, 20, 20, 245));
         g2.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 15, 15);
 
-        // Border
-        g2.setColor(COLOR_SELECTED);
+        boolean isUnlockable = isNodeUnlockable(node);
+        if (node.isSpent()) {
+            g2.setColor(COLOR_SPENT.brighter());
+        } else if (isUnlockable) {
+            g2.setColor(COLOR_SELECTED);
+        } else {
+            g2.setColor(COLOR_LOCKED.brighter());
+        }
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(boxX, boxY, boxWidth, boxHeight, 15, 15);
 
-        // Text Content
         g2.setFont(new Font("Monospaced", Font.BOLD, 18));
         g2.setColor(Color.WHITE);
         drawCenteredString(g2, getNodeTypeName(node), boxX + boxWidth / 2, boxY + 35);
@@ -554,14 +627,22 @@ public class SkillTreePanel extends JPanel {
         g2.setColor(Color.LIGHT_GRAY);
         g2.setFont(new Font("Monospaced", Font.ITALIC, 13));
         String statusText;
-        if (node.isSpent()) statusText = "STATUS: UNLOCKED";
-        else if (isNodeAvailable(node)) statusText = "STATUS: AVAILABLE (Press ENTER)";
-        else statusText = "STATUS: LOCKED";
+        if (node.isSpent()) {
+            statusText = "STATUS: UNLOCKED";
+        } else if (isUnlockable) {
+            if (player.getSkillPoints() > 0) {
+                statusText = "STATUS: AVAILABLE (Press ENTER)";
+            } else {
+                statusText = "STATUS: NO SKILL POINTS";
+            }
+        } else {
+            statusText = "STATUS: LOCKED (Unlock parent first)";
+        }
         
         drawCenteredString(g2, statusText, boxX + boxWidth / 2, boxY + 115);
     }
     
-    // --- HELPERS ---
+    // === HELPER METHODS ===
     
     private String getNodeShortLabel(Node node) {
         return switch (node) {
@@ -603,15 +684,35 @@ public class SkillTreePanel extends JPanel {
     }
     
     // Reflection helpers to access private fields from Node subclasses
-    private int getHPValue(HPNODE node) { try { var f = HPNODE.class.getDeclaredField("newHP"); f.setAccessible(true); return (int) f.get(node); } catch (Exception e) { return 0; } }
-    private int getAPValue(APNODE node) { try { var f = APNODE.class.getDeclaredField("newAP"); f.setAccessible(true); return (int) f.get(node); } catch (Exception e) { return 0; } }
-    private int getSPValue(SPNODE node) { try { var f = SPNODE.class.getDeclaredField("newSP"); f.setAccessible(true); return (int) f.get(node); } catch (Exception e) { return 0; } }
-    private String getSpecialMoveName(SpecialMoveNODE node) { try { var f = SpecialMoveNODE.class.getDeclaredField("specialMove"); f.setAccessible(true); Object m = f.get(node); if(m!=null) return (String)m.getClass().getMethod("getName").invoke(m); } catch (Exception e) {} return "Special Ability"; }
+    private int getHPValue(HPNODE node) { 
+        try { var f = HPNODE.class.getDeclaredField("newHP"); f.setAccessible(true); return (int) f.get(node); } 
+        catch (Exception e) { return 0; } 
+    }
+    
+    private int getAPValue(APNODE node) { 
+        try { var f = APNODE.class.getDeclaredField("newAP"); f.setAccessible(true); return (int) f.get(node); } 
+        catch (Exception e) { return 0; } 
+    }
+    
+    private int getSPValue(SPNODE node) { 
+        try { var f = SPNODE.class.getDeclaredField("newSP"); f.setAccessible(true); return (int) f.get(node); } 
+        catch (Exception e) { return 0; } 
+    }
+    
+    private String getSpecialMoveName(SpecialMoveNODE node) { 
+        try { 
+            var f = SpecialMoveNODE.class.getDeclaredField("specialMove"); 
+            f.setAccessible(true); 
+            Object m = f.get(node); 
+            if(m!=null) return (String)m.getClass().getMethod("getName").invoke(m); 
+        } catch (Exception e) {} 
+        return "Special Ability"; 
+    }
 
     private void drawInstructions(Graphics2D g2, int width, int height) {
         g2.setFont(new Font("Monospaced", Font.PLAIN, 12));
         g2.setColor(Color.DARK_GRAY);
-        g2.drawString("ARROWS to Select, ENTER to Confirm", 20, height - 20);
+        g2.drawString("ARROWS: Navigate | ENTER: Unlock | ESC: Close", 20, height - 20);
     }
     
     private void drawCenteredString(Graphics g, String text, int x, int y) {

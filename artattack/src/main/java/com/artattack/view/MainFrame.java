@@ -278,7 +278,9 @@ public class MainFrame implements UIManager {
 
     public boolean isSkillTreeVisible() {
         SkillTreePanel panel = getSkillTreePanel();
-        return panel != null && panel.isVisible() && panel.getParent() != null;
+        boolean panelCheck = panel != null && panel.isVisible() && panel.getParent() != null;
+        boolean stateCheck = mainGUIFacade != null && "SKILL_TREE".equals(mainGUIFacade.getCurrentState());
+        return panelCheck || stateCheck;
     }
 
     public void switchMap(Maps map){

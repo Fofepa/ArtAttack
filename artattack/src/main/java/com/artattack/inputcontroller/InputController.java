@@ -14,16 +14,15 @@ import com.artattack.mapelements.ActiveElement;
 import com.artattack.mapelements.Enemy;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
-import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.moves.Move;
 import com.artattack.moves.Weapon;
 import com.artattack.turns.TurnListener;
-import com.artattack.view.GameContext;
 import com.artattack.view.InteractionPanel;
 import com.artattack.view.InventoryPanel;
 import com.artattack.view.MainFrame;
 import com.artattack.view.MapPanel;
 import com.artattack.view.MovesPanel;
+import com.artattack.view.SkillTreePanel;
 import com.artattack.view.WeaponsPanel;
 
 
@@ -47,8 +46,20 @@ public class InputController implements KeyListener, TurnListener {
             return; 
         }
 
+        // Handle ESC - check skill tree first
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-            System.out.println("ESC pressed (global)");
+            System.out.println("ESC pressed");
+            
+            // If skill tree is open, close it
+            if (mainFrame.getMainGUIFacade() != null && 
+                "SKILL_TREE".equals(mainFrame.getMainGUIFacade().getCurrentState())) {
+                System.out.println("Closing skill tree");
+                mainFrame.hideSkillTreePanel();
+                mainFrame.focusMapPanel();
+                return;
+            }
+            
+            // Otherwise toggle pause
             togglePause();
             return;
         }
@@ -57,11 +68,35 @@ public class InputController implements KeyListener, TurnListener {
             System.out.println("Game is paused - input blocked");
             return;
         }
+        
+        // Route to skill tree if open
+        if (mainFrame.getMainGUIFacade() != null && 
+            "SKILL_TREE".equals(mainFrame.getMainGUIFacade().getCurrentState())) {
+            System.out.println("-> Routing to handleSkillTreeInput (state is SKILL_TREE)");
+            handleSkillTreeInput(e);
+            return;
+        }
 
-        if (mainFrame.getDialogActive() && !mainFrame.isSkillTreeVisible()) {
+        if (mainFrame.getDialogActive()) {
             System.out.println("-> Dialog active, forcing Interaction Input");
             handleInteractionInput(e);
             return; 
+        }
+        
+        // Handle O key to open skill tree (only during player turn)
+        if (e.getKeyCode() == KeyEvent.VK_O && currentElement instanceof Player && !isEnemyTurn) {
+            Player player = (Player) currentElement;
+            if (player.getSkillTree() != null && !player.getSkillTree().isComplete()) {
+                System.out.println("Opening skill tree with O key");
+                openSkillTree(player);
+                return;
+            } else if (player.getSkillTree() == null) {
+                System.out.println("No skill tree for this player");
+            } else {
+                System.out.println("Skill tree is complete");
+                mainFrame.showDialog(List.of("Skill tree is complete!"));
+            }
+            return;
         }
 
         if (e.getKeyCode() == KeyEvent.VK_F ||
@@ -288,6 +323,71 @@ public class InputController implements KeyListener, TurnListener {
             }
         }
     }   
+
+    // skill tree handling
+    private void handleSkillTreeInput(KeyEvent e) {
+        SkillTreePanel skillTreePanel = mainFrame.getSkillTreePanel();
+        if (skillTreePanel == null) {
+            System.err.println("ERROR: SkillTreePanel is null");
+            return;
+        }
+
+        switch (e.getKeyCode()) {
+            case KeyEvent.VK_UP, KeyEvent.VK_W -> {
+                System.out.println("Skill Tree: UP");
+                skillTreePanel.selectUp();
+            }
+            case KeyEvent.VK_DOWN, KeyEvent.VK_S -> {
+                System.out.println("Skill Tree: DOWN");
+                skillTreePanel.selectDown();
+            }
+            case KeyEvent.VK_LEFT, KeyEvent.VK_A -> {
+                System.out.println("Skill Tree: LEFT");
+                skillTreePanel.selectLeft();
+            }
+            case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> {
+                System.out.println("Skill Tree: RIGHT");
+                skillTreePanel.selectRight();
+            }
+            case KeyEvent.VK_ENTER, KeyEvent.VK_SPACE -> {
+                System.out.println("Skill Tree: CONFIRM");
+                boolean success = skillTreePanel.confirmSelection();
+                if (success) {
+                    // Node unlocked - update UI
+                    mainFrame.repaintStatsPanel();
+                    mainFrame.repaintWeaponsPanel();
+                    mainFrame.repaintMovesPanel();
+                    mainFrame.repaintMapPanel();
+                    mainFrame.updateTurnDisplay();
+                    // Panel stays open even without skill points
+                }
+            }
+            default -> {
+                // Ignore other keys
+            }
+        }
+    }
+
+    
+    // opens the skillTree for each player
+    private void openSkillTree(Player player) {
+        if (player == null || player.getSkillTree() == null) {
+            System.err.println("ERROR: Cannot open skill tree");
+            return;
+        }
+        
+        System.out.println("=== OPENING SKILL TREE ===");
+        System.out.println("Available nodes: " + player.getSkillTree().getSupportList().size());
+
+        mainFrame.showSkillTreePanel(player, player.getSkillTree(), (selectedNode) -> {
+            if (selectedNode != null) {
+                System.out.println(">>> Node unlocked: " + selectedNode.getLabel());
+            }
+        });
+
+        mainFrame.focusSkillTreePanel();
+        System.out.println("=== SKILL TREE OPENED ===");
+    }
 
     private void handleInteractionInput(KeyEvent e){
         boolean dialogActive = mainFrame.getDialogActive();
@@ -736,10 +836,10 @@ public class InputController implements KeyListener, TurnListener {
             }
             
             
-            if(player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()){   // Level Up check
-                System.out.println(">>> PLAYER LEVELED UP! Opening Skill Tree...");
-                handlePlayerLevelUp(player);
-                return;
+            // Level up notification (console only, no dialog)
+            if(player.getLeveledUp() > 0){
+                System.out.println(">>> PLAYER LEVELED UP! Skill points: " + player.getSkillPoints());
+                player.setLeveledUp(); // Decrement counter
             }
             
 
@@ -784,79 +884,6 @@ public class InputController implements KeyListener, TurnListener {
         mainFrame.repaintMapPanel();
         System.out.println("=== UPDATE TURN COMPLETE ===\n");
     }
-
-    private void handlePlayerLevelUp(Player player) {
-        GameContext context = mainFrame.getGameContext();
-        if (context == null) {
-            System.err.println("ERROR: GameContext is null!");
-            return;
-        }
-
-        mainFrame.repaintStatsPanel();
-        
-        SkillTree skillTree = player.getSkillTree();
-        /*if (player.getID() == 1) {
-            skillTree = context.getPlayer1SkillTree();
-        } else if (player.getID() == 2) {
-            skillTree = context.getPlayer2SkillTree();
-        }*/
-        
-        if (skillTree == null) {
-            System.err.println("ERROR: SkillTree not found for player: " + player.getName());
-            return;
-        }
-        if(!player.getSkillTree().isComplete()){
-    
-            mainFrame.showSkillTreePanel(player, skillTree, (selectedNode) -> {
-            if (selectedNode == null) {
-                    System.out.println(">>> Skill tree closed (complete or cancelled)");
-                    mainFrame.repaintStatsPanel();
-                    mainFrame.repaintWeaponsPanel();
-                    mainFrame.repaintMovesPanel();
-                    mainFrame.repaintMapPanel();
-                    mainFrame.updateTurnDisplay();
-                return;
-            }
-    
-                System.out.println(">>> SKILL UNLOCKED: Node #" + selectedNode.getLabel());
-                System.out.println(">>> Player: " + player.getName() + " | Type: " + selectedNode.getClass().getSimpleName());
-                
-                mainFrame.repaintStatsPanel();
-                mainFrame.repaintWeaponsPanel();
-                mainFrame.repaintMovesPanel();
-                mainFrame.repaintMapPanel();
-                mainFrame.updateTurnDisplay();
-                
-                String nodeType = getNodeTypeName(selectedNode);
-                mainFrame.showDialog(List.of(
-                    player.getName() + " has unlocked a new skill!",
-                    "Skill: " + nodeType,
-                    "Press ENTER to continue..."
-                ));
-                
-                if (player.getLeveledUp() > 0 && !player.getSkillTree().isComplete()) {
-                    System.out.println(">>> Another level up available! Reopening Skill Tree...");
-                    handlePlayerLevelUp(player);
-            }
-        });
-        }
-    }
-    
-    
-    private String getNodeTypeName(com.artattack.mapelements.skilltree.Node node) {
-        String className = node.getClass().getSimpleName();
-        return switch (className) {
-            case "HPNODE" -> "Health Boost";
-            case "APNODE" -> "Action Points Boost";
-            case "SPNODE" -> "Speed Boost";
-            case "MANODE" -> "Movement Area Expansion";
-            case "MAXWPNODE" -> "Weapon Slot Unlock";
-            case "MAXMVNODE" -> "Move Capacity Increase";
-            case "SpecialMoveNODE" -> "Special Move";
-            default -> "Unknown Skill";
-        };
-    }
-
 
     public void togglePause(){
         if(mainFrame.isPauseMenuVisible()){

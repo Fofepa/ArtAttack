@@ -9,6 +9,9 @@ jobs:
   build:
     name: Build on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        working-directory: ./artattack
     strategy:
       matrix:
         include:
@@ -50,4 +53,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: output/*
+        path: ./artattack/output/*

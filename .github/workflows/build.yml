@@ -41,16 +41,7 @@ jobs:
       run: sudo apt-get install -y rpm
 
     - name: Create Native Package
-      run: |
-        jpackage \
-          --input releases \
-          --name ArtAttack \
-          --main-jar Iss-Gruppo-7-ArtAttack.jar \
-          --main-class com.artattack.GameLauncher \
-          --type ${{ matrix.package_type }} \
-          --dest output/ \
-          --vendor "ArtAttackTeam"
-
+      run: jpackage --input releases --name ArtAttack --main-jar Iss-Gruppo-7-ArtAttack.jar --main-class com.artattack.GameLauncher --type ${{ matrix.package_type }} --dest output/ --vendor "ArtAttackTeam"
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:

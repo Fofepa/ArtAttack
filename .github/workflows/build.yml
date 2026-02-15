@@ -1,17 +1,15 @@
-name: Build Multi-Platform Executables
+name: Build from Existing JAR
 
 on:
   push:
-    branches: [ "main" ] 
-  workflow_dispatch:      
+    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
-    name: Build on ${{ matrix.os }}
+    name: Package ${{ matrix.artifact_name }}
     runs-on: ${{ matrix.os }}
-    defaults:
-      run:
-        working-directory: ./artattack
+    
     strategy:
       matrix:
         include:
@@ -37,15 +35,24 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
-        cache: 'maven'
 
-    - name: Build JAR with Maven
-      run: mvn clean package -DskipTests
+    - name: Install RPM tools (solo per Fedora)
+      if: matrix.package_type == 'rpm'
+      run: sudo apt-get install -y rpm
 
-    - name: Create Native Package with jpackage
-      run: jpackage --input target/ --name ArtAttack --main-jar artattack-1.jar --main-class com.artattack.GameLauncher --type ${{ matrix.package_type }} --dest output/ --vendor "ArtAttackTeam"
+    - name: Create Native Package
+      run: |
+        jpackage \
+          --input releases \
+          --name ArtAttack \
+          --main-jar Iss-Gruppo-7-ArtAttack.jar \
+          --main-class com.artattack.GameLauncher \
+          --type ${{ matrix.package_type }} \
+          --dest output/ \
+          --vendor "ArtAttackTeam"
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: ./artattack/output/*
+        path: output/*

@@ -1,55 +1,11 @@
-name: Build installers
+name: Build
 
 on:
 workflow_dispatch:
 
 jobs:
 build:
-strategy:
-matrix:
-os: [windows-latest, ubuntu-latest, macos-latest]
-
-runs-on: ${{ matrix.os }}
-
+runs-on: ubuntu-latest
 steps:
-  - uses: actions/checkout@v4
-
-  - uses: actions/setup-java@v4
-    with:
-      distribution: temurin
-      java-version: 21
-
-  - name: Prepare files
-    shell: bash
-    run: |
-      mkdir input
-      cp releases/ArtAttack.jar input/ArtAttack.jar || copy releases\ArtAttack.jar input\ArtAttack.jar
-
-  - name: Package Windows
-    if: runner.os == 'Windows'
-    shell: cmd
-    run: |
-      jpackage ^
-        --name ArtAttack ^
-        --input input ^
-        --main-jar ArtAttack.jar ^
-        --type exe ^
-        --win-shortcut
-
-  - name: Package Linux
-    if: runner.os == 'Linux'
-    run: |
-      jpackage \
-        --name ArtAttack \
-        --input input \
-        --main-jar ArtAttack.jar \
-        --type app-image
-
-  - name: Package macOS
-    if: runner.os == 'macOS'
-    run: |
-      jpackage \
-        --name ArtAttack \
-        --input input \
-        --main-jar ArtAttack.jar \
-        --type dmg
+- name: Hello
+run: echo "Workflow works"

@@ -1,11 +1,65 @@
-name: Build
+name: Build installers
 
 on:
-workflow_dispatch:
+  workflow_dispatch: # Permette l'avvio manuale
 
 jobs:
-build:
-runs-on: ubuntu-latest
-steps:
-- name: Hello
-run: echo "Workflow works"
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # 1. Windows Build
+      - name: Package Windows (EXE)
+        if: matrix.os == 'windows-latest'
+        shell: cmd
+        run: |
+          jpackage ^
+            --name ArtAttack ^
+            --input releases ^
+            --main-jar ArtAttack.jar ^
+            --main-class com.artattack.GameLauncher ^
+            --type exe ^
+            --win-shortcut ^
+            --dest output
+
+      # 2. Linux Build (DEB)
+      - name: Package Linux (DEB)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          jpackage \
+            --name ArtAttack \
+            --input releases \
+            --main-jar ArtAttack.jar \
+            --main-class com.artattack.GameLauncher \
+            --type deb \
+            --dest output
+
+      # 3. macOS Build (DMG)
+      - name: Package macOS (DMG)
+        if: matrix.os == 'macos-latest'
+        run: |
+          jpackage \
+            --name ArtAttack \
+            --input releases \
+            --main-jar ArtAttack.jar \
+            --main-class com.artattack.GameLauncher \
+            --type dmg \
+            --dest output
+
+      # 4. Carica il risultato su GitHub
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ArtAttack-Installer-${{ matrix.os }}
+          path: output/*

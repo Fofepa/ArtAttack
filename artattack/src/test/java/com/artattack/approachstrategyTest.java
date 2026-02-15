@@ -1,5 +1,6 @@
 package com.artattack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.After;
@@ -14,11 +15,14 @@ import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilder;
 import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.Maps;
+import com.artattack.mapelements.ConcreteEnemyBuilder;
+import com.artattack.mapelements.ConcretePlayerBuilder;
 import com.artattack.mapelements.Enemy;
+import com.artattack.mapelements.EnemyDirector;
 import com.artattack.mapelements.EnemyType;
 import com.artattack.mapelements.Player;
-import com.artattack.mapelements.PlayerType;
-import com.artattack.moves.Weapon;
+import com.artattack.mapelements.PlayerDirector;
+import com.artattack.view.CharacterType;
 import com.artattack.view.MainFrame;
 
 public class approachstrategyTest {
@@ -30,19 +34,29 @@ public class approachstrategyTest {
     @Before
     public void setUp(){
         
-        this.enemy = new Enemy(0, 'E', "Frank", new Coordinates(10,10),EnemyType.GUARD, 20, 20, 3,
-        null,5,5,List.of(new Coordinates(-1, -1), new Coordinates(-1, 0), new Coordinates(-1, 1), new Coordinates(0, -1), new Coordinates(-2, 0), 
-        new Coordinates(0, 2), new Coordinates(0, -2), new Coordinates(2, 0), new Coordinates(-2, -2), new Coordinates(2, 2), new Coordinates(2, -2), new Coordinates(-2, 2), 
-        new Coordinates(0, 1), new Coordinates(1, -1), new Coordinates(1, 0), new Coordinates(13,24), new Coordinates(1, 1)),null,null,null,0);
+        EnemyDirector ed = new EnemyDirector();
+        ConcreteEnemyBuilder eb = new ConcreteEnemyBuilder();
+        PlayerDirector pd = new PlayerDirector();
+        ConcretePlayerBuilder pb = new ConcretePlayerBuilder();
+        ed.create(eb, EnemyType.GUARD, new Coordinates(10,10));
+        this.enemy = eb.getResult();
+        pd.create(pb, CharacterType.DIRECTOR, 0);
+        Player p1 = pb.getResult();
+        pd.create(pb, CharacterType.MUSICIAN, 1);
+        Player p2 = pb.getResult();
         MapBuilder mapBuilder = new MapBuilderTypeOne(); 
-        mapBuilder.setPlayerOne(new Player(1, '@', "Zappa", new Coordinates(15, 34), List.of(new Weapon("Hoe", "", 1, PlayerType.MUSICIAN)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MUSICIAN));
-        mapBuilder.setPlayerTwo(new Player(0, '@', "Lynch", new Coordinates(25, 34), List.of(new Weapon("Hoe", "", 1, PlayerType.MOVIE_DIRECTOR)), 5,5, null, 20, 20, 0, 20, 1, 5, 2, null, null, PlayerType.MOVIE_DIRECTOR));
-        mapBuilder.setEnemies(List.of(enemy));
         mapBuilder.setDimension(36, 150);
+        mapBuilder.setSpawn(new Coordinates(12, 12), new Coordinates(26, 23));
+        mapBuilder.setEnemies(new ArrayList<>(List.of(enemy)));
+        mapBuilder.buildBorder();
+        mapBuilder.setPlayerOne(p1);
+        mapBuilder.setPlayerTwo(p2);
         mapBuilder.setDict();
+        mapBuilder.setTurnQueue();
         mapBuilder.startMap();
         assertNotNull(mapBuilder);
         this.map = mapBuilder.getResult();
+        this.map.getConcreteTurnHandler().getConcreteTurnQueue().add(enemy);
         this.mainFrame = new MainFrame(this.map);
         assertNotNull(mainFrame);
         approach = new ApproachStrategy(mainFrame);
@@ -50,8 +64,12 @@ public class approachstrategyTest {
 
     @Test
     public void executeTest(){
+        double c_old = Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates());
         approach.execute(enemy,map);
-        assertTrue(enemy.getCoordinates().equals(new Coordinates(23, 34)));
+        double c_new = Coordinates.getDistance(enemy.getCoordinates(), map.getPlayerOne().getCoordinates());
+
+        assertTrue(c_new < c_old);
+        
     }
     
     

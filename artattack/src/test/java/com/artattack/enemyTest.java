@@ -88,6 +88,6 @@ public class enemyTest {
     public void removeTest(){
         enemy.remove(map);
         assertFalse("removeTest faild. Enemy still in the dict.", map.getDict().containsValue(enemy));
-        assertTrue("removeTest faild. mapMatrix not updated.", map.getMapMatrix()[enemy.getCoordinates().getX()][enemy.getCoordinates().getY()]=='.');
+        assertTrue("removeTest faild. mapMatrix not updated.", map.getMapMatrix()[enemy.getCoordinates().getX()][enemy.getCoordinates().getY()]=='\u25EA');
     }
 }

@@ -96,11 +96,11 @@ public class mapTest {
     public void removeTest() {
         this.map.remove(enemy);
         //assertFalse(this.map.getEnemies().contains(enemy));
-        assertTrue(this.map.getMapMatrix()[enemy.getCoordinates().getX()][enemy.getCoordinates().getY()] == '.');
+        assertTrue(this.map.getMapMatrix()[enemy.getCoordinates().getX()][enemy.getCoordinates().getY()] == '\u25EA');
         assertFalse(this.map.getDict().containsValue(enemy));
         this.map.remove(player);
         assertNull(this.map.getPlayerOne());
-        assertTrue(this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] == '.');
+        assertTrue(this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] == '\u25EA');
         assertFalse(this.map.getDict().containsValue(player));
     }
 }

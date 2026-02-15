@@ -112,7 +112,7 @@ public class EnemyDirector {
                 Weapon robotWeapon = new Weapon("RobotWeapon", " ", 4, List.of(robotMove1, robotMove2, robotMove3), null);
                 builder.setMapSymbol('R'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(18); builder.setMaxHP(18); builder.setDroppedXP(16);
                 builder.setSpeed(8);builder.setName("RoboGuard"); builder.setWeapons(List.of(robotWeapon)); builder.setActionPoints(16); builder.setMaxActionPoints(16); builder.setMoveArea(roboguardMA); builder.setVisionArea(roboguardVA);
-                builder.setSpritePath(null);
+                builder.setSpritePath("/images/roboGuard.jpg");
             }
             
             case EnemyType.TOOLBOT ->{

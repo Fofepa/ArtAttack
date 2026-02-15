@@ -1,49 +1,91 @@
-name: Build from Existing JAR
+name: Build installers
 
 on:
-  push:
-    branches: [ "main" ]
-  workflow_dispatch:
+release:
+types: [created]
 
 jobs:
-  build:
-    name: Package ${{ matrix.artifact_name }}
-    runs-on: ${{ matrix.os }}
-    
-    strategy:
-      matrix:
-        include:
-          - os: windows-latest
-            artifact_name: ArtAttack-Windows.exe
-            package_type: exe
-          - os: ubuntu-latest
-            artifact_name: ArtAttack-Linux.deb
-            package_type: deb
-          - os: ubuntu-latest
-            artifact_name: ArtAttack-Fedora.rpm
-            package_type: rpm
-          - os: macos-latest
-            artifact_name: ArtAttack-Mac.dmg
-            package_type: dmg
+build:
+strategy:
+matrix:
+os: [windows-latest, ubuntu-latest, macos-latest]
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+runs-on: ${{ matrix.os }}
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
+steps:
+  - name: Checkout
+    uses: actions/checkout@v4
 
-    - name: Install RPM tools (solo per Fedora)
-      if: matrix.package_type == 'rpm'
-      run: sudo apt-get install -y rpm
+  - name: Setup JDK
+    uses: actions/setup-java@v4
+    with:
+      distribution: temurin
+      java-version: 21
 
-    - name: Create Native Package
-      run: jpackage --input releases --name ArtAttack --main-jar Iss-Gruppo-7-ArtAttack.jar --main-class com.artattack.GameLauncher --type ${{ matrix.package_type }} --dest output/ --vendor "ArtAttackTeam"
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: ${{ matrix.artifact_name }}
-        path: output/*
+  - name: Prepare app folder
+    run: |
+      mkdir input
+      cp releases/ArtAttack.jar input/ArtAttack.jar
+    shell: bash
+
+  # WINDOWS
+  - name: Build Windows exe
+    if: runner.os == 'Windows'
+    run: |
+      jpackage ^
+        --name ArtAttack ^
+        --input input ^
+        --main-jar ArtAttack.jar ^
+        --type exe ^
+        --icon icons/icon.ico ^
+        --win-menu ^
+        --win-shortcut ^
+        --java-options "-Xmx1G -Dsun.java2d.uiScale=1.0 -Dswing.aatext=true"
+    shell: cmd
+
+  # LINUX
+  - name: Build Linux AppImage
+    if: runner.os == 'Linux'
+    run: |
+      jpackage \
+        --name ArtAttack \
+        --input input \
+        --main-jar ArtAttack.jar \
+        --type app-image \
+        --icon icons/icon.png \
+        --java-options "-Xmx1G -Dsun.java2d.uiScale=1.0 -Dswing.aatext=true"
+
+  - name: Build Linux RPM
+    if: runner.os == 'Linux'
+    run: |
+      sudo apt-get update
+      sudo apt-get install -y rpm
+      jpackage \
+        --name ArtAttack \
+        --input input \
+        --main-jar ArtAttack.jar \
+        --type rpm \
+        --icon icons/icon.png
+
+  # MAC
+  - name: Build macOS dmg
+    if: runner.os == 'macOS'
+    run: |
+      jpackage \
+        --name ArtAttack \
+        --input input \
+        --main-jar ArtAttack.jar \
+        --type dmg \
+        --icon icons/icon.icns \
+        --java-options "-Xmx1G -Dsun.java2d.uiScale=1.0 -Dswing.aatext=true"
+
+  # UPLOAD ARTIFACTS
+  - name: Upload artifacts
+    uses: actions/upload-artifact@v4
+    with:
+      name: ArtAttack-${{ runner.os }}
+      path: |
+        *.exe
+        *.dmg
+        *.rpm
+        ArtAttack/

@@ -93,7 +93,7 @@ public class EnemyDirector {
                 Weapon mosquitoWeapon = new Weapon("MosquitoWeapon", " ", 4, List.of(mosquitoMove), null);
                 builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(7); 
                 builder.setSpeed(12);builder.setName("MosquitoBot"); builder.setWeapons(List.of(mosquitoWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(mosquitoMA); builder.setVisionArea(mosquitoVA);
-                builder.setSpritePath(null);
+                builder.setSpritePath("/images/mosquito.jpg");
             }
             
             case EnemyType.ROBOT ->{

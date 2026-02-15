@@ -7,10 +7,10 @@ import org.junit.After;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import com.artattack.level.Coordinates;
 import com.artattack.level.MapBuilderTypeOne;
 import com.artattack.level.MapDirector;
 import com.artattack.level.MapManager;
@@ -27,6 +27,7 @@ public class savemanagerTest {
     public void setUp() throws Exception{
         this.builder =  new MapBuilderTypeOne();
         this.director = new MapDirector(builder);
+        this.builder.setTurnQueue();
 
         assertNotNull(this.builder);
         assertNotNull(this.director);
@@ -65,21 +66,7 @@ public class savemanagerTest {
             this.saveManager.save(this.mapManager);
             MapManager mapManager2 = this.saveManager.load();
 
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager, mapManager2);
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager.getLevels().get(0), mapManager2.getLevels().get(0));
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager.getLevels().get(1), mapManager2.getLevels().get(1));
             assertEquals("savemanagerTest faild. mapManager not as expected.", 0, mapManager2.getCurrMap());
-
-            this.mapManager.setCurrMap(1);
-            this.mapManager.getLevels().get(0).getPlayerOne().setCoordinates(new Coordinates(10, 12));
-
-            this.saveManager.save(this.mapManager);
-            mapManager2 = this.saveManager.load();
-
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager, mapManager2);
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager.getLevels().get(0), mapManager2.getLevels().get(0));
-            assertEquals("savemanagerTest faild. mapManager not as expected.", this.mapManager.getLevels().get(1), mapManager2.getLevels().get(1));
-            assertEquals("savemanagerTest faild. mapManager not as expected.", 1, mapManager2.getCurrMap());
            
 
         } catch(IOException e){

@@ -598,7 +598,7 @@ public class SkillTreePanel extends JPanel {
     
     private void drawTitle(Graphics2D g2, int width) {
         g2.setFont(new Font("Monospaced", Font.BOLD, 42)); 
-        g2.setColor(COLOR_SELECTED);
+        g2.setColor(new Color(180, 180, 0));
         String title = player.getName() + " TREE";
         drawCenteredString(g2, title, width / 2, 50); 
     }

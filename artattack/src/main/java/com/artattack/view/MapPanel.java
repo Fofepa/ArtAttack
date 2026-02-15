@@ -107,6 +107,7 @@ public class MapPanel extends JPanel {
                     case 'I' -> g.setColor(Color.YELLOW);   
                     case '\u2583' -> g.setColor(new Color(150, 100, 60));
                     case '\u2318' -> g.setColor(new Color(131, 244, 74)); 
+                    case '$' -> g.setColor(new Color(180,180,0));
                     default -> g.setColor(Color.WHITE);
                 } 
                 g.drawString(String.valueOf(c), px, py + (int)(cellSize * 0.85));

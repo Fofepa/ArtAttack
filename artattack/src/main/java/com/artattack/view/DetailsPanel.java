@@ -10,9 +10,6 @@ import javax.swing.JPanel;
 
 import com.artattack.items.Item;
 
-/**
- * DetailsPanel - Displays details about selected items/moves
- */
 public class DetailsPanel extends JPanel {
     private String detailText = "No item selected";
     private String itemName = "";

@@ -27,11 +27,11 @@ public class EnemyDirector {
                 mb1.setName("Scared Punch"); mb1.setPower(1); mb1.setActionPoints(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move employeeMove = mb1.getResult();
                 Weapon employeeWeapon = new Weapon(" ", " ", 5, List.of(employeeMove), null);
-                builder.setMapSymbol('E'); builder.setName("Employee"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(8); builder.setMaxHP(8); builder.setDroppedXP(8);
+                builder.setMapSymbol('E'); builder.setName("Employee"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(8); builder.setMaxHP(8); builder.setDroppedXP(12);
                 builder.setSpeed(2); builder.setWeapons(List.of(employeeWeapon)); builder.setActionPoints(5); builder.setMaxActionPoints(5); builder.setMoveArea(employeeMA); builder.setVisionArea(employeeVA);
                 builder.setSpritePath("/images/Employee.jpg");
                 if(ID == 0){
-                    builder.setDroppedXP(20); 
+                    builder.setDroppedXP(25); 
                     ab.addShape("square", 5, true);
                     builder.setVisionArea(ab.getResult());
                 } 
@@ -46,10 +46,10 @@ public class EnemyDirector {
                 mb1.setName("Legal Bat"); mb1.setActionPoints(2); mb1.setPower(4); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
                 Move guardMove1 = mb1.getResult();
                 ab.addShape("circle", 5, true);
-                mb1.setName("gunshot"); mb1.setActionPoints(4); mb1.setPower(5); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
+                mb1.setName("gunshot"); mb1.setActionPoints(6); mb1.setPower(5); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
                 Move guardMove2 = mb1.getResult();
                 Weapon guardWeapon = new Weapon(" ", " ", 5, List.of(guardMove1, guardMove2), null);
-                builder.setMapSymbol('G');builder.setName("Guard"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(14); builder.setMaxHP(14); builder.setDroppedXP(12);
+                builder.setMapSymbol('G');builder.setName("Guard"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(14); builder.setMaxHP(14); builder.setDroppedXP(18);
                 builder.setSpeed(4); builder.setWeapons(List.of(guardWeapon)); builder.setActionPoints(10); builder.setMaxActionPoints(10); builder.setMoveArea(guardMA); builder.setVisionArea(guardVA);
                 builder.setSpritePath("/images/guard.jpg");
             }
@@ -77,7 +77,7 @@ public class EnemyDirector {
                 ab.addShape("square", 25, true);
                 List<Coordinates> bobVA = ab.getResult();
                 Key key = new Key("1st floor key", "Let's you and your party go upstairs!", 5001);
-                builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(30); builder.setKeys(List.of(new Key("1st floor key", "Lets you go upstairs!", 5001)));
+                builder.setMapSymbol('B'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(35); builder.setMaxHP(35); builder.setDroppedXP(40); builder.setKeys(List.of(new Key("1st floor key", "Lets you go upstairs!", 5001)));
                 builder.setSpeed(6);builder.setName("B.O.B"); builder.setWeapons(List.of(bobWeapon)); 
                 builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(bobMA); builder.setVisionArea(bobVA); builder.setSpritePath("/images/boss_tosto.jpg");
             }
@@ -91,7 +91,7 @@ public class EnemyDirector {
                 mb1.setName("Repair"); mb1.setActionPoints(7); mb1.setHealAmount(6); mb1.setHealArea(ab.getResult()); mb1.setAreaHeal(false);
                 Move mosquitoMove = mb1.getResult();
                 Weapon mosquitoWeapon = new Weapon("MosquitoWeapon", " ", 4, List.of(mosquitoMove), null);
-                builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(7); 
+                builder.setMapSymbol('M'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(7); builder.setMaxHP(7); builder.setDroppedXP(16); 
                 builder.setSpeed(12);builder.setName("MosquitoBot"); builder.setWeapons(List.of(mosquitoWeapon)); builder.setActionPoints(12); builder.setMaxActionPoints(12); builder.setMoveArea(mosquitoMA); builder.setVisionArea(mosquitoVA);
                 builder.setSpritePath("/images/mosquito.jpg");
             }
@@ -102,15 +102,16 @@ public class EnemyDirector {
                 ab.addShape("diamond", 6, true);
                 List<Coordinates> roboguardVA = ab.getResult();
                 ab.addShape("circle", 5, true);
-                mb1.setName("Laser Ray"); mb1.setActionPoints(6); mb1.setPower(7); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
+                mb1.setName("Laser Ray"); mb1.setActionPoints(6); mb1.setPower(6); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
                 Move robotMove1 = mb1.getResult();
-                ab.addShape("circle", 3, true); mb1.setActionPoints(7); mb1.setPower(4); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
+                ab.addShape("circle", 3, true); 
+                mb1.setName("Laser wave"); mb1.setActionPoints(7); mb1.setPower(4); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(true);
                 Move robotMove2 = mb1.getResult();
                 ab.addShape("base");
-                mb1.setName("Big Ol' Punch"); mb1.setActionPoints(3); mb1.setPower(8); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
+                mb1.setName("Big Ol' Punch"); mb1.setActionPoints(5); mb1.setPower(5); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false);
                 Move robotMove3 = mb1.getResult();
                 Weapon robotWeapon = new Weapon("RobotWeapon", " ", 4, List.of(robotMove1, robotMove2, robotMove3), null);
-                builder.setMapSymbol('R'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(18); builder.setMaxHP(18); builder.setDroppedXP(16);
+                builder.setMapSymbol('R'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(18); builder.setMaxHP(18); builder.setDroppedXP(24);
                 builder.setSpeed(8);builder.setName("RoboGuard"); builder.setWeapons(List.of(robotWeapon)); builder.setActionPoints(16); builder.setMaxActionPoints(16); builder.setMoveArea(roboguardMA); builder.setVisionArea(roboguardVA);
                 builder.setSpritePath("/images/roboGuard.jpg");
             }
@@ -136,7 +137,7 @@ public class EnemyDirector {
                 List<Coordinates> minionMA = ab.getResult();
                 ab.addShape("square", 23, true);
                 List<Coordinates> minionVA = ab.getResult();
-                builder.setMapSymbol('T'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(15); builder.setMaxHP(15); builder.setDroppedXP(8);
+                builder.setMapSymbol('T'); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(15); builder.setMaxHP(15); builder.setDroppedXP(18);
                 builder.setSpeed(2);builder.setName("T.O.O.L.Bot"); builder.setWeapons(List.of(minionWeapon)); builder.setActionPoints(8); 
                 builder.setMaxActionPoints(8); builder.setMoveArea(minionMA); builder.setVisionArea(minionVA); builder.setSpritePath("/images/toolbot_tosto.jpg");
             }

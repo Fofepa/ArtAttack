@@ -75,12 +75,6 @@ public class InteractionPanel extends JPanel {
         }
     }
     
-    /**
-     * Speaker image manager:
-     * 1. NULL -> load "thevoid.jpg"
-     * 2. Path  -> load the image
-     * 3. else -> load Default Player
-     */
     private void updateSpeakerImage(String imagePath) {
         
         
@@ -269,8 +263,6 @@ public class InteractionPanel extends JPanel {
         repaint();
     }
     
-    // ================= INPUT HANDLING =================
-
     public void selectUp() {
         if (canSelect() && selectedOption > 0) {
             selectedOption--;
@@ -305,8 +297,6 @@ public class InteractionPanel extends JPanel {
         }
         repaint();
     }
-
-    // ================= RENDERING =================
 
     @Override
     protected void paintComponent(Graphics g) {

@@ -8,9 +8,6 @@ import javax.swing.JPanel;
 
 import com.artattack.mapelements.Player;
 
-/**
- * StatsPanel - Displays player statistics with visual bars
- */
 public class StatsPanel extends JPanel {
     private Player player;
     

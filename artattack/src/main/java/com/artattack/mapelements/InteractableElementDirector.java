@@ -23,7 +23,7 @@ public class InteractableElementDirector {
         builder.setMapSymbol('A');
         builder.setName("Aretha Franklin");
         builder.setCoordinates(coordinates);
-        builder.setSpritePath("/images/aretha.jpg/");
+        builder.setSpritePath("/images/aretha.jpg");
         builder.setInteractions(
             List.of(new CheckPoint(List.of("If anything goes bad you'll come here guys!", "Don't get yourselves killed!")))
         );

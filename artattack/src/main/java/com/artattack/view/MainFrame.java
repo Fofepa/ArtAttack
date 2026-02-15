@@ -115,15 +115,12 @@ public class MainFrame implements UIManager {
         if (detailsPanel != null) detailsPanel.showItemDetails(item);
     }
     
-    // ========== Focus Management ==========
     
     public void focusMapPanel() { if (mapPanel != null) mapPanel.requestFocusInWindow(); }
     public void focusWeaponsPanel() { if (weaponsPanel != null) weaponsPanel.requestFocusInWindow(); }   
     public void focusMovesPanel() { if (movesPanel != null) movesPanel.requestFocusInWindow(); }
     public void focusInventoryPanel() { if (inventoryPanel != null) inventoryPanel.requestFocusInWindow(); }
     public void focusInteractionPanel() { if (interactionPanel != null) interactionPanel.requestFocusInWindow(); }
-    
-    // ========== Panel Getters ==========
     
     public MapPanel getMapPanel() { return mapPanel; }
     public MovesPanel getMovesPanel() { return movesPanel; }
@@ -134,13 +131,10 @@ public class MainFrame implements UIManager {
     public TurnOrderPanel getTurnOrderPanel() { return turnOrderPanel; }
     public DetailsPanel getDetailsPanel() { return detailsPanel; }
     
-    // ========== Strategy Getters ==========
-    
     public MovementStrategy getMovementStrategy() { return movementStrategy; }
     public CombatStrategy getCombatStrategy() { return combatStrategy; }
     public InventoryStrategy getInventoryStrategy() { return inventoryStrategy; }
     
-    // ========== Repaint Methods ==========
     @Override
     public void repaintMapPanel() { if (mapPanel != null) mapPanel.repaint(); }
     public void repaintMovesPanel() { if (movesPanel != null) movesPanel.repaint(); }
@@ -153,9 +147,6 @@ public class MainFrame implements UIManager {
     public void repaintWeaponsPanel() { if (weaponsPanel != null) weaponsPanel.repaint(); }
     public void repaintTurnOrderPanel() { if (turnOrderPanel != null) turnOrderPanel.repaint(); }
     public void repaintDetailsPanel() { if (detailsPanel != null) detailsPanel.repaint(); }
-   
-    
-    // ========== Visual Updates ==========
     
     public void updateAttackArea() {
         if (mapPanel != null && combatStrategy != null) mapPanel.updateAttackArea(combatStrategy);
@@ -173,8 +164,6 @@ public class MainFrame implements UIManager {
         repaintTurnOrderPanel();
         repaintStatsPanel();
     }
-    
-    // ========== Interaction & Dialog Management ==========
 
     public void showInteractionPanel(boolean show) {
         if (interactionPanel != null && interactionPanel.getParent() != null) {
@@ -233,8 +222,6 @@ public class MainFrame implements UIManager {
     public void confirmChoice() { if (interactionPanel != null) interactionPanel.confirmChoice(); }
     public void advanceDialog() { if (interactionPanel != null) interactionPanel.advanceDialog(); }
     
-    // ========== Strategy Visuals ==========
-    
     public void updateMovementCursor(Coordinates cursor) {
         if (mapPanel != null && movementStrategy != null) mapPanel.updateMovementCursor(cursor);
     }
@@ -245,10 +232,7 @@ public class MainFrame implements UIManager {
     
     public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
         if (mapPanel != null) mapPanel.showMoveArea(moveArea, playerPos);
-    }
-    
-    // ========== Global UI Components ==========
-    
+    } 
 
     public PausePanel getPausePanel() { return pausePanel; }
     public void setPausePanel(PausePanel pausePanel){ this.pausePanel = pausePanel; }

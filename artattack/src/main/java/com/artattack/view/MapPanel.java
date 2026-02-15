@@ -58,15 +58,12 @@ public class MapPanel extends JPanel {
         
         char[][] matrix = map.getMapMatrix();
 
-        char p1Symbol = (map.getPlayerOne() != null) ? map.getPlayerOne().getMapSymbol() : '\0';
-        char p2Symbol = (map.getPlayerTwo() != null) ? map.getPlayerTwo().getMapSymbol() : '\0';
-
         int mapPixelWidth = map.getWidth() * cellSize;
         int mapPixelHeight = map.getHeight() * cellSize;
         int startX = (getWidth() - mapPixelWidth) / 2;
         int startY = (getHeight() - mapPixelHeight) / 2;
 
-        // --- 1. BACKGROUND ---
+        // BackGround
         for (int y = 0; y < map.getHeight(); y++) {
             for (int x = 0; x < map.getWidth(); x++) {
                 char c = matrix[x][y]; 
@@ -90,7 +87,7 @@ public class MapPanel extends JPanel {
 
                 switch (c) {
                     case '\u2588' -> g.setColor(Color.GRAY);
-                    case '\u25EA' -> /*{continue;}*/g.setColor(new Color(50, 50, 50));
+                    case '\u25EA' -> g.setColor(new Color(50, 50, 50));
                     // enemy cases
                     case 'E' -> g.setColor(Color.RED);
                     case 'G' -> g.setColor(Color.RED);
@@ -103,18 +100,21 @@ public class MapPanel extends JPanel {
                     // NPCs and mapElements Cases
                     case 'i' -> g.setColor(Color.GREEN);    // Melies
                     case 'A' -> g.setColor(new Color(119, 3, 252)); // Aretha
-                    case '\u22B7' -> g.setColor(Color.YELLOW);  // RENE
+                    case '\u3020' -> g.setColor(Color.YELLOW);  // RENE
                     case 'I' -> g.setColor(Color.YELLOW);   
                     case '\u2583' -> g.setColor(new Color(150, 100, 60));
                     case '\u2318' -> g.setColor(new Color(131, 244, 74)); 
                     case '$' -> g.setColor(new Color(180,180,0));
+                    case '\u2339' -> g.setColor(new Color(196, 136, 62));
+                    case '\u20AC' -> g.setColor(new Color(133, 187, 101));
+                    case '\u271A' -> g.setColor(new Color(255, 0, 0));
+                    case '\u25A3' -> g.setColor(Color.GRAY);
                     default -> g.setColor(Color.WHITE);
                 } 
                 g.drawString(String.valueOf(c), px, py + (int)(cellSize * 0.85));
             }
         }
         
-        // --- 2. ENEMY VISION ---
         if (map.getEnemies() != null) {
             g.setColor(new Color(255, 165, 0, 40)); 
 
@@ -139,7 +139,6 @@ public class MapPanel extends JPanel {
             }
         }
 
-        // --- 3. PLAYER MOVEMENT AREA ---
         if (moveArea != null && !moveArea.isEmpty()) {
             // System.out.println("DEBUG PAINT: Drawing " + moveArea.size() + " move tiles.");
             
@@ -154,7 +153,6 @@ public class MapPanel extends JPanel {
             }
         }
         
-        // --- 4. ATTACK AREA ---
         if (attackArea != null) {
 
             if (isHeal) {
@@ -231,7 +229,6 @@ public class MapPanel extends JPanel {
     }
     
     public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
-        // System.out.println("DEBUG: showMoveArea called with " + (moveArea != null ? moveArea.size() : "null") + " tiles.");
         if (moveArea == null || moveArea.isEmpty()) {
             this.moveArea = null;
         } else {

@@ -54,7 +54,7 @@ public class MapDirector {
                 listE.add(e);
 
                 //Creating InteractableElements
-                ieBuilder.setID(0); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
+                ieBuilder.setID(0); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(1, 23));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a Cure!", "Wow! This'll come in handy! You can press I to open your INVENTORY and browse your ITEMS. If you want to use one, press Enter."), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
                 ieBuilder.setSpritePath("/images/melis.jpg");
@@ -135,13 +135,13 @@ public class MapDirector {
                 listEn.addAll(List.of(e0_1,e1_1, e2_1, e3_1));
 
                 //Creating InteractableElement
-                ieBuilder.setID(4); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(29, 29)); ieBuilder.setName("Chest");
+                ieBuilder.setID(4); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(29, 29)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
-                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 8 HP.", 8))), new Talk(List.of("This chest is empty."))));
                 ieBuilder.setSpritePath(null);
                 InteractableElement chest0_1 = ieBuilder.getResult();
                 ieBuilder.setID(5); ieBuilder.setCoordinates(new Coordinates(9, 11)); ieBuilder.setInteractions(List.of(
-                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 8 HP.", 8))), new Talk(List.of("This chest is empty."))));
                 ieBuilder.setSpritePath(null);
                 InteractableElement chest1_1 = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 2, new Coordinates(0, 4)); ieBuilder.setID(6);
@@ -173,9 +173,9 @@ public class MapDirector {
                 eDirector.create(eBuilder, EnemyType.TOOLBOT, new Coordinates(18, 6));
                 Enemy minion2 = eBuilder.getResult();
                 // creation of the interactable elements
-                ieBuilder.setID(7); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(30, 36)); ieBuilder.setName("Chest");
+                ieBuilder.setID(7); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(30, 36)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
-                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5))), new Talk(List.of("This chest is empty."))));
+                new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 10 HP.", 10))), new Talk(List.of("This chest is empty."))));
                 ieBuilder.setSpritePath(null);
                 InteractableElement chest2_1 = ieBuilder.getResult();
                 ieDirector.createCheckPoint(this.ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
@@ -268,14 +268,14 @@ public class MapDirector {
                 InteractableElement preBossDoor_r = ieBuilder.getResult();
                 
                 //chests
-                ieBuilder.setID(12); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(4, 12)); ieBuilder.setName("Chest");
+                ieBuilder.setID(12); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(4, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
-                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 12 HP.", 12)))));
                 ieBuilder.setSpritePath(null);
                 InteractableElement chest_r0 = ieBuilder.getResult();
-                ieBuilder.setID(13); ieBuilder.setMapSymbol('$'); ieBuilder.setCoordinates(new Coordinates(35, 12)); ieBuilder.setName("Chest");
+                ieBuilder.setID(13); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(35, 12)); ieBuilder.setName("Chest");
                 ieBuilder.setInteractions(List.of(
-                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 5 HP.", 5)))));
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 12 HP.", 12)))));
                 ieBuilder.setSpritePath(null);
                 InteractableElement chest_r1 = ieBuilder.getResult();
 
@@ -284,7 +284,9 @@ public class MapDirector {
                 InteractableElement checkpoint = ieBuilder.getResult();
 
                 //receptionist
-                ieBuilder.setID(14); ieBuilder.setMapSymbol('\u22B7'); ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000"); ieBuilder.setSpritePath("/images/bobinatro-fotor-2026021023422.jpg");
+                ieBuilder.setID(14); 
+                ieBuilder.setMapSymbol('\u3020'); 
+                ieBuilder.setCoordinates(new Coordinates(20, 11)); ieBuilder.setName("R.E.N.E. 3000"); ieBuilder.setSpritePath("/images/rene.jpg");
                 ieBuilder.setInteractions(List.of(
                     new Talk(List.of("Welcome to the I.A.A.I. Facility 52, I'm R.E.N.E 30000 at your service!", "What!?!? You're here to stop Sam Altman? I don't think I can help you with that...",
                      "I mean, I'm not even from the I.A.A.I. To be honest, the place I come from is Milan, in Italy", "You know, I was one of the first AI movie directors, I even won a Cannes festival!", 
@@ -376,13 +378,27 @@ public class MapDirector {
                 eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 3));
                 Enemy roboguard2 = eBuilder.getResult();
                 this.builder.setEnemies(new ArrayList<>(List.of(guard1, guard2, roboguard1, roboguard2)));
-
+                // interactable elements 19
+                //chest 1
+                ieBuilder.setID(32); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(18, 1)); ieBuilder.setName("Chest");
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 18 HP.", 18)))));
+                ieBuilder.setSpritePath(null);
+                InteractableElement chest_preBoss1 = ieBuilder.getResult();
+                //chest 2
+                ieBuilder.setID(33); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(18, 8)); ieBuilder.setName("Chest");
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 18 HP.", 18)))));
+                ieBuilder.setSpritePath(null);
+                InteractableElement chest_preBoss2 = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 3, new Coordinates(31, 4), new Coordinates(1, 8), new Coordinates(1, 10)); ieBuilder.setID(18);
                 InteractableElement receptionDoor_p = this.ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 8, new Coordinates(0, 4)); ieBuilder.setID(19);
-                InteractableElement bossDoor_p = this.ieBuilder.getResult();
-
-                this.builder.setInteractableElements(List.of(receptionDoor_p, bossDoor_p));
+                InteractableElement bossDoor_p1 = this.ieBuilder.getResult();
+                ieDirector.createDoor(this.ieBuilder, 8, new Coordinates(0, 5)); ieBuilder.setID(19);
+                InteractableElement bossDoor_p2 = this.ieBuilder.getResult();
+                
+                this.builder.setInteractableElements(List.of(receptionDoor_p, bossDoor_p1, bossDoor_p2, chest_preBoss1, chest_preBoss2));
                 
                 this.builder.setID(5);
                 this.builder.setDimension(32, 10);
@@ -422,7 +438,7 @@ public class MapDirector {
                 mb1.setName("Fragile Swing"); mb1.setPower(16); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move fragileSwing = mb1.getResult();
                 Weapon glassPanel = new Weapon("Glass Panel", " ", 1, List.of(fragileSwing), PlayerType.MUSICIAN);
-                ieBuilder.setID(20); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(4, 6));
+                ieBuilder.setID(20); ieBuilder.setMapSymbol('\u25A3'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(4, 6));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a glass panel!"), glassPanel), new Talk(List.of("This chest is empty."))));
                 ieBuilder.setSpritePath(null);
@@ -431,7 +447,7 @@ public class MapDirector {
                 mb1.setName("Button Press"); mb1.setPower(0); mb1.setActionPoints(1); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
                 Move buttonPress = mb1.getResult();
                 Weapon strangeRemote = new Weapon("Strange Remote", " ", 1, List.of(buttonPress), PlayerType.MOVIE_DIRECTOR);
-                ieBuilder.setID(21); ieBuilder.setMapSymbol('$'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(5, 6));
+                ieBuilder.setID(21); ieBuilder.setMapSymbol('\u25A3'); ieBuilder.setName("Chest"); ieBuilder.setCoordinates(new Coordinates(5, 6));
                 ieBuilder.setInteractions(List.of(
                     new Give(List.of("You found a strange remote!"), strangeRemote)));
                 ieBuilder.setSpritePath(null);
@@ -460,11 +476,24 @@ public class MapDirector {
                 
                 //interactable element
                 ieDirector.createDoor(ieBuilder, 4, new Coordinates(0, 2), new Coordinates(23, 2), new Coordinates(23, 4));
-                this.builder.setInteractableElements(List.of(ieBuilder.getResult()));
+                InteractableElement door_keyRoom = ieBuilder.getResult();
+                // chest 1
+                ieBuilder.setID(28); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(1, 1)); ieBuilder.setName("Chest");
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 15 HP.", 15)))));
+                ieBuilder.setSpritePath(null);
+                InteractableElement chest_keyRoom1 = ieBuilder.getResult();
+                // chest 2
+                ieBuilder.setID(29); ieBuilder.setMapSymbol('\u271A'); ieBuilder.setCoordinates(new Coordinates(1, 8)); ieBuilder.setName("Chest");
+                ieBuilder.setInteractions(List.of(
+                    new Give(List.of("You found a Cure!"), List.of(new Item(ItemType.CURE, "Cure", "Heals 15 HP.", 15)))));
+                ieBuilder.setSpritePath(null);
+                InteractableElement chest_keyRoom2 = ieBuilder.getResult();
 
                 //enemy
                 eDirector.create(eBuilder, EnemyType.ATTENDANT, new Coordinates(7, 5));
                 this.builder.setEnemies(new ArrayList<>(List.of(eBuilder.getResult())));
+                this.builder.setInteractableElements(List.of(chest_keyRoom1, chest_keyRoom2, door_keyRoom));
                 break;
             case "BossArena":
                 this.builder.setID(8);

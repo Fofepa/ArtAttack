@@ -43,10 +43,6 @@ import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.saving.SaveManager;
 
-
-/**
- * Main Facade that coordinates all GUI components and sub-facades
- */
 public class MainGUIFacade {
     private JFrame mainFrame;
     private InputController inputController;
@@ -73,7 +69,6 @@ public class MainGUIFacade {
         mainFrame = new JFrame("Art Attack");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        // --- RESIZE MANAGER---
         mainFrame.setPreferredSize(new Dimension(1920, 1080));
         
         mainFrame.setMinimumSize(new Dimension(1280, 720));
@@ -655,9 +650,7 @@ SwingUtilities.invokeLater(() -> {
 }
 
 
-/**
- * Facade for managing the game screen and all game-related panels
- */
+
 class GameFacade {
     private MainFrame mainFrameAdapter;
     private JPanel gamePanel;
@@ -719,9 +712,7 @@ class GameFacade {
 }
 
 
-/**
- * Facade for managing the left side panels
- */
+
 class LeftPanelFacade {
     private JPanel leftPanel;
     private InventoryPanel inventoryPanel;

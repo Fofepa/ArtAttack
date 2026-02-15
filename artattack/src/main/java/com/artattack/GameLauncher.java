@@ -14,9 +14,7 @@ public class GameLauncher {
             // Show menu first
             mainFacade.show();
             
-            // Example: Start game with test data
-            // Uncomment below to skip menu and go straight to game
-            // startTestGame(mainFacade);
+            
         });
     }
     

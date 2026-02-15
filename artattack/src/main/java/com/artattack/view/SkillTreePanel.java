@@ -27,10 +27,6 @@ import com.artattack.mapelements.skilltree.SPNODE;
 import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.mapelements.skilltree.SpecialMoveNODE;
 
-/**
- * SkillTreePanel - Displays the player's skill tree.
- * Key handling is managed by InputController, not this panel.
- */
 public class SkillTreePanel extends JPanel {
     private SkillTree skillTree;
     private Player player;
@@ -222,7 +218,7 @@ public class SkillTreePanel extends JPanel {
         Node n2 = root.getChildren().get(0);
         Node n3 = root.getChildren().get(1);
 
-        // --- LEFT BRANCH (Lynch) ---
+        // Lynch left branch
         putPos(n2, cx - 100, y + 70); 
         
         if (!n2.getChildren().isEmpty()) {
@@ -284,7 +280,7 @@ public class SkillTreePanel extends JPanel {
             }
         }
 
-        // --- RIGHT BRANCH (Lynch) ---
+        // Lynch right branch
         putPos(n3, cx + 100, y + 70);
         
         if (!n3.getChildren().isEmpty()) {
@@ -394,8 +390,6 @@ public class SkillTreePanel extends JPanel {
         return isNodeUnlockable(node);
     }
     
-    // === PUBLIC METHODS FOR INPUT CONTROLLER ===
-    
     public void selectUp() {
         navigateVertical(-1);
     }
@@ -457,8 +451,6 @@ public class SkillTreePanel extends JPanel {
     public boolean hasNodesAvailable() {
         return !availableNodes.isEmpty() && player.getSkillPoints() > 0;
     }
-    
-    // === PRIVATE NAVIGATION METHODS ===
     
     private void navigateHorizontal(int direction) { 
         navigate(direction, true); 
@@ -572,8 +564,6 @@ public class SkillTreePanel extends JPanel {
             repaint();
         }
     }
-
-    // === DRAWING METHODS ===
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -750,8 +740,6 @@ public class SkillTreePanel extends JPanel {
             g2.drawString(line.toString(), x, currentY);
         }
     }
-    
-    // === HELPER METHODS ===
     
     private String getNodeShortLabel(Node node) {
         return switch (node) {

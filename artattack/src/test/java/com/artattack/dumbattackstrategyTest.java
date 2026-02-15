@@ -59,9 +59,6 @@ public class dumbattackstrategyTest {
     public void executeTest(){
         dumbAttack.execute(enemy, map);
         assertEquals(35, map.getPlayerOne().getCurrHP() + map.getPlayerTwo().getCurrHP());
-        /* 
-        assertNotEquals(20,map.getPlayerOne().getCurrHP());
-        assertNotEquals(5, enemy.getActionPoints()); */
     }
     
 

@@ -9,9 +9,7 @@ import javax.swing.JPanel;
 
 import com.artattack.items.Item;
 import com.artattack.mapelements.Player;
-/**
- * InventoryPanel - Displays player inventory
- */
+
 public class InventoryPanel extends JPanel {
     private Player player;
     private int selectedIndex = 0;

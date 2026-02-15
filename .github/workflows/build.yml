@@ -21,6 +21,9 @@ jobs:
           - os: ubuntu-latest
             artifact_name: ArtAttack-Linux.deb
             package_type: deb
+          - os: ubuntu-latest
+            artifact_name: ArtAttack-Fedora.rpm
+            package_type: rpm
           - os: macos-latest
             artifact_name: ArtAttack-Mac.dmg
             package_type: dmg
@@ -40,15 +43,7 @@ jobs:
       run: mvn clean package -DskipTests
 
     - name: Create Native Package with jpackage
-      run: |
-        jpackage \
-          --input target/ \
-          --name ArtAttack \
-          --main-jar artattack-1.jar \
-          --main-class com.artattack.GameLauncher \
-          --type ${{ matrix.package_type }} \
-          --dest output/
-
+      run: jpackage --input target/ --name ArtAttack --main-jar artattack-1.jar --main-class com.artattack.GameLauncher --type ${{ matrix.package_type }} --dest output/ --vendor "ArtAttackTeam"
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:

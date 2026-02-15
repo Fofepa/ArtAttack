@@ -38,6 +38,7 @@ import com.artattack.mapelements.MapElement;
 import com.artattack.mapelements.Player;
 import com.artattack.mapelements.PlayerBuilder;
 import com.artattack.mapelements.PlayerDirector;
+import com.artattack.mapelements.PlayerType;
 import com.artattack.mapelements.skilltree.Node;
 import com.artattack.mapelements.skilltree.SkillTree;
 import com.artattack.saving.SaveManager;
@@ -335,16 +336,29 @@ SwingUtilities.invokeLater(() -> {
             }
 
             List<ActiveElement> active = new ArrayList<>();
-            active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerOne());
-            active.add(mm.getLevels().get(mm.getCurrMap()).getPlayerTwo());
+            Player playerOne = mm.getLevels().get(mm.getCurrMap()).getPlayerOne(); 
+            Player playerTwo = mm.getLevels().get(mm.getCurrMap()).getPlayerTwo(); 
+
+            if(!playerOne.isAlive()){
+                playerOne.updateHP(10);
+                if(playerOne.getType() == PlayerType.MUSICIAN)
+                    playerOne.setMapSymbol('♫'); 
+                else  playerOne.setMapSymbol('◉');
+            }
+            active.add(playerOne);
+            if(!playerTwo.isAlive()){
+                playerTwo.updateHP(10);
+                if(playerTwo.getType() == PlayerType.MUSICIAN)
+                    playerTwo.setMapSymbol('♫'); 
+                else  playerTwo.setMapSymbol('◉');
+            }
+             active.add(playerTwo);
             for(Enemy enemy : mm.getLevels().get(mm.getCurrMap()).getEnemies()){
                 if(enemy.getIsActive())
                     active.add(enemy);
             }
             mm.getLevels().get(mm.getCurrMap()).setTurnQueue(active, mm.getTurnIndex());
 
-
-            Player playerOne = mm.getLevels().get(mm.getCurrMap()).getPlayerOne();
             
             gameFacade = new GameFacade(mainFrame, mm, playerOne, saveManager);            
 

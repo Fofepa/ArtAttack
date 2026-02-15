@@ -634,6 +634,7 @@ public class InputController implements KeyListener, TurnListener {
 
                         mainFrame.repaintMovesPanel();
                         mainFrame.repaintTurnOrderPanel();
+                        mainFrame.repaintStatsPanel();
                         mainFrame.focusMovesPanel();
                         mainFrame.repaintMovesPanel();
                     } else {

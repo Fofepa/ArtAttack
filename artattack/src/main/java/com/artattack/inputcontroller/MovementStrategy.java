@@ -108,7 +108,7 @@ public class MovementStrategy implements PlayerStrategy{
     }
 
     public void acceptMovement() {
-        if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '\u25EA'){
+        if (this.map.getMapMatrix()[cursor.getX()][cursor.getY()] == '\u25EA' && !(map.getDict().get(cursor) instanceof Player)){
             this.map.getMapMatrix()[player.getCoordinates().getX()][player.getCoordinates().getY()] = '\u25EA';
             if (map.getDict().get(this.cursor) instanceof Trigger t) {
                 t.OnTrigger(this.mainFrame.getGameContext(), this.player, t.getSpritePath());

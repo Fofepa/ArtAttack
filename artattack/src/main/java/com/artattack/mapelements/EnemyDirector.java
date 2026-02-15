@@ -69,7 +69,8 @@ public class EnemyDirector {
                 mb1.setName("Wrench Repair"); mb1.setActionPoints(7); mb1.setHealAmount(10); mb1.setHealArea(ab.getResult()); mb1.setAreaHeal(false);
                 Move bobMove3 = mb1.getResult();
                 //boss weapon creation
-                Weapon bobWeapon = new Weapon("BobWeapon", " ", 4, List.of(bobMove1,bobMove2,bobMove3), null);
+                
+                Weapon bobWeapon = new Weapon("BobWeapon", " ", 4, new ArrayList<Move>(List.of(bobMove1,bobMove2,bobMove3)), null);
                 // Boss initialization
                 ab.addShape("circle", 8, true);
                 List<Coordinates> bobMA = ab.getResult();

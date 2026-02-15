@@ -145,6 +145,7 @@ public class MainFrame implements UIManager {
     public void repaintStatsPanel() { if (statsPanel != null) statsPanel.repaint(); }
     @Override
     public void repaintWeaponsPanel() { if (weaponsPanel != null) weaponsPanel.repaint(); }
+    @Override
     public void repaintTurnOrderPanel() { if (turnOrderPanel != null) turnOrderPanel.repaint(); }
     public void repaintDetailsPanel() { if (detailsPanel != null) detailsPanel.repaint(); }
     
@@ -232,7 +233,11 @@ public class MainFrame implements UIManager {
     
     public void showMoveArea(List<Coordinates> moveArea, Coordinates playerPos) {
         if (mapPanel != null) mapPanel.showMoveArea(moveArea, playerPos);
-    } 
+    }
+
+    public void clearMovementArea(){
+        mapPanel.clearMovementArea();
+    }
 
     public PausePanel getPausePanel() { return pausePanel; }
     public void setPausePanel(PausePanel pausePanel){ this.pausePanel = pausePanel; }

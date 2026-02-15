@@ -107,6 +107,10 @@ public abstract class ActiveElement extends MapElement implements Comparable<Act
             this.currHP += amount;
     }
 
+    public void setCurrHP(int amount){
+        this.currHP = amount;
+    }
+
     @Override
     public int compareTo(ActiveElement other) {
         return Integer.compare(other.getSpeed(), this.getSpeed());

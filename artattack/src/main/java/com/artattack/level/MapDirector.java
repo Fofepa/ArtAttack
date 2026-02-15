@@ -180,7 +180,7 @@ public class MapDirector {
                 InteractableElement chest2_1 = ieBuilder.getResult();
                 ieDirector.createCheckPoint(this.ieBuilder, new Coordinates(9, 34)); ieBuilder.setID(8);
                 ieBuilder.setInteractions(List.of(new CheckPoint(List.of("Hey there! It's me Aretha Franklin didn't you recognise me? Oh come on!", "You guys don't look so good... ",
-                "I can help you guys! If something goes bad you'll get to me! Just talk to me whenever you see me around!", "Just don't get yourselves killed, I hate those things!"))));
+                "I can help you guys! I'll heal you everytime you'll come to me!", "Just talk to me whenever you see me around!", "Just don't get yourselves killed, I hate seeing people get hurt!"))));
                 InteractableElement bossCheckPoint = ieBuilder.getResult();
                 ieDirector.createDoor(this.ieBuilder, 3, 5001, new Coordinates(16, 0)); ieBuilder.setID(9);
                 InteractableElement endDoor = ieBuilder.getResult();
@@ -369,13 +369,13 @@ public class MapDirector {
                 this.builder.setInteractableElements(List.of(receptionDoor_B, keyRoomDoor_B, chestRoomDoor_B));
                 break;
             case "PreBoss":
-                eDirector.create(eBuilder, EnemyType.GUARD, new Coordinates(21, 2));
+                eDirector.create(eBuilder, EnemyType.GUARD, new Coordinates(21, 2)); eBuilder.setDroppedXP(60);
                 Enemy guard1 = eBuilder.getResult();
-                eDirector.create(eBuilder, EnemyType.GUARD, new Coordinates(21, 7));
+                eDirector.create(eBuilder, EnemyType.GUARD, new Coordinates(21, 7)); eBuilder.setDroppedXP(60);
                 Enemy guard2 = eBuilder.getResult();
-                eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 6));
+                eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 6)); eBuilder.setDroppedXP(100);
                 Enemy roboguard1 = eBuilder.getResult();
-                eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 3));
+                eDirector.create(eBuilder, EnemyType.ROBOT, new Coordinates(6, 3)); eBuilder.setDroppedXP(100);
                 Enemy roboguard2 = eBuilder.getResult();
                 this.builder.setEnemies(new ArrayList<>(List.of(guard1, guard2, roboguard1, roboguard2)));
                 // interactable elements 19

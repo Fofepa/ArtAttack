@@ -53,7 +53,7 @@ public class PlayerDirector {
                 mb1.setName("Action!"); mb1.setActionPoints(8); mb1.setPower(6); mb1.setAreaAttack(true); mb1.setAttackArea(ab.getResult());
                 Move lynchMove1 = mb1.getResult();
                 ab.addShape("base");
-                mb1.setName("CiaK"); mb1.setActionPoints(7); mb1.setPower(5); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false); 
+                mb1.setName("CiaK"); mb1.setActionPoints(7); mb1.setPower(7); mb1.setAttackArea(ab.getResult()); mb1.setAreaAttack(false); 
                 Move lynchMove2 = mb1.getResult();
                 List<Coordinates> lynchMove3Area = new ArrayList<>();
                 ab.addShape("4", 3, true);

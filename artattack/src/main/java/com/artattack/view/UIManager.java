@@ -15,6 +15,7 @@ public interface UIManager {
     public void repaintInventoryPanel();
     public void repaintWeaponsPanel();
     public void repaintMapPanel();
+    public void repaintTurnOrderPanel();
     public void showSkillTreePanel(Player player, SkillTree skillTree, Consumer<Node> callback);
     public void showLevelComplete(Maps nextMap);
 }

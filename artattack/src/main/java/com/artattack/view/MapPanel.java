@@ -195,17 +195,20 @@ public class MapPanel extends JPanel {
     }
 
     private void drawPlayerSymbol(Graphics g, Player p, int startX, int startY, int cellSize) {
+        char symbol;
         if (p != null) {
             int px = startX + (p.getCoordinates().getX() * cellSize);
             int py = startY + (p.getCoordinates().getY() * cellSize);
             
             if (p.isAlive()) {
+                symbol = p.getMapSymbol();
                 g.setColor(Color.CYAN);
             }else{
+                symbol = '\u2620';
                 g.setColor(Color.GRAY);
             }
 
-            g.drawString(String.valueOf(p.getMapSymbol()), px, py + cellSize);
+            g.drawString(String.valueOf(symbol), px, py + cellSize);
         }
     }
 
@@ -298,6 +301,11 @@ public class MapPanel extends JPanel {
     
     public void clearAttackArea() {
         this.attackArea = null;
+        repaint();
+    }
+
+    public void clearMovementArea(){
+        this.moveArea = null;
         repaint();
     }
     

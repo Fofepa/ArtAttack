@@ -137,7 +137,7 @@ public class MovementStrategy implements PlayerStrategy{
             }
         }
         map.checkPlayerEscape();
-        if(player.getActionPoints() == 0){
+        if(player.getActionPoints() <= 0){
             this.mainFrame.getMap().getConcreteTurnHandler().next();
         }
         setIsSelected(false);

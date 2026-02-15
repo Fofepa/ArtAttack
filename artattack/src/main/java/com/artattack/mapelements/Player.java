@@ -165,7 +165,7 @@ public class Player extends ActiveElement {
 
     @Override
     public void onDeath(Maps map, ActiveElement killer) {
-        this.setMapSymbol('\u2620');
+        
         map.getConcreteTurnHandler().getConcreteTurnQueue().remove(this);
     }
 

@@ -817,6 +817,7 @@ public class InputController implements KeyListener, TurnListener {
         
         mainFrame.clearAttackArea();
         mainFrame.clearMovementCursor();
+        mainFrame.clearMovementArea();
 
         if (activeElement instanceof Player){ // player turn
             System.out.println(">> PLAYER TURN: " + activeElement.getName());

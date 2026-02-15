@@ -17,6 +17,7 @@ public class  HPNODE extends Node{
         for(Node parent : this.getParents()){
             if(parent.isSpent() && !this.isSpent()){
                 player.setMaxHP(player.getMaxHP()+ newHP);
+                player.updateHP(newHP);
                 this.setSpent();
                 return;
             }

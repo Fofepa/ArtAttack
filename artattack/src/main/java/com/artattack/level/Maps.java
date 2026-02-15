@@ -164,6 +164,13 @@ public class Maps {
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
     }
 
+     public void setTurnQueue(Player player){
+        List<ActiveElement>list = new LinkedList<ActiveElement>();
+        list.add(player);
+        ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(new LinkedList<ActiveElement>(list));
+        this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();
+    }
+
     public void setTurnQueue(List<ActiveElement> elements, int index){
         ConcreteTurnQueue turnQueue = new ConcreteTurnQueue(elements);
         this.turnHandler = (ConcreteTurnHandler) turnQueue.createTurnHandler();

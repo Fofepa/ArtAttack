@@ -29,7 +29,7 @@ public class EnemyDirector {
                 Weapon employeeWeapon = new Weapon(" ", " ", 5, List.of(employeeMove), null);
                 builder.setMapSymbol('E'); builder.setName("Employee"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(8); builder.setMaxHP(8); builder.setDroppedXP(8);
                 builder.setSpeed(2); builder.setWeapons(List.of(employeeWeapon)); builder.setActionPoints(5); builder.setMaxActionPoints(5); builder.setMoveArea(employeeMA); builder.setVisionArea(employeeVA);
-                builder.setSpritePath(null);
+                builder.setSpritePath("/images/Employee.jpg");
                 if(ID == 0){
                     builder.setDroppedXP(20); 
                     ab.addShape("square", 5, true);
@@ -51,7 +51,7 @@ public class EnemyDirector {
                 Weapon guardWeapon = new Weapon(" ", " ", 5, List.of(guardMove1, guardMove2), null);
                 builder.setMapSymbol('G');builder.setName("Guard"); builder.setCoordinates(coordinates); builder.setEnemyType(enemyType); builder.setCurrHP(14); builder.setMaxHP(14); builder.setDroppedXP(12);
                 builder.setSpeed(4); builder.setWeapons(List.of(guardWeapon)); builder.setActionPoints(10); builder.setMaxActionPoints(10); builder.setMoveArea(guardMA); builder.setVisionArea(guardVA);
-                builder.setSpritePath(null);
+                builder.setSpritePath("/images/guard.jpg");
             }
 
             case EnemyType.BOB ->{

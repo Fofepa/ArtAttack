@@ -162,6 +162,7 @@ public class EnemyDirector {
             case EnemyType.ATTENDANT -> {
                 builder.setName("Attendant");
                 builder.setID(ID);
+                builder.setEnemyType(enemyType);
                 builder.setMapSymbol('A');
                 builder.setMaxActionPoints(4);
                 builder.setActionPoints(4);
@@ -176,6 +177,12 @@ public class EnemyDirector {
                 builder.setKeys(List.of(new Key("Key", "Key", 5002)));
                 builder.setDroppedXP(1);
                 builder.setSpeed(3);
+                ab.addShape("square", 1, true);
+                mb1.setName("Scared Punch"); mb1.setPower(1); mb1.setActionPoints(4); mb1.setAreaAttack(false); mb1.setAttackArea(ab.getResult());
+                Move attendantMove = mb1.getResult();
+                Weapon attendantWeapon = new Weapon("", "", 2,List.of(attendantMove), null);
+                builder.setWeapons(new ArrayList<>(List.of(attendantWeapon)));
+
             }
         }
     }

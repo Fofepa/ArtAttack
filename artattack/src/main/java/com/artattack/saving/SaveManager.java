@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 
 import com.artattack.interactions.Interaction;
 import com.artattack.level.MapManager;
+import com.artattack.mapelements.TriggerGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,6 +24,7 @@ public class SaveManager {
             .registerTypeAdapter(Interaction.class, new InteractionDeserializer())
             .registerTypeAdapter(NodeData.class, new NodeDataDeserializer())
             .registerTypeAdapterFactory(new SkillTreeAdapterFactory())
+            .registerTypeAdapter(TriggerGroup.class, new TriggerGroupAdapter())
             .setPrettyPrinting()
             .create();
     }
@@ -44,7 +46,9 @@ public class SaveManager {
 
     public MapManager load() throws IOException{
         try(FileReader reader = new FileReader(savePath.toFile())){
-            return gson.fromJson(reader, MapManager.class);
+            MapManager result = gson.fromJson(reader, MapManager.class);
+            TriggerGroupAdapter.clearCache(); // AGGIUNGI QUESTA RIGA
+            return result;
         }
     }
 

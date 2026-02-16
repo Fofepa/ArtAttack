@@ -7,3 +7,7 @@ Scaricare il file JAR, entrare nella cartella dove è stato scaricato ed aprire 
 
 ## Requisiti 
 - JDK 21
+
+
+## Informazioni aggiuntive
+Il gioco è stato sviluppato e testato su ambiente Windows. Su altri sistemi operativi potrebbero presentarsi problemi o imperfezioni nella grafica.

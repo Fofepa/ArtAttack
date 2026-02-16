@@ -16,7 +16,6 @@ import com.google.gson.JsonSerializer;
 
 public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDeserializer<TriggerGroup> {
     
-    // Cache per mantenere i riferimenti condivisi durante la deserializzazione
     private static ThreadLocal<Map<String, TriggerGroup>> deserializationCache = 
         ThreadLocal.withInitial(HashMap::new);
     
@@ -24,7 +23,6 @@ public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDe
     public JsonElement serialize(TriggerGroup src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
         
-        // Crea un ID univoco basato sull'interaction
         String groupId = src.getInteraction().getClass().getName() + "@" + System.identityHashCode(src);
         jsonObject.addProperty("groupId", groupId);
         
@@ -38,10 +36,8 @@ public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDe
             throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
         
-        // Recupera l'ID del gruppo
         String groupId = jsonObject.has("groupId") ? jsonObject.get("groupId").getAsString() : null;
         
-        // Se abbiamo già deserializzato questo gruppo, riusa lo stesso oggetto
         if (groupId != null) {
             Map<String, TriggerGroup> cache = deserializationCache.get();
             if (cache.containsKey(groupId)) {
@@ -55,7 +51,6 @@ public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDe
         TriggerGroup triggerGroup = new TriggerGroup(interaction);
         triggerGroup.toggle(consumed);
         
-        // Salva nella cache per riuso
         if (groupId != null) {
             deserializationCache.get().put(groupId, triggerGroup);
         }
@@ -63,7 +58,6 @@ public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDe
         return triggerGroup;
     }
     
-    // Helper method per ottenere lo stato consumed usando reflection
     private boolean isConsumed(TriggerGroup triggerGroup) {
         try {
             java.lang.reflect.Field field = TriggerGroup.class.getDeclaredField("consumed");
@@ -74,7 +68,6 @@ public class TriggerGroupAdapter implements JsonSerializer<TriggerGroup>, JsonDe
         }
     }
     
-    // Metodo da chiamare dopo il caricamento per pulire la cache
     public static void clearCache() {
         deserializationCache.get().clear();
     }
